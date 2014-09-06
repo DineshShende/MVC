@@ -1,0 +1,49 @@
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+
+buildscript {
+    repositories 
+    {
+        maven { url "http://repo.spring.io/libs-release" }
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies 
+    {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.5.RELEASE")
+    }
+}
+
+
+jar {
+    baseName = 'MVC'
+    version =  '0.1.0'
+}
+
+repositories 
+{
+    mavenLocal()
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-release" }
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies 
+{
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("com.jayway.jsonpath:json-path:0.9.1")
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+        testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("junit:junit")
+}
+
+task wrapper(type: Wrapper){
+    gradleVersion = '1.11'
+}
