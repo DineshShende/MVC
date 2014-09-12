@@ -1,18 +1,12 @@
 package com.projectx.mvc.services;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import com.projectx.mvc.domain.Email;
+import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
 
-@Service
+@Component
 public interface CustomerQuickRegisterService {
+	
+	public String setStatus(CustomerQuickRegisterEntity customerQuickRegisterEntity) throws Exception;
 
-	//Email emailRedirect(Email email);
-	
-	//List<Email> getAllEmails();
-	
-	Email addEmail(Email email) throws Exception;
-	
-	//Boolean checkEmailExisted(Email email);
-	
 }

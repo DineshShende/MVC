@@ -20,6 +20,46 @@ public class CustomerQuickRegisterEntity {
 		this.status = status;
 	}
 
+	public boolean isEmailVerificationPending()
+	{
+		return status=="EmailVerificationPending";
+	}
+	
+	public boolean isMobileVerificationPending()
+	{
+		return status=="MobileVerificationPending";
+	}
+	
+	public boolean isEmailVerifiedMobileVerficationPending()
+	{
+		return status=="EmailVerifiedMobileVerficationPending";
+	}
+	
+	public boolean isMobileVerifiedEmailVerficationPending()
+	{
+		return status=="MobileVerifiedEmailVerficationPending";
+	}
+	
+	public boolean isMobileVerified()
+	{
+		return status=="MobileVerified";
+	}
+	
+	public boolean isEmailVerified()
+	{
+		return status=="EmailVerified";
+	}
+	
+	public boolean isEmailMobileVerified()
+	{
+		return status=="EmailMobileVerified";
+	}
+	
+	public boolean isEmailMobileVerificationPending()
+	{
+		return status=="EmailMobileVerificationPending";
+	}
+	
 	@Override
 	public String toString() {
 		return "CustomerQuickRegisterEntity [firstName=" + firstName
@@ -80,5 +120,7 @@ public class CustomerQuickRegisterEntity {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	
 
 }

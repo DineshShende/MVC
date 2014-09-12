@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.projectx.mvc.domain.Email;
-import com.projectx.mvc.services.CustomerQuickRegisterService;
+import com.projectx.mvc.services.EmailService;
 
 @Controller
 @RequestMapping(value="/email")
@@ -18,7 +18,7 @@ public class EmailController {
 		
 	
 	@Autowired
-	CustomerQuickRegisterService customerQuickRegisterService;
+	EmailService customerQuickRegisterService;
 
     @RequestMapping(value="/addemail", method=RequestMethod.GET)
     public String showEmailForm(Model model) {

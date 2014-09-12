@@ -20,27 +20,11 @@ public class Application {
     }
 
     
-    
-    
-   // @Bean 
-    //HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory()
-    {
-    	//HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory=new HttpComponentsClientHttpRequestFactory();
-    	
-    	//return httpComponentsClientHttpRequestFactory;
-    }
-    
     @Bean
     public RestTemplate restTemplate() throws IOException
     {
-    	//HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory=new HttpComponentsClientHttpRequestFactory();
-    	
-      	//httpComponentsClientHttpRequestFactory.createRequest(URI.create("http://localhost:8080/RestEvent/customer/checkemail"),HttpMethod.POST);
-    	
+    	  	
     	RestTemplate restTemplate=new RestTemplate();
-    	
-    //	restTemplate.setRequestFactory(httpComponentsClientHttpRequestFactory);
-    	
     	
     	return restTemplate;
     }

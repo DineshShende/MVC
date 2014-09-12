@@ -5,8 +5,8 @@ public class CustomerQuickRegisterDataFixture {
 	public static String CUSTOMER_FIRSTNAME="Josh";
 	public static String CUSTOMER_LASTNAME="Long";
 	public static String CUSTOMER_EMAIL="joshlong@pivotal.com";
-	public static Long CUSTOMER_MOBILE=9898989898L;
-	public static Integer CUSTOMER_PIN=414141;
+	public static String CUSTOMER_MOBILE="9898989898";
+	public static String CUSTOMER_PIN="414141";
 	
 	
 	

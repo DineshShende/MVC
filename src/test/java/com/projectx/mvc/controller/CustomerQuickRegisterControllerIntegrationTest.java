@@ -1,14 +1,17 @@
 package com.projectx.mvc.controller;
 
-import static org.junit.Assert.*;
+import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.CUSTOMER_EMAIL;
+import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.CUSTOMER_FIRSTNAME;
+import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.CUSTOMER_LASTNAME;
+import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.CUSTOMER_MOBILE;
+import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.CUSTOMER_PIN;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
@@ -40,13 +43,53 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 	
 	
 	@Test
-	public void thatCustomerQuickRegistrationRedirectedCorrectView() throws Exception
+	public void thatCustomerQuickRegistrationWithEmailMobileViewRedirect() throws Exception
 	{
-		this.mockMvc.perform(post("/customer/quickregister"))
-			.andExpect(view().name("verifyDetails"))
+		this.mockMvc.perform(
+								post("/customer/quickregister").param("firstName",CUSTOMER_FIRSTNAME)
+															   .param("lastName", CUSTOMER_LASTNAME)
+															   .param("email",CUSTOMER_EMAIL)
+															   .param("mobile",CUSTOMER_MOBILE)
+															   .param("pin",CUSTOMER_PIN)
+															  
+															)
+			.andExpect(view().name("verifyEmailMobile"))
 			.andDo(print());
 			
 	}
+	
 
+	@Test
+	public void thatCustomerQuickRegistrationWithMobileViewRedirect() throws Exception
+	{
+		this.mockMvc.perform(
+								post("/customer/quickregister").param("firstName",CUSTOMER_FIRSTNAME)
+															   .param("lastName", CUSTOMER_LASTNAME)
+															   .param("email","")
+															   .param("mobile",CUSTOMER_MOBILE)
+															   .param("pin",CUSTOMER_PIN)
+															  
+															)
+			.andExpect(view().name("verifyMobile"))
+			.andDo(print());
+			
+	}
+	
+	@Test
+	public void thatCustomerQuickRegistrationWithEmailViewRedirect() throws Exception
+	{
+		this.mockMvc.perform(
+								post("/customer/quickregister").param("firstName",CUSTOMER_FIRSTNAME)
+															   .param("lastName", CUSTOMER_LASTNAME)
+															   .param("email",CUSTOMER_EMAIL)
+															   .param("mobile","")
+															   .param("pin",CUSTOMER_PIN)
+															  
+															)
+			.andExpect(view().name("verifyEmail"))
+			.andDo(print());
+			
+	}
+	
 
 }

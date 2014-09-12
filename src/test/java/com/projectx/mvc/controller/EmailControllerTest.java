@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.projectx.mvc.controller.EmailController;
 import com.projectx.mvc.domain.Email;
-import com.projectx.mvc.services.CustomerQuickRegisterService;
+import com.projectx.mvc.services.EmailService;
 
 
 
@@ -47,7 +47,7 @@ public class EmailControllerTest {
 	EmailController customerQuickRegisterController;
 	
 	@Mock
-	CustomerQuickRegisterService customerQuickRegisterService;
+	EmailService customerQuickRegisterService;
 	
 	private MockMvc mockMvc;
 	
