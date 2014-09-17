@@ -2,75 +2,30 @@ package com.projectx.mvc.domain;
 
 public class CustomerQuickRegisterEntity {
 
+	// private CustomerQuickRegisterKey key;
 	private String firstName;
 	private String lastName;
+
 	private String email;
 	private Long mobile;
+
 	private Integer pin;
 	private String status;
 
+	
+	
+	
+	
+
 	public CustomerQuickRegisterEntity(String firstName, String lastName,
 			String email, Long mobile, Integer pin, String status) {
-
+		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.mobile = mobile;
 		this.pin = pin;
 		this.status = status;
-	}
-
-	public boolean isEmailVerificationPending()
-	{
-		return status=="EmailVerificationPending";
-	}
-	
-	public boolean isMobileVerificationPending()
-	{
-		return status=="MobileVerificationPending";
-	}
-	
-	public boolean isEmailVerifiedMobileVerficationPending()
-	{
-		return status=="EmailVerifiedMobileVerficationPending";
-	}
-	
-	public boolean isMobileVerifiedEmailVerficationPending()
-	{
-		return status=="MobileVerifiedEmailVerficationPending";
-	}
-	
-	public boolean isMobileVerified()
-	{
-		return status=="MobileVerified";
-	}
-	
-	public boolean isEmailVerified()
-	{
-		return status=="EmailVerified";
-	}
-	
-	public boolean isEmailMobileVerified()
-	{
-		return status=="EmailMobileVerified";
-	}
-	
-	public boolean isEmailMobileVerificationPending()
-	{
-		return status=="EmailMobileVerificationPending";
-	}
-	
-	@Override
-	public String toString() {
-		return "CustomerQuickRegisterEntity [firstName=" + firstName
-				+ ", lastName=" + lastName + ", email=" + email + ", mobile="
-				+ mobile + ", pin=" + pin + ", status=" + status + "]";
-	}
-	
-	
-
-	public CustomerQuickRegisterEntity() {
-	
 	}
 
 	public String getFirstName() {
@@ -120,7 +75,41 @@ public class CustomerQuickRegisterEntity {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
+
+	public CustomerQuickRegisterEntity() {
+		super();
+	}
+
+	public boolean isEmailVerificationPending() {
+		return status == "EmailVerificationPending";
+	}
+
+	public boolean isMobileVerificationPending() {
+		return status == "MobileVerificationPending";
+	}
+
+	public boolean isEmailVerifiedMobileVerficationPending() {
+		return status == "EmailVerifiedMobileVerficationPending";
+	}
+
+	public boolean isMobileVerifiedEmailVerficationPending() {
+		return status == "MobileVerifiedEmailVerficationPending";
+	}
+
+	public boolean isMobileVerified() {
+		return status == "MobileVerified";
+	}
+
+	public boolean isEmailVerified() {
+		return status == "EmailVerified";
+	}
+
+	public boolean isEmailMobileVerified() {
+		return status == "EmailMobileVerified";
+	}
+
+	public boolean isEmailMobileVerificationPending() {
+		return status == "EmailMobileVerificationPending";
+	}
 
 }

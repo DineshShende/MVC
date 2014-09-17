@@ -1,7 +1,6 @@
 package com.projectx.mvc.services;
 
-import static junit.framework.TestCase.*;
-import static org.mockito.Mockito.mock;
+import static junit.framework.TestCase.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +22,9 @@ public class CustomerQuickRegister {
 	@Test
 	public void setStatusWithEmail() throws Exception {
 		
-		CustomerQuickRegisterEntity customerQuickRegisterEntity=new CustomerQuickRegisterEntity("Dinesh", "Shende", "dineshshe@gmail.com", null, 413133, null);
+		//CustomerQuickRegisterKey key=new CustomerQuickRegisterKey("dineshshe@gmail.com", null);
+		
+		CustomerQuickRegisterEntity customerQuickRegisterEntity=new CustomerQuickRegisterEntity("Dinesh", "Shende","dineshshe@gmail.com", null, 413133, null);
 				
 		assertEquals("EmailVerificationPending", customerQuickRegisterService.setStatus(customerQuickRegisterEntity));
 		
@@ -33,7 +34,9 @@ public class CustomerQuickRegister {
 	@Test
 	public void setStatusWithMobile() throws Exception {
 		
-		CustomerQuickRegisterEntity customerQuickRegisterEntity=new CustomerQuickRegisterEntity("Dinesh", "Shende", "", 99608218669L, 413133, null);
+		//CustomerQuickRegisterKey key=new CustomerQuickRegisterKey("", 99608218669L);
+		
+		CustomerQuickRegisterEntity customerQuickRegisterEntity=new CustomerQuickRegisterEntity("Dinesh", "Shende","", 99608218669L, 413133, null);
 				
 		assertEquals("MobileVerificationPending", customerQuickRegisterService.setStatus(customerQuickRegisterEntity));
 		
@@ -42,7 +45,9 @@ public class CustomerQuickRegister {
 	@Test
 	public void setStatusWithEmailMobile() throws Exception {
 		
-		CustomerQuickRegisterEntity customerQuickRegisterEntity=new CustomerQuickRegisterEntity("Dinesh", "Shende", "dineshshe@gmail.com", 99608218669L, 413133, null);
+		//CustomerQuickRegisterKey key=new CustomerQuickRegisterKey("dineshshe@gmail.com", 99608218669L);
+		
+		CustomerQuickRegisterEntity customerQuickRegisterEntity=new CustomerQuickRegisterEntity("Dinesh", "Shende","dineshshe@gmail.com", 99608218669L, 413133, null);
 				
 		assertEquals("EmailMobileVerificationPending", customerQuickRegisterService.setStatus(customerQuickRegisterEntity));
 		

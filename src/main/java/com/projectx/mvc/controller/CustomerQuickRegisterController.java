@@ -10,43 +10,37 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
 
-
-
 @Controller
-@RequestMapping(value="/customer")
-
+@RequestMapping(value = "/customer")
 public class CustomerQuickRegisterController {
 
 	@Autowired
-	CustomerQuickRegisterService customerQuickRegisterService; 
-	
-	@RequestMapping(value="/quickregister", method=RequestMethod.GET)
-    public String showEmailForm(Model model) {
-        model.addAttribute("customerQuick", new CustomerQuickRegisterEntity());
-            
-        return "customerQuickRegister";
-    }
-	
-	@RequestMapping(value="/quickregister",method=RequestMethod.POST)
-    public String AddEmail(@ModelAttribute  CustomerQuickRegisterEntity customerQuickRegisterEntity,Model model) throws Exception
-    {
-    	  	
-		String status=customerQuickRegisterService.setStatus(customerQuickRegisterEntity);
-		
-		if(status=="EmailMobileVerificationPending")
-		{
+	CustomerQuickRegisterService customerQuickRegisterService;
+
+	@RequestMapping(value = "/quickregister", method = RequestMethod.GET)
+	public String showEmailForm(Model model) {
+		model.addAttribute("customerQuick", new CustomerQuickRegisterEntity());
+
+		return "customerQuickRegister";
+	}
+
+	@RequestMapping(value = "/quickregister", method = RequestMethod.POST)
+	public String AddEmail(
+			@ModelAttribute CustomerQuickRegisterEntity customerQuickRegisterEntity,
+			Model model) throws Exception {
+
+		String status = customerQuickRegisterService
+				.setStatus(customerQuickRegisterEntity);
+
+		if (status == "EmailMobileVerificationPending") {
 			return "verifyEmailMobile";
-		}
-		else if(status=="EmailVerificationPending")
-		{
+		} else if (status == "EmailVerificationPending") {
 			return "verifyEmail";
-		}
-		else if(status=="MobileVerificationPending")
-		{
+		} else if (status == "MobileVerificationPending") {
 			return "verifyMobile";
 		}
-    	   	
-    	return "customerQuickRegister";
-    }
-	
+
+		return "customerQuickRegister";
+	}
+
 }

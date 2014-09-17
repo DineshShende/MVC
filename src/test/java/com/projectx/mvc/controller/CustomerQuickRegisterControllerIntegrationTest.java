@@ -51,6 +51,7 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 															   .param("email",CUSTOMER_EMAIL)
 															   .param("mobile",CUSTOMER_MOBILE)
 															   .param("pin",CUSTOMER_PIN)
+															   
 															  
 															)
 			.andExpect(view().name("verifyEmailMobile"))
