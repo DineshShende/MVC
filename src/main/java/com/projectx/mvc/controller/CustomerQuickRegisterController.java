@@ -42,5 +42,7 @@ public class CustomerQuickRegisterController {
 
 		return "customerQuickRegister";
 	}
+	
+	
 
 }

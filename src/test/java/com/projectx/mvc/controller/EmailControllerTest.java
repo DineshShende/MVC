@@ -21,28 +21,8 @@ import com.projectx.mvc.services.EmailService;
 
 
 
-/*@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
-@IntegrationTest
-*/
-//@ActiveProfiles("Test")
 public class EmailControllerTest {
 
-	
-	/*@Autowired
-	private WebApplicationContext  wac;
-	
-	MockMvc mockMvc;
-	
-	@Before
-	public void setUp()
-	{
-		this.mockMvc=MockMvcBuilders.webAppContextSetup(wac).build();
-	}
-	*/
-	
-	
 	@InjectMocks
 	EmailController customerQuickRegisterController;
 	
@@ -70,8 +50,8 @@ public class EmailControllerTest {
 	            post("/email/addemail").param("name", "dinesh")
 	            						.param("email", "dineshshe@gmail.com"))
 	            //.content("{\"name\":\"dinesh\",\"email\":\"dineshshe@gmail.com\"}")
-	                    //.contentType(MediaType.APPLICATION_JSON)
-	                    //.accept(MediaType.APPLICATION_JSON))
+	              //      .contentType(MediaType.APPLICATION_JSON)
+	                //  .accept(MediaType.APPLICATION_JSON))
 	            .andDo(print())
 	            .andExpect(status().isOk());
 		

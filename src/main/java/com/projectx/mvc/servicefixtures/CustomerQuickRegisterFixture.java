@@ -1,6 +1,7 @@
 package com.projectx.mvc.servicefixtures;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
@@ -30,6 +31,17 @@ public class CustomerQuickRegisterFixture implements
 
 		return status;
 
+	}
+
+	@Override
+	public String checkIfAlreadyExist(
+			CustomerQuickRegisterEntity customerQuickRegisterEntity) {
+		RestTemplate rest=new RestTemplate();
+		
+		rest.postForObject("http://localhost:9080/customer/quickregister/checkifexist", customerQuickRegisterEntity, String.class);
+
+		
+		return "";
 	}
 
 	
