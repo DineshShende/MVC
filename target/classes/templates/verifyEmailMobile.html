@@ -5,7 +5,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-	<h1>EmailMobile</h1>
+	<h1>Form</h1>
+
+
+    
+    <form action="/customer/quickregister/verifyMobilePin" method="post" >
+    <input id="customerId" name="customerId" type="hidden" th:value="${newAddedCustomer.customerId}"/>
+    Enter verification Pin:<input id="mobilePin" name="mobilePin" type="text"/>
+    
+    <input type="submit" value="Submit" />       
+    
+      <!-- <p th:text=" ${email.message}" />  -->
+    
+    </form>
     
 </body>
 </html>

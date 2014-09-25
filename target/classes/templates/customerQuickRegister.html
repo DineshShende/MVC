@@ -6,15 +6,16 @@
 </head>
 <body>
 	<h1>Form</h1>
-    <form action="#" th:action="@{/customer/quickregister}" th:object="${customerQuick}" method="post">
-    	<p>First Name: <input type="text" th:field="*{firstName}" /></p>
-    	<p>Last Name: <input type="text" th:field="*{lastName}" /></p>
-        <p>Email: <input type="text" th:field="*{email}" /></p>
-        <p>Mobile: <input type="text" th:field="*{mobile}" /></p>
-        <p>Pin: <input type="text" th:field="*{pin}" /></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-        
-        <!-- <p th:text=" ${email.message}" /> -->
+	<form action="/customer/quickregister" method="post" >
+    FirstName:<input id="firstName" name="firstName" type="text"/>
+    LastName:<input id="lastName" name="lastName" type="text"/>
+    Mobile:<input id="mobile" name="mobile" type="text"/>
+    Email:<input id="email" name="email" type="text"/>
+    Pin:<input id="pin" name="pin" type="text"/>
+    <input type="submit" value="Submit" />       
+    
+      <!-- <p th:text=" ${email.message}" />  -->
+    
     </form>
 </body>
 </html>
