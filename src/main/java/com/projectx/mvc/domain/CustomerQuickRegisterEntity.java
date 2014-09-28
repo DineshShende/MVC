@@ -154,6 +154,17 @@ public class CustomerQuickRegisterEntity {
 	}
 
 
+
+
+
+	@Override
+	public String toString() {
+		return "CustomerQuickRegisterEntity [firstName=" + firstName
+				+ ", lastName=" + lastName + ", email=" + email + ", mobile="
+				+ mobile + ", pin=" + pin + ", status=" + status + "]";
+	}
+
+
 	
 	
 	

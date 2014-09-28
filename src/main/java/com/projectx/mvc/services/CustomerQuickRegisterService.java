@@ -1,9 +1,11 @@
 package com.projectx.mvc.services;
 
+
 import org.springframework.stereotype.Component;
 
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
 import com.projectx.rest.domain.CustomerQuickRegisterDTO;
+import com.projectx.rest.domain.UpdateMobilePinDTO;
 import com.projectx.rest.domain.VerifyEmailDTO;
 import com.projectx.rest.domain.VerifyMobileDTO;
 
@@ -23,5 +25,7 @@ public interface CustomerQuickRegisterService {
 	public CustomerQuickRegisterDTO getByEmail(String email);
 	
 	public CustomerQuickRegisterDTO getByMobile(Long mobile);
+	
+	public Boolean ResendMobilePin(UpdateMobilePinDTO mobileDTO);
 
 }
