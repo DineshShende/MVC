@@ -22,7 +22,7 @@ import com.projectx.rest.domain.VerifyMobileDTO;
 public class CustomerQuickRegisterController {
 
 	@Autowired
-	CustomerId customerId;
+	CustomerQuickRegisterDTO customerQuickRegisterDTO;
 		
 	@Autowired
 	CustomerQuickRegisterService customerQuickRegisterService;
@@ -36,63 +36,12 @@ public class CustomerQuickRegisterController {
 		return "customerQuickRegister";
 	}
 	
-	@RequestMapping(value="/add")
-	public String add()
-	{
-		customerId.setCustomerId(customerQuickRegisterService.addNewCustomer(null).getCustomerId());
-		
-		return "verifyEmail";
-	}
-	
 	@RequestMapping( method = RequestMethod.POST)
 	public String AddNewCustomer(
-			@ModelAttribute CustomerQuickRegisterEntity customerQuickRegisterEntity,
+			CustomerQuickRegisterEntity customerQuickRegisterEntity,
 			Model model) throws Exception {
 
-		System.out.println(customerQuickRegisterEntity);
-		
-		String status=customerQuickRegisterService.checkIfAlreadyExist(customerQuickRegisterEntity);
-		
-		if(status.equals(REGISTER_NOT_REGISTERED))
-		{
-			CustomerQuickRegisterDTO newCustomer=customerQuickRegisterService.addNewCustomer(customerQuickRegisterEntity);
 			
-			customerId.setCustomerId(newCustomer.getCustomerId());
-			
-			//model.addAttribute("newAddedCustomer", newCustomer);
-			
-			if(newCustomer.getStatus().equals(CUST_STATUS_EMAIL) || newCustomer.getStatus().equals(STATUS_MOBILE_VERFIED_EMAIL_PENDING))
-			{
-				model.addAttribute("verificationNeed", "Email Verification Needed");
-			}
-			
-			if(newCustomer.getStatus().equals(CUST_STATUS_MOBILE)|| newCustomer.getStatus().equals(STATUS_EMAIL_VERFIED_MOBILE_PENDING) )
-			{
-				model.addAttribute("verificationNeed", "Mobile Verification Needed");
-			}
-			
-			model.addAttribute("verificationNeed", "Email And Mobile Verification Needed");
-			
-			model.addAttribute("mobileVerificationStatus", "");
-			
-			return "verifyEmailMobile";
-						
-		}
-		else if(status.equals(REGISTER_EMAIL_ALREADY_REGISTERED))
-		{
-			model.addAttribute("statusMessage", "Email Already Registered");
-		}
-		else if(status.equals(REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED))
-		{
-			model.addAttribute("statusMessage", "Email And Mobile Already Reistered");
-		}
-		else if(status.equals(REGISTER_MOBILE_ALREADY_REGISTERED))
-		{
-			model.addAttribute("statusMessage", "Mobile Already Registred");
-		}
-		
-		return "customerQuickRegister";
-		
 	}
 	
 	
@@ -126,11 +75,18 @@ public class CustomerQuickRegisterController {
 	}
 	
 
-	
-	@ModelAttribute("customerId")
-	private CustomerId getCustomerId()
+	/*@RequestMapping(value="/add")
+	public String add()
 	{
-		return customerId;
+		customerId.setCustomerId(customerQuickRegisterService.addNewCustomer(null).getCustomerId());
+		
+		return "verifyEmail";
+	}
+	*/
+	@ModelAttribute("customerQuickRegisterDTO")
+	private CustomerQuickRegisterDTO getCustomerQuickRegisterDTO()
+	{
+		return customerQuickRegisterDTO;
 	}
 	
 }
