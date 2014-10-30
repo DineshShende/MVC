@@ -5,21 +5,37 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-	<h1>Form</h1>
+	<h1></h1>
 
+	Hi <p th:text="${customerQuickRegisterDTO.firstName}" ></p>
+	<p th:text="${customerQuickRegisterDTO.lastName}"></p>
+    
+    <p th:text="${customerQuickRegisterDTO.mobile}"></p>
+    <p th:text="${customerQuickRegisterDTO.email}"></p>
+    <p th:text="${customerQuickRegisterDTO.pin}"></p>
+    <p th:text="${customerQuickRegisterDTO.status}"></p>
+    
     
     <form action="/customer/quickregister/verifyMobilePin" method="post" >
-    <input id="customerId" name="customerId" type="hidden" th:value="${customerId.customerId}"/>
+    <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     Enter verification Pin:<input id="mobilePin" name="mobilePin" type="text"/>
     
     <input type="submit" value="Submit" />
     </form>       
     
     <form action="/customer/quickregister/resendMobilePin" method="post" >
-    <input id="customerId" name="customerId" type="hidden" th:value="${customerId.customerId}"/>
+    <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     
     
     <input type="submit" value="Resend Pin" />       
+    </form>
+    
+    <form action="/customer/quickregister/resendEmailHash" method="post" >
+    <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
+    
+    
+    <input type="submit" value="Resend Email" />       
+    </form>
     
     <p th:text="${verificationStatus}"></p>
     <p th:text="${mobileVerificationStatus}"></p>
@@ -27,7 +43,7 @@
     
      
     
-    </form>
+    
     
 </body>
 </html>

@@ -1,9 +1,10 @@
 package com.projectx.mvc.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.*;
+import static org.hamcrest.Matchers.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,13 +20,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.projectx.mvc.config.Application;
+import com.projectx.mvc.domain.CustomerQuickRegisterMVCDTO;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
+import com.projectx.rest.domain.CustomerQuickRegisterDTO;
+import com.projectx.rest.domain.CustomerQuickRegisterSavedEntityDTO;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-@ActiveProfiles("Test")
+//@ActiveProfiles("Test")
 public class CustomerQuickRegisterControllerIntegrationTest {
 
 @Autowired
@@ -34,15 +38,18 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 
 	MockMvc mockMvc;
 	
+	@Autowired
 	CustomerQuickRegisterService customerQuickRegisterService;
 
 	@Before
 	public void setUp() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		
-		customerQuickRegisterService=Mockito.mock(CustomerQuickRegisterService.class);
+		customerQuickRegisterService.clearTestData();
 		
-		Mockito.when(customerQuickRegisterService.checkIfAlreadyExist(standardEmailCustomerDTO())).thenReturn(REGISTER_NOT_REGISTERED);
+		//customerQuickRegisterService=Mockito.mock(CustomerQuickRegisterService.class);
+		
+		//Mockito.when(customerQuickRegisterService.checkIfAlreadyExist(standardEmailCustomerDTO())).thenReturn(REGISTER_NOT_REGISTERED);
 	}
 	
 	
@@ -50,7 +57,7 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 	public void thatCustomerQuickRegistrationWithEmailMobileViewRedirect() throws Exception
 	{
 		this.mockMvc.perform(
-								post("/customer/quickregister").param("firstName",CUST_FIRSTNAME)
+								post("/customer/quickregister/").param("firstName",CUST_FIRSTNAME)
 															   .param("lastName", CUST_LASTNAME)
 															   .param("email",CUST_EMAIL)
 															   .param("mobile",Long.toString(CUST_MOBILE))
@@ -58,29 +65,35 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 															   
 															  
 															)
-			.andExpect(view().name("verifyEmailMobile"))
-			.andDo(print());
+			.andDo(print())												
+			.andExpect(view().name("verifyEmailMobile"));
+	//		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("firstName", is(CUST_FIRSTNAME)))));
+			
 			
 	}
 	
-	/*
+	
 
 	@Test
-	public void thatCustomerQuickRegistrationWithMobileViewRedirect() throws Exception
+	public void thatCustomerQuickRegistrationWithAlreadyPresnetEmail() throws Exception
 	{
+		customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
+		
 		this.mockMvc.perform(
-								post("/customer/quickregister").param("firstName",CUSTOMER_FIRSTNAME)
-															   .param("lastName", CUSTOMER_LASTNAME)
+								post("/customer/quickregister").param("firstName",CUST_FIRSTNAME)
+															   .param("lastName", CUST_LASTNAME)
 															   .param("email","")
-															   .param("mobile",CUSTOMER_MOBILE)
-															   .param("pin",CUSTOMER_PIN)
+															   .param("mobile",Long.toString(CUST_MOBILE))
+															   .param("pin",Integer.toString(CUST_PIN))
 															  
 															)
-			.andExpect(view().name("verifyMobile"))
+			.andExpect(view().name("alreadyRegistered"))
 			.andDo(print());
 			
 	}
+
 	
+	/*
 	@Test
 	public void thatCustomerQuickRegistrationWithEmailViewRedirect() throws Exception
 	{
@@ -98,4 +111,69 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 	}
 	*/
 
+	
+	@Test
+	public void verifyMobilePin() throws Exception
+	{
+		CustomerQuickRegisterDTO savedEntity=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO()).getCustomer();
+		
+				this.mockMvc.perform(
+						post("/customer/quickregister/verifyMobilePin").param("customerId",Long.toString(savedEntity.getCustomerId()))
+													   .param("mobilePin", Integer.toString(savedEntity.getMobilePin()))
+													   
+													)
+				.andDo(print())
+				.andExpect(model().attribute("mobileVerificationStatus", "Mobile Verification Sucess"))
+				//.andExpect(model().attribute("customerQuickRegisterDTO", isA(CustomerQuickRegisterMVCDTO.class)))
+				.andExpect(view().name("verifyEmailMobile"));		
+	}
+	
+	
+	@Test
+	public void reSendMobilePin() throws Exception
+	{
+		CustomerQuickRegisterDTO savedEntity=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO()).getCustomer();
+		
+		System.out.println(savedEntity.getMobilePin());
+		
+		this.mockMvc.perform(
+				post("/customer/quickregister/resendMobilePin").param("customerId",Long.toString(savedEntity.getCustomerId()))
+											   
+											   
+											)
+		.andDo(print())
+		.andExpect(model().attribute("mobileVerificationStatus", "Mobile Pin is sent.Please Enter that code"))
+		.andExpect(view().name("verifyEmailMobile"));
+	}
+	
+	
+	@Test
+	public void verifyEmailHash() throws Exception
+	{
+		CustomerQuickRegisterDTO savedEntity=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO()).getCustomer();
+		
+		this.mockMvc.perform(get("/customer/quickregister/verifyEmailHash/"+savedEntity.getCustomerId()+"/"+savedEntity.getEmailHash()+""))
+		
+		.andDo(print())
+		.andExpect(model().attribute("emailVerificationStatus", "Email Verification Sucess"))
+		.andExpect(view().name("verifyEmailMobile"));
+	}
+	
+	@Test
+	public void reSendEmailHash() throws Exception
+	{
+		CustomerQuickRegisterDTO savedEntity=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO()).getCustomer();
+		
+		System.out.println(savedEntity.getEmailHash());
+		
+		this.mockMvc.perform(
+				post("/customer/quickregister/resendEmailHash").param("customerId",Long.toString(savedEntity.getCustomerId()))
+					)
+		.andDo(print())
+		.andExpect(model().attribute("emailVerificationStatus", "Verification Email Sent"))
+		.andExpect(view().name("verifyEmailMobile"));
+	}
+	
+	
+	
 }

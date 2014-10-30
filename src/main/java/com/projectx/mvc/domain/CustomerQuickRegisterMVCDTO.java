@@ -1,13 +1,16 @@
 package com.projectx.mvc.domain;
 
 import java.util.Date;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
+import com.projectx.rest.domain.CustomerQuickRegisterDTO;
+
 @Component
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
-public class CustomerQuickRegisterDTO {
+public class CustomerQuickRegisterMVCDTO {
 
 	private Long customerId;
 	
@@ -23,11 +26,6 @@ public class CustomerQuickRegisterDTO {
 	
 	private String status;
 
-	private Integer mobilePin;
-	
-	private String emailHash;
-	
-	private Integer mobileVerificationAttempts;
 	
 	private Date mobilePinSentTime;	
 
@@ -35,14 +33,13 @@ public class CustomerQuickRegisterDTO {
 	
 	private Date lastStatusChangedTime;
 	
-	private String password;
-
-	public CustomerQuickRegisterDTO() {
+	
+	public CustomerQuickRegisterMVCDTO() {
 		
 	}
 
 	
-	public CustomerQuickRegisterDTO(Long customerId, String firstName,
+	public CustomerQuickRegisterMVCDTO(Long customerId, String firstName,
 			String lastName, String email, Long mobile, Integer pin,
 			String status, Integer mobilePin, String emailHash,
 			Integer mobileVerificationAttempts, Date mobilePinSentTime,
@@ -55,13 +52,10 @@ public class CustomerQuickRegisterDTO {
 		this.mobile = mobile;
 		this.pin = pin;
 		this.status = status;
-		this.mobilePin = mobilePin;
-		this.emailHash = emailHash;
-		this.mobileVerificationAttempts = mobileVerificationAttempts;
 		this.mobilePinSentTime = mobilePinSentTime;
 		this.emailHashSentTime = emailHashSentTime;
 		this.lastStatusChangedTime = lastStatusChangedTime;
-		this.password = password;
+	
 	}
 
 	//public void setCustomerQuickRegisterInfo(CustomerQuickRegisterDTO)
@@ -123,31 +117,7 @@ public class CustomerQuickRegisterDTO {
 		this.status = status;
 	}
 
-	public Integer getMobilePin() {
-		return mobilePin;
-	}
-
-	public void setMobilePin(Integer mobilePin) {
-		this.mobilePin = mobilePin;
-	}
-
-	public String getEmailHash() {
-		return emailHash;
-	}
-
-	public void setEmailHash(String emailHash) {
-		this.emailHash = emailHash;
-	}
-
-	public Integer getMobileVerificationAttempts() {
-		return mobileVerificationAttempts;
-	}
-
-	public void setMobileVerificationAttempts(Integer mobileVerificationAttempts) {
-		this.mobileVerificationAttempts = mobileVerificationAttempts;
-	}
-
-	public Date getMobilePinSentTime() {
+		public Date getMobilePinSentTime() {
 		return mobilePinSentTime;
 	}
 
@@ -171,15 +141,38 @@ public class CustomerQuickRegisterDTO {
 		this.lastStatusChangedTime = lastStatusChangedTime;
 	}
 
-	public String getPassword() {
-		return password;
+
+
+
+	public void toCustomerQuickRegisterMVC(CustomerQuickRegisterDTO customerDTO)
+	{
+
+		this.customerId = customerDTO.getCustomerId();
+		this.firstName = customerDTO.getFirstName();
+		this.lastName = customerDTO.getLastName();
+		this.email = customerDTO.getEmail();
+		this.mobile = customerDTO.getMobile();
+		this.pin = customerDTO.getPin();
+		this.status = customerDTO.getStatus();
+		this.mobilePinSentTime = customerDTO.getMobilePinSentTime();
+		this.emailHashSentTime = customerDTO.getEmailHashSentTime();
+		this.lastStatusChangedTime = customerDTO.getLastStatusChangedTime();
+
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+
+	@Override
+	public String toString() {
+		return "CustomerQuickRegisterMVCDTO [customerId=" + customerId
+				+ ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", email=" + email + ", mobile=" + mobile + ", pin=" + pin
+				+ ", status=" + status + ", mobilePinSentTime="
+				+ mobilePinSentTime + ", emailHashSentTime="
+				+ emailHashSentTime + ", lastStatusChangedTime="
+				+ lastStatusChangedTime + "]";
 	}
-
-
+	
+	
 	
 	
 	

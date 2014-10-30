@@ -2,6 +2,8 @@ package com.projectx.mvc.fixture;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlType;
+
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
 import com.projectx.rest.domain.CustomerQuickRegisterDTO;
 
@@ -31,6 +33,7 @@ public class CustomerQuickRegisterDataFixture {
 	public static Date CUST_MOBILE_PIN_SENT_TIME=new Date();
 	public static Date CUST_LAST_STATUS_CHANGED_TIME=new Date();
 	public static String CUST_PASSWORD="123456";
+	public static String CUST_PASSWORD_TYPE="Default";
 	
 	
 	public static String STATUS_EMAIL_VERFIED_MOBILE_PENDING="EmailVerifiedMobileVerficationPending";
@@ -39,23 +42,28 @@ public class CustomerQuickRegisterDataFixture {
 	public static String STATUS_MOBILE_VERFIED="MobileVerified";
 	public static String STATUS_EMAIL_VERFIED="EmailVerified";
 	
+	public static String REGISTER_NOT_REGISTERED="NOT_REGISTERED";
+	public static String REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED="EMAIL_MOBILE_ALREADY_REGISTERED";
+	public static String REGISTER_MOBILE_ALREADY_REGISTERED="MOBILE_ALREADY_REGISTERED";
+	public static String REGISTER_EMAIL_ALREADY_REGISTERED="EMAIL_ALREADY_REGISTERED";
+	
 	//private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 	public static CustomerQuickRegisterDTO standardEmailMobileCustomer()
 	{
-		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL,CUST_MOBILE, CUST_PIN,CUST_STATUS_EMAILMOBILE, CUST_MOBILEPIN, CUST_EMAILHASH,CUST_MOBILEPIN_VERIFICATION_ATTEMPTS,CUST_MOBILE_PIN_SENT_TIME,CUST_EMAIL_HASH_SENT_TIME,CUST_LAST_STATUS_CHANGED_TIME,CUST_PASSWORD);
+		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL,CUST_MOBILE, CUST_PIN,CUST_STATUS_EMAILMOBILE, CUST_MOBILEPIN, CUST_EMAILHASH,CUST_MOBILEPIN_VERIFICATION_ATTEMPTS,CUST_MOBILE_PIN_SENT_TIME,CUST_EMAIL_HASH_SENT_TIME,CUST_LAST_STATUS_CHANGED_TIME,CUST_PASSWORD,CUST_PASSWORD_TYPE);
 		
 	}
 	
 	public static CustomerQuickRegisterDTO standardMobileCustomer()
 	{
-		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME, null,CUST_MOBILE, CUST_PIN,CUST_STATUS_MOBILE, CUST_MOBILEPIN, null,CUST_MOBILEPIN_VERIFICATION_ATTEMPTS,CUST_MOBILE_PIN_SENT_TIME,null,CUST_LAST_STATUS_CHANGED_TIME,CUST_PASSWORD);
+		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME, null,CUST_MOBILE, CUST_PIN,CUST_STATUS_MOBILE, CUST_MOBILEPIN, null,CUST_MOBILEPIN_VERIFICATION_ATTEMPTS,CUST_MOBILE_PIN_SENT_TIME,null,CUST_LAST_STATUS_CHANGED_TIME,CUST_PASSWORD,CUST_PASSWORD_TYPE);
 		
 	}
 	
-	public static CustomerQuickRegisterEntity standardEmailCustomer()
+	public static CustomerQuickRegisterDTO standardEmailCustomer()
 	{
-		return new CustomerQuickRegisterEntity(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL,null, CUST_PIN,CUST_STATUS_EMAIL, null, CUST_EMAILHASH,CUST_MOBILEPIN_VERIFICATION_ATTEMPTS,null,CUST_EMAIL_HASH_SENT_TIME,CUST_LAST_STATUS_CHANGED_TIME,CUST_PASSWORD);
+		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL,null, CUST_PIN,CUST_STATUS_EMAIL, null, CUST_EMAILHASH,CUST_MOBILEPIN_VERIFICATION_ATTEMPTS,null,CUST_EMAIL_HASH_SENT_TIME,CUST_LAST_STATUS_CHANGED_TIME,CUST_PASSWORD,CUST_PASSWORD_TYPE);
 		
 	}
 
@@ -64,7 +72,7 @@ public class CustomerQuickRegisterDataFixture {
 	{
 		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN,CUST_STATUS_EMAIL);
 	}
-	
+			
 	public static CustomerQuickRegisterEntity standardMobileCustomerDTO()
 	{
 		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN,CUST_STATUS_MOBILE);

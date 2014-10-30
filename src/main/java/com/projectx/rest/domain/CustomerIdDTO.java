@@ -1,14 +1,14 @@
 package com.projectx.rest.domain;
 
-public class UpdateMobilePinDTO {
+public class CustomerIdDTO {
 
 	private Long customerId;
 
-	public UpdateMobilePinDTO() {
+	public CustomerIdDTO() {
 		super();
 	}
 
-	public UpdateMobilePinDTO(Long customerId) {
+	public CustomerIdDTO(Long customerId) {
 		super();
 		this.customerId = customerId;
 	}

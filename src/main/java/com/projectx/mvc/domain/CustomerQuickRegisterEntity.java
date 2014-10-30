@@ -1,13 +1,24 @@
 package com.projectx.mvc.domain;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class CustomerQuickRegisterEntity {
 
-	// private CustomerQuickRegisterKey key;
+	
 	
 	private String firstName;
+	
 	private String lastName;
 
+	@Email	
 	private String email;
+	
 	private Long mobile;
 
 	private Integer pin;
@@ -36,35 +47,35 @@ public class CustomerQuickRegisterEntity {
 
 
 
-
+	@JsonIgnore
 	public boolean isEmailVerificationPending() {
 		return status == "EmailVerificationPending";
 	}
-
+	@JsonIgnore
 	public boolean isMobileVerificationPending() {
 		return status == "MobileVerificationPending";
 	}
-
+	@JsonIgnore
 	public boolean isEmailVerifiedMobileVerficationPending() {
 		return status == "EmailVerifiedMobileVerficationPending";
 	}
-
+	@JsonIgnore
 	public boolean isMobileVerifiedEmailVerficationPending() {
 		return status == "MobileVerifiedEmailVerficationPending";
 	}
-
+	@JsonIgnore
 	public boolean isMobileVerified() {
 		return status == "MobileVerified";
 	}
-
+	@JsonIgnore
 	public boolean isEmailVerified() {
 		return status == "EmailVerified";
 	}
-
+	@JsonIgnore
 	public boolean isEmailMobileVerified() {
 		return status == "EmailMobileVerified";
 	}
-
+	@JsonIgnore
 	public boolean isEmailMobileVerificationPending() {
 		return status == "EmailMobileVerificationPending";
 	}

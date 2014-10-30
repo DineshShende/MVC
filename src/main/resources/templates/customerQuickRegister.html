@@ -6,6 +6,7 @@
 </head>
 <body>
 	<h1>Form</h1>
+	<!--  
 	<form action="/customer/quickregister" method="post" >
     FirstName:<input id="firstName" name="firstName" type="text"/>
     LastName:<input id="lastName" name="lastName" type="text"/>
@@ -17,5 +18,41 @@
      <p th:text=" ${statusMessage}" /> 
     
     </form>
+     -->
+            <form action="#" th:action="@{/customer/quickregister}" th:object="${customerQuickRegisterEntity}" method="post">
+            <table>
+                <tr>
+                    <td>FirstName:</td>
+                    <td><input type="text" th:field="*{firstName}" /></td>
+                    <td th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</td>
+                </tr>
+                <tr>
+                    <td>LastName:</td>
+                    <td><input type="text" th:field="*{lastName}" /></td>
+                    <td th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name Error</td>
+                </tr>
+                <tr>
+                    <td>Mobile:</td>
+                    <td><input type="text" th:field="*{mobile}" /></td>
+                    <td th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}">Name Error</td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><input type="text" th:field="*{email}" /></td>
+                    <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name Error</td>
+                </tr>
+                
+                <tr>
+                    <td>Pin:</td>
+                    <td><input type="text" th:field="*{pin}" /></td>
+                    <td th:if="${#fields.hasErrors('pin')}" th:errors="*{pin}">Name Error</td>
+                </tr>
+                
+                <tr>
+                    <td><button type="submit">Submit</button></td>
+                </tr>
+            </table>
+        </form>
+    
 </body>
 </html>

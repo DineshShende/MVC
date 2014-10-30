@@ -2,34 +2,41 @@ package com.projectx.rest.domain;
 
 public class VerifyEmailDTO {
 	
-	private String email;
-	private Long mobile;
+	private Long customerId;
+	private String emailHash;
 	
 	public VerifyEmailDTO() {
 		super();
 	}
 
-	public VerifyEmailDTO(String email, Long mobile) {
+
+	public VerifyEmailDTO(Long customerId, String emailHash) {
 		super();
-		this.email = email;
-		this.mobile = mobile;
+		this.customerId = customerId;
+		this.emailHash = emailHash;
 	}
 
-	public String getEmail() {
-		return email;
+
+	public Long getCustomerId() {
+		return customerId;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
 	}
 
-	public Long getMobile() {
-		return mobile;
+
+	public String getEmailHash() {
+		return emailHash;
 	}
 
-	public void setMobile(Long mobile) {
-		this.mobile = mobile;
+
+	public void setEmailHash(String emailHash) {
+		this.emailHash = emailHash;
 	}
+
+	
 	
 	
 	
