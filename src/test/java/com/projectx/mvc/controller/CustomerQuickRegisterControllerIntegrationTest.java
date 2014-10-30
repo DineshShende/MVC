@@ -72,8 +72,26 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 			
 	}
 	
-	
+	@Test
+	public void thatCustomerQuickRegistrationWithMobileViewRedirect() throws Exception
+	{
+		this.mockMvc.perform(
+								post("/customer/quickregister/").param("firstName",CUST_FIRSTNAME)
+															   .param("lastName", CUST_LASTNAME)
+															   .param("email","")
+															   .param("mobile",Long.toString(CUST_MOBILE))
+															   .param("pin",Integer.toString(CUST_PIN))
+															   
+															  
+															)
+			.andDo(print())												
+			.andExpect(view().name("verifyEmailMobile"));
+	//		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("firstName", is(CUST_FIRSTNAME)))));
+			
+			
+	}
 
+	
 	@Test
 	public void thatCustomerQuickRegistrationWithAlreadyPresnetEmail() throws Exception
 	{
@@ -92,24 +110,6 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 			
 	}
 
-	
-	/*
-	@Test
-	public void thatCustomerQuickRegistrationWithEmailViewRedirect() throws Exception
-	{
-		this.mockMvc.perform(
-								post("/customer/quickregister").param("firstName",CUSTOMER_FIRSTNAME)
-															   .param("lastName", CUSTOMER_LASTNAME)
-															   .param("email",CUSTOMER_EMAIL)
-															   .param("mobile","")
-															   .param("pin",CUSTOMER_PIN)
-															  
-															)
-			.andExpect(view().name("verifyEmail"))
-			.andDo(print());
-			
-	}
-	*/
 
 	
 	@Test
@@ -174,6 +174,25 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 		.andExpect(view().name("verifyEmailMobile"));
 	}
 	
+
 	
+	/*
+	@Test
+	public void thatCustomerQuickRegistrationWithEmailViewRedirect() throws Exception
+	{
+		this.mockMvc.perform(
+								post("/customer/quickregister").param("firstName",CUSTOMER_FIRSTNAME)
+															   .param("lastName", CUSTOMER_LASTNAME)
+															   .param("email",CUSTOMER_EMAIL)
+															   .param("mobile","")
+															   .param("pin",CUSTOMER_PIN)
+															  
+															)
+			.andExpect(view().name("verifyEmail"))
+			.andDo(print());
+			
+	}
+	*/
+
 	
 }

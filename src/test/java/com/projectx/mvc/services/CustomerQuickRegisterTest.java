@@ -102,6 +102,18 @@ public class CustomerQuickRegisterTest {
 		assertNotNull(savedEntityResult.getCustomer());
 		
 	}
+
+	@Test
+	public void addNewCustomerWithMobileCustomer()
+	{
+		CustomerQuickRegisterSavedEntityDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardMobileCustomerDTO());
+
+		assertTrue( savedEntityResult.getStatus());
+		
+		assertNotNull(savedEntityResult.getCustomer());
+		
+	}
+	
 	
 	@Test
 	public void getCustomerById()

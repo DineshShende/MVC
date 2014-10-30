@@ -49,6 +49,8 @@ public class CustomerQuickRegisterController {
 			@Valid CustomerQuickRegisterEntity customerQuickRegisterEntity,
 			BindingResult result,Model model) throws Exception {
 		
+		if(customerQuickRegisterEntity.getEmail().equals(""))
+			customerQuickRegisterEntity.setEmail(null);
 			
 		if(result.hasErrors())
 		{
@@ -85,7 +87,7 @@ public class CustomerQuickRegisterController {
 		
 		Boolean result=customerQuickRegisterService.verifyMobile(verifyMobile);
 		
-		System.out.println(result);
+		//System.out.println(result);
 		
 		if(result)
 		{
