@@ -22,6 +22,8 @@ public class CustomerQuickRegisterServiceFixture implements
 	public String checkIfAlreadyExist(
 			CustomerQuickRegisterEntity customerQuickRegisterEntity) {
 		// TODO Auto-generated method stub
+		//
+		//
 		return null;
 	}
 
