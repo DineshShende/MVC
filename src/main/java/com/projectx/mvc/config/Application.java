@@ -19,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Import(value=BasicConfig.class)
 public class Application {
-//AAAAA
+//AAAAAAAAAAAA
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
