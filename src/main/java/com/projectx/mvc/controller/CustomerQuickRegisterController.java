@@ -1,6 +1,9 @@
 package com.projectx.mvc.controller;
 
-import static com.projectx.mvc.fixture.CustomerQuickRegisterDataFixture.*;
+import static com.projectx.mvc.fixture.CustomerQuickRegisterDataConstants.*;
+
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 
 import javax.validation.Valid;
 
@@ -10,17 +13,22 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
 import com.projectx.mvc.domain.CustomerQuickRegisterMVCDTO;
-
+import com.projectx.mvc.domain.LoginDetailsDTO;
+import com.projectx.mvc.domain.UpdatePasswordDTO;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
+import com.projectx.rest.domain.CustomerAuthenticationDetailsDTO;
 import com.projectx.rest.domain.CustomerIdDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterSavedEntityDTO;
+import com.projectx.rest.domain.CustomerQuickRegisterStringStatusDTO;
+import com.projectx.rest.domain.LoginVerificationDTO;
 import com.projectx.rest.domain.VerifyEmailDTO;
 import com.projectx.rest.domain.VerifyMobileDTO;
 
@@ -57,9 +65,9 @@ public class CustomerQuickRegisterController {
 			return "customerQuickRegister";
 		}
 
-		String status=customerQuickRegisterService.checkIfAlreadyExist(customerQuickRegisterEntity);
+		CustomerQuickRegisterStringStatusDTO status=customerQuickRegisterService.checkIfAlreadyExist(customerQuickRegisterEntity);
 		
-		if(status.equals(REGISTER_NOT_REGISTERED))
+		if(status.getStatus().equals(REGISTER_NOT_REGISTERED))
 		{
 			CustomerQuickRegisterSavedEntityDTO cutomerQuickRegisterNewDTO=customerQuickRegisterService.addNewCustomer(customerQuickRegisterEntity);
 			
@@ -70,7 +78,11 @@ public class CustomerQuickRegisterController {
 		}
 		else
 		{
-			String message=customerQuickRegisterService.populateMessageForDuplicationField(status);
+			customerQuickRegisterDTO.toCustomerQuickRegisterMVC(status.getCustomer());			
+			
+			System.out.println(customerQuickRegisterDTO);
+			
+			String message=customerQuickRegisterService.populateMessageForDuplicationField(status.getStatus());
 			model.addAttribute("message", message);
 			
 			return "alreadyRegistered";
@@ -93,12 +105,14 @@ public class CustomerQuickRegisterController {
 		{
 			model.addAttribute("mobileVerificationStatus", "Mobile Verification Sucess");
 			customerQuickRegisterDTO.toCustomerQuickRegisterMVC(customerQuickRegisterService.getByCustomerId(new CustomerIdDTO(verifyMobile.getCustomerId())));;
-			
+			return "loginForm";
 		}	
 		else
+		{	
 			model.addAttribute("mobileVerificationStatus", "Mobile Verification Failed");
+			return "verifyEmailMobile";
+		}
 		
-		return "verifyEmailMobile";
 	}
 	
 	@RequestMapping(value="/resendMobilePin",method=RequestMethod.POST)
@@ -110,10 +124,13 @@ public class CustomerQuickRegisterController {
 		{	
 			model.addAttribute("mobileVerificationStatus", "Mobile Pin is sent.Please Enter that code");
 			customerQuickRegisterDTO.toCustomerQuickRegisterMVC(customerQuickRegisterService.getByCustomerId(new CustomerIdDTO(mobileDTO.getCustomerId())));;
+			
 		}	
 		else
+		{
 			model.addAttribute("mobileVerificationStatus", "Error will sending Pin.Please Try again");
-		
+			
+		}
 		return "verifyEmailMobile";
 	}
 	
@@ -125,17 +142,21 @@ public class CustomerQuickRegisterController {
 		
 		Boolean result=customerQuickRegisterService.verifyEmail(verifyEmailDTO);
 		
-		System.out.println(result);
+	//	System.out.println(result);
 		
 		if(result)
 		{
 			model.addAttribute("emailVerificationStatus", "Email Verification Sucess");
 			customerQuickRegisterDTO.toCustomerQuickRegisterMVC(customerQuickRegisterService.getByCustomerId(new CustomerIdDTO(verifyEmailDTO.getCustomerId())));;
+			return "loginForm";
 		}
 		else
+		{	
 			model.addAttribute("emailVerificationStatus", "Email Verification Failed");
+			return "verifyEmailMobile";
+		}	
 		
-		return "verifyEmailMobile";
+		
 	}
 	
 	@RequestMapping(value="/resendEmailHash",method=RequestMethod.POST)
@@ -149,11 +170,64 @@ public class CustomerQuickRegisterController {
 			customerQuickRegisterDTO.toCustomerQuickRegisterMVC(customerQuickRegisterService.getByCustomerId(new CustomerIdDTO(mobileDTO.getCustomerId())));;
 		}
 		else
+			
 			model.addAttribute("emailVerificationStatus", "Error will sending Email.Please Try again");
 		
 		return "verifyEmailMobile";
 	}
 	
+	
+	@RequestMapping(value="/verifyLoginDetails",method=RequestMethod.POST)
+	public String verifyLoginDetails(@ModelAttribute LoginDetailsDTO loginDetailsDTO,Model model)
+	{
+		LoginVerificationDTO loginVerificationDTO=null;
+		
+		//System.out.println(loginDetailsDTO);
+		
+		if(isMobileNumber(loginDetailsDTO.getEntity()))
+		{
+			loginVerificationDTO=new LoginVerificationDTO(null,Long.parseLong(loginDetailsDTO.getEntity()),loginDetailsDTO.getPassword());
+		}
+		else
+		{
+			loginVerificationDTO=new LoginVerificationDTO(loginDetailsDTO.getEntity(),null,loginDetailsDTO.getPassword());
+		}
+		
+		CustomerAuthenticationDetailsDTO result=customerQuickRegisterService.verifyLoginDetails(loginVerificationDTO);
+		
+		if(result.getCustomerId()==null)
+		{
+			model.addAttribute("verificationStatus","Sucess" );
+			return "loginForm";
+		}
+		else
+		{
+			if(result.getPasswordType().equals(CUST_PASSWORD_TYPE_DEFAULT))
+			{
+				model.addAttribute("loginDetails", result);
+				return "forcePasswordChange";
+			}
+			else
+			{
+				model.addAttribute("loginDetails", result);
+				return "loginSucess";
+			}
+		}
+		
+		
+	}
+	
+	@RequestMapping(value="/updatePassword",method=RequestMethod.POST)
+	public String updatePassword(@ModelAttribute UpdatePasswordDTO updatePasswordDTO)
+	{
+		Boolean result=customerQuickRegisterService.updatePassword(updatePasswordDTO);
+		
+		if(result)
+			return "loginForm";
+		else
+			return "forcePasswordChange";
+		
+	}
 	
 
 	@RequestMapping(value="/cleartestdata")
@@ -169,5 +243,14 @@ public class CustomerQuickRegisterController {
 		return customerQuickRegisterDTO;
 	}
 	
+	
+	private Boolean isMobileNumber(String entity)
+	{
+		NumberFormat formatter = NumberFormat.getInstance();
+		ParsePosition pos = new ParsePosition(0);
+		formatter.parse(entity, pos);
+		return (entity.length() == pos.getIndex()&&entity.length()==10);
+		
+	}
 	
 }

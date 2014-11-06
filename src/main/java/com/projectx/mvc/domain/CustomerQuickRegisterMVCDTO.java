@@ -33,6 +33,9 @@ public class CustomerQuickRegisterMVCDTO {
 	
 	private Date lastStatusChangedTime;
 	
+	private Boolean isMobileVerificationNeeded;
+	
+	private Boolean isEmailVerificationNeeded;
 	
 	public CustomerQuickRegisterMVCDTO() {
 		
@@ -55,6 +58,8 @@ public class CustomerQuickRegisterMVCDTO {
 		this.mobilePinSentTime = mobilePinSentTime;
 		this.emailHashSentTime = emailHashSentTime;
 		this.lastStatusChangedTime = lastStatusChangedTime;
+		this.isEmailVerificationNeeded=true;
+		this.isMobileVerificationNeeded=true;
 	
 	}
 
@@ -76,6 +81,26 @@ public class CustomerQuickRegisterMVCDTO {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+
+	public Boolean getIsMobileVerificationNeeded() {
+		return isMobileVerificationNeeded;
+	}
+
+
+	public void setIsMobileVerificationNeeded(Boolean isMobileVerificationNeeded) {
+		this.isMobileVerificationNeeded = isMobileVerificationNeeded;
+	}
+
+
+	public Boolean getIsEmailVerificationNeeded() {
+		return isEmailVerificationNeeded;
+	}
+
+
+	public void setIsEmailVerificationNeeded(Boolean isEmailVerificationNeeded) {
+		this.isEmailVerificationNeeded = isEmailVerificationNeeded;
+	}
+
 
 	public String getLastName() {
 		return lastName;
@@ -142,7 +167,21 @@ public class CustomerQuickRegisterMVCDTO {
 	}
 
 
+	public Boolean isMobileVerificationNeeded(String statusInp)
+	{
+		if(statusInp.equals("MobileVerificationPending")||statusInp.equals("EmailVerifiedMobileVerficationPending")|| statusInp.equals("EmailMobileVerificationPending"))
+			return true;
+		else
+			return false;
+	}
 
+	public Boolean isEmailVerificationNeeded(String statusInp)
+	{
+		if(statusInp.equals("EmailVerificationPending")||statusInp.equals("MobileVerifiedEmailVerficationPending")|| statusInp.equals("EmailMobileVerificationPending"))
+			return true;
+		else
+			return false;
+	}
 
 	public void toCustomerQuickRegisterMVC(CustomerQuickRegisterDTO customerDTO)
 	{
@@ -157,7 +196,15 @@ public class CustomerQuickRegisterMVCDTO {
 		this.mobilePinSentTime = customerDTO.getMobilePinSentTime();
 		this.emailHashSentTime = customerDTO.getEmailHashSentTime();
 		this.lastStatusChangedTime = customerDTO.getLastStatusChangedTime();
-
+		if(customerDTO.getStatus()!=null)
+			this.isEmailVerificationNeeded=isEmailVerificationNeeded(customerDTO.getStatus());
+		else
+			this.isEmailVerificationNeeded=false;
+		
+		if(customerDTO.getStatus()!=null)
+			this.isMobileVerificationNeeded=isMobileVerificationNeeded(customerDTO.getStatus());
+		else
+			this.isMobileVerificationNeeded=false;
 	}
 
 
@@ -169,8 +216,12 @@ public class CustomerQuickRegisterMVCDTO {
 				+ ", status=" + status + ", mobilePinSentTime="
 				+ mobilePinSentTime + ", emailHashSentTime="
 				+ emailHashSentTime + ", lastStatusChangedTime="
-				+ lastStatusChangedTime + "]";
+				+ lastStatusChangedTime + ", isMobileVerificationNeeded="
+				+ isMobileVerificationNeeded + ", isEmailVerificationNeeded="
+				+ isEmailVerificationNeeded + "]";
 	}
+
+
 	
 	
 	

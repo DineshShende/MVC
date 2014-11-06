@@ -6,6 +6,28 @@
 </head>
 <body>
 	<h1>Result</h1>
-    <p th:text="'Status: ' + ${message}" />
+	<p th:if="${customerQuickRegisterDTO.customerId} !=null" th:text="${customerQuickRegisterDTO.customerId}"/>
+	
+   <!--  <p th:text="'Status: ' + ${message}" /> -->
+    
+    
+    <form th:if="${customerQuickRegisterDTO.isMobileVerificationNeeded}" action="/customer/quickregister/resendMobilePin" method="post" >
+    <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
+    <input type="submit" value="Resend Mobile Pin" />       
+    </form>
+    
+    <form th:if="${customerQuickRegisterDTO.isEmailVerificationNeeded}" action="/customer/quickregister/resendEmailHash" method="post" >
+    <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
+    <input type="submit" value="Resend Verication Email" />
+    </form>
+    
+    <form th:if="${customerQuickRegisterDTO.isEmailVerificationNeeded==false || customerQuickRegisterDTO.isMobileVerificationNeeded==false}">
+    
+    <input type="submit" value="Reset Password"/> 
+    
+    </form>
+    
+    
+    
 </body>
 </html>

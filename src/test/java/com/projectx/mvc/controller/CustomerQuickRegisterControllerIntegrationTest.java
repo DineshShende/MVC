@@ -52,7 +52,7 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 		//Mockito.when(customerQuickRegisterService.checkIfAlreadyExist(standardEmailCustomerDTO())).thenReturn(REGISTER_NOT_REGISTERED);
 	}
 	
-	
+	/*
 	@Test
 	public void thatCustomerQuickRegistrationWithEmailMobileViewRedirect() throws Exception
 	{
@@ -90,7 +90,7 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 			
 			
 	}
-
+*/
 	
 	@Test
 	public void thatCustomerQuickRegistrationWithAlreadyPresnetEmail() throws Exception
@@ -111,7 +111,7 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 	}
 
 
-	
+	/*
 	@Test
 	public void verifyMobilePin() throws Exception
 	{
@@ -174,7 +174,7 @@ public class CustomerQuickRegisterControllerIntegrationTest {
 		.andExpect(view().name("verifyEmailMobile"));
 	}
 	
-
+*/
 	
 	/*
 	@Test

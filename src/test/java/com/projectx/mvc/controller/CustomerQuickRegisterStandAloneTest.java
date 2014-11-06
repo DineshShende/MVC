@@ -1,6 +1,7 @@
 package com.projectx.mvc.controller;
 
 import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.*;
+import static com.projectx.mvc.controller.fixtues.CustomerAuthenticationDetailsDataFixtures.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -40,6 +41,70 @@ public class CustomerQuickRegisterStandAloneTest {
 	    this.mockMvc = standaloneSetup(customerQuickRegisterController)
 	    		.build();
 	    
+	}
+	
+	@Test
+	public void verifyLoginDetailsEmailAsUserId() throws Exception
+	{
+		when(customerQuickRegisterService.verifyLoginDetails(standardLoginVerificationWithEmail())).thenReturn(standardCustomerEmailMobileAuthenticationDetails());
+		
+		this.mockMvc.perform(
+				post("/customer/quickregister/verifyLoginDetails").param("entity",CUST_EMAIL)
+											   .param("password", CUST_PASSWORD_DEFAULT)
+											   											  
+											)
+				.andDo(print())
+				.andExpect(view().name("forcePasswordChange"))
+				.andExpect(model().attributeExists("loginDetails"))	
+				.andExpect(model().attribute("loginDetails",Matchers.allOf(
+				hasProperty("customerId", equalTo(standardCustomerEmailMobileAuthenticationDetails().getCustomerId())),
+				hasProperty("email", equalTo(standardCustomerEmailMobileAuthenticationDetails().getEmail())),
+				hasProperty("mobile", equalTo(standardCustomerEmailMobileAuthenticationDetails().getMobile())),
+				hasProperty("password",equalTo(standardCustomerEmailMobileAuthenticationDetails().getPassword())),
+				hasProperty("passwordType", equalTo(standardCustomerEmailMobileAuthenticationDetails().getPasswordType()))
+					)));
+			
+	
+	}
+
+	
+	@Test
+	public void verifyLoginDetailsMobileAsUserId() throws Exception
+	{
+		when(customerQuickRegisterService.verifyLoginDetails(standardLoginVerificationWithMobile())).thenReturn(standardCustomerEmailMobileAuthenticationDetails());
+		
+		this.mockMvc.perform(
+				post("/customer/quickregister/verifyLoginDetails").param("entity",Long.toString(CUST_MOBILE))
+											   .param("password", CUST_PASSWORD_DEFAULT)
+											   											  
+											)
+				.andDo(print())
+				.andExpect(view().name("forcePasswordChange"))
+				.andExpect(model().attributeExists("loginDetails"))	
+				.andExpect(model().attribute("loginDetails",Matchers.allOf(
+				hasProperty("customerId", equalTo(standardCustomerEmailMobileAuthenticationDetails().getCustomerId())),
+				hasProperty("email", equalTo(standardCustomerEmailMobileAuthenticationDetails().getEmail())),
+				hasProperty("mobile", equalTo(standardCustomerEmailMobileAuthenticationDetails().getMobile())),
+				hasProperty("password",equalTo(standardCustomerEmailMobileAuthenticationDetails().getPassword())),
+				hasProperty("passwordType", equalTo(standardCustomerEmailMobileAuthenticationDetails().getPasswordType()))
+					)));
+			
+	
+	}
+
+	@Test
+	public void updatePassword() throws Exception
+	{
+		when(customerQuickRegisterService.updatePassword(standardUpdatePassword())).thenReturn(true);
+		
+		this.mockMvc.perform(
+				post("/customer/quickregister/updatePassword").param("customerId",Long.toString(CUST_ID))
+											   .param("password", CUST_PASSWORD_CHANGED)
+											   											  
+											)
+				.andDo(print())
+				.andExpect(view().name("loginForm"));
+		
 	}
 
 /*	

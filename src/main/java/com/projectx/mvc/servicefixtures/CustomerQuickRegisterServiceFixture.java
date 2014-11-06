@@ -1,16 +1,20 @@
 package com.projectx.mvc.servicefixtures;
 
-import static com.projectx.mvc.fixture.CustomerQuickRegisterDataFixture.*;
+import static com.projectx.mvc.fixture.CustomerQuickRegisterDataConstants.*;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
+import com.projectx.mvc.domain.UpdatePasswordDTO;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
+import com.projectx.rest.domain.CustomerAuthenticationDetailsDTO;
 import com.projectx.rest.domain.CustomerIdDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterSavedEntityDTO;
+import com.projectx.rest.domain.CustomerQuickRegisterStringStatusDTO;
+import com.projectx.rest.domain.LoginVerificationDTO;
 import com.projectx.rest.domain.VerifyEmailDTO;
 import com.projectx.rest.domain.VerifyMobileDTO;
 @Component
@@ -19,7 +23,7 @@ public class CustomerQuickRegisterServiceFixture implements
 		CustomerQuickRegisterService {
 
 	@Override
-	public String checkIfAlreadyExist(
+	public CustomerQuickRegisterStringStatusDTO checkIfAlreadyExist(
 			CustomerQuickRegisterEntity customerQuickRegisterEntity) {
 		// TODO Auto-generated method stub
 		//
@@ -72,6 +76,19 @@ public class CustomerQuickRegisterServiceFixture implements
 
 	@Override
 	public CustomerQuickRegisterDTO getByCustomerId(CustomerIdDTO customerIdDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomerAuthenticationDetailsDTO verifyLoginDetails(
+			LoginVerificationDTO loginVerificationDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}

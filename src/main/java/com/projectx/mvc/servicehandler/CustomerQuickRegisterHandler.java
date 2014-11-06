@@ -10,13 +10,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
-import static com.projectx.mvc.fixture.CustomerQuickRegisterDataFixture.*;
+import static com.projectx.mvc.fixture.CustomerQuickRegisterDataConstants.*;
 
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
+import com.projectx.mvc.domain.UpdatePasswordDTO;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
+import com.projectx.rest.domain.CustomerAuthenticationDetailsDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterDTO;
 import com.projectx.rest.domain.CustomerIdDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterSavedEntityDTO;
+import com.projectx.rest.domain.CustomerQuickRegisterStringStatusDTO;
+import com.projectx.rest.domain.LoginVerificationDTO;
 import com.projectx.rest.domain.VerifyEmailDTO;
 import com.projectx.rest.domain.VerifyMobileDTO;
 
@@ -34,10 +38,10 @@ public class CustomerQuickRegisterHandler implements CustomerQuickRegisterServic
 	
 	
 	@Override
-	public String checkIfAlreadyExist(
+	public CustomerQuickRegisterStringStatusDTO checkIfAlreadyExist(
 			CustomerQuickRegisterEntity customerQuickRegisterEntity) {
 		
-		String status=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/checkifexist", customerQuickRegisterEntity, String.class);
+		CustomerQuickRegisterStringStatusDTO status=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/checkifexist", customerQuickRegisterEntity, CustomerQuickRegisterStringStatusDTO.class);
 		
 		return status;
 	}
@@ -48,13 +52,24 @@ public class CustomerQuickRegisterHandler implements CustomerQuickRegisterServic
 		
 		String message=null;
 		
-		if(duplicationStatus.equals(REGISTER_EMAIL_ALREADY_REGISTERED))
-			message="Provided Email Already Registered";
-		else if(duplicationStatus.equals(REGISTER_MOBILE_ALREADY_REGISTERED))
-			message="Provided Mobile Already Registered";
-		else if(duplicationStatus.equals(REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED))
-			message="Provided Email And Mobile Already Registered";
-			
+		if(duplicationStatus.equals(REGISTER_EMAIL_ALREADY_REGISTERED_NOT_VERIFIED))
+			message=MSG_REGISTER_EMAIL_ALREADY_REGISTERED_NOT_VERIFIED;
+		else if(duplicationStatus.equals(REGISTER_EMAIL_ALREADY_REGISTERED_VERIFIED))
+			message=MSG_REGISTER_EMAIL_ALREADY_REGISTERED_VERIFIED;
+		else if(duplicationStatus.equals(REGISTER_MOBILE_ALREADY_REGISTERED_NOT_VERIFIED))
+			message=MSG_REGISTER_MOBILE_ALREADY_REGISTERED_NOT_VERIFIED;
+		else if(duplicationStatus.equals(REGISTER_MOBILE_ALREADY_REGISTERED_VERIFIED))
+			message=MSG_REGISTER_MOBILE_ALREADY_REGISTERED_VERIFIED;
+		else if(duplicationStatus.equals(REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED_EMAIL_MOBILE_UNVERIFIED))
+			message=MSG_REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED_EMAIL_MOBILE_UNVERIFIED;
+		else if(duplicationStatus.equals(REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED_EMAIL_MOBILE_VERIFIED))
+			message=MSG_REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED_EMAIL_MOBILE_UNVERIFIED;
+		else if(duplicationStatus.equals(REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED_MOBILE_VERIFIED))
+			message=MSG_REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED_MOBILE_VERIFIED;
+		else if(duplicationStatus.equals(REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED_EMAIL_VERIFIED))
+			message=MSG_REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED_EMAIL_VERIFIED;
+		
+		
 		return message;
 	}
 
@@ -114,6 +129,27 @@ public class CustomerQuickRegisterHandler implements CustomerQuickRegisterServic
 		
 	}
 
+	@Override
+	public CustomerAuthenticationDetailsDTO verifyLoginDetails(
+			LoginVerificationDTO loginVerificationDTO) {
+		
+		//System.out.println(loginVerificationDTO);
+		
+		CustomerAuthenticationDetailsDTO verifiedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/verifyLoginDetails", loginVerificationDTO, CustomerAuthenticationDetailsDTO.class);
+		
+		//System.out.println(verifiedEntity);
+		
+		return verifiedEntity;
+	}
+
+	@Override
+	public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO) {
+		
+		Boolean updateStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/updatePassword", updatePasswordDTO, Boolean.class);
+		
+		return updateStatus;
+	}
+
 
 	/*
 	@Override
@@ -124,12 +160,7 @@ public class CustomerQuickRegisterHandler implements CustomerQuickRegisterServic
 		if(checkIfAlreadyExist(customer).equals(REGISTER_NOT_REGISTERED))
 		{
 			CustomerQuickRegisterSavedEntityDTO saveResultEntity=addNewCustomer(customer);
-			
-			
-			
 		}
-		
-	
 		return null;
 	}
 */		
