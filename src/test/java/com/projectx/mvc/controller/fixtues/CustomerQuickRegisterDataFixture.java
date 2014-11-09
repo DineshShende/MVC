@@ -28,7 +28,7 @@ public class CustomerQuickRegisterDataFixture {
 	public static Integer CUST_MOBILEPIN_UPDATED=102010;
 	public static String CUST_EMAILHASH="02b99c87926ed36ed1b41afccf9b05f9efd6e54e6e9d116b8ed3a7eaf257b85a";
 	public static String CUST_EMAILHASH_UPDATED="277f7fb2ede95f935b08c63273471c9077ace61f1cbb1f376b2983032fda5321";
-	public static Integer CUST_MOBILEPIN_VERIFICATION_ATTEMPTS=0;
+	public static Integer CUST_MOBILE_VERIFICATION_ATTEMPTS=0;
 	public static Date CUST_EMAIL_HASH_SENT_TIME=new Date();
 	public static Date CUST_MOBILE_PIN_SENT_TIME=new Date();
 	public static Date CUST_LAST_STATUS_CHANGED_TIME=new Date();
@@ -36,7 +36,7 @@ public class CustomerQuickRegisterDataFixture {
 	public static String CUST_PASSWORD_TYPE_DEFAULT="Default";
 	public static String CUST_PASSWORD_CHANGED="654321";
 	public static String CUST_PASSWORD_TYPE_CHANGED="Changed";
-	
+	public static Date CUST_LAST_STATUS_CHANGE_TIME=new Date();
 	
 	
 	public static String STATUS_EMAIL_VERFIED_MOBILE_PENDING="EmailVerifiedMobileVerficationPending";
@@ -84,24 +84,30 @@ public class CustomerQuickRegisterDataFixture {
 		return new CustomerQuickRegisterKey("", CUST_MOBILE);
 	}
 	*/
-	/*
+	
+	
 	public static CustomerQuickRegisterDTO standardEmailMobileCustomer()
 	{
-		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE, CUST_PIN,CUST_STATUS_EMAILMOBILE, CUST_MOBILEPIN, CUST_EMAILHASH,"","");
+		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE, CUST_PIN,CUST_STATUS_EMAILMOBILE, CUST_MOBILEPIN, CUST_EMAILHASH,CUST_MOBILE_VERIFICATION_ATTEMPTS,
+																															CUST_MOBILE_PIN_SENT_TIME,CUST_EMAIL_HASH_SENT_TIME,CUST_LAST_STATUS_CHANGE_TIME,null,null);
 	}
 	
 	public static CustomerQuickRegisterDTO standardMobileCustomer()
 	{
-		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME,null,CUST_MOBILE, CUST_PIN,CUST_STATUS_MOBILE, CUST_MOBILEPIN, null);
-		
+		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME,null,CUST_MOBILE, CUST_PIN,CUST_STATUS_MOBILE, CUST_MOBILEPIN, null,CUST_MOBILE_VERIFICATION_ATTEMPTS,
+				CUST_MOBILE_PIN_SENT_TIME,null,CUST_LAST_STATUS_CHANGE_TIME,null,null);
 	}
 	
 	public static CustomerQuickRegisterDTO standardEmailCustomer()
 	{
-		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME,CUST_EMAIL,null, CUST_PIN,CUST_STATUS_EMAIL, null, CUST_EMAILHASH);
+		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME,CUST_EMAIL,null, CUST_PIN,CUST_STATUS_EMAIL, null, CUST_EMAILHASH,null,
+				null,CUST_EMAIL_HASH_SENT_TIME,CUST_LAST_STATUS_CHANGE_TIME,null,null);
 		
 	}
-	*/
+
+	
+	
+	
 	public static CustomerQuickRegisterEntity standardEmailCustomerDTO()
 	{
 		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN,"");
@@ -197,7 +203,5 @@ public class CustomerQuickRegisterDataFixture {
 		return "{\"mobile\":9960821869,\"mobilePin\":101010}";
 		       
 	}
-
-	
 	
 }

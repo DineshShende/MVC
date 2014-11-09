@@ -48,22 +48,22 @@ public class CustomerAuthenticationDetailsDataFixtures {
 	
 	public static LoginVerificationDTO standardLoginVerificationWithEmail()
 	{
-		return new LoginVerificationDTO(CUST_EMAIL, null, CUST_PASSWORD_DEFAULT);
+		return new LoginVerificationDTO(CUST_EMAIL,CUST_PASSWORD_DEFAULT);
 	}
 	
 	public static LoginVerificationDTO standardLoginVerificationWithMobile()
 	{
-		return new LoginVerificationDTO(null, CUST_MOBILE, CUST_PASSWORD_DEFAULT);
+		return new LoginVerificationDTO(Long.toString(CUST_MOBILE), CUST_PASSWORD_DEFAULT);
 	}
 	
 	public static LoginVerificationDTO standardLoginVerificationWithEmailNewPassword()
 	{
-		return new LoginVerificationDTO(CUST_EMAIL, null, CUST_PASSWORD_CHANGED);
+		return new LoginVerificationDTO(CUST_EMAIL, CUST_PASSWORD_CHANGED);
 	}
 	
 	public static LoginVerificationDTO standardLoginVerificationWithMobileNewPassword()
 	{
-		return new LoginVerificationDTO(null, CUST_MOBILE, CUST_PASSWORD_CHANGED);
+		return new LoginVerificationDTO(Long.toString(CUST_MOBILE), CUST_PASSWORD_CHANGED);
 	}
 
 	public static UpdatePasswordDTO standardUpdatePassword()
@@ -99,12 +99,12 @@ public class CustomerAuthenticationDetailsDataFixtures {
 	{
 		StringBuilder jsonBuilder=new StringBuilder();
 
-		if(loginVerificationDTO.getEmail()!=null)
-			jsonBuilder.append("{\"email\":\""+loginVerificationDTO.getEmail()+"\",");
+		if(loginVerificationDTO.getLoginEntity()!=null)
+			jsonBuilder.append("{\"email\":\""+loginVerificationDTO.getLoginEntity() +"\",");
 		else
-			jsonBuilder.append("{\"email\":"+loginVerificationDTO.getEmail()+",");
+			jsonBuilder.append("{\"email\":"+loginVerificationDTO.getLoginEntity()+",");
 
-		jsonBuilder.append("\"mobile\":"+loginVerificationDTO.getMobile()+",");
+		//jsonBuilder.append("\"mobile\":"+loginVerificationDTO.getMobile()+",");
 		
 		jsonBuilder.append("\"password\":\""+loginVerificationDTO.getPassword()+"\"}");
 		

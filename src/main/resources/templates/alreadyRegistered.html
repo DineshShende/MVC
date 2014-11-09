@@ -21,8 +21,8 @@
     <input type="submit" value="Resend Verication Email" />
     </form>
     
-    <form th:if="${customerQuickRegisterDTO.isEmailVerificationNeeded==false || customerQuickRegisterDTO.isMobileVerificationNeeded==false}">
-    
+    <form th:if="${customerQuickRegisterDTO.isEmailVerificationNeeded==false || customerQuickRegisterDTO.isMobileVerificationNeeded==false}" action="/customer/quickregister/resetPassword" method="post">
+    <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     <input type="submit" value="Reset Password"/> 
     
     </form>

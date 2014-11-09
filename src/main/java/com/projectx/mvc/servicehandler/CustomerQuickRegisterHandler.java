@@ -12,7 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import static com.projectx.mvc.fixture.CustomerQuickRegisterDataConstants.*;
 
+import com.projectx.mvc.domain.CustomerDocumetDTO;
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
+import com.projectx.mvc.domain.ResetPasswordRedirectDTO;
 import com.projectx.mvc.domain.UpdatePasswordDTO;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
 import com.projectx.rest.domain.CustomerAuthenticationDetailsDTO;
@@ -133,11 +135,9 @@ public class CustomerQuickRegisterHandler implements CustomerQuickRegisterServic
 	public CustomerAuthenticationDetailsDTO verifyLoginDetails(
 			LoginVerificationDTO loginVerificationDTO) {
 		
-		//System.out.println(loginVerificationDTO);
+		System.out.println(loginVerificationDTO);
 		
 		CustomerAuthenticationDetailsDTO verifiedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/verifyLoginDetails", loginVerificationDTO, CustomerAuthenticationDetailsDTO.class);
-		
-		//System.out.println(verifiedEntity);
 		
 		return verifiedEntity;
 	}
@@ -148,6 +148,47 @@ public class CustomerQuickRegisterHandler implements CustomerQuickRegisterServic
 		Boolean updateStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/updatePassword", updatePasswordDTO, Boolean.class);
 		
 		return updateStatus;
+	}
+
+
+	@Override
+	public CustomerDocumetDTO saveCustomerDocumet(
+			CustomerDocumetDTO customerDocumetDTO) {
+		
+		CustomerDocumetDTO savedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/saveCustomerDocument", customerDocumetDTO, CustomerDocumetDTO.class);
+		
+		return savedEntity;
+
+	}
+
+	@Override
+	public CustomerDocumetDTO getCustomerDocumetById(Long customerId) {
+		
+		CustomerDocumetDTO savedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/getCustomerDocumentById", new CustomerIdDTO(customerId), CustomerDocumetDTO.class);
+		
+		return savedEntity;
+
+	}
+
+	@Override
+	public Boolean resetPassword(Long customerId) {
+	
+		CustomerIdDTO customerIdDTO=new CustomerIdDTO(customerId);
+		
+		Boolean updateStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/resetPassword", customerIdDTO, Boolean.class);
+		
+		return updateStatus;	
+		
+	}
+
+	@Override
+	public CustomerQuickRegisterDTO resetPasswordRedirect(String entity) {
+
+		ResetPasswordRedirectDTO resetPasswordRedirectDTO=new ResetPasswordRedirectDTO(entity);
+		
+		CustomerQuickRegisterDTO fetchedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/resetPasswordRedirect",
+																		resetPasswordRedirectDTO, CustomerQuickRegisterDTO.class);
+		return fetchedEntity;
 	}
 
 

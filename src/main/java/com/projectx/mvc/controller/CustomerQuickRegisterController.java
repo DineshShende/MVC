@@ -2,9 +2,12 @@ package com.projectx.mvc.controller;
 
 import static com.projectx.mvc.fixture.CustomerQuickRegisterDataConstants.*;
 
-import java.text.NumberFormat;
-import java.text.ParsePosition;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +19,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.projectx.mvc.domain.CustomerDocumetDTO;
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
 import com.projectx.mvc.domain.CustomerQuickRegisterMVCDTO;
 import com.projectx.mvc.domain.LoginDetailsDTO;
+import com.projectx.mvc.domain.ResetPasswordRedirectDTO;
 import com.projectx.mvc.domain.UpdatePasswordDTO;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
 import com.projectx.rest.domain.CustomerAuthenticationDetailsDTO;
@@ -79,9 +86,7 @@ public class CustomerQuickRegisterController {
 		else
 		{
 			customerQuickRegisterDTO.toCustomerQuickRegisterMVC(status.getCustomer());			
-			
-			System.out.println(customerQuickRegisterDTO);
-			
+							
 			String message=customerQuickRegisterService.populateMessageForDuplicationField(status.getStatus());
 			model.addAttribute("message", message);
 			
@@ -142,8 +147,6 @@ public class CustomerQuickRegisterController {
 		
 		Boolean result=customerQuickRegisterService.verifyEmail(verifyEmailDTO);
 		
-	//	System.out.println(result);
-		
 		if(result)
 		{
 			model.addAttribute("emailVerificationStatus", "Email Verification Sucess");
@@ -177,21 +180,16 @@ public class CustomerQuickRegisterController {
 	}
 	
 	
+	@RequestMapping(value="/loginForm")
+	public String loginForm()
+	{
+		return "loginForm";
+	}
+	
 	@RequestMapping(value="/verifyLoginDetails",method=RequestMethod.POST)
 	public String verifyLoginDetails(@ModelAttribute LoginDetailsDTO loginDetailsDTO,Model model)
 	{
-		LoginVerificationDTO loginVerificationDTO=null;
-		
-		//System.out.println(loginDetailsDTO);
-		
-		if(isMobileNumber(loginDetailsDTO.getEntity()))
-		{
-			loginVerificationDTO=new LoginVerificationDTO(null,Long.parseLong(loginDetailsDTO.getEntity()),loginDetailsDTO.getPassword());
-		}
-		else
-		{
-			loginVerificationDTO=new LoginVerificationDTO(loginDetailsDTO.getEntity(),null,loginDetailsDTO.getPassword());
-		}
+		LoginVerificationDTO loginVerificationDTO=new LoginVerificationDTO(loginDetailsDTO.getEntity(),loginDetailsDTO.getPassword());
 		
 		CustomerAuthenticationDetailsDTO result=customerQuickRegisterService.verifyLoginDetails(loginVerificationDTO);
 		
@@ -229,6 +227,49 @@ public class CustomerQuickRegisterController {
 		
 	}
 	
+	
+	@RequestMapping(value="/resetPassword",method=RequestMethod.POST)
+	@ResponseBody
+	public String resetPassword(@ModelAttribute CustomerIdDTO customerIdDTO)
+	{
+		Boolean result=customerQuickRegisterService.resetPassword(customerIdDTO.getCustomerId());
+		
+		if(result)
+			return "sucess";
+		else
+			return "failue";
+	}
+	
+	@RequestMapping(value="/forgotPassword")
+	public String forgotPassword()
+	{
+		return "forgotPasswordForm";
+	}
+	
+	@RequestMapping(value="/resetPasswordRedirect",method=RequestMethod.POST)
+	public String resetPasswordRedirect(@ModelAttribute ResetPasswordRedirectDTO resetPasswordRedirectDTO,Model model)
+	{
+		
+		CustomerQuickRegisterDTO fetchedResult=customerQuickRegisterService.resetPasswordRedirect(resetPasswordRedirectDTO.getEntity());
+		
+		if(fetchedResult.getCustomerId()!=null)
+		{
+			System.out.println(fetchedResult);
+			
+			System.out.println(customerQuickRegisterDTO);
+			
+			customerQuickRegisterDTO.toCustomerQuickRegisterMVC(fetchedResult);			
+					
+			return "alreadyRegistered";
+			
+		}
+		else
+		{
+			model.addAttribute("message", "No matching Registration Found");
+			return "forgotPasswordForm";
+		}
+		
+	}
 
 	@RequestMapping(value="/cleartestdata")
 	public void clearTestData()
@@ -237,20 +278,107 @@ public class CustomerQuickRegisterController {
 		
 	}
 	
+	@RequestMapping(value="/upLoadFileForm")
+	public String uploadFileForm()
+	{
+		return "fileUpload";
+	}
+	
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    public String uploadFileHandler(@RequestParam("name") String name,
+            @RequestParam("file") MultipartFile file) {
+ 
+		CustomerDocumetDTO customerDocumetDTO=new CustomerDocumetDTO();
+		
+		
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                
+                System.out.println(file.getContentType());
+                
+                customerDocumetDTO.setCustomerId(212L);
+                customerDocumetDTO.setImage(bytes);
+
+                customerQuickRegisterService.saveCustomerDocumet(customerDocumetDTO);
+                
+                /*
+                System.out.println(bytes);
+                
+                // Creating the directory to store file
+                String rootPath = System.getProperty("catalina.home");
+                System.out.println(rootPath);
+                
+                File dir = new File(rootPath + File.separator + "tmpFiles");
+                if (!dir.exists())
+                    dir.mkdirs();
+ 
+                // Create the file on server
+                File serverFile = new File(dir.getAbsolutePath()
+                        + File.separator + name);
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream(serverFile));
+                stream.write(bytes);
+                stream.close();
+ 
+                System.out.println("You successfully uploaded file=" + name);*/
+                return "viewUploadedFile";
+                
+            } catch (Exception e) {
+                //System.out.println("You failed to upload " + name + " => " + e.getMessage());
+                
+                return "failure";
+            }
+        } else {
+            //System.out.println("You failed to upload " + name+ " because the file was empty."); 
+            return "failure";
+        }
+    }
+ 
+	
+	@RequestMapping(value="/getImage/{imageId}")
+	public void getImage(@PathVariable String imageId,HttpServletResponse response) throws IOException
+	{
+	
+		if (imageId == null) {
+        
+        	response.sendError(HttpServletResponse.SC_NOT_FOUND); 
+            return;
+        }
+
+        CustomerDocumetDTO image = customerQuickRegisterService.getCustomerDocumetById(Long.parseLong(imageId)) ;
+
+        
+        byte[] bytes=image.getImage();
+        
+        
+        BufferedOutputStream stream = new BufferedOutputStream(
+                new FileOutputStream("/home/dinesh/Upload/upload.pdf"));
+        stream.write(bytes);
+        stream.close();
+
+        
+        
+        if (image == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
+            return;
+        }
+
+
+        response.reset();
+       // response.setContentType(image.getContentType());
+       // response.setContentLength(image.getContent().length);
+
+       response.getOutputStream().write(image.getImage());
+
+	}
+	
 	@ModelAttribute("customerQuickRegisterDTO")
-	private CustomerQuickRegisterMVCDTO getCustomerQuickRegisterDTO()
+	private CustomerQuickRegisterMVCDTO getcustomerQuickRegisterDTO()
 	{
 		return customerQuickRegisterDTO;
 	}
 	
 	
-	private Boolean isMobileNumber(String entity)
-	{
-		NumberFormat formatter = NumberFormat.getInstance();
-		ParsePosition pos = new ParsePosition(0);
-		formatter.parse(entity, pos);
-		return (entity.length() == pos.getIndex()&&entity.length()==10);
-		
-	}
 	
 }

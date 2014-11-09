@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
+import com.projectx.mvc.domain.CustomerDocumetDTO;
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
 import com.projectx.mvc.domain.UpdatePasswordDTO;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
@@ -89,6 +90,32 @@ public class CustomerQuickRegisterServiceFixture implements
 
 	@Override
 	public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public CustomerDocumetDTO saveCustomerDocumet(
+			CustomerDocumetDTO customerDocumetDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomerDocumetDTO getCustomerDocumetById(Long customerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean resetPassword(Long customerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomerQuickRegisterDTO resetPasswordRedirect(String entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}

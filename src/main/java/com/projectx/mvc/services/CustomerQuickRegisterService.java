@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.projectx.mvc.domain.CustomerDocumetDTO;
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
 import com.projectx.mvc.domain.UpdatePasswordDTO;
 import com.projectx.rest.domain.CustomerAuthenticationDetailsDTO;
@@ -44,8 +45,20 @@ public interface CustomerQuickRegisterService {
 	
 	public CustomerAuthenticationDetailsDTO verifyLoginDetails(LoginVerificationDTO loginVerificationDTO);
 	
+	public Boolean resetPassword(Long customerId);
+	
+	public CustomerQuickRegisterDTO resetPasswordRedirect(String entity);
+	
 	public void clearTestData();
 
+	
+	
+	//Document
+	
+	public CustomerDocumetDTO saveCustomerDocumet(CustomerDocumetDTO customerDocumetDTO);
+	
+	public CustomerDocumetDTO getCustomerDocumetById(Long customerId);
+	
 	//public String setStatus(CustomerQuickRegisterEntity customerQuickRegisterEntity) throws Exception;
 	
 	//public CustomerQuickRegisterDTO getByEmail(String email);

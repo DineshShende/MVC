@@ -1,10 +1,9 @@
 package com.projectx.rest.domain;
 
+
 public class LoginVerificationDTO {
 
-	private String email;
-	
-	private Long mobile;
+	private String loginEntity;
 	
 	private String password;
 
@@ -12,27 +11,18 @@ public class LoginVerificationDTO {
 
 	}
 
-	public LoginVerificationDTO(String email, Long mobile, String password) {
+	public LoginVerificationDTO(String loginEntity, String password) {
 		super();
-		this.email = email;
-		this.mobile = mobile;
+		this.loginEntity = loginEntity;
 		this.password = password;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getLoginEntity() {
+		return loginEntity;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Long getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(Long mobile) {
-		this.mobile = mobile;
+	public void setLoginEntity(String loginEntity) {
+		this.loginEntity = loginEntity;
 	}
 
 	public String getPassword() {
@@ -44,17 +34,11 @@ public class LoginVerificationDTO {
 	}
 
 	@Override
-	public String toString() {
-		return "LoginVerificationDTO [email=" + email + ", mobile=" + mobile
-				+ ", password=" + password + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
+		result = prime * result
+				+ ((loginEntity == null) ? 0 : loginEntity.hashCode());
 		result = prime * result
 				+ ((password == null) ? 0 : password.hashCode());
 		return result;
@@ -69,15 +53,10 @@ public class LoginVerificationDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		LoginVerificationDTO other = (LoginVerificationDTO) obj;
-		if (email == null) {
-			if (other.email != null)
+		if (loginEntity == null) {
+			if (other.loginEntity != null)
 				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (mobile == null) {
-			if (other.mobile != null)
-				return false;
-		} else if (!mobile.equals(other.mobile))
+		} else if (!loginEntity.equals(other.loginEntity))
 			return false;
 		if (password == null) {
 			if (other.password != null)
@@ -86,7 +65,13 @@ public class LoginVerificationDTO {
 			return false;
 		return true;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "LoginVerificationDTO [loginEntity=" + loginEntity
+				+ ", password=" + password + "]";
+	}
+
 	
 	
 	

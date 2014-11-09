@@ -14,8 +14,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.projectx.mvc.config.BasicConfig;
+import com.projectx.mvc.domain.CustomerDocumetDTO;
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
 import com.projectx.mvc.domain.UpdatePasswordDTO;
+import com.projectx.rest.domain.CustomerAuthenticationDetailsDTO;
 import com.projectx.rest.domain.CustomerIdDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterSavedEntityDTO;
@@ -41,8 +43,8 @@ public class CustomerQuickRegisterTest {
 	{
 		customerQuickRegisterService.clearTestData();
 	}
+
 	
-	/*
 	@Test
 	public void checkIfExist() throws Exception {
 		
@@ -217,7 +219,7 @@ public class CustomerQuickRegisterTest {
 		//assertNotNull(customerQuickRegisterService.verifyLoginDetails(new LoginVerificationDTO(null, savedEntityResult.getCustomer().getMobile(), savedEntityResult.getCustomer().getPassword())).getCustomerId());
 		
 	}
-	*/
+	
 	@Test
 	public void updatePassword()
 	{
@@ -227,7 +229,52 @@ public class CustomerQuickRegisterTest {
 																									"654321")));
 	}
 	
-	//@Test
-	//public void reSend
+	
+	@Test
+	public void saveCustomerDocumentI()
+	{
+	
+		CustomerDocumetDTO customerDocumetDTO=new CustomerDocumetDTO(3L, "dsjgfjegufgjvdfjv".getBytes());
+		
+		assertEquals(customerDocumetDTO,customerQuickRegisterService.saveCustomerDocumet(customerDocumetDTO));
+		
+		assertEquals(customerDocumetDTO,customerQuickRegisterService.getCustomerDocumetById(customerDocumetDTO.getCustomerId()));
+		
+	}
+
+	
+	@Test 
+	public void resetPassword()
+	{
+		
+		CustomerQuickRegisterSavedEntityDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
+		
+		assertTrue(customerQuickRegisterService.verifyMobile(new VerifyMobileDTO(savedEntityResult.getCustomer().getCustomerId(),
+				savedEntityResult.getCustomer().getMobilePin())));
+		
+		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(savedEntityResult.getCustomer().getCustomerId(),
+				CUST_PASSWORD_CHANGED)));
+		
+		assertNotNull(customerQuickRegisterService.verifyLoginDetails(new LoginVerificationDTO(savedEntityResult.getCustomer().getEmail(),
+				CUST_PASSWORD_CHANGED)).getCustomerId());
+		
+		assertTrue(customerQuickRegisterService.resetPassword(savedEntityResult.getCustomer().getCustomerId()));
+		
+		assertNull(customerQuickRegisterService.verifyLoginDetails(new LoginVerificationDTO(savedEntityResult.getCustomer().getEmail(),
+				CUST_PASSWORD_CHANGED)).getCustomerId());
+		
+	}
+		
+	
+	@Test
+	public void resetPasswordRedirect()
+	{
+		CustomerQuickRegisterSavedEntityDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
+					
+		assertNotNull(customerQuickRegisterService.resetPasswordRedirect(CUST_EMAIL).getCustomerId());
+		
+		assertNotNull(customerQuickRegisterService.resetPasswordRedirect(Long.toString(CUST_MOBILE)).getCustomerId());
+	}
+	
 	
 }

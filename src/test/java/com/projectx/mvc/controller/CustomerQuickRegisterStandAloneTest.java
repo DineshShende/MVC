@@ -43,6 +43,7 @@ public class CustomerQuickRegisterStandAloneTest {
 	    
 	}
 	
+/*	
 	@Test
 	public void verifyLoginDetailsEmailAsUserId() throws Exception
 	{
@@ -106,7 +107,22 @@ public class CustomerQuickRegisterStandAloneTest {
 				.andExpect(view().name("loginForm"));
 		
 	}
+*/
+	
+	@Test
+	public void resetPasswordRedirect() throws Exception
+	{
+		when(customerQuickRegisterService.resetPasswordRedirect(CUST_EMAIL)).thenReturn(standardEmailMobileCustomer());
+		
+		this.mockMvc.perform(
+				post("/customer/quickregister/resetPasswordRedirect").param("entity",CUST_EMAIL)
+											   											   											  
+											)
+				.andDo(print())
+				.andExpect(view().name("alreadyRegistered"));
 
+	}
+	
 /*	
 	@Test
 	public void thatNewCustomerNotRegisteredAlready() throws Exception {
