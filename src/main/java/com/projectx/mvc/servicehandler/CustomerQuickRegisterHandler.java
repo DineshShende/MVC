@@ -18,12 +18,17 @@ import com.projectx.mvc.domain.ResetPasswordRedirectDTO;
 import com.projectx.mvc.domain.UpdatePasswordDTO;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
 import com.projectx.rest.domain.CustomerAuthenticationDetailsDTO;
+import com.projectx.rest.domain.CustomerEmailVerificationDetailsDTO;
+import com.projectx.rest.domain.CustomerIdEmailDTO;
+import com.projectx.rest.domain.CustomerIdMobileDTO;
+import com.projectx.rest.domain.CustomerMobileVerificationDetailsDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterDTO;
 import com.projectx.rest.domain.CustomerIdDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterSavedEntityDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterStringStatusDTO;
 import com.projectx.rest.domain.LoginVerificationDTO;
 import com.projectx.rest.domain.VerifyEmailDTO;
+import com.projectx.rest.domain.VerifyEmailLoginDetails;
 import com.projectx.rest.domain.VerifyMobileDTO;
 
 @Component
@@ -110,7 +115,7 @@ public class CustomerQuickRegisterHandler implements CustomerQuickRegisterServic
 	}
 
 	@Override
-	public Boolean reSendMobilePin(CustomerIdDTO customerDTO) {
+	public Boolean reSendMobilePin(CustomerIdMobileDTO customerDTO) {
 		
 		Boolean detailsSentStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/resendMobilePin", customerDTO, Boolean.class);
 
@@ -118,12 +123,30 @@ public class CustomerQuickRegisterHandler implements CustomerQuickRegisterServic
 	}
 
 	@Override
-	public Boolean reSendEmailHash(CustomerIdDTO customerDTO) {
+	public Boolean reSendEmailHash(CustomerIdEmailDTO customerDTO) {
 
 		Boolean detailsSentStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/resendEmailHash", customerDTO, Boolean.class);
 
 		return detailsSentStatus;
 	}
+	
+	@Override
+	public Boolean reSetMobilePin(CustomerIdMobileDTO customerDTO) {
+
+		Boolean detailsSentStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/resetMobilePin", customerDTO, Boolean.class);
+
+		return detailsSentStatus;
+
+	}
+
+	@Override
+	public Boolean reSetEmailHash(CustomerIdEmailDTO customerDTO) {
+
+		Boolean detailsSentStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/resetEmailHash", customerDTO, Boolean.class);
+
+		return detailsSentStatus;
+	}
+
 
 	@Override
 	public void clearTestData() {
@@ -135,9 +158,11 @@ public class CustomerQuickRegisterHandler implements CustomerQuickRegisterServic
 	public CustomerAuthenticationDetailsDTO verifyLoginDetails(
 			LoginVerificationDTO loginVerificationDTO) {
 		
-		System.out.println(loginVerificationDTO);
+		//System.out.println(loginVerificationDTO);
 		
 		CustomerAuthenticationDetailsDTO verifiedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/verifyLoginDetails", loginVerificationDTO, CustomerAuthenticationDetailsDTO.class);
+		
+		
 		
 		return verifiedEntity;
 	}
@@ -190,6 +215,52 @@ public class CustomerQuickRegisterHandler implements CustomerQuickRegisterServic
 																		resetPasswordRedirectDTO, CustomerQuickRegisterDTO.class);
 		return fetchedEntity;
 	}
+
+	@Override
+	public CustomerEmailVerificationDetailsDTO getEmailVerificationDetailsByCustomerIdAndEmail(
+			Long customerId, String email) {
+
+		CustomerIdEmailDTO emailDTO=new CustomerIdEmailDTO(customerId, email);
+		
+		CustomerEmailVerificationDetailsDTO fetchedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/getEmailVerificationDetails", emailDTO, CustomerEmailVerificationDetailsDTO.class);
+		
+		return fetchedEntity;
+	}
+
+	@Override
+	public CustomerMobileVerificationDetailsDTO getMobileVerificationDetailsByCustomerIdAndMobile(
+			Long customerId, Long mobile) {
+
+		CustomerIdMobileDTO mobileDTO=new CustomerIdMobileDTO(customerId, mobile);
+		
+		CustomerMobileVerificationDetailsDTO fetchedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/getMobileVerificationDetails", mobileDTO, CustomerMobileVerificationDetailsDTO.class);
+		
+		return fetchedEntity;
+	}
+
+	@Override
+	public CustomerAuthenticationDetailsDTO getAuthenticationDetailsByCustomerId(
+			Long customerId) {
+
+		CustomerIdDTO customerIdDTO=new CustomerIdDTO(customerId);
+	
+		CustomerAuthenticationDetailsDTO fetchedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/getAuthenticationDetailsById", customerIdDTO, CustomerAuthenticationDetailsDTO.class);
+		
+		return fetchedEntity;
+		
+	}
+
+	@Override
+	public CustomerAuthenticationDetailsDTO verifyEmailLoginDetails(
+			VerifyEmailLoginDetails emailLoginDetails) {
+
+		System.out.println(emailLoginDetails);
+		
+		CustomerAuthenticationDetailsDTO fetchedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/verifyLoginDefaultEmailPassword", emailLoginDetails, CustomerAuthenticationDetailsDTO.class);
+		
+		return fetchedEntity;
+	}
+
 
 
 	/*

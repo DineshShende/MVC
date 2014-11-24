@@ -32,11 +32,14 @@ import com.projectx.mvc.domain.UpdatePasswordDTO;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
 import com.projectx.rest.domain.CustomerAuthenticationDetailsDTO;
 import com.projectx.rest.domain.CustomerIdDTO;
+import com.projectx.rest.domain.CustomerIdEmailDTO;
+import com.projectx.rest.domain.CustomerIdMobileDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterSavedEntityDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterStringStatusDTO;
 import com.projectx.rest.domain.LoginVerificationDTO;
 import com.projectx.rest.domain.VerifyEmailDTO;
+import com.projectx.rest.domain.VerifyEmailLoginDetails;
 import com.projectx.rest.domain.VerifyMobileDTO;
 
 @Controller
@@ -102,6 +105,8 @@ public class CustomerQuickRegisterController {
 	public String verifyMobilePin(@ModelAttribute VerifyMobileDTO verifyMobile,Model model)
 	{
 		
+		System.out.println(verifyMobile);
+		
 		Boolean result=customerQuickRegisterService.verifyMobile(verifyMobile);
 		
 		//System.out.println(result);
@@ -121,7 +126,7 @@ public class CustomerQuickRegisterController {
 	}
 	
 	@RequestMapping(value="/resendMobilePin",method=RequestMethod.POST)
-	public String resendMobilePin(@ModelAttribute CustomerIdDTO mobileDTO,Model model)
+	public String resendMobilePin(@ModelAttribute CustomerIdMobileDTO mobileDTO,Model model)
 	{
 		Boolean result=customerQuickRegisterService.reSendMobilePin(mobileDTO);
 		
@@ -140,10 +145,10 @@ public class CustomerQuickRegisterController {
 	}
 	
 	
-	@RequestMapping(value="/verifyEmailHash/{customerId}/{emailHash}",method=RequestMethod.GET)
-	public String verifyEmailHash(@PathVariable Long customerId,@PathVariable String emailHash,Model model)
+	@RequestMapping(value="/verifyEmailHash/{customerId}/{email}/{emailHash}",method=RequestMethod.GET)
+	public String verifyEmailHash(@PathVariable Long customerId,@PathVariable String email,@PathVariable String emailHash,Model model)
 	{
-		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId, emailHash);
+		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId,email, emailHash);
 		
 		Boolean result=customerQuickRegisterService.verifyEmail(verifyEmailDTO);
 		
@@ -158,12 +163,11 @@ public class CustomerQuickRegisterController {
 			model.addAttribute("emailVerificationStatus", "Email Verification Failed");
 			return "verifyEmailMobile";
 		}	
-		
-		
+				
 	}
 	
 	@RequestMapping(value="/resendEmailHash",method=RequestMethod.POST)
-	public String resendEmailHash(@ModelAttribute CustomerIdDTO mobileDTO,Model model)
+	public String resendEmailHash(@ModelAttribute CustomerIdEmailDTO mobileDTO,Model model)
 	{
 		Boolean result=customerQuickRegisterService.reSendEmailHash(mobileDTO);
 		
@@ -214,6 +218,37 @@ public class CustomerQuickRegisterController {
 		
 		
 	}
+	
+	@RequestMapping(value="/emailPasswordVerification/{customerId}/{emailPassword}",method=RequestMethod.GET)
+	public String verifyLoginDetailsWithEmailPassword(@PathVariable Long customerId,@PathVariable String emailPassword,Model model)
+	{
+		VerifyEmailLoginDetails verifyEmailDTO=new VerifyEmailLoginDetails(customerId,emailPassword);
+		
+		//System.out.println(verifyEmailDTO);
+		
+		CustomerAuthenticationDetailsDTO result=customerQuickRegisterService.verifyEmailLoginDetails(verifyEmailDTO);
+		
+		if(result.getCustomerId()==null)
+		{
+			model.addAttribute("verificationStatus","Sucess" );
+			return "loginForm";
+		}
+		else
+		{
+			if(result.getPasswordType().equals(CUST_PASSWORD_TYPE_DEFAULT))
+			{
+				model.addAttribute("loginDetails", result);
+				return "forcePasswordChange";
+			}
+			else
+			{
+				model.addAttribute("loginDetails", result);
+				return "loginSucess";
+			}
+		}	
+				
+	}
+	
 	
 	@RequestMapping(value="/updatePassword",method=RequestMethod.POST)
 	public String updatePassword(@ModelAttribute UpdatePasswordDTO updatePasswordDTO)

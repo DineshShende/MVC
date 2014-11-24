@@ -9,12 +9,17 @@ import com.projectx.mvc.domain.CustomerDocumetDTO;
 import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
 import com.projectx.mvc.domain.UpdatePasswordDTO;
 import com.projectx.rest.domain.CustomerAuthenticationDetailsDTO;
+import com.projectx.rest.domain.CustomerEmailVerificationDetailsDTO;
 import com.projectx.rest.domain.CustomerIdDTO;
+import com.projectx.rest.domain.CustomerIdEmailDTO;
+import com.projectx.rest.domain.CustomerIdMobileDTO;
+import com.projectx.rest.domain.CustomerMobileVerificationDetailsDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterSavedEntityDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterStringStatusDTO;
 import com.projectx.rest.domain.LoginVerificationDTO;
 import com.projectx.rest.domain.VerifyEmailDTO;
+import com.projectx.rest.domain.VerifyEmailLoginDetails;
 import com.projectx.rest.domain.VerifyMobileDTO;
 
 @Component
@@ -34,14 +39,20 @@ public interface CustomerQuickRegisterService {
 	
 	public Boolean verifyEmail(VerifyEmailDTO emailDTO);
 	
-	public Boolean reSendMobilePin(CustomerIdDTO customerDTO);
+	public Boolean reSendMobilePin(CustomerIdMobileDTO customerDTO);
 	
-	public Boolean reSendEmailHash(CustomerIdDTO customerDTO);
+	public Boolean reSendEmailHash(CustomerIdEmailDTO customerDTO);
+	
+	public Boolean reSetMobilePin(CustomerIdMobileDTO customerDTO);
+	
+	public Boolean reSetEmailHash(CustomerIdEmailDTO customerDTO);
 	
 	public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO);
 	
 	//TODO
 	//public Boolean forgotPassword(String entity);
+	
+	public CustomerAuthenticationDetailsDTO verifyEmailLoginDetails(VerifyEmailLoginDetails emailLoginDetails);
 	
 	public CustomerAuthenticationDetailsDTO verifyLoginDetails(LoginVerificationDTO loginVerificationDTO);
 	
@@ -51,6 +62,13 @@ public interface CustomerQuickRegisterService {
 	
 	public void clearTestData();
 
+	//Getter
+	
+	public CustomerEmailVerificationDetailsDTO getEmailVerificationDetailsByCustomerIdAndEmail(Long customerId,String email);
+
+	public CustomerMobileVerificationDetailsDTO getMobileVerificationDetailsByCustomerIdAndMobile(Long customerId,Long mobile);
+	
+	public CustomerAuthenticationDetailsDTO getAuthenticationDetailsByCustomerId(Long customerId);
 	
 	
 	//Document

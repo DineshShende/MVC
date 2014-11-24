@@ -36,6 +36,9 @@ public class CustomerQuickRegisterDataFixture {
 	public static String CUST_PASSWORD_TYPE_DEFAULT="Default";
 	public static String CUST_PASSWORD_CHANGED="654321";
 	public static String CUST_PASSWORD_TYPE_CHANGED="Changed";
+	
+	public static String CUST_UPDATED_BY="CUST_ONLINE";
+	public static Boolean CUST_VERIFICATION_STATUS=false;
 	public static Date CUST_LAST_STATUS_CHANGE_TIME=new Date();
 	
 	
@@ -88,20 +91,19 @@ public class CustomerQuickRegisterDataFixture {
 	
 	public static CustomerQuickRegisterDTO standardEmailMobileCustomer()
 	{
-		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE, CUST_PIN,CUST_STATUS_EMAILMOBILE, CUST_MOBILEPIN, CUST_EMAILHASH,CUST_MOBILE_VERIFICATION_ATTEMPTS,
-																															CUST_MOBILE_PIN_SENT_TIME,CUST_EMAIL_HASH_SENT_TIME,CUST_LAST_STATUS_CHANGE_TIME,null,null);
+		return new CustomerQuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, CUST_MOBILE, CUST_PIN, CUST_VERIFICATION_STATUS, CUST_VERIFICATION_STATUS, CUST_LAST_STATUS_CHANGE_TIME,CUST_LAST_STATUS_CHANGE_TIME, CUST_UPDATED_BY);
 	}
 	
 	public static CustomerQuickRegisterDTO standardMobileCustomer()
 	{
-		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME,null,CUST_MOBILE, CUST_PIN,CUST_STATUS_MOBILE, CUST_MOBILEPIN, null,CUST_MOBILE_VERIFICATION_ATTEMPTS,
-				CUST_MOBILE_PIN_SENT_TIME,null,CUST_LAST_STATUS_CHANGE_TIME,null,null);
+		return new CustomerQuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, null, CUST_MOBILE, CUST_PIN, null, CUST_VERIFICATION_STATUS, CUST_LAST_STATUS_CHANGE_TIME,
+				CUST_LAST_STATUS_CHANGE_TIME, CUST_UPDATED_BY);
 	}
 	
 	public static CustomerQuickRegisterDTO standardEmailCustomer()
 	{
-		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME,CUST_EMAIL,null, CUST_PIN,CUST_STATUS_EMAIL, null, CUST_EMAILHASH,null,
-				null,CUST_EMAIL_HASH_SENT_TIME,CUST_LAST_STATUS_CHANGE_TIME,null,null);
+		return new CustomerQuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, null, CUST_PIN, CUST_VERIFICATION_STATUS,
+				null, CUST_LAST_STATUS_CHANGE_TIME,CUST_LAST_STATUS_CHANGE_TIME, CUST_UPDATED_BY);
 		
 	}
 
@@ -110,33 +112,33 @@ public class CustomerQuickRegisterDataFixture {
 	
 	public static CustomerQuickRegisterEntity standardEmailCustomerDTO()
 	{
-		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN,"");
+		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN);
 	}
 	
 	public static CustomerQuickRegisterEntity standardMobileCustomerDTO()
 	{
-		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN,"");
+		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN);
 	}
 	
 	public static CustomerQuickRegisterEntity standardEmailMobileCustomerDTO()
 	{
-		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN,"");
+		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN);
 	}
 	
 	
 	public static CustomerQuickRegisterEntity standardEmailCustomerDTOWithOutStatus()
 	{
-		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN,null);
+		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN);
 	}
 	
 	public static CustomerQuickRegisterEntity standardMobileCustomerDTOWithOutStatus()
 	{
-		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN,null);
+		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN);
 	}
 	
 	public static CustomerQuickRegisterEntity standardEmailMobileCustomerDTOWithOutStatus()
 	{
-		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN,null);
+		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN);
 	}
 	
 
@@ -174,12 +176,12 @@ public class CustomerQuickRegisterDataFixture {
 	*/
 	public static VerifyMobileDTO standardVerifyMobileDTO()
 	{
-		return new VerifyMobileDTO(CUST_MOBILE, CUST_MOBILEPIN);
+		return new VerifyMobileDTO(CUST_ID,CUST_MOBILE, CUST_MOBILEPIN);
 	}
 	
 	public static VerifyEmailDTO standardVerifyEmailDTO()
 	{
-		return new VerifyEmailDTO(CUST_ID, CUST_EMAILHASH);
+		return new VerifyEmailDTO(CUST_ID,CUST_EMAIL, CUST_EMAILHASH);
 	}
 	
 	

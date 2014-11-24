@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 public class CustomerQuickRegisterDTO {
 
-	private Long customerId;
+private Long customerId;
 	
 	private String firstName;
 	
@@ -18,55 +18,39 @@ public class CustomerQuickRegisterDTO {
 	
 	private Long mobile;
 	
-	private Integer pin;
+	private Integer pincode;
 	
-	private String status;
+	private Boolean isEmailVerified;
 
-	private Integer mobilePin;
+	private Boolean isMobileVerified;
+		
+	private Date insertTime;
 	
-	private String emailHash;
+	private Date updateTime;
 	
-	private Integer mobileVerificationAttempts;
-	
-	private Date mobilePinSentTime;	
-
-	private Date emailHashSentTime;
-	
-	private Date lastStatusChangedTime;
-	
-	private String password;
-
-	private String passwordType;
+	private String updatedBy;
 	
 	public CustomerQuickRegisterDTO() {
 		
 	}
 
-	
 	public CustomerQuickRegisterDTO(Long customerId, String firstName,
-			String lastName, String email, Long mobile, Integer pin,
-			String status, Integer mobilePin, String emailHash,
-			Integer mobileVerificationAttempts, Date mobilePinSentTime,
-			Date emailHashSentTime, Date lastStatusChangedTime, String password,String passwordType) {
-		
+			String lastName, String email, Long mobile, Integer pincode,
+			Boolean isEmailVerified, Boolean isMobileVerified, Date insertTime,
+			Date updateTime, String updatedBy) {
+		super();
 		this.customerId = customerId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.mobile = mobile;
-		this.pin = pin;
-		this.status = status;
-		this.mobilePin = mobilePin;
-		this.emailHash = emailHash;
-		this.mobileVerificationAttempts = mobileVerificationAttempts;
-		this.mobilePinSentTime = mobilePinSentTime;
-		this.emailHashSentTime = emailHashSentTime;
-		this.lastStatusChangedTime = lastStatusChangedTime;
-		this.password = password;
-		this.passwordType=passwordType;
+		this.pincode = pincode;
+		this.isEmailVerified = isEmailVerified;
+		this.isMobileVerified = isMobileVerified;
+		this.insertTime = insertTime;
+		this.updateTime = updateTime;
+		this.updatedBy = updatedBy;
 	}
-
-
 
 	public Long getCustomerId() {
 		return customerId;
@@ -108,103 +92,64 @@ public class CustomerQuickRegisterDTO {
 		this.mobile = mobile;
 	}
 
-	public Integer getPin() {
-		return pin;
+	public Integer getPincode() {
+		return pincode;
 	}
 
-	public void setPin(Integer pin) {
-		this.pin = pin;
+	public void setPincode(Integer pincode) {
+		this.pincode = pincode;
 	}
 
-	public String getStatus() {
-		return status;
+	public Boolean getIsEmailVerified() {
+		return isEmailVerified;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setIsEmailVerified(Boolean isEmailVerified) {
+		this.isEmailVerified = isEmailVerified;
 	}
 
-	public Integer getMobilePin() {
-		return mobilePin;
+	public Boolean getIsMobileVerified() {
+		return isMobileVerified;
 	}
 
-	public void setMobilePin(Integer mobilePin) {
-		this.mobilePin = mobilePin;
+	public void setIsMobileVerified(Boolean isMobileVerified) {
+		this.isMobileVerified = isMobileVerified;
 	}
 
-	public String getEmailHash() {
-		return emailHash;
+	public Date getInsertTime() {
+		return insertTime;
 	}
 
-	public void setEmailHash(String emailHash) {
-		this.emailHash = emailHash;
+	public void setInsertTime(Date insertTime) {
+		this.insertTime = insertTime;
 	}
 
-	public Integer getMobileVerificationAttempts() {
-		return mobileVerificationAttempts;
+	public Date getUpdateTime() {
+		return updateTime;
 	}
 
-	public void setMobileVerificationAttempts(Integer mobileVerificationAttempts) {
-		this.mobileVerificationAttempts = mobileVerificationAttempts;
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 
-	public Date getMobilePinSentTime() {
-		return mobilePinSentTime;
+	public String getUpdatedBy() {
+		return updatedBy;
 	}
 
-	public void setMobilePinSentTime(Date mobilePinSentTime) {
-		this.mobilePinSentTime = mobilePinSentTime;
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
-
-	public Date getEmailHashSentTime() {
-		return emailHashSentTime;
-	}
-
-	public void setEmailHashSentTime(Date emailHashSentTime) {
-		this.emailHashSentTime = emailHashSentTime;
-	}
-
-	public Date getLastStatusChangedTime() {
-		return lastStatusChangedTime;
-	}
-
-	public void setLastStatusChangedTime(Date lastStatusChangedTime) {
-		this.lastStatusChangedTime = lastStatusChangedTime;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-
-	public String getPasswordType() {
-		return passwordType;
-	}
-
-
-	public void setPasswordType(String passwordType) {
-		this.passwordType = passwordType;
-	}
-
 
 	@Override
 	public String toString() {
 		return "CustomerQuickRegisterDTO [customerId=" + customerId
 				+ ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + ", mobile=" + mobile + ", pin=" + pin
-				+ ", status=" + status + ", mobilePin=" + mobilePin
-				+ ", emailHash=" + emailHash + ", mobileVerificationAttempts="
-				+ mobileVerificationAttempts + ", mobilePinSentTime="
-				+ mobilePinSentTime + ", emailHashSentTime="
-				+ emailHashSentTime + ", lastStatusChangedTime="
-				+ lastStatusChangedTime + ", password=" + password
-				+ ", passwordType=" + passwordType + "]";
+				+ ", email=" + email + ", mobile=" + mobile + ", pincode="
+				+ pincode + ", isEmailVerified=" + isEmailVerified
+				+ ", isMobileVerified=" + isMobileVerified + ", insertTime="
+				+ insertTime + ", updateTime=" + updateTime + ", updatedBy="
+				+ updatedBy + "]";
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -214,39 +159,24 @@ public class CustomerQuickRegisterDTO {
 				+ ((customerId == null) ? 0 : customerId.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result
-				+ ((emailHash == null) ? 0 : emailHash.hashCode());
-		result = prime
-				* result
-				+ ((emailHashSentTime == null) ? 0 : emailHashSentTime
-						.hashCode());
-		result = prime * result
 				+ ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result
+				+ ((insertTime == null) ? 0 : insertTime.hashCode());
+		result = prime * result
+				+ ((isEmailVerified == null) ? 0 : isEmailVerified.hashCode());
+		result = prime
+				* result
+				+ ((isMobileVerified == null) ? 0 : isMobileVerified.hashCode());
+		result = prime * result
 				+ ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime
-				* result
-				+ ((lastStatusChangedTime == null) ? 0 : lastStatusChangedTime
-						.hashCode());
 		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
+		result = prime * result + ((pincode == null) ? 0 : pincode.hashCode());
 		result = prime * result
-				+ ((mobilePin == null) ? 0 : mobilePin.hashCode());
-		result = prime
-				* result
-				+ ((mobilePinSentTime == null) ? 0 : mobilePinSentTime
-						.hashCode());
-		result = prime
-				* result
-				+ ((mobileVerificationAttempts == null) ? 0
-						: mobileVerificationAttempts.hashCode());
+				+ ((updateTime == null) ? 0 : updateTime.hashCode());
 		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
-		result = prime * result
-				+ ((passwordType == null) ? 0 : passwordType.hashCode());
-		result = prime * result + ((pin == null) ? 0 : pin.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
+				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -267,78 +197,56 @@ public class CustomerQuickRegisterDTO {
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		if (emailHash == null) {
-			if (other.emailHash != null)
-				return false;
-		} else if (!emailHash.equals(other.emailHash))
-			return false;
-		if (emailHashSentTime == null) {
-			if (other.emailHashSentTime != null)
-				return false;
-		} else if (!emailHashSentTime.equals(other.emailHashSentTime))
-			return false;
 		if (firstName == null) {
 			if (other.firstName != null)
 				return false;
 		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (insertTime == null) {
+			if (other.insertTime != null)
+				return false;
+		} else if (!insertTime.equals(other.insertTime))
+			return false;
+		if (isEmailVerified == null) {
+			if (other.isEmailVerified != null)
+				return false;
+		} else if (!isEmailVerified.equals(other.isEmailVerified))
+			return false;
+		if (isMobileVerified == null) {
+			if (other.isMobileVerified != null)
+				return false;
+		} else if (!isMobileVerified.equals(other.isMobileVerified))
 			return false;
 		if (lastName == null) {
 			if (other.lastName != null)
 				return false;
 		} else if (!lastName.equals(other.lastName))
 			return false;
-		if (lastStatusChangedTime == null) {
-			if (other.lastStatusChangedTime != null)
-				return false;
-		} else if (!lastStatusChangedTime.equals(other.lastStatusChangedTime))
-			return false;
 		if (mobile == null) {
 			if (other.mobile != null)
 				return false;
 		} else if (!mobile.equals(other.mobile))
 			return false;
-		if (mobilePin == null) {
-			if (other.mobilePin != null)
+		if (pincode == null) {
+			if (other.pincode != null)
 				return false;
-		} else if (!mobilePin.equals(other.mobilePin))
+		} else if (!pincode.equals(other.pincode))
 			return false;
-		if (mobilePinSentTime == null) {
-			if (other.mobilePinSentTime != null)
+		if (updateTime == null) {
+			if (other.updateTime != null)
 				return false;
-		} else if (!mobilePinSentTime.equals(other.mobilePinSentTime))
+		} else if (!updateTime.equals(other.updateTime))
 			return false;
-		if (mobileVerificationAttempts == null) {
-			if (other.mobileVerificationAttempts != null)
+		if (updatedBy == null) {
+			if (other.updatedBy != null)
 				return false;
-		} else if (!mobileVerificationAttempts
-				.equals(other.mobileVerificationAttempts))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (passwordType == null) {
-			if (other.passwordType != null)
-				return false;
-		} else if (!passwordType.equals(other.passwordType))
-			return false;
-		if (pin == null) {
-			if (other.pin != null)
-				return false;
-		} else if (!pin.equals(other.pin))
-			return false;
-		if (status == null) {
-			if (other.status != null)
-				return false;
-		} else if (!status.equals(other.status))
+		} else if (!updatedBy.equals(other.updatedBy))
 			return false;
 		return true;
 	}
 
-
-
 	
+
 	
 	
 	

@@ -11,12 +11,17 @@ import com.projectx.mvc.domain.CustomerQuickRegisterEntity;
 import com.projectx.mvc.domain.UpdatePasswordDTO;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
 import com.projectx.rest.domain.CustomerAuthenticationDetailsDTO;
+import com.projectx.rest.domain.CustomerEmailVerificationDetailsDTO;
 import com.projectx.rest.domain.CustomerIdDTO;
+import com.projectx.rest.domain.CustomerIdEmailDTO;
+import com.projectx.rest.domain.CustomerIdMobileDTO;
+import com.projectx.rest.domain.CustomerMobileVerificationDetailsDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterSavedEntityDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterStringStatusDTO;
 import com.projectx.rest.domain.LoginVerificationDTO;
 import com.projectx.rest.domain.VerifyEmailDTO;
+import com.projectx.rest.domain.VerifyEmailLoginDetails;
 import com.projectx.rest.domain.VerifyMobileDTO;
 @Component
 @Profile("Test")
@@ -27,8 +32,6 @@ public class CustomerQuickRegisterServiceFixture implements
 	public CustomerQuickRegisterStringStatusDTO checkIfAlreadyExist(
 			CustomerQuickRegisterEntity customerQuickRegisterEntity) {
 		// TODO Auto-generated method stub
-		//
-		//
 		return null;
 	}
 
@@ -46,6 +49,12 @@ public class CustomerQuickRegisterServiceFixture implements
 	}
 
 	@Override
+	public CustomerQuickRegisterDTO getByCustomerId(CustomerIdDTO customerIdDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public Boolean verifyMobile(VerifyMobileDTO mobileDTO) {
 		// TODO Auto-generated method stub
 		return null;
@@ -58,32 +67,25 @@ public class CustomerQuickRegisterServiceFixture implements
 	}
 
 	@Override
-	public Boolean reSendMobilePin(CustomerIdDTO customerDTO) {
+	public Boolean reSendMobilePin(CustomerIdMobileDTO customerDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Boolean reSendEmailHash(CustomerIdDTO customerDTO) {
+	public Boolean reSendEmailHash(CustomerIdEmailDTO customerDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void clearTestData() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public CustomerQuickRegisterDTO getByCustomerId(CustomerIdDTO customerIdDTO) {
+	public Boolean reSetMobilePin(CustomerIdMobileDTO customerDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CustomerAuthenticationDetailsDTO verifyLoginDetails(
-			LoginVerificationDTO loginVerificationDTO) {
+	public Boolean reSetEmailHash(CustomerIdEmailDTO customerDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -94,16 +96,9 @@ public class CustomerQuickRegisterServiceFixture implements
 		return null;
 	}
 
-
 	@Override
-	public CustomerDocumetDTO saveCustomerDocumet(
-			CustomerDocumetDTO customerDocumetDTO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public CustomerDocumetDTO getCustomerDocumetById(Long customerId) {
+	public CustomerAuthenticationDetailsDTO verifyLoginDetails(
+			LoginVerificationDTO loginVerificationDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -119,6 +114,54 @@ public class CustomerQuickRegisterServiceFixture implements
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void clearTestData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public CustomerEmailVerificationDetailsDTO getEmailVerificationDetailsByCustomerIdAndEmail(
+			Long customerId, String email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomerMobileVerificationDetailsDTO getMobileVerificationDetailsByCustomerIdAndMobile(
+			Long customerId, Long mobile) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomerAuthenticationDetailsDTO getAuthenticationDetailsByCustomerId(
+			Long customerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomerDocumetDTO saveCustomerDocumet(
+			CustomerDocumetDTO customerDocumetDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomerDocumetDTO getCustomerDocumetById(Long customerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomerAuthenticationDetailsDTO verifyEmailLoginDetails(
+			VerifyEmailLoginDetails emailLoginDetails) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 

@@ -10,14 +10,11 @@
 	Hi <p th:text="${customerQuickRegisterDTO.firstName}" ></p>
 	<p th:text="${customerQuickRegisterDTO.lastName}"></p>
     
-    <p th:text="${customerQuickRegisterDTO.mobile}"></p>
-    <p th:text="${customerQuickRegisterDTO.email}"></p>
-    <p th:text="${customerQuickRegisterDTO.pin}"></p>
-    <p th:text="${customerQuickRegisterDTO.status}"></p>
-    
+       
     
     <form action="/customer/quickregister/verifyMobilePin" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
+    <input id="mobile" name="mobile" type="hidden" th:value="${customerQuickRegisterDTO.mobile}"/>
     Enter verification Pin:<input id="mobilePin" name="mobilePin" type="text"/>
     
     <input type="submit" value="Submit" />
@@ -25,14 +22,14 @@
     
     <form action="/customer/quickregister/resendMobilePin" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
-    
+    <input id="mobile" name="mobile" type="hidden" th:value="${customerQuickRegisterDTO.mobile}"/>
     
     <input type="submit" value="Resend Pin" />       
     </form>
     
     <form action="/customer/quickregister/resendEmailHash" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
-    
+    <input id="email" name="email" type="hidden" th:value="${customerQuickRegisterDTO.email}"/>
     
     <input type="submit" value="Resend Email" />       
     </form>

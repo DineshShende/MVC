@@ -11,36 +11,37 @@ import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixtu
 public class CustomerAuthenticationDetailsDataFixtures {
 	
 	
+	public static Integer ZERO_COUNT=0;
+	
 	public static CustomerAuthenticationDetailsDTO standardCustomerEmailMobileAuthenticationDetails()
 	{
-		return new CustomerAuthenticationDetailsDTO(CUST_ID, CUST_EMAIL, CUST_MOBILE, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT);
+		return new CustomerAuthenticationDetailsDTO(CUST_ID, CUST_EMAIL, CUST_MOBILE, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT, CUST_EMAILHASH, ZERO_COUNT, ZERO_COUNT);
 	}
 	
 	public static CustomerAuthenticationDetailsDTO standardCustomerEmailAuthenticationDetails()
 	{
-		return new CustomerAuthenticationDetailsDTO(CUST_ID, CUST_EMAIL, null, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT);
+		return new CustomerAuthenticationDetailsDTO(CUST_ID, CUST_EMAIL, null, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT, CUST_EMAILHASH, ZERO_COUNT, ZERO_COUNT);
 	}
 
 	public static CustomerAuthenticationDetailsDTO standardCustomerMobileAuthenticationDetails()
 	{
-		return new CustomerAuthenticationDetailsDTO(CUST_ID, null, CUST_MOBILE, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT);
+		return new CustomerAuthenticationDetailsDTO(CUST_ID, null, CUST_MOBILE, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT, null, ZERO_COUNT, ZERO_COUNT);
 	}
 
 	public static CustomerAuthenticationDetailsDTO standardCustomerEmailMobileAuthenticationDetailsWithNewPassword()
 	{
-		return new CustomerAuthenticationDetailsDTO(CUST_ID, CUST_EMAIL, CUST_MOBILE, CUST_PASSWORD_CHANGED, CUST_PASSWORD_TYPE_CHANGED);
+		return new CustomerAuthenticationDetailsDTO(CUST_ID, CUST_EMAIL, CUST_MOBILE, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT, CUST_EMAILHASH, ZERO_COUNT, ZERO_COUNT);
 	}
 	
 	public static CustomerAuthenticationDetailsDTO standardCustomerEmailAuthenticationDetailsWithNewPassword()
 	{
-		return new CustomerAuthenticationDetailsDTO(CUST_ID, CUST_EMAIL, null, CUST_PASSWORD_CHANGED, CUST_PASSWORD_TYPE_CHANGED);
+		return new CustomerAuthenticationDetailsDTO(CUST_ID, CUST_EMAIL, null, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT, CUST_EMAILHASH, ZERO_COUNT, ZERO_COUNT);
 	}
 
 	public static CustomerAuthenticationDetailsDTO standardCustomerMobileAuthenticationDetailsWithNewPassword()
 	{
-		return new CustomerAuthenticationDetailsDTO(CUST_ID, null, CUST_MOBILE, CUST_PASSWORD_CHANGED, CUST_PASSWORD_TYPE_CHANGED);
+		return new CustomerAuthenticationDetailsDTO(CUST_ID, null, CUST_MOBILE, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT, null, ZERO_COUNT, ZERO_COUNT);
 	}
-
 	
 	
 

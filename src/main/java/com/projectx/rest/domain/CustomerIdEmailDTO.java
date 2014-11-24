@@ -1,22 +1,19 @@
 package com.projectx.rest.domain;
 
-public class VerifyEmailDTO {
+public class CustomerIdEmailDTO {
 	
 	private Long customerId;
 	
 	private String email;
-	
-	private String emailHash;
-	
-	public VerifyEmailDTO() {
+
+	public CustomerIdEmailDTO() {
 		super();
 	}
 
-	public VerifyEmailDTO(Long customerId, String email, String emailHash) {
+	public CustomerIdEmailDTO(Long customerId, String email) {
 		super();
 		this.customerId = customerId;
 		this.email = email;
-		this.emailHash = emailHash;
 	}
 
 	public Long getCustomerId() {
@@ -35,20 +32,6 @@ public class VerifyEmailDTO {
 		this.email = email;
 	}
 
-	public String getEmailHash() {
-		return emailHash;
-	}
-
-	public void setEmailHash(String emailHash) {
-		this.emailHash = emailHash;
-	}
-
-	@Override
-	public String toString() {
-		return "VerifyEmailDTO [customerId=" + customerId + ", email=" + email
-				+ ", emailHash=" + emailHash + "]";
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -56,8 +39,6 @@ public class VerifyEmailDTO {
 		result = prime * result
 				+ ((customerId == null) ? 0 : customerId.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result
-				+ ((emailHash == null) ? 0 : emailHash.hashCode());
 		return result;
 	}
 
@@ -69,7 +50,7 @@ public class VerifyEmailDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		VerifyEmailDTO other = (VerifyEmailDTO) obj;
+		CustomerIdEmailDTO other = (CustomerIdEmailDTO) obj;
 		if (customerId == null) {
 			if (other.customerId != null)
 				return false;
@@ -80,15 +61,10 @@ public class VerifyEmailDTO {
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		if (emailHash == null) {
-			if (other.emailHash != null)
-				return false;
-		} else if (!emailHash.equals(other.emailHash))
-			return false;
 		return true;
 	}
-
-
 	
 	
+	
+
 }

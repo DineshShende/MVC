@@ -72,56 +72,64 @@ public class CustomerQuickRegisterDataConstants {
 	public static String MSG_REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED_EMAIL_VERIFIED="Provided Email And Mobile Already Registered.Click here to verify to email";
 	
 	
+	public static Boolean CUST_ISEMAIL_VERIFIED=false;
+	public static Boolean CUST_ISMOBILE_VERIFIED=false;
+	
+	public static Date CUST_INSERT_TIME=new Date();
+	public static Date CUST_UPDATE_TIME=new Date();
+	
+	public static String CUST_UPDATED_BY="CUST_ONLINE";
+	
 	//private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 	public static CustomerQuickRegisterDTO standardEmailMobileCustomer()
 	{
-		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL,CUST_MOBILE, CUST_PIN,CUST_STATUS_EMAILMOBILE, CUST_MOBILEPIN, CUST_EMAILHASH,CUST_MOBILEPIN_VERIFICATION_ATTEMPTS,CUST_MOBILE_PIN_SENT_TIME,CUST_EMAIL_HASH_SENT_TIME,CUST_LAST_STATUS_CHANGED_TIME,CUST_PASSWORD,CUST_PASSWORD_TYPE_DEFAULT);
+		return new CustomerQuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, CUST_MOBILE, CUST_PIN, CUST_ISEMAIL_VERIFIED, CUST_ISMOBILE_VERIFIED, CUST_INSERT_TIME, CUST_UPDATE_TIME, CUST_UPDATED_BY);
 		
 	}
 	
 	public static CustomerQuickRegisterDTO standardMobileCustomer()
 	{
-		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME, null,CUST_MOBILE, CUST_PIN,CUST_STATUS_MOBILE, CUST_MOBILEPIN, null,CUST_MOBILEPIN_VERIFICATION_ATTEMPTS,CUST_MOBILE_PIN_SENT_TIME,null,CUST_LAST_STATUS_CHANGED_TIME,CUST_PASSWORD,CUST_PASSWORD_TYPE_DEFAULT);
+		return new CustomerQuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, null, CUST_PIN, CUST_ISEMAIL_VERIFIED, null, CUST_INSERT_TIME, CUST_UPDATE_TIME, CUST_UPDATED_BY);
 		
 	}
 	
 	public static CustomerQuickRegisterDTO standardEmailCustomer()
 	{
-		return new CustomerQuickRegisterDTO(CUST_ID,CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL,null, CUST_PIN,CUST_STATUS_EMAIL, null, CUST_EMAILHASH,CUST_MOBILEPIN_VERIFICATION_ATTEMPTS,null,CUST_EMAIL_HASH_SENT_TIME,CUST_LAST_STATUS_CHANGED_TIME,CUST_PASSWORD,CUST_PASSWORD_TYPE_DEFAULT);
+		return new CustomerQuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, null, CUST_PIN, CUST_ISEMAIL_VERIFIED, null, CUST_INSERT_TIME, CUST_UPDATE_TIME, CUST_UPDATED_BY);
 		
 	}
 
 	
 	public static CustomerQuickRegisterEntity standardEmailCustomerDTO()
 	{
-		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN,CUST_STATUS_EMAIL);
+		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN);
 	}
 			
 	public static CustomerQuickRegisterEntity standardMobileCustomerDTO()
 	{
-		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN,CUST_STATUS_MOBILE);
+		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN);
 	}
 	
 	public static CustomerQuickRegisterEntity standardEmailMobileCustomerDTO()
 	{
-		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN,CUST_STATUS_EMAILMOBILE);
+		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN);
 	}
 	
 	
 	public static CustomerQuickRegisterEntity standardEmailCustomerDTOWithOutStatus()
 	{
-		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN,null);
+		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN);
 	}
 	
 	public static CustomerQuickRegisterEntity standardMobileCustomerDTOWithOutStatus()
 	{
-		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN,null);
+		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN);
 	}
 	
 	public static CustomerQuickRegisterEntity standardEmailMobileCustomerDTOWithOutStatus()
 	{
-		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN,null);
+		return new CustomerQuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN);
 	}
 	
 

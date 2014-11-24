@@ -23,71 +23,32 @@ public class CustomerQuickRegisterEntity {
 	private Long mobile;
 
 	private Integer pin;
-	private String status;
+	
 	
 	
 	public CustomerQuickRegisterEntity() {
-		super();
+
 	}
 
-	
-	
-	
+
 
 	public CustomerQuickRegisterEntity(String firstName, String lastName,
-			String email, Long mobile, Integer pin, String status) {
-		super();
+			String email, Long mobile, Integer pin) {
+
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.mobile = mobile;
 		this.pin = pin;
-		this.status = status;
 	}
 
 
-
-
-	@JsonIgnore
-	public boolean isEmailVerificationPending() {
-		return status == "EmailVerificationPending";
-	}
-	@JsonIgnore
-	public boolean isMobileVerificationPending() {
-		return status == "MobileVerificationPending";
-	}
-	@JsonIgnore
-	public boolean isEmailVerifiedMobileVerficationPending() {
-		return status == "EmailVerifiedMobileVerficationPending";
-	}
-	@JsonIgnore
-	public boolean isMobileVerifiedEmailVerficationPending() {
-		return status == "MobileVerifiedEmailVerficationPending";
-	}
-	@JsonIgnore
-	public boolean isMobileVerified() {
-		return status == "MobileVerified";
-	}
-	@JsonIgnore
-	public boolean isEmailVerified() {
-		return status == "EmailVerified";
-	}
-	@JsonIgnore
-	public boolean isEmailMobileVerified() {
-		return status == "EmailMobileVerified";
-	}
-	@JsonIgnore
-	public boolean isEmailMobileVerificationPending() {
-		return status == "EmailMobileVerificationPending";
-	}
-
-
-
+	
+	
 
 	public String getFirstName() {
 		return firstName;
 	}
-
 
 
 
@@ -97,11 +58,9 @@ public class CustomerQuickRegisterEntity {
 
 
 
-
 	public String getLastName() {
 		return lastName;
 	}
-
 
 
 
@@ -111,11 +70,9 @@ public class CustomerQuickRegisterEntity {
 
 
 
-
 	public String getEmail() {
 		return email;
 	}
-
 
 
 
@@ -125,11 +82,9 @@ public class CustomerQuickRegisterEntity {
 
 
 
-
 	public Long getMobile() {
 		return mobile;
 	}
-
 
 
 
@@ -139,11 +94,9 @@ public class CustomerQuickRegisterEntity {
 
 
 
-
 	public Integer getPin() {
 		return pin;
 	}
-
 
 
 
@@ -153,30 +106,73 @@ public class CustomerQuickRegisterEntity {
 
 
 
-
-	public String getStatus() {
-		return status;
-	}
-
-
-
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-
-
-
-
 	@Override
 	public String toString() {
 		return "CustomerQuickRegisterEntity [firstName=" + firstName
 				+ ", lastName=" + lastName + ", email=" + email + ", mobile="
-				+ mobile + ", pin=" + pin + ", status=" + status + "]";
+				+ mobile + ", pin=" + pin + "]";
 	}
 
 
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result
+				+ ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result
+				+ ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
+		result = prime * result + ((pin == null) ? 0 : pin.hashCode());
+		return result;
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CustomerQuickRegisterEntity other = (CustomerQuickRegisterEntity) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (mobile == null) {
+			if (other.mobile != null)
+				return false;
+		} else if (!mobile.equals(other.mobile))
+			return false;
+		if (pin == null) {
+			if (other.pin != null)
+				return false;
+		} else if (!pin.equals(other.pin))
+			return false;
+		return true;
+	}
+
+	
+	
+	
+
+	
 	
 	
 	

@@ -43,7 +43,7 @@ public class CustomerQuickRegisterStandAloneTest {
 	    
 	}
 	
-/*	
+	
 	@Test
 	public void verifyLoginDetailsEmailAsUserId() throws Exception
 	{
@@ -107,8 +107,8 @@ public class CustomerQuickRegisterStandAloneTest {
 				.andExpect(view().name("loginForm"));
 		
 	}
-*/
-	
+
+	/*
 	@Test
 	public void resetPasswordRedirect() throws Exception
 	{
@@ -122,6 +122,7 @@ public class CustomerQuickRegisterStandAloneTest {
 				.andExpect(view().name("alreadyRegistered"));
 
 	}
+	*/
 	
 /*	
 	@Test
