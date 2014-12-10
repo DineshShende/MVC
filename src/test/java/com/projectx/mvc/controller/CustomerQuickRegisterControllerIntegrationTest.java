@@ -1,18 +1,21 @@
 package com.projectx.mvc.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.CUST_EMAIL;
+import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.CUST_FIRSTNAME;
+import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.CUST_LASTNAME;
+import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.CUST_MOBILE;
+import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.CUST_PIN;
+import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.standardEmailMobileCustomerDTO;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static com.projectx.mvc.controller.fixtues.CustomerQuickRegisterDataFixture.*;
-import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,12 +23,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.projectx.mvc.config.Application;
-import com.projectx.mvc.domain.CustomerQuickRegisterMVCDTO;
 import com.projectx.mvc.services.CustomerQuickRegisterService;
 import com.projectx.rest.domain.CustomerEmailVerificationDetailsDTO;
 import com.projectx.rest.domain.CustomerMobileVerificationDetailsDTO;
 import com.projectx.rest.domain.CustomerQuickRegisterDTO;
-import com.projectx.rest.domain.CustomerQuickRegisterSavedEntityDTO;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

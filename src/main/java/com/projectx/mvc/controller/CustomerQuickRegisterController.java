@@ -330,6 +330,8 @@ public class CustomerQuickRegisterController {
             try {
                 byte[] bytes = file.getBytes();
                 
+                
+                
                 System.out.println(file.getContentType());
                 
                 customerDocumetDTO.setCustomerId(212L);
