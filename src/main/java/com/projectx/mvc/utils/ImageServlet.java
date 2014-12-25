@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.projectx.mvc.domain.CustomerDocumetDTO;
-import com.projectx.mvc.services.CustomerQuickRegisterService;
+import com.projectx.mvc.domain.quickregister.CustomerDocumetDTO;
+import com.projectx.mvc.services.quickregister.QuickRegisterService;
 
 public class ImageServlet {
 
 	@Autowired
-	CustomerQuickRegisterService customerQuickRegisterService;
+	QuickRegisterService customerQuickRegisterService;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
