@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.projectx.mvc.config.BasicConfig;
 import com.projectx.mvc.domain.quickregister.CustomerDocumetDTO;
@@ -19,6 +20,7 @@ import com.projectx.mvc.domain.quickregister.QuickRegisterEntity;
 import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
+import com.projectx.rest.domain.quickregister.AuthenticationDetailsKey;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailDTO;
@@ -30,7 +32,7 @@ import com.projectx.rest.domain.quickregister.QuickRegisterStringStatusDTO;
 import com.projectx.rest.domain.quickregister.LoginVerificationDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailDTO;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
-
+import static com.projectx.mvc.fixtures.completeregister.CustomerDetailsDataFixtures.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BasicConfig.class)
@@ -312,7 +314,7 @@ public class CustomerQuickRegisterTest {
 	{
 		QuickRegisterSavedEntityDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
 		
-		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(savedEntityResult.getCustomer().getCustomerId(),CUST_TYPE,
+		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(new AuthenticationDetailsKey(savedEntityResult.getCustomer().getCustomerId(),CUST_TYPE),
 																									"654321")));
 	}
 
@@ -329,7 +331,7 @@ public class CustomerQuickRegisterTest {
 		assertTrue(customerQuickRegisterService.verifyMobile(new VerifyMobileDTO(savedEntityResult.getCustomerId(),CUST_TYPE,savedEntityResult.getMobile(),
 				mobileVerificationDetails.getMobilePin())));
 		
-		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(savedEntityResult.getCustomerId(),CUST_TYPE,
+		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(new AuthenticationDetailsKey(savedEntityResult.getCustomerId(),CUST_TYPE),
 				CUST_PASSWORD_CHANGED)));
 		
 		assertNotNull(customerQuickRegisterService.verifyLoginDetails(new LoginVerificationDTO(savedEntityResult.getEmail(),
@@ -351,6 +353,33 @@ public class CustomerQuickRegisterTest {
 		assertNotNull(customerQuickRegisterService.resetPasswordRedirect(CUST_EMAIL).getCustomerId());
 		
 		assertNotNull(customerQuickRegisterService.resetPasswordRedirect(Long.toString(CUST_MOBILE)).getCustomerId());
+	}
+	
+	
+	@Test
+	public void populateCompleteRegisterRedirect()
+	{
+		QuickRegisterSavedEntityDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
+		
+		AuthenticationDetailsDTO result=customerQuickRegisterService
+				.getAuthenticationDetailsByCustomerIdType(savedEntityResult.getCustomer().getCustomerId(), savedEntityResult.getCustomer().getCustomerType());
+		
+		assertNotNull(result.getKey());
+		
+		ModelAndView resultModelAndView=customerQuickRegisterService.populateCompleteRegisterRedirect(result);
+		
+		//System.out.println(resultModelAndView.getModel().get("customerDetails"));
+		
+		assertEquals(standardCustomerDetailsCopiedFromQuickRegisterEntity(), resultModelAndView.getModel().get("customerDetails"));
+		
+		assertEquals("customerDetailsForm",resultModelAndView.getViewName());
+		
+		resultModelAndView=customerQuickRegisterService.populateCompleteRegisterRedirect(result);
+		
+		assertEquals(standardCustomerDetailsCopiedFromQuickRegisterEntity(), resultModelAndView.getModel().get("customerDetails"));
+		
+		assertEquals("showCustomerDetails",resultModelAndView.getViewName());
+		
 	}
 	
 	/*

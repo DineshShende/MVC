@@ -14,6 +14,7 @@
     
     <form action="/customer/quickregister/verifyMobilePin" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
+    <input id="customerType" name="customerType" type="hidden" th:value="1"/>
     <input id="mobile" name="mobile" type="hidden" th:value="${customerQuickRegisterDTO.mobile}"/>
     Enter verification Pin:<input id="mobilePin" name="mobilePin" type="text"/>
     
@@ -22,6 +23,7 @@
     
     <form action="/customer/quickregister/resendMobilePin" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
+    <input id="customerType" name="customerType" type="hidden" th:value="1"/>
     <input id="mobile" name="mobile" type="hidden" th:value="${customerQuickRegisterDTO.mobile}"/>
     
     <input type="submit" value="Resend Pin" />       
@@ -29,6 +31,7 @@
     
     <form action="/customer/quickregister/resendEmailHash" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
+    <input id="customerType" name="customerType" type="hidden" th:value="1"/>
     <input id="email" name="email" type="hidden" th:value="${customerQuickRegisterDTO.email}"/>
     
     <input type="submit" value="Resend Email" />       

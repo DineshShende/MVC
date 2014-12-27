@@ -46,7 +46,7 @@ public class QuickRegisterStandAloneTest {
 	
 	
 	@Test
-	public void verifyLoginDetailsEmailAsUserId() throws Exception
+	public void verifyLoginDetailsEmailAsUserIdProceedToForcefulPasswordChange() throws Exception
 	{
 		when(customerQuickRegisterService.verifyLoginDetails(standardLoginVerificationWithEmail())).thenReturn(standardCustomerEmailMobileAuthenticationDetails());
 		
@@ -68,7 +68,9 @@ public class QuickRegisterStandAloneTest {
 			
 	
 	}
-
+	
+	
+	
 
 	@Test
 	public void verifyLoginDetailsMobileAsUserId() throws Exception
@@ -100,8 +102,8 @@ public class QuickRegisterStandAloneTest {
 		when(customerQuickRegisterService.updatePassword(standardUpdatePassword())).thenReturn(true);
 		
 		this.mockMvc.perform(
-				post("/customer/quickregister/updatePassword").param("customerId",Long.toString(CUST_ID))
-												.param("customerType", Integer.toString(CUST_TYPE))
+				post("/customer/quickregister/updatePassword").param("key.customerId",Long.toString(CUST_ID))
+												.param("key.customerType", Integer.toString(CUST_TYPE))
 											   .param("password", CUST_PASSWORD_CHANGED)
 											   											  
 											)

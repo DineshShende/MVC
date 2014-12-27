@@ -1,5 +1,7 @@
 package com.projectx.mvc.servicehandler.completeregister;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
@@ -30,6 +32,8 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 	@Override
 	public CustomerDetailsDTO createCustomerDetailsFromQuickRegisterEntity(
 			QuickRegisterDTO quickRegisterEntity) {
+		
+		System.out.println("Before REST"+quickRegisterEntity);
 		
 		CustomerDetailsDTO status=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/createFromQuickRegister", quickRegisterEntity, CustomerDetailsDTO.class);
 		
@@ -109,6 +113,56 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 		
 		return count;
 		
+	}
+
+	@Override
+	public CustomerDetailsDTO getCustomerDetailsById(Long customerId) {
+
+		CustomerDetailsDTO customerDetailsDTO=restTemplate
+				.getForObject(env.getProperty("rest.host")+"/customer/getCustomerDetailsById/"+customerId, CustomerDetailsDTO.class);
+		
+		return customerDetailsDTO;
+
+	}
+
+	@Override
+	public CustomerDetailsDTO InitializeMetaData(
+			CustomerDetailsDTO customerDetails) {
+		
+		if(customerDetails.getUpdatedBy()==null)
+			customerDetails.setUpdatedBy("CUST_ONLINE");
+		
+		customerDetails.setUpdateTime(new Date());
+			
+		if(customerDetails.getInsertTime()==null)
+			customerDetails.setInsertTime(new Date());
+		
+		if(customerDetails.getHomeAddressId()!=null)
+		{
+			if(customerDetails.getHomeAddressId().getUpdatedBy()==null)
+				customerDetails.getHomeAddressId().setUpdatedBy("CUST_ONLINE");
+			
+			customerDetails.getHomeAddressId().setUpdateTime(new Date());
+			
+			if(customerDetails.getHomeAddressId().getInsertTime()==null)
+				customerDetails.getHomeAddressId().setInsertTime(new Date());
+			
+		}
+		
+		if(customerDetails.getFirmAddressId()!=null)
+		{
+			if(customerDetails.getFirmAddressId().getUpdatedBy()==null)
+				customerDetails.getFirmAddressId().setUpdatedBy("CUST_ONLINE");
+			
+			customerDetails.getFirmAddressId().setUpdateTime(new Date());
+			
+			if(customerDetails.getFirmAddressId().getInsertTime()==null)
+				customerDetails.getFirmAddressId().setInsertTime(new Date());
+			
+			
+		}
+		
+		return customerDetails;
 	}
 
 }

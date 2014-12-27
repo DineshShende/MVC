@@ -1,11 +1,11 @@
 package com.projectx.mvc.domain.quickregister;
 
+import com.projectx.rest.domain.quickregister.AuthenticationDetailsKey;
+
 public class UpdatePasswordDTO {
 	
-	private Long customerId;
-	
-	private Integer customerType;
-	
+	private AuthenticationDetailsKey key;
+
 	private String password;
 
 	
@@ -14,24 +14,24 @@ public class UpdatePasswordDTO {
 
 	}
 
-	public UpdatePasswordDTO(Long customerId, Integer customerType,
-			String password) {
 
-		this.customerId = customerId;
-		this.customerType = customerType;
+
+	public UpdatePasswordDTO(AuthenticationDetailsKey key, String password) {
+		super();
+		this.key = key;
 		this.password = password;
 	}
 
 
 
-	public Long getCustomerId() {
-		return customerId;
+	public AuthenticationDetailsKey getKey() {
+		return key;
 	}
 
 
 
-	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
+	public void setKey(AuthenticationDetailsKey key) {
+		this.key = key;
 	}
 
 
@@ -47,33 +47,25 @@ public class UpdatePasswordDTO {
 	}
 
 
-	public Integer getCustomerType() {
-		return customerType;
-	}
-
-	public void setCustomerType(Integer customerType) {
-		this.customerType = customerType;
-	}
 
 	@Override
 	public String toString() {
-		return "UpdatePasswordDTO [customerId=" + customerId
-				+ ", customerType=" + customerType + ", password=" + password
-				+ "]";
+		return "UpdatePasswordDTO [key=" + key + ", password=" + password + "]";
 	}
+
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((customerId == null) ? 0 : customerId.hashCode());
-		result = prime * result
-				+ ((customerType == null) ? 0 : customerType.hashCode());
+		result = prime * result + ((key == null) ? 0 : key.hashCode());
 		result = prime * result
 				+ ((password == null) ? 0 : password.hashCode());
 		return result;
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -84,15 +76,10 @@ public class UpdatePasswordDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		UpdatePasswordDTO other = (UpdatePasswordDTO) obj;
-		if (customerId == null) {
-			if (other.customerId != null)
+		if (key == null) {
+			if (other.key != null)
 				return false;
-		} else if (!customerId.equals(other.customerId))
-			return false;
-		if (customerType == null) {
-			if (other.customerType != null)
-				return false;
-		} else if (!customerType.equals(other.customerType))
+		} else if (!key.equals(other.key))
 			return false;
 		if (password == null) {
 			if (other.password != null)
@@ -104,5 +91,4 @@ public class UpdatePasswordDTO {
 
 	
 	
-
 }

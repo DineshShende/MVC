@@ -49,6 +49,8 @@ public interface QuickRegisterService {
 	
 	public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO);
 	
+	public ModelAndView populateCompleteRegisterRedirect(AuthenticationDetailsDTO authenticationDetailsDTO);
+	
 	//TODO
 	//public Boolean forgotPassword(String entity);
 	

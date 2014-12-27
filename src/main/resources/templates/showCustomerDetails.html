@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+
+ <table>
+                <tr>
+                    <td>FirstName:</td>
+                    <td ><p th:text="${customerDetails.firstName}"/> </td>
+               
+                </tr>
+                <tr>
+                    <td>LastName:</td>
+                    <td><p th:text="${customerDetails.lastName}"/></td>
+               
+                </tr>
+                <tr>
+                    <td>Mobile:</td>
+                    <td><p th:text="${customerDetails.mobile}"/></td>
+               		<td><form th:if="${customerDetails.isMobileVerified==false}" action="/customer/sendMobileVerificationDetails" method="post">
+               				<input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
+    						<input id="customerType" name="customerType" type="hidden" th:value="1"/>
+    						<input id="mobile" name="mobile" type="hidden" th:value="${customerDetails.mobile}"/>
+        					<input type="submit" value="Send Verification SMS" />
+               		</form></td>
+               		
+               		<td><form th:if="${customerDetails.isMobileVerified==false}" action="/customer/verifyMobileDetails" method="post">
+               				<input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
+    						<input id="customerType" name="customerType" type="hidden" th:value="1"/>
+    						<input id="mobile" name="mobile" type="hidden" th:value="${customerDetails.mobile}"/>
+    						<input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
+    						<input id="mobilePin" name="mobilePin" type="text"/>
+        					<input type="submit" value="VerifyMobile" />
+               		</form></td>
+               		
+               		
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><p th:text="${customerDetails.email}"/></td>
+               		<td><form th:if="${customerDetails.isEmailVerified==false}" action="/customer/sendEmailVerificationDetails" method="post">
+               				<input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
+    						<input id="customerType" name="customerType" type="hidden" th:value="1"/>
+    						<input id="email" name="email" type="hidden" th:value="${customerDetails.email}"/>
+        					<input type="submit" value="Send Verification Email" />
+               		</form></td>
+               		
+                </tr>
+    
+               <tr></tr>
+               <tr></tr>
+               <tr></tr>
+                <tr>
+                    <td>Home Address AddressLine:</td>
+                    <td><p th:if="${customerDetails.homeAddressId!=null}" th:text="${customerDetails.homeAddressId.addressLine}"/>
+                    	
+                    </td>
+               
+                </tr> 
+               
+               <tr>
+                    <td>Home Address City:</td>
+                    <td><p th:if="${customerDetails.homeAddressId!=null}" th:text="${customerDetails.homeAddressId.city}"/>
+                    	
+                    </td>
+               
+                </tr> 
+                
+                <tr>
+                    <td>Home Address District:</td>
+                    <td><p th:if="${customerDetails.homeAddressId!=null}" th:text="${customerDetails.homeAddressId.district}"/>
+                    </td>
+               
+                </tr> 
+               
+               <tr>
+                    <td>Home Address State:</td>
+                    <td><p th:if="${customerDetails.homeAddressId!=null}" th:text="${customerDetails.homeAddressId.state}"/>
+                    	
+                    </td>
+               
+                </tr> 
+               
+               
+               <tr>
+                    <td>Home Address Pincode:</td>
+                    <td><p th:if="${customerDetails.homeAddressId!=null}" th:text="${customerDetails.homeAddressId.pincode}"/>
+                    	
+                    </td>
+               
+                </tr>
+                
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr>
+                    <td>Language:</td>
+                    <td> <p th:if="${customerDetails.language!=null}" th:text="${customerDetails.firstName}"/>
+                    
+                    </td>
+               </tr>
+                
+                <tr>
+                    <td>Business Domain:</td>
+                    <td> <p th:if="${customerDetails.businessDomain!=null}" th:text="${customerDetails.businessDomain}"/>
+                    
+                    </td>
+               </tr>
+               
+               
+               <tr></tr>
+               <tr></tr>
+               <tr></tr>
+               
+               <tr>
+                    <td>Name Of Firm:</td>
+                    <td> <p th:if="${customerDetails.nameOfFirm!=null}" th:text="${customerDetails.nameOfFirm}"/>
+                    
+                    </td>
+               </tr>
+                
+                         
+                          
+                 <tr>
+                    <td>Firm Address AddressLine:</td>
+                    <td><p th:if="${customerDetails.firmAddressId!=null}" th:text="${customerDetails.firmAddressId.addressLine}"/>
+                    	
+                    </td>
+               
+                </tr> 
+               
+               <tr>
+                    <td>Firm Address City:</td>
+                    <td><p th:if="${customerDetails.firmAddressId!=null}" th:text="${customerDetails.firmAddressId.city}"/>
+                    	
+                    </td>
+               
+                </tr> 
+                
+                <tr>
+                    <td>Firm Address District:</td>
+                    <td><p th:if="${customerDetails.firmAddressId!=null}" th:text="${customerDetails.firmAddressId.district}"/>
+                    	
+                    </td>
+               
+                </tr> 
+               
+               <tr>
+                    <td>Firm Address State:</td>
+                    <td><p th:if="${customerDetails.firmAddressId!=null}" th:text="${customerDetails.firmAddressId.state}"/>
+                    	
+                    </td>
+               
+                </tr> 
+               
+               
+               <tr>
+                    <td>Firm Address Pincode:</td>
+                    <td><p th:if="${customerDetails.firmAddressId!=null}" th:text="${customerDetails.firmAddressId.pincode}"/>
+                    	
+                    </td>
+               
+                </tr>
+               
+               <tr></tr>
+               <tr></tr>
+               <tr></tr>
+               
+                
+                <tr>
+                    <td>Secondary Mobile:</td>
+                    <td> <p th:if="${customerDetails.secondaryMobile!=null}" th:text="${customerDetails.secondaryMobile}"/>
+                    </td>
+                    
+                    <td><form th:if="${customerDetails.isSecondaryMobileVerified==false}" action="/customer/sendMobileVerificationDetails" method="post">
+               				<input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
+    						<input id="customerType" name="customerType" type="hidden" th:value="1"/>
+    						<input id="mobile" name="mobile" type="hidden" th:value="${customerDetails.secondaryMobile}"/>
+        					<input type="submit" value="Send Verification SMS" />
+               		</form></td>
+               		
+               		<td><form th:if="${customerDetails.isSecondaryMobileVerified==false}" action="/customer/verifyMobileDetails" method="post">
+               				<input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
+    						<input id="customerType" name="customerType" type="hidden" th:value="1"/>
+    						<input id="mobile" name="mobile" type="hidden" th:value="${customerDetails.secondaryMobile}"/>
+    						<input id="mobileType" name="mobileType" type="hidden" th:value="2"/>
+    						<input id="mobilePin" name="mobilePin" type="text"/>
+        					<input type="submit" value="VerifyMobile" />
+               		</form></td>
+                    
+                    
+               </tr> 
+                
+                <tr>
+                    <td>Secondary Email:</td>
+                    <td> <p th:if="${customerDetails.secondaryEmail!=null}" th:text="${customerDetails.secondaryEmail}"/>
+                    
+                    </td>
+               </tr> 
+                               
+         </table>
+
+</body>
+</html>

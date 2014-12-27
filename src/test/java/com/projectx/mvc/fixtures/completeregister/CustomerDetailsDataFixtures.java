@@ -26,6 +26,8 @@ public class CustomerDetailsDataFixtures {
 	
 	public static Date CUST_DATE=new Date();
 	
+	public static Boolean CUST_VERIFICATION_FLAG=false;
+	
 	//static Gson gson=new Gson();
 	
 	
@@ -44,7 +46,7 @@ public class CustomerDetailsDataFixtures {
 		return new CustomerDetailsDTO(standardEmailMobileCustomer().getCustomerId(), standardEmailMobileCustomer().getFirstName(),
 				standardEmailMobileCustomer().getLastName(), null, null, standardEmailMobileCustomer().getMobile(), 
 				standardEmailMobileCustomer().getIsEmailVerified(),standardEmailMobileCustomer().getEmail(),
-				standardEmailMobileCustomer().getIsEmailVerified(), null, null, null, null, null, null,
+				standardEmailMobileCustomer().getIsEmailVerified(), null, null, null, null, null, false,
 				null, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
 	}
 	
@@ -64,8 +66,15 @@ public class CustomerDetailsDataFixtures {
 				customerDetails.getLastName(), CUST_DATE, standardAddress(), customerDetails.getMobile(), 
 				customerDetails.getIsEmailVerified(),customerDetails.getEmail(),
 				customerDetails.getIsEmailVerified(), CUST_LANG, CUST_BUSINESS_DOMAIN, CUST_NAME_OF_FIRM, standardAddress(),
-				CUST_SEC_MOBILE, null,	CUST_SEC_EMAIL, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
+				CUST_SEC_MOBILE, false,	CUST_SEC_EMAIL, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
 		
+	}
+	
+	public static CustomerDetailsDTO standardCustomerDetailsWithOutMetaData()
+	{
+		return new CustomerDetailsDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_DOB, standardAddressWithOutMetaData(), CUST_MOBILE, CUST_VERIFICATION_FLAG,
+				CUST_EMAIL, CUST_VERIFICATION_FLAG, CUST_LANG, CUST_BUSINESS_DOMAIN, CUST_NAME_OF_FIRM, standardAddressWithOutMetaData(),CUST_SEC_MOBILE , 
+				false,CUST_SEC_EMAIL, null, null, null);
 	}
 	
 	public static CustomerDetailsDTO standardCustomerDetailsWithNewSecondaryMobile(CustomerDetailsDTO customerDetails)

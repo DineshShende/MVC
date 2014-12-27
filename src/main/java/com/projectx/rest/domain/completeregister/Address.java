@@ -235,7 +235,7 @@ public class Address {
 		if (insertTime == null) {
 			if (other.insertTime != null)
 				return false;
-		} else if (Math.abs(insertTime.getTime()-other.insertTime.getTime())>10000)
+		} else if (Math.abs(insertTime.getTime()-other.insertTime.getTime())>1000000)
 			return false;
 		if (pincode == null) {
 			if (other.pincode != null)
@@ -250,7 +250,7 @@ public class Address {
 		if (updateTime == null) {
 			if (other.updateTime != null)
 				return false;
-		} else if (Math.abs(updateTime.getTime()-other.updateTime.getTime())>10000)
+		} else if (Math.abs(updateTime.getTime()-other.updateTime.getTime())>1000000)
 			return false;
 		if (updatedBy == null) {
 			if (other.updatedBy != null)

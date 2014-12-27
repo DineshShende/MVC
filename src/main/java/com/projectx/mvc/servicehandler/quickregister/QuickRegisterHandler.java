@@ -16,7 +16,9 @@ import com.projectx.mvc.domain.quickregister.CustomerDocumetDTO;
 import com.projectx.mvc.domain.quickregister.QuickRegisterEntity;
 import com.projectx.mvc.domain.quickregister.ResetPasswordRedirectDTO;
 import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
+import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
+import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
@@ -27,6 +29,7 @@ import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterStringStatusDTO;
 import com.projectx.rest.domain.quickregister.LoginVerificationDTO;
+import com.projectx.rest.domain.quickregister.UpdatePasswordMVCDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailLoginDetails;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
@@ -42,6 +45,10 @@ public class QuickRegisterHandler implements QuickRegisterService {
 	
 	@Autowired
 	Environment env;
+	
+	@Autowired
+	CustomerDetailsService customerDetailsService;
+	
 	
 	
 	@Override
@@ -170,7 +177,12 @@ public class QuickRegisterHandler implements QuickRegisterService {
 	@Override
 	public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO) {
 		
-		Boolean updateStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/updatePassword", updatePasswordDTO, Boolean.class);
+		System.out.println(updatePasswordDTO);
+		
+		UpdatePasswordMVCDTO mvcdto=new UpdatePasswordMVCDTO(updatePasswordDTO.getKey().getCustomerId(), 
+				updatePasswordDTO.getKey().getCustomerType(), updatePasswordDTO.getPassword());
+		
+		Boolean updateStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/updatePassword", mvcdto, Boolean.class);
 		
 		return updateStatus;
 	}
@@ -259,6 +271,47 @@ public class QuickRegisterHandler implements QuickRegisterService {
 		AuthenticationDetailsDTO fetchedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/verifyLoginDefaultEmailPassword", emailLoginDetails, AuthenticationDetailsDTO.class);
 		
 		return fetchedEntity;
+	}
+
+	@Override
+	public ModelAndView populateCompleteRegisterRedirect(
+			AuthenticationDetailsDTO result) {
+		
+		ModelAndView modelAndView=new ModelAndView();
+		
+		if(result.getKey().getCustomerType().equals(1))
+		{	
+			CustomerDetailsDTO detailsDTO=customerDetailsService.getCustomerDetailsById(result.getKey().getCustomerId());
+			
+			if(detailsDTO.getCustomerId()!=null)
+			{
+				modelAndView.addObject("customerDetails", detailsDTO);
+				modelAndView.setViewName("showCustomerDetails");
+				
+				return modelAndView;
+			}
+			else
+			{
+				QuickRegisterDTO quickRegisterEntity=
+						getByCustomerIdType(new CustomerIdTypeDTO(result.getKey().getCustomerId(),result.getKey().getCustomerType()));
+				
+				CustomerDetailsDTO createdRecord=customerDetailsService.createCustomerDetailsFromQuickRegisterEntity(quickRegisterEntity);
+				
+							
+				modelAndView.addObject("customerDetails", createdRecord);
+				modelAndView.setViewName("customerDetailsForm");
+				
+				return modelAndView;
+				
+			}
+		}
+		else if(result.getKey().getCustomerType().equals(2))
+		{
+			//Vendor complete registration
+			return modelAndView;
+		}
+		return modelAndView;
+		
 	}
 
 

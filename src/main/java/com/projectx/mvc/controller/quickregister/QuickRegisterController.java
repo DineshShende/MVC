@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.projectx.mvc.domain.quickregister.CustomerDocumetDTO;
 import com.projectx.mvc.domain.quickregister.QuickRegisterEntity;
@@ -29,7 +30,9 @@ import com.projectx.mvc.domain.quickregister.QuickRegisterMVCDTO;
 import com.projectx.mvc.domain.quickregister.LoginDetailsDTO;
 import com.projectx.mvc.domain.quickregister.ResetPasswordRedirectDTO;
 import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
+import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
+import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailDTO;
@@ -53,6 +56,8 @@ public class QuickRegisterController {
 	QuickRegisterService customerQuickRegisterService;
 
 
+	@Autowired
+	CustomerDetailsService customerDetailsService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String showEmailForm(Model model) {
@@ -214,8 +219,12 @@ public class QuickRegisterController {
 			}
 			else
 			{
-				model.addAttribute("loginDetails", result);
-				return "loginSucess";
+				ModelAndView modelAndView=customerQuickRegisterService
+						.populateCompleteRegisterRedirect(result);
+				
+				model.addAttribute("customerDetails", modelAndView.getModel().get("customerDetails"));
+				
+				return modelAndView.getViewName();
 			}
 		}
 		
@@ -245,8 +254,13 @@ public class QuickRegisterController {
 			}
 			else
 			{
-				model.addAttribute("loginDetails", result);
-				return "loginSucess";
+				ModelAndView modelAndView=customerQuickRegisterService
+						.populateCompleteRegisterRedirect(result);
+				
+				model.addAttribute("customerDetails", modelAndView.getModelMap());
+				
+				return modelAndView.getViewName();
+				
 			}
 		}	
 				

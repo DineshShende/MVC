@@ -5,6 +5,7 @@ import static com.projectx.mvc.fixture.quickregister.QuickRegisterDataConstants.
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.projectx.mvc.domain.quickregister.CustomerDocumetDTO;
 import com.projectx.mvc.domain.quickregister.QuickRegisterEntity;
@@ -158,6 +159,13 @@ public class QuickRegisterServiceFixture implements
 	@Override
 	public AuthenticationDetailsDTO verifyEmailLoginDetails(
 			VerifyEmailLoginDetails emailLoginDetails) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ModelAndView populateCompleteRegisterRedirect(
+			AuthenticationDetailsDTO authenticationDetailsDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}

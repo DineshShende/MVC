@@ -16,6 +16,10 @@ public interface CustomerDetailsService {
 	
 	CustomerDetailsDTO merge(CustomerDetailsDTO customerDetails);
 	
+	CustomerDetailsDTO getCustomerDetailsById(Long customerId);
+	
+	CustomerDetailsDTO InitializeMetaData(CustomerDetailsDTO customerDetails);
+	
 	Boolean verifyMobileDetails(VerifyMobileDTO verifyMobileDTO);
 	
 	Boolean verifyEmailDetails(VerifyEmailDTO verifyEmailDTO);

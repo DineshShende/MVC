@@ -61,4 +61,17 @@ public class CustomerDetailsServiceFixture implements CustomerDetailsService {
 		return null;
 	}
 
+	@Override
+	public CustomerDetailsDTO getCustomerDetailsById(Long customerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomerDetailsDTO InitializeMetaData(
+			CustomerDetailsDTO customerDetails) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+
+<title>Insert title here</title>
+
+</head>
+<body>
+<h1>Customer details Form</h1>
+    
+    
+ 
+ 
+         <form action="/customer/save" method="post">
+         <input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
+         <input id="homeAddressId.customerType" name="homeAddressId.customerType" type="hidden"  th:value="1"/>
+         <input id="firmAddressId.customerType" name="firmAddressId.customerType" type="hidden"  th:value="1"/>
+         
+            <table>
+                <tr>
+                    <td>FirstName:</td>
+                    <td> <input id="firstName" name="firstName" type="text" th:value="${customerDetails.firstName}"/></td>
+               
+                </tr>
+                <tr>
+                    <td>LastName:</td>
+                    <td><input id="lastName" name="lastName" type="text" th:value="${customerDetails.lastName}"/></td>
+               
+                </tr>
+                <tr>
+                    <td>Mobile:</td>
+                    <td><input id="mobile" name="mobile" type="text" th:value="${customerDetails.mobile}"/></td>
+               
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><input id="email" name="email" type="text" th:value="${customerDetails.email}"/></td>
+               
+                </tr>
+    
+               <tr></tr>
+               <tr></tr>
+               <tr></tr>
+                <tr>
+                    <td>Home Address AddressLine:</td>
+                    <td><input id="homeAddressId.addressLine" name="homeAddressId.addressLine" type="text" th:if="${customerDetails.homeAddressId!=null}" th:value="${customerDetails.homeAddressId.addressLine}"/>
+                    	<input id="homeAddressId.addressLine" name="homeAddressId.addressLine" type="text" th:if="${customerDetails.homeAddressId==null}" />
+                    </td>
+               
+                </tr> 
+               
+               <tr>
+                    <td>Home Address City:</td>
+                    <td><input id="homeAddressId.city" name="homeAddressId.city" type="text" th:if="${customerDetails.homeAddressId!=null}" th:value="${customerDetails.homeAddressId.city}"/>
+                    	<input id="homeAddressId.city" name="homeAddressId.city" type="text" th:if="${customerDetails.homeAddressId==null}" />
+                    </td>
+               
+                </tr> 
+                
+                <tr>
+                    <td>Home Address District:</td>
+                    <td><input id="homeAddressId.district" name="homeAddressId.district" type="text" th:if="${customerDetails.homeAddressId!=null}" th:value="${customerDetails.homeAddressId.district}"/>
+                    	<input id="homeAddressId.district" name="homeAddressId.district" type="text" th:if="${customerDetails.homeAddressId==null}" />
+                    </td>
+               
+                </tr> 
+               
+               <tr>
+                    <td>Home Address State:</td>
+                    <td><input id="homeAddressId.state" name="homeAddressId.state" type="text" th:if="${customerDetails.homeAddressId!=null}" th:value="${customerDetails.homeAddressId.state}"/>
+                    	<input id="homeAddressId.state" name="homeAddressId.state" type="text" th:if="${customerDetails.homeAddressId==null}" />
+                    </td>
+               
+                </tr> 
+               
+               
+               <tr>
+                    <td>Home Address Pincode:</td>
+                    <td><input id="homeAddressId.pincode" name="homeAddressId.pincode" type="text" th:if="${customerDetails.homeAddressId!=null}" th:value="${customerDetails.homeAddressId.pincode}"/>
+                    	<input id="homeAddressId.pincode" name="homeAddressId.pincode" type="text" th:if="${customerDetails.homeAddressId==null}" />
+                    </td>
+               
+                </tr>
+                
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr>
+                    <td>Language:</td>
+                    <td> <input id="language" name="language" type="text" th:if="${customerDetails.language!=null}" th:value="${customerDetails.language}"/>
+                    <input id="language" name="language" type="text" th:if="${customerDetails.language==null}"/>
+                    </td>
+               </tr>
+                
+                <tr>
+                    <td>Business Domain:</td>
+                    <td> <input id="businessDomain" name="businessDomain" type="text" th:if="${customerDetails.businessDomain!=null}" th:value="${customerDetails.businessDomain}"/>
+                    <input id="businessDomain" name="businessDomain" type="text" th:if="${customerDetails.businessDomain==null}"/>
+                    </td>
+               </tr>
+               
+               
+               <tr></tr>
+               <tr></tr>
+               <tr></tr>
+               
+               <tr>
+                    <td>Name Of Firm:</td>
+                    <td> <input id="nameOfFirm" name="nameOfFirm" type="text" th:if="${customerDetails.nameOfFirm!=null}" th:value="${customerDetails.nameOfFirm}"/>
+                    <input id="nameOfFirm" name="nameOfFirm" type="text" th:if="${customerDetails.nameOfFirm==null}"/>
+                    </td>
+               </tr>
+                
+                         
+                          
+                 <tr>
+                    <td>Firm Address AddressLine:</td>
+                    <td><input id="firmAddressId.addressLine" name="firmAddressId.addressLine" type="text" th:if="${customerDetails.firmAddressId!=null}" th:value="${customerDetails.firmAddressId.addressLine}"/>
+                    	<input id="firmAddressId.addressLine" name="firmAddressId.addressLine" type="text" th:if="${customerDetails.firmAddressId==null}" />
+                    </td>
+               
+                </tr> 
+               
+               <tr>
+                    <td>Firm Address City:</td>
+                    <td><input id="firmAddressId.city" name="firmAddressId.city" type="text" th:if="${customerDetails.firmAddressId!=null}" th:value="${customerDetails.firmAddressId.city}"/>
+                    	<input id="firmAddressId.city" name="firmAddressId.city" type="text" th:if="${customerDetails.firmAddressId==null}" />
+                    </td>
+               
+                </tr> 
+                
+                <tr>
+                    <td>Firm Address District:</td>
+                    <td><input id="firmAddressId.district" name="firmAddressId.district" type="text" th:if="${customerDetails.firmAddressId!=null}" th:value="${customerDetails.firmAddressId.district}"/>
+                    	<input id="firmAddressId.district" name="firmAddressId.district" type="text" th:if="${customerDetails.firmAddressId==null}" />
+                    </td>
+               
+                </tr> 
+               
+               <tr>
+                    <td>Firm Address State:</td>
+                    <td><input id="firmAddressId.state" name="firmAddressId.state" type="text" th:if="${customerDetails.firmAddressId!=null}" th:value="${customerDetails.firmAddressId.state}"/>
+                    	<input id="firmAddressId.state" name="firmAddressId.state" type="text" th:if="${customerDetails.firmAddressId==null}" />
+                    </td>
+               
+                </tr> 
+               
+               
+               <tr>
+                    <td>Firm Address Pincode:</td>
+                    <td><input id="firmAddressId.pincode" name="firmAddressId.pincode" type="text" th:if="${customerDetails.firmAddressId!=null}" th:value="${customerDetails.firmAddressId.pincode}"/>
+                    	<input id="firmAddressId.pincode" name="firmAddressId.pincode" type="text" th:if="${customerDetails.firmAddressId==null}" />
+                    </td>
+               
+                </tr>
+               
+               <tr></tr>
+               <tr></tr>
+               <tr></tr>
+               
+                
+                <tr>
+                    <td>Secondary Mobile:</td>
+                    <td> <input id="secondaryMobile" name="secondaryMobile" type="text" th:if="${customerDetails.secondaryMobile!=null}" th:value="${customerDetails.secondaryMobile}"/>
+                    <input id="secondaryMobile" name="secondaryMobile" type="text" th:if="${customerDetails.secondaryMobile==null}"/>
+                    </td>
+               </tr> 
+                
+                <tr>
+                    <td>Secondary Email:</td>
+                    <td> <input id="secondaryEmail" name="secondaryEmail" type="text" th:if="${customerDetails.secondaryEmail!=null}" th:value="${customerDetails.secondaryEmail}"/>
+                    <input id="secondaryEmail" name="secondaryEmail" type="text" th:if="${customerDetails.secondaryEmail==null}"/>
+                    </td>
+               </tr> 
+                               
+                <tr>
+                    <td><button type="submit">Submit</button></td>
+                </tr>
+            </table>
+        </form>
+ 
+</body>
+</html>
