@@ -14,8 +14,8 @@ import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailDTO;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileDTO;
+import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileTypeDTO;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
@@ -68,25 +68,25 @@ public class QuickRegisterServiceFixture implements
 	}
 
 	@Override
-	public Boolean reSendMobilePin(CustomerIdTypeMobileDTO customerDTO) {
+	public Boolean reSendMobilePin(CustomerIdTypeMobileTypeDTO customerDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Boolean reSendEmailHash(CustomerIdTypeEmailDTO customerDTO) {
+	public Boolean reSendEmailHash(CustomerIdTypeEmailTypeDTO customerDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Boolean reSetMobilePin(CustomerIdTypeMobileDTO customerDTO) {
+	public Boolean reSetMobilePin(CustomerIdTypeMobileTypeDTO customerDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Boolean reSetEmailHash(CustomerIdTypeEmailDTO customerDTO) {
+	public Boolean reSetEmailHash(CustomerIdTypeEmailTypeDTO customerDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -124,14 +124,14 @@ public class QuickRegisterServiceFixture implements
 
 	@Override
 	public EmailVerificationDetailsDTO getEmailVerificationDetailsByCustomerIdTypeAndEmail(
-			Long customerId,Integer customerType, String email) {
+			Long customerId,Integer customerType, Integer emailType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public MobileVerificationDetailsDTO getMobileVerificationDetailsByCustomerIdTypeAndMobile(
-			Long customerId,Integer customerType, Long mobile) {
+			Long customerId,Integer customerType, Integer mobileType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -166,6 +166,13 @@ public class QuickRegisterServiceFixture implements
 	@Override
 	public ModelAndView populateCompleteRegisterRedirect(
 			AuthenticationDetailsDTO authenticationDetailsDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ModelAndView initialiseShowDetails(Long entityId,
+			Integer entityType, ModelAndView map) {
 		// TODO Auto-generated method stub
 		return null;
 	}

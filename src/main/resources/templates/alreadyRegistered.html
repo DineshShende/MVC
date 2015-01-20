@@ -5,26 +5,31 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-	<h1>Result</h1>
+	<h1>Entities provided by you are already registered..</h1>
 	<p th:if="${customerQuickRegisterDTO.customerId} !=null" th:text="${customerQuickRegisterDTO.customerId}"/>
 	
-   <!--  <p th:text="'Status: ' + ${message}" /> -->
+     <p th:text="'Status: ' + ${message}" />
     
-    
+    <p th:if="${!customerQuickRegisterDTO.isMobileVerified}">Click Below link to receive verification SMS </p>
     <form th:if="${!customerQuickRegisterDTO.isMobileVerified}" action="/customer/quickregister/resendMobilePin" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
-    <input id="mobile" name="mobile" type="hidden" th:value="${customerQuickRegisterDTO.mobile}"/>
+    <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
+    <input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
     <input type="submit" value="Resend Mobile Pin" />       
     </form>
     
+    <p th:if="${!customerQuickRegisterDTO.isEmailVerified}">Click Below link to receive verification email </p>
     <form th:if="${!customerQuickRegisterDTO.isEmailVerified}" action="/customer/quickregister/resendEmailHash" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
-    <input id="email" name="email" type="hidden" th:value="${customerQuickRegisterDTO.email}"/>
+    <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
+    <input id="emailType" name="emailType" type="hidden" th:value="1"/>
     <input type="submit" value="Resend Verication Email" />
     </form>
     
+    <p th:if="${customerQuickRegisterDTO.isEmailVerified || customerQuickRegisterDTO.isMobileVerified}">Your email or mobile is already verified..Click below to receive One Time Password</p>
     <form th:if="${customerQuickRegisterDTO.isEmailVerified || customerQuickRegisterDTO.isMobileVerified}" action="/customer/quickregister/resetPassword" method="post">
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
+    <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
     <input type="submit" value="Reset Password"/> 
     
     </form>

@@ -6,7 +6,7 @@ public class VerifyEmailDTO {
 	
 	private Integer customerType;
 	
-	private String email;
+	private Integer emailType;
 	
 	private String emailHash;
 	
@@ -14,14 +14,13 @@ public class VerifyEmailDTO {
 		super();
 	}
 
-	
 
-	public VerifyEmailDTO(Long customerId, Integer customerType, String email,
-			String emailHash) {
+	public VerifyEmailDTO(Long customerId, Integer customerType,
+			Integer emailType, String emailHash) {
 		super();
 		this.customerId = customerId;
 		this.customerType = customerType;
-		this.email = email;
+		this.emailType = emailType;
 		this.emailHash = emailHash;
 	}
 
@@ -35,13 +34,16 @@ public class VerifyEmailDTO {
 		this.customerId = customerId;
 	}
 
-	public String getEmail() {
-		return email;
+
+	public Integer getEmailType() {
+		return emailType;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+
+	public void setEmailType(Integer emailType) {
+		this.emailType = emailType;
 	}
+
 
 	public String getEmailHash() {
 		return emailHash;
@@ -61,14 +63,12 @@ public class VerifyEmailDTO {
 	}
 
 
-
 	@Override
 	public String toString() {
 		return "VerifyEmailDTO [customerId=" + customerId + ", customerType="
-				+ customerType + ", email=" + email + ", emailHash="
+				+ customerType + ", emailType=" + emailType + ", emailHash="
 				+ emailHash + "]";
 	}
-
 
 
 	@Override
@@ -79,12 +79,12 @@ public class VerifyEmailDTO {
 				+ ((customerId == null) ? 0 : customerId.hashCode());
 		result = prime * result
 				+ ((customerType == null) ? 0 : customerType.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result
 				+ ((emailHash == null) ? 0 : emailHash.hashCode());
+		result = prime * result
+				+ ((emailType == null) ? 0 : emailType.hashCode());
 		return result;
 	}
-
 
 
 	@Override
@@ -106,18 +106,19 @@ public class VerifyEmailDTO {
 				return false;
 		} else if (!customerType.equals(other.customerType))
 			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
 		if (emailHash == null) {
 			if (other.emailHash != null)
 				return false;
 		} else if (!emailHash.equals(other.emailHash))
 			return false;
+		if (emailType == null) {
+			if (other.emailType != null)
+				return false;
+		} else if (!emailType.equals(other.emailType))
+			return false;
 		return true;
 	}
+
 
 
 	

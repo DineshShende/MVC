@@ -103,7 +103,7 @@ public class QuickRegisterStandAloneTest {
 		
 		this.mockMvc.perform(
 				post("/customer/quickregister/updatePassword").param("key.customerId",Long.toString(CUST_ID))
-												.param("key.customerType", Integer.toString(CUST_TYPE))
+												.param("key.customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
 											   .param("password", CUST_PASSWORD_CHANGED)
 											   											  
 											)

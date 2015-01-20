@@ -14,7 +14,12 @@
  
          <form action="/customer/save" method="post">
          <input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
+         <input id="isMobileVerified" name="isMobileVerified" type="hidden" th:value="${customerDetails.isMobileVerified}"/>
+         <input id="isEmailVerified" name="isEmailVerified" type="hidden" th:value="${customerDetails.isEmailVerified}"/>
+         <input id="isSecondaryMobileVerified" name="isSecondaryMobileVerified" type="hidden" th:value="${customerDetails.isSecondaryMobileVerified}"/>
+         <input id="homeAddressId.addressId" name="homeAddressId.addressId" type="hidden" th:if="${customerDetails.homeAddressId != null}" th:value="${customerDetails.homeAddressId.addressId}"/>
          <input id="homeAddressId.customerType" name="homeAddressId.customerType" type="hidden"  th:value="1"/>
+         <input id="firmAddressId.addressId" name="firmAddressId.addressId" type="hidden" th:if="${customerDetails.firmAddressId != null}" th:value="${customerDetails.firmAddressId.addressId}"/>
          <input id="firmAddressId.customerType" name="firmAddressId.customerType" type="hidden"  th:value="1"/>
          
             <table>
@@ -76,7 +81,7 @@
                
                
                <tr>
-                    <td>Home Address Pincode:</td>
+                    <td>Home Address Pin code:</td>
                     <td><input id="homeAddressId.pincode" name="homeAddressId.pincode" type="text" th:if="${customerDetails.homeAddressId!=null}" th:value="${customerDetails.homeAddressId.pincode}"/>
                     	<input id="homeAddressId.pincode" name="homeAddressId.pincode" type="text" th:if="${customerDetails.homeAddressId==null}" />
                     </td>
@@ -148,7 +153,7 @@
                
                
                <tr>
-                    <td>Firm Address Pincode:</td>
+                    <td>Firm Address Pin code:</td>
                     <td><input id="firmAddressId.pincode" name="firmAddressId.pincode" type="text" th:if="${customerDetails.firmAddressId!=null}" th:value="${customerDetails.firmAddressId.pincode}"/>
                     	<input id="firmAddressId.pincode" name="firmAddressId.pincode" type="text" th:if="${customerDetails.firmAddressId==null}" />
                     </td>
@@ -173,7 +178,7 @@
                     <input id="secondaryEmail" name="secondaryEmail" type="text" th:if="${customerDetails.secondaryEmail==null}"/>
                     </td>
                </tr> 
-                               
+  
                 <tr>
                     <td><button type="submit">Submit</button></td>
                 </tr>

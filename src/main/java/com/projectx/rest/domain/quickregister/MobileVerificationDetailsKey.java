@@ -6,19 +6,21 @@ public class MobileVerificationDetailsKey {
 	
 	private Integer customerType;
 	
-	private Long mobile;
+	private Integer mobileType;
 
 	public MobileVerificationDetailsKey() {
 		super();
 	}
 
 	public MobileVerificationDetailsKey(Long customerId, Integer customerType,
-			Long mobile) {
+			Integer mobileType) {
 		super();
 		this.customerId = customerId;
 		this.customerType = customerType;
-		this.mobile = mobile;
+		this.mobileType = mobileType;
 	}
+
+
 
 	public Long getCustomerId() {
 		return customerId;
@@ -36,18 +38,19 @@ public class MobileVerificationDetailsKey {
 		this.customerType = customerType;
 	}
 
-	public Long getMobile() {
-		return mobile;
+	public Integer getMobileType() {
+		return mobileType;
 	}
 
-	public void setMobile(Long mobile) {
-		this.mobile = mobile;
+	public void setMobileType(Integer mobileType) {
+		this.mobileType = mobileType;
 	}
 
 	@Override
 	public String toString() {
 		return "MobileVerificationDetailsKey [customerId=" + customerId
-				+ ", customerType=" + customerType + ", mobile=" + mobile + "]";
+				+ ", customerType=" + customerType + ", mobileType="
+				+ mobileType + "]";
 	}
 
 	@Override
@@ -58,7 +61,8 @@ public class MobileVerificationDetailsKey {
 				+ ((customerId == null) ? 0 : customerId.hashCode());
 		result = prime * result
 				+ ((customerType == null) ? 0 : customerType.hashCode());
-		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
+		result = prime * result
+				+ ((mobileType == null) ? 0 : mobileType.hashCode());
 		return result;
 	}
 
@@ -81,14 +85,13 @@ public class MobileVerificationDetailsKey {
 				return false;
 		} else if (!customerType.equals(other.customerType))
 			return false;
-		if (mobile == null) {
-			if (other.mobile != null)
+		if (mobileType == null) {
+			if (other.mobileType != null)
 				return false;
-		} else if (!mobile.equals(other.mobile))
+		} else if (!mobileType.equals(other.mobileType))
 			return false;
 		return true;
 	}
-	
-	
-	
+
+		
 }

@@ -1,10 +1,11 @@
 package com.projectx.mvc.services.completeregister;
 
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
 import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
@@ -24,9 +25,11 @@ public interface CustomerDetailsService {
 	
 	Boolean verifyEmailDetails(VerifyEmailDTO verifyEmailDTO);
 	
-	Boolean sendMobileVerificationDetails(CustomerIdTypeMobileDTO customerIdTypeMobileDTO);
+	Boolean sendMobileVerificationDetails(CustomerIdTypeMobileTypeDTO customerIdTypeMobileDTO);
 	
-	Boolean sendEmailVerificationDetails(CustomerIdTypeEmailDTO customerIdTypeEmailDTO);
+	Boolean sendEmailVerificationDetails(CustomerIdTypeEmailTypeDTO customerIdTypeEmailDTO);
+	
+	public Model initialiseShowCustomerDetails(Long customerId,Model model);
 	
 	Integer count();
 	

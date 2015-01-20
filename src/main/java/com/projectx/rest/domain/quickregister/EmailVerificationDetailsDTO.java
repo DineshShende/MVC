@@ -11,7 +11,7 @@ public class EmailVerificationDetailsDTO {
 	
 	private EmailVerificationDetailsKey key;
 	
-	private Integer emailType;
+	private String email;
 	
 	private String emailHash;
 	
@@ -30,13 +30,14 @@ public class EmailVerificationDetailsDTO {
 	}
 
 	
+
 	public EmailVerificationDetailsDTO(EmailVerificationDetailsKey key,
-			Integer emailType, String emailHash, Date emailHashSentTime,
+			String email, String emailHash, Date emailHashSentTime,
 			Integer resendCount, Date insertTime, Date updateTime,
 			String updatedBy) {
 		super();
 		this.key = key;
-		this.emailType = emailType;
+		this.email = email;
 		this.emailHash = emailHash;
 		this.emailHashSentTime = emailHashSentTime;
 		this.resendCount = resendCount;
@@ -44,6 +45,7 @@ public class EmailVerificationDetailsDTO {
 		UpdateTime = updateTime;
 		this.updatedBy = updatedBy;
 	}
+
 
 
 	public EmailVerificationDetailsKey getKey() {
@@ -56,14 +58,16 @@ public class EmailVerificationDetailsDTO {
 	}
 
 
-	public Integer getEmailType() {
-		return emailType;
+	public String getEmail() {
+		return email;
 	}
 
 
-	public void setEmailType(Integer emailType) {
-		this.emailType = emailType;
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
+
 
 
 	public String getEmailHash() {
@@ -129,7 +133,7 @@ public class EmailVerificationDetailsDTO {
 	@Override
 	public String toString() {
 		return "EmailVerificationDetails [key=" + key + ", emailType="
-				+ emailType + ", emailHash=" + emailHash
+				+ email + ", emailHash=" + emailHash
 				+ ", emailHashSentTime=" + emailHashSentTime + ", resendCount="
 				+ resendCount + ", insertTime=" + insertTime + ", UpdateTime="
 				+ UpdateTime + ", updatedBy=" + updatedBy + "]";
@@ -149,7 +153,7 @@ public class EmailVerificationDetailsDTO {
 				+ ((emailHashSentTime == null) ? 0 : emailHashSentTime
 						.hashCode());
 		result = prime * result
-				+ ((emailType == null) ? 0 : emailType.hashCode());
+				+ ((email == null) ? 0 : email.hashCode());
 		result = prime * result
 				+ ((insertTime == null) ? 0 : insertTime.hashCode());
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
@@ -185,10 +189,10 @@ public class EmailVerificationDetailsDTO {
 				return false;
 		} else if (Math.abs(emailHashSentTime.getTime()-other.emailHashSentTime.getTime())>10000)
 			return false;
-		if (emailType == null) {
-			if (other.emailType != null)
+		if (email == null) {
+			if (other.email != null)
 				return false;
-		} else if (!emailType.equals(other.emailType))
+		} else if (!email.equals(other.email))
 			return false;
 		if (insertTime == null) {
 			if (other.insertTime != null)

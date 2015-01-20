@@ -1,25 +1,23 @@
-package com.projectx.rest.domain.quickregister;
+package com.projectx.async.domain.quickregister;
 
-public class CustomerIdTypeEmailDTO {
-	
+public class EmailDTO {
+
 	private Long customerId;
-	
-	private Integer customerType;
 	
 	private String email;
 	
+	private String message;
 
-	public CustomerIdTypeEmailDTO() {
+	public EmailDTO() {
 
 	}
 
-	public CustomerIdTypeEmailDTO(Long customerId, Integer customerType,
-			String email) {
+	public EmailDTO(Long customerId, String email, String message) {
+
 		this.customerId = customerId;
-		this.customerType = customerType;
 		this.email = email;
+		this.message = message;
 	}
-
 
 	public Long getCustomerId() {
 		return customerId;
@@ -37,18 +35,18 @@ public class CustomerIdTypeEmailDTO {
 		this.email = email;
 	}
 
-	public Integer getCustomerType() {
-		return customerType;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setCustomerType(Integer customerType) {
-		this.customerType = customerType;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	@Override
 	public String toString() {
-		return "CustomerIdTypeEmailDTO [customerId=" + customerId
-				+ ", customerType=" + customerType + ", email=" + email + "]";
+		return "EmailDTO [customerId=" + customerId + ", email=" + email
+				+ ", message=" + message + "]";
 	}
 
 	@Override
@@ -57,9 +55,8 @@ public class CustomerIdTypeEmailDTO {
 		int result = 1;
 		result = prime * result
 				+ ((customerId == null) ? 0 : customerId.hashCode());
-		result = prime * result
-				+ ((customerType == null) ? 0 : customerType.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((message == null) ? 0 : message.hashCode());
 		return result;
 	}
 
@@ -71,25 +68,26 @@ public class CustomerIdTypeEmailDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CustomerIdTypeEmailDTO other = (CustomerIdTypeEmailDTO) obj;
+		EmailDTO other = (EmailDTO) obj;
 		if (customerId == null) {
 			if (other.customerId != null)
 				return false;
 		} else if (!customerId.equals(other.customerId))
-			return false;
-		if (customerType == null) {
-			if (other.customerType != null)
-				return false;
-		} else if (!customerType.equals(other.customerType))
 			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
+		if (message == null) {
+			if (other.message != null)
+				return false;
+		} else if (!message.equals(other.message))
+			return false;
 		return true;
 	}
-
-		
-
+	
+	
+	
+	
 }

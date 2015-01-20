@@ -50,6 +50,15 @@ public class CustomerDetailsDataFixtures {
 				null, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
 	}
 	
+	public static CustomerDetailsDTO standardCustomerDetailsCopiedFromQuickRegisterEntity(Long customerId)
+	{
+		return new CustomerDetailsDTO(customerId, standardEmailMobileCustomer().getFirstName(),
+				standardEmailMobileCustomer().getLastName(), null, null, standardEmailMobileCustomer().getMobile(), 
+				standardEmailMobileCustomer().getIsEmailVerified(),standardEmailMobileCustomer().getEmail(),
+				standardEmailMobileCustomer().getIsEmailVerified(), null, null, null, null, null, false,
+				null, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
+	}
+	
 	public static CustomerDetailsDTO standardCustomerDetailsFirstPart()
 	{
 		return new CustomerDetailsDTO(standardEmailMobileCustomer().getCustomerId(), standardEmailMobileCustomer().getFirstName(),
@@ -67,6 +76,26 @@ public class CustomerDetailsDataFixtures {
 				customerDetails.getIsEmailVerified(),customerDetails.getEmail(),
 				customerDetails.getIsEmailVerified(), CUST_LANG, CUST_BUSINESS_DOMAIN, CUST_NAME_OF_FIRM, standardAddress(),
 				CUST_SEC_MOBILE, false,	CUST_SEC_EMAIL, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
+		
+	}
+	
+	public static CustomerDetailsDTO standardCustomerDetailsWithMerge(CustomerDetailsDTO customerDetails,Long mobile,Long secondaryMobile,String email)
+	{
+		return new CustomerDetailsDTO(customerDetails.getCustomerId(), customerDetails.getFirstName(),
+				customerDetails.getLastName(), CUST_DATE, standardAddress(), mobile, 
+				customerDetails.getIsEmailVerified(),email,
+				customerDetails.getIsEmailVerified(), CUST_LANG, CUST_BUSINESS_DOMAIN, CUST_NAME_OF_FIRM, standardAddress(),
+				secondaryMobile, false,	CUST_SEC_EMAIL, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
+		
+	}
+	
+	public static CustomerDetailsDTO standardCustomerDetailsNew(CustomerDetailsDTO customerDetails)
+	{
+		return new CustomerDetailsDTO(customerDetails.getCustomerId(), customerDetails.getFirstName(),
+				customerDetails.getLastName(), CUST_DATE, standardAddress(), customerDetails.getMobile(), 
+				customerDetails.getIsEmailVerified(),customerDetails.getEmail(),
+				customerDetails.getIsEmailVerified(), "English", "HardWare", CUST_NAME_OF_FIRM, standardAddress(),
+				CUST_SEC_MOBILE, false,	"abc@gmail", CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
 		
 	}
 	

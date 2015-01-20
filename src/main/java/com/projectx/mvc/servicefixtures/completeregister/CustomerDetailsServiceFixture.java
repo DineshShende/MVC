@@ -1,9 +1,11 @@
 package com.projectx.mvc.servicefixtures.completeregister;
 
+import org.springframework.ui.Model;
+
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
 import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
@@ -37,14 +39,14 @@ public class CustomerDetailsServiceFixture implements CustomerDetailsService {
 
 	@Override
 	public Boolean sendMobileVerificationDetails(
-			CustomerIdTypeMobileDTO customerIdTypeMobileDTO) {
+			CustomerIdTypeMobileTypeDTO customerIdTypeMobileDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Boolean sendEmailVerificationDetails(
-			CustomerIdTypeEmailDTO customerIdTypeEmailDTO) {
+			CustomerIdTypeEmailTypeDTO customerIdTypeEmailDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -70,6 +72,12 @@ public class CustomerDetailsServiceFixture implements CustomerDetailsService {
 	@Override
 	public CustomerDetailsDTO InitializeMetaData(
 			CustomerDetailsDTO customerDetails) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Model initialiseShowCustomerDetails(Long customerId, Model model) {
 		// TODO Auto-generated method stub
 		return null;
 	}

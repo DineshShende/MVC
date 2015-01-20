@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>Upload File Request Page</title>
+</head>
+<body>
+ 
+    <form method="POST" action="/document/save" enctype="multipart/form-data">
+        File to upload: <input type="file" name="file"></input><br /> 
+        <input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
+        <input id="customerType" name="customerType" type="hidden" value="1"/>
+        Name: <input id="documentName" type="text" name="documentName"></input><br /> <br /> 
+        <input type="submit" value="Upload"></input> Press here to upload the file!
+    </form>
+     
+</body>
+</html>

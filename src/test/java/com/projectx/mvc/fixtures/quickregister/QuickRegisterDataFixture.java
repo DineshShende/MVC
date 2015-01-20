@@ -44,7 +44,11 @@ public class QuickRegisterDataFixture {
 	public static Date CUST_LAST_STATUS_CHANGE_TIME=new Date();
 	
 	
-	public static Integer CUST_TYPE=1;
+	public static Integer ENTITY_TYPE_CUSTOMER=1;
+	public static Integer ENTITY_TYPE_VENDOR=2;
+	
+	public static Integer ENTITY_TYPE_PRIMARY=1;
+	public static Integer ENTITY_TYPE_SECONDARY=2;
 	
 	public static String STATUS_EMAIL_VERFIED_MOBILE_PENDING="EmailVerifiedMobileVerficationPending";
 	public static String STATUS_MOBILE_VERFIED_EMAIL_PENDING="MobileVerifiedEmailVerficationPending";
@@ -94,25 +98,39 @@ public class QuickRegisterDataFixture {
 	
 	public static QuickRegisterEntity standardCustomerQuickRegisterEntity()
 	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, CUST_MOBILE, CUST_PIN);
+		return new QuickRegisterEntity(CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, CUST_MOBILE, CUST_PIN,ENTITY_TYPE_CUSTOMER);
 	}
 	
 	public static QuickRegisterDTO standardEmailMobileCustomer()
 	{
-		
-		
-		return new QuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, CUST_MOBILE, CUST_PIN,CUST_TYPE ,CUST_VERIFICATION_STATUS, CUST_VERIFICATION_STATUS, CUST_LAST_STATUS_CHANGE_TIME,CUST_LAST_STATUS_CHANGE_TIME, CUST_UPDATED_BY);
+
+		return new QuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, CUST_MOBILE, CUST_PIN,ENTITY_TYPE_CUSTOMER ,CUST_VERIFICATION_STATUS, CUST_VERIFICATION_STATUS, CUST_LAST_STATUS_CHANGE_TIME,CUST_LAST_STATUS_CHANGE_TIME, CUST_UPDATED_BY);
 	}
+	
+
+	public static QuickRegisterDTO standardEmailMobileVendor()
+	{
+
+		return new QuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, CUST_MOBILE, CUST_PIN,ENTITY_TYPE_VENDOR ,CUST_VERIFICATION_STATUS, CUST_VERIFICATION_STATUS, CUST_LAST_STATUS_CHANGE_TIME,CUST_LAST_STATUS_CHANGE_TIME, CUST_UPDATED_BY);
+	}
+	
+	public static QuickRegisterEntity standardCustomerQuickRegisterEntityVendor()
+	{
+		return new QuickRegisterEntity(CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, CUST_MOBILE, CUST_PIN,ENTITY_TYPE_VENDOR);
+	}
+	
+
+
 	
 	public static QuickRegisterDTO standardMobileCustomer()
 	{
-		return new QuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, null, CUST_MOBILE, CUST_PIN, CUST_TYPE,null, CUST_VERIFICATION_STATUS, CUST_LAST_STATUS_CHANGE_TIME,
+		return new QuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, null, CUST_MOBILE, CUST_PIN, ENTITY_TYPE_CUSTOMER,null, CUST_VERIFICATION_STATUS, CUST_LAST_STATUS_CHANGE_TIME,
 				CUST_LAST_STATUS_CHANGE_TIME, CUST_UPDATED_BY);
 	}
 	
 	public static QuickRegisterDTO standardEmailCustomer()
 	{
-		return new QuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, null, CUST_PIN,CUST_TYPE, CUST_VERIFICATION_STATUS,
+		return new QuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, null, CUST_PIN,ENTITY_TYPE_CUSTOMER, CUST_VERIFICATION_STATUS,
 				null, CUST_LAST_STATUS_CHANGE_TIME,CUST_LAST_STATUS_CHANGE_TIME, CUST_UPDATED_BY);
 		
 	}
@@ -122,33 +140,35 @@ public class QuickRegisterDataFixture {
 	
 	public static QuickRegisterEntity standardEmailCustomerDTO()
 	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN);
+		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN,ENTITY_TYPE_CUSTOMER);
 	}
 	
 	public static QuickRegisterEntity standardMobileCustomerDTO()
 	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN);
+		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN,ENTITY_TYPE_CUSTOMER);
 	}
 	
 	public static QuickRegisterEntity standardEmailMobileCustomerDTO()
 	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN);
+		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN,ENTITY_TYPE_CUSTOMER);
 	}
+	
+	
 	
 	
 	public static QuickRegisterEntity standardEmailCustomerDTOWithOutStatus()
 	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN);
+		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN,ENTITY_TYPE_CUSTOMER);
 	}
 	
 	public static QuickRegisterEntity standardMobileCustomerDTOWithOutStatus()
 	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN);
+		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN,ENTITY_TYPE_CUSTOMER);
 	}
 	
 	public static QuickRegisterEntity standardEmailMobileCustomerDTOWithOutStatus()
 	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN);
+		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN,ENTITY_TYPE_CUSTOMER);
 	}
 	
 
@@ -186,12 +206,12 @@ public class QuickRegisterDataFixture {
 	*/
 	public static VerifyMobileDTO standardVerifyMobileDTO()
 	{
-		return new VerifyMobileDTO(CUST_ID,CUST_TYPE,CUST_MOBILE, CUST_MOBILEPIN);
+		return new VerifyMobileDTO(CUST_ID,ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY, CUST_MOBILEPIN);
 	}
 	
 	public static VerifyEmailDTO standardVerifyEmailDTO()
 	{
-		return new VerifyEmailDTO(CUST_ID,CUST_TYPE,CUST_EMAIL, CUST_EMAILHASH);
+		return new VerifyEmailDTO(CUST_ID,ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY, CUST_EMAILHASH);
 	}
 	
 	

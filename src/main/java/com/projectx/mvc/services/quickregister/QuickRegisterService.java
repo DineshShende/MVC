@@ -1,6 +1,8 @@
 package com.projectx.mvc.services.quickregister;
 
 
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,8 +13,8 @@ import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailDTO;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileDTO;
+import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileTypeDTO;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
@@ -39,17 +41,19 @@ public interface QuickRegisterService {
 	
 	public Boolean verifyEmail(VerifyEmailDTO emailDTO);
 	
-	public Boolean reSendMobilePin(CustomerIdTypeMobileDTO customerDTO);
+	public Boolean reSendMobilePin(CustomerIdTypeMobileTypeDTO customerDTO);
 	
-	public Boolean reSendEmailHash(CustomerIdTypeEmailDTO customerDTO);
+	public Boolean reSendEmailHash(CustomerIdTypeEmailTypeDTO customerDTO);
 	
-	public Boolean reSetMobilePin(CustomerIdTypeMobileDTO customerDTO);
+	public Boolean reSetMobilePin(CustomerIdTypeMobileTypeDTO customerDTO);
 	
-	public Boolean reSetEmailHash(CustomerIdTypeEmailDTO customerDTO);
+	public Boolean reSetEmailHash(CustomerIdTypeEmailTypeDTO customerDTO);
 	
 	public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO);
 	
 	public ModelAndView populateCompleteRegisterRedirect(AuthenticationDetailsDTO authenticationDetailsDTO);
+	
+	public ModelAndView initialiseShowDetails(Long entityId,Integer entityType,ModelAndView map);
 	
 	//TODO
 	//public Boolean forgotPassword(String entity);
@@ -66,9 +70,9 @@ public interface QuickRegisterService {
 
 	//Getter
 	
-	public EmailVerificationDetailsDTO getEmailVerificationDetailsByCustomerIdTypeAndEmail(Long customerId,Integer customerType,String email);
+	public EmailVerificationDetailsDTO getEmailVerificationDetailsByCustomerIdTypeAndEmail(Long customerId,Integer customerType,Integer emailType);
 
-	public MobileVerificationDetailsDTO getMobileVerificationDetailsByCustomerIdTypeAndMobile(Long customerId,Integer customerType,Long mobile);
+	public MobileVerificationDetailsDTO getMobileVerificationDetailsByCustomerIdTypeAndMobile(Long customerId,Integer customerType,Integer mobileType);
 	
 	public AuthenticationDetailsDTO getAuthenticationDetailsByCustomerIdType(Long customerId,Integer customerType);
 	

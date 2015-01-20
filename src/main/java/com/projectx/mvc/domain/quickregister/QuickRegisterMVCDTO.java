@@ -28,16 +28,17 @@ public class QuickRegisterMVCDTO {
 
 	private Boolean isMobileVerified;
 	
+	private Integer customerType;
+	
 	public QuickRegisterMVCDTO() {
 		
 	}
 
-	
-	
-	
+
 	public QuickRegisterMVCDTO(Long customerId, String firstName,
 			String lastName, String email, Long mobile, Integer pincode,
-			Boolean isEmailVerified, Boolean isMobileVerified) {
+			Boolean isEmailVerified, Boolean isMobileVerified,
+			Integer customerType) {
 		super();
 		this.customerId = customerId;
 		this.firstName = firstName;
@@ -47,12 +48,8 @@ public class QuickRegisterMVCDTO {
 		this.pincode = pincode;
 		this.isEmailVerified = isEmailVerified;
 		this.isMobileVerified = isMobileVerified;
+		this.customerType = customerType;
 	}
-
-
-	
-	
-	
 
 
 	public Long getCustomerId() {
@@ -165,6 +162,14 @@ public class QuickRegisterMVCDTO {
 	}
 
 
+	public Integer getCustomerType() {
+		return customerType;
+	}
+
+
+	public void setCustomerType(Integer customerType) {
+		this.customerType = customerType;
+	}
 
 
 	public void toCustomerQuickRegisterMVC(QuickRegisterDTO customerDTO)
@@ -178,6 +183,7 @@ public class QuickRegisterMVCDTO {
 		this.pincode = customerDTO.getPincode();
 		this.isEmailVerified=customerDTO.getIsEmailVerified();
 		this.isMobileVerified=customerDTO.getIsMobileVerified();
+		this.customerType=customerDTO.getCustomerType();
 	
 	}
 

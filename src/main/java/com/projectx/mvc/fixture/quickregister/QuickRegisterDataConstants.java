@@ -103,38 +103,38 @@ public class QuickRegisterDataConstants {
 		
 	}
 
-	
-	public static QuickRegisterEntity standardEmailCustomerDTO()
-	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN);
-	}
-			
-	public static QuickRegisterEntity standardMobileCustomerDTO()
-	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN);
-	}
-	
-	public static QuickRegisterEntity standardEmailMobileCustomerDTO()
-	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN);
-	}
-	
-	
-	public static QuickRegisterEntity standardEmailCustomerDTOWithOutStatus()
-	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN);
-	}
-	
-	public static QuickRegisterEntity standardMobileCustomerDTOWithOutStatus()
-	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN);
-	}
-	
-	public static QuickRegisterEntity standardEmailMobileCustomerDTOWithOutStatus()
-	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN);
-	}
-	
+//	
+//	public static QuickRegisterEntity standardEmailCustomerDTO()
+//	{
+//		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN);
+//	}
+//			
+//	public static QuickRegisterEntity standardMobileCustomerDTO()
+//	{
+//		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN);
+//	}
+//	
+//	public static QuickRegisterEntity standardEmailMobileCustomerDTO()
+//	{
+//		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN);
+//	}
+//	
+//	
+//	public static QuickRegisterEntity standardEmailCustomerDTOWithOutStatus()
+//	{
+//		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN);
+//	}
+//	
+//	public static QuickRegisterEntity standardMobileCustomerDTOWithOutStatus()
+//	{
+//		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,null,CUST_MOBILE,CUST_PIN);
+//	}
+//	
+//	public static QuickRegisterEntity standardEmailMobileCustomerDTOWithOutStatus()
+//	{
+//		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN);
+//	}
+//	
 
 	
 }

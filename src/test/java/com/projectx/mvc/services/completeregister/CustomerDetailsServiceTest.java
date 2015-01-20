@@ -13,8 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.projectx.mvc.config.BasicConfig;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
 import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
@@ -36,12 +36,14 @@ public class CustomerDetailsServiceTest {
 	@Autowired
 	QuickRegisterService customerQuickRegisterService;
 	
+	
 	@Before
 	public void setUp()
 	{
 		customerDetailsService.clearTestData();
 		customerQuickRegisterService.clearTestData();
 	}
+	
 	
 	@Test
 	public void environmentTest() {
@@ -55,11 +57,18 @@ public class CustomerDetailsServiceTest {
 		
 		assertEquals(0,customerDetailsService.count().intValue());
 		
-		assertEquals(standardCustomerDetailsCopiedFromQuickRegisterEntity(), customerDetailsService
+		assertNull( customerDetailsService
 				.createCustomerDetailsFromQuickRegisterEntity(standardEmailMobileCustomer()));
+		
+		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO=
+				customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
+		
+		assertEquals(standardCustomerDetailsCopiedFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()), customerDetailsService
+				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer()));
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 	}
+	
 	
 	@Test
 	public void merge()
@@ -67,17 +76,27 @@ public class CustomerDetailsServiceTest {
 		
 		assertEquals(0,customerDetailsService.count().intValue());
 		
+		assertNull( customerDetailsService
+				.createCustomerDetailsFromQuickRegisterEntity(standardEmailMobileCustomer()));
+		
+		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO=
+				customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
+		
+		
+		
 		CustomerDetailsDTO savedEntity=customerDetailsService
-				.createCustomerDetailsFromQuickRegisterEntity(standardEmailMobileCustomer());
+				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer());
 		
-		assertEquals(standardCustomerDetailsCopiedFromQuickRegisterEntity(), savedEntity);
+		assertEquals(standardCustomerDetailsCopiedFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity );
 		
-		assertEquals(standardCustomerDetails(savedEntity), customerDetailsService
+				
+		assertEquals(standardCustomerDetailsWithMerge(savedEntity,savedEntity.getMobile(),savedEntity.getSecondaryMobile(),savedEntity.getEmail()), customerDetailsService
 				.merge(standardCustomerDetails(savedEntity)));
 		
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 	}
+	
 	
 	
 	@Test
@@ -86,19 +105,29 @@ public class CustomerDetailsServiceTest {
 		
 		assertEquals(0,customerDetailsService.count().intValue());
 		
+		assertNull( customerDetailsService
+				.createCustomerDetailsFromQuickRegisterEntity(standardEmailMobileCustomer()));
+		
+		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO=
+				customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
+		
+		
+		
 		CustomerDetailsDTO savedEntity=customerDetailsService
-				.createCustomerDetailsFromQuickRegisterEntity(standardEmailMobileCustomer());
+				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer());
 		
-		assertEquals(standardCustomerDetailsCopiedFromQuickRegisterEntity(), savedEntity);
+		assertEquals(standardCustomerDetailsCopiedFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity );
 		
-		assertEquals(standardCustomerDetails(savedEntity), customerDetailsService
+		
+		assertEquals(standardCustomerDetailsWithMerge(savedEntity,savedEntity.getMobile(),savedEntity.getSecondaryMobile(),savedEntity.getEmail()), customerDetailsService
 				.merge(standardCustomerDetails(savedEntity)));
 		
-		assertEquals(standardCustomerDetails(savedEntity), customerDetailsService.getCustomerDetailsById(savedEntity.getCustomerId()));
+		assertEquals(standardCustomerDetailsWithMerge(savedEntity,savedEntity.getMobile(),savedEntity.getSecondaryMobile(),savedEntity.getEmail()), customerDetailsService.getCustomerDetailsById(savedEntity.getCustomerId()));
 		
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 	}
+	
 	
 	
 	@Test
@@ -106,29 +135,42 @@ public class CustomerDetailsServiceTest {
 	{
 		assertEquals(0,customerDetailsService.count().intValue());
 		
-		CustomerDetailsDTO savedEntity=customerDetailsService
-				.createCustomerDetailsFromQuickRegisterEntity(standardEmailMobileCustomer());
+		assertNull( customerDetailsService
+				.createCustomerDetailsFromQuickRegisterEntity(standardEmailMobileCustomer()));
 		
-		assertEquals(standardCustomerDetailsCopiedFromQuickRegisterEntity(), savedEntity);
+		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO=
+				customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
+		
+		CustomerDetailsDTO savedEntity=customerDetailsService
+				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer());
+		
+		assertEquals(standardCustomerDetailsCopiedFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity );
 		
 		CustomerDetailsDTO mergedEntity=customerDetailsService.merge(standardCustomerDetails(savedEntity));
 		
-		assertEquals(standardCustomerDetails(savedEntity),mergedEntity );
-		
+		assertEquals(standardCustomerDetailsWithMerge(savedEntity,savedEntity.getMobile(),savedEntity.getSecondaryMobile(),savedEntity.getEmail()), customerDetailsService
+				.merge(standardCustomerDetails(savedEntity)));
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 		
+		assertTrue(customerDetailsService.sendMobileVerificationDetails(new CustomerIdTypeMobileTypeDTO(savedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_SECONDARY)));
+		
 		MobileVerificationDetailsDTO MobileVerificationDetailsDTO=
 				customerQuickRegisterService
-				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(mergedEntity.getCustomerId(), CUST_TYPE, mergedEntity.getSecondaryMobile());
+				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_SECONDARY);
 		
-		VerifyMobileDTO verifyMobileDTO=new VerifyMobileDTO(mergedEntity.getCustomerId(), CUST_TYPE, mergedEntity.getSecondaryMobile(),2,
+		VerifyMobileDTO verifyMobileDTO=new VerifyMobileDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_SECONDARY,
 				MobileVerificationDetailsDTO.getMobilePin());
+		
+		assertNotEquals(standardCustomerDetails(savedEntity).getSecondaryMobile(), customerDetailsService.getCustomerDetailsById(savedEntity.getCustomerId()).getSecondaryMobile());
 		
 		assertTrue(customerDetailsService.verifyMobileDetails(verifyMobileDTO));
 		
+		assertEquals(standardCustomerDetails(savedEntity).getSecondaryMobile(), customerDetailsService.getCustomerDetailsById(savedEntity.getCustomerId()).getSecondaryMobile());
 		
 	}
+	
+	
 	
 	@Test
 	public void verifyMobileDetails()
@@ -144,22 +186,25 @@ public class CustomerDetailsServiceTest {
 		
 		CustomerDetailsDTO mergedEntity=customerDetailsService.merge(standardCustomerDetails(savedEntity));
 		
-		assertEquals(standardCustomerDetails(savedEntity),mergedEntity );
+		assertEquals(standardCustomerDetailsWithMerge(savedEntity,savedEntity.getMobile(),savedEntity.getSecondaryMobile(),savedEntity.getEmail()), customerDetailsService
+				.merge(standardCustomerDetails(savedEntity)));
+		
 		
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 		
 		MobileVerificationDetailsDTO MobileVerificationDetailsDTO=
 				customerQuickRegisterService
-				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(mergedEntity.getCustomerId(), CUST_TYPE, mergedEntity.getMobile());
+				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
 		
-		VerifyMobileDTO verifyMobileDTO=new VerifyMobileDTO(mergedEntity.getCustomerId(), CUST_TYPE, mergedEntity.getMobile(),1,
+		VerifyMobileDTO verifyMobileDTO=new VerifyMobileDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY,
 				MobileVerificationDetailsDTO.getMobilePin());
 		
 		assertTrue(customerDetailsService.verifyMobileDetails(verifyMobileDTO));
 		
 		
 	}
+	
 	
 	
 	@Test
@@ -176,16 +221,17 @@ public class CustomerDetailsServiceTest {
 		
 		CustomerDetailsDTO mergedEntity=customerDetailsService.merge(standardCustomerDetails(savedEntity));
 		
-		assertEquals(standardCustomerDetails(savedEntity),mergedEntity );
+		assertEquals(standardCustomerDetailsWithMerge(savedEntity,savedEntity.getMobile(),savedEntity.getSecondaryMobile(),savedEntity.getEmail()), mergedEntity);
+		
 		
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 		
 		EmailVerificationDetailsDTO emailVerificationDetailsDTO=
 				customerQuickRegisterService
-				.getEmailVerificationDetailsByCustomerIdTypeAndEmail(mergedEntity.getCustomerId(), CUST_TYPE, mergedEntity.getEmail());
+				.getEmailVerificationDetailsByCustomerIdTypeAndEmail(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
 		
-		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(mergedEntity.getCustomerId(), CUST_TYPE, mergedEntity.getEmail(),
+		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY,
 				emailVerificationDetailsDTO.getEmailHash());
 		
 		assertTrue(customerDetailsService.verifyEmailDetails(verifyEmailDTO));
@@ -194,7 +240,7 @@ public class CustomerDetailsServiceTest {
 	}
 	
 	
-
+	
 	@Test
 	public void sendMobileverificationDetails()
 	{
@@ -209,12 +255,12 @@ public class CustomerDetailsServiceTest {
 		
 		CustomerDetailsDTO mergedEntity=customerDetailsService.merge(standardCustomerDetails(savedEntity));
 		
-		assertEquals(standardCustomerDetails(savedEntity),mergedEntity );
+		assertEquals(standardCustomerDetailsWithMerge(savedEntity,savedEntity.getMobile(),savedEntity.getSecondaryMobile(),savedEntity.getEmail()), mergedEntity);
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 		
 		assertTrue(customerDetailsService
-				.sendMobileVerificationDetails(new CustomerIdTypeMobileDTO(mergedEntity.getCustomerId(), CUST_TYPE, mergedEntity.getMobile())));
+				.sendMobileVerificationDetails(new CustomerIdTypeMobileTypeDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY)));
 	}
 	
 	@Test
@@ -231,12 +277,12 @@ public class CustomerDetailsServiceTest {
 		
 		CustomerDetailsDTO mergedEntity=customerDetailsService.merge(standardCustomerDetails(savedEntity));
 		
-		assertEquals(standardCustomerDetails(savedEntity),mergedEntity );
+		assertEquals(standardCustomerDetailsWithMerge(savedEntity,savedEntity.getMobile(),savedEntity.getSecondaryMobile(),savedEntity.getEmail()), mergedEntity);
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 		
 		assertTrue(customerDetailsService
-				.sendEmailVerificationDetails(new CustomerIdTypeEmailDTO(mergedEntity.getCustomerId(), CUST_TYPE, mergedEntity.getEmail())));
+				.sendEmailVerificationDetails(new CustomerIdTypeEmailTypeDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY)));
 	}
 
 	

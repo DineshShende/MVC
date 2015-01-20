@@ -6,7 +6,7 @@ public class VerifyMobileDTO {
 	
 	Integer customerType;
 	
-	Long mobile;
+	Integer mobileType;
 	
 	Integer mobilePin;
 	
@@ -14,16 +14,18 @@ public class VerifyMobileDTO {
 	public VerifyMobileDTO() {
 	
 	}
+	
+	public VerifyMobileDTO(Long customerId, Integer customerType,
+			Integer mobileType, Integer mobilePin) {
 
-
-	public VerifyMobileDTO(Long customerId, Integer customerType, Long mobile,
-			Integer mobilePin) {
-		super();
 		this.customerId = customerId;
 		this.customerType = customerType;
-		this.mobile = mobile;
+		this.mobileType = mobileType;
 		this.mobilePin = mobilePin;
 	}
+
+
+
 
 
 	public Long getCustomerId() {
@@ -35,16 +37,13 @@ public class VerifyMobileDTO {
 		this.customerId = customerId;
 	}
 
-
-	public Long getMobile() {
-		return mobile;
+	public Integer getMobileType() {
+		return mobileType;
 	}
 
-
-	public void setMobile(Long mobile) {
-		this.mobile = mobile;
+	public void setMobileType(Integer mobileType) {
+		this.mobileType = mobileType;
 	}
-
 
 	public Integer getMobilePin() {
 		return mobilePin;
@@ -67,20 +66,12 @@ public class VerifyMobileDTO {
 		this.customerType = customerType;
 	}
 
-
-
-
-
 	@Override
 	public String toString() {
-		return "VerifyMobileDTO [customerId=" + customerId + ", mobile="
-				+ mobile + ", customerType=" + customerType + ", mobilePin="
+		return "VerifyMobileDTO [customerId=" + customerId + ", customerType="
+				+ customerType + ", mobileType=" + mobileType + ", mobilePin="
 				+ mobilePin + "]";
 	}
-
-
-
-
 
 	@Override
 	public int hashCode() {
@@ -90,15 +81,12 @@ public class VerifyMobileDTO {
 				+ ((customerId == null) ? 0 : customerId.hashCode());
 		result = prime * result
 				+ ((customerType == null) ? 0 : customerType.hashCode());
-		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
 		result = prime * result
 				+ ((mobilePin == null) ? 0 : mobilePin.hashCode());
+		result = prime * result
+				+ ((mobileType == null) ? 0 : mobileType.hashCode());
 		return result;
 	}
-
-
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -119,19 +107,18 @@ public class VerifyMobileDTO {
 				return false;
 		} else if (!customerType.equals(other.customerType))
 			return false;
-		if (mobile == null) {
-			if (other.mobile != null)
-				return false;
-		} else if (!mobile.equals(other.mobile))
-			return false;
 		if (mobilePin == null) {
 			if (other.mobilePin != null)
 				return false;
 		} else if (!mobilePin.equals(other.mobilePin))
 			return false;
+		if (mobileType == null) {
+			if (other.mobileType != null)
+				return false;
+		} else if (!mobileType.equals(other.mobileType))
+			return false;
 		return true;
 	}
-
 
 
 

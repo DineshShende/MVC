@@ -11,11 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
+import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.completeregister.EntityIdDTO;
 import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
+import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
+import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
+import com.projectx.rest.domain.quickregister.EmailVerificationDetailsKey;
+import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 
 @Controller
@@ -24,6 +30,15 @@ public class CustomerDetailsController {
 
 	@Autowired
 	CustomerDetailsService customerDetailsService;
+	
+	@Autowired
+	QuickRegisterService quickRegisterService;
+	
+	private Integer ENTITY_TYPE_CUSTOMER=1;
+	private Integer ENTITY_TYPE_VENDOR=2;
+	
+	private Integer ENTITY_TYPE_PRIMARY=1;
+	private Integer ENTITY_TYPE_SECONDARY=2;
 	
 	@RequestMapping(value="/createCustomerDetailsFromQuickRegisterEntity",method=RequestMethod.POST)
 	public String createCustomerDetailsFromQuickRegisterEntity(@ModelAttribute QuickRegisterDTO quickRegisterDTO,Model model)
@@ -35,7 +50,7 @@ public class CustomerDetailsController {
 		
 		return "customerDetailsForm";
 	}
-	
+		
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	public String save(@ModelAttribute CustomerDetailsDTO customerDetailsDTO,Model model)
 	{
@@ -48,6 +63,35 @@ public class CustomerDetailsController {
 		
 		model.addAttribute("customerDetails", newCustomerDetailsDTO);
 		
+		return "documentUpload";
+	
+	}
+	
+	@RequestMapping(value="/editForm",method=RequestMethod.POST)
+	public String editForm(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
+	{
+		
+		CustomerDetailsDTO newCustomerDetailsDTO=customerDetailsService
+				.getCustomerDetailsById(entityIdDTO.getEntityId());
+		
+		model.addAttribute("customerDetails", newCustomerDetailsDTO);
+		
+		return "customerDetailsForm";
+	
+	}
+	
+	@RequestMapping(value="/edit",method=RequestMethod.POST)
+	public String edit(@ModelAttribute CustomerDetailsDTO customerDetailsDTO,Model model)
+	{
+		customerDetailsDTO=customerDetailsService.InitializeMetaData(customerDetailsDTO);
+		
+		CustomerDetailsDTO newCustomerDetailsDTO=customerDetailsService
+				.merge(customerDetailsDTO);
+		
+		model.addAttribute("customerDetails", newCustomerDetailsDTO);
+		
+		model=customerDetailsService.initialiseShowCustomerDetails(customerDetailsDTO.getCustomerId(), model);
+		
 		return "showCustomerDetails";
 	
 	}
@@ -57,12 +101,12 @@ public class CustomerDetailsController {
 	{
 		Boolean result=customerDetailsService.verifyMobileDetails(verifyMobileDTO );
 		
+		CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(verifyMobileDTO.getEntityId());
+		
+		model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
+		
 		if(result)
 		{
-			CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(verifyMobileDTO.getCustomerId());
-			
-			model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
-			
 			model.addAttribute("mobileVrificationStatus", "sucess");
 						
 		}
@@ -71,20 +115,22 @@ public class CustomerDetailsController {
 			model.addAttribute("mobileVrificationStatus", "failure");
 		}
 		
+		model=customerDetailsService.initialiseShowCustomerDetails(verifyMobileDTO.getEntityId(), model);
+		
 		return "showCustomerDetails";
 	}
 	
 	@RequestMapping(value="/sendMobileVerificationDetails",method=RequestMethod.POST)
-	public String sendMobileVerificationDetails(@ModelAttribute CustomerIdTypeMobileDTO customerIdTypeMobileDTO,Model model)
+	public String sendMobileVerificationDetails(@ModelAttribute CustomerIdTypeMobileTypeDTO customerIdTypeMobileDTO,Model model)
 	{
 		Boolean result=customerDetailsService.sendMobileVerificationDetails(customerIdTypeMobileDTO);
 		
+		CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(customerIdTypeMobileDTO.getCustomerId());
+		
+		model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
+		
 		if(result)
 		{
-			CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(customerIdTypeMobileDTO.getCustomerId());
-			
-			model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
-			
 			model.addAttribute("sendMobileVerificationStatus", "sucess");
 						
 		}
@@ -93,22 +139,24 @@ public class CustomerDetailsController {
 			model.addAttribute("sendMobileVerificationStatus", "failure");
 		}
 		
+		model=customerDetailsService.initialiseShowCustomerDetails(customerIdTypeMobileDTO.getCustomerId(), model);
+		
 		return "showCustomerDetails";
 	}
 	
-	@RequestMapping(value="/verifyEmailDetails/{customerId}/{customerType}/{email}/{emailHash}",method=RequestMethod.GET)
-	public String verifyEmailDetails(@PathVariable Long customerId,@PathVariable Integer customerType,@PathVariable String email,@PathVariable String emailHash ,Model model)
+	@RequestMapping(value="/verifyEmailDetails/{customerId}/{customerType}/{emailType}/{emailHash}",method=RequestMethod.GET)
+	public String verifyEmailDetails(@PathVariable Long customerId,@PathVariable Integer customerType,@PathVariable Integer emailType,@PathVariable String emailHash ,Model model)
 	{
-		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId, customerType, email, emailHash);
+		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId, customerType, emailType, emailHash);
 		
 		Boolean result=customerDetailsService.verifyEmailDetails(verifyEmailDTO );
 		
+		CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(verifyEmailDTO.getEntityId());
+		
+		model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
+		
 		if(result)
 		{
-			CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(verifyEmailDTO.getCustomerId());
-			
-			model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
-			
 			model.addAttribute("emailVrificationStatus", "sucess");
 						
 		}
@@ -117,20 +165,22 @@ public class CustomerDetailsController {
 			model.addAttribute("emailVrificationStatus", "failure");
 		}
 		
+		model=customerDetailsService.initialiseShowCustomerDetails(customerId, model);
+		
 		return "showCustomerDetails";
 	}
 	
 	@RequestMapping(value="/sendEmailVerificationDetails",method=RequestMethod.POST)
-	public String sendEmailVerificationDetails(@ModelAttribute CustomerIdTypeEmailDTO customerIdTypeEmailDTO,Model model)
+	public String sendEmailVerificationDetails(@ModelAttribute CustomerIdTypeEmailTypeDTO customerIdTypeEmailDTO,Model model)
 	{
 		Boolean result=customerDetailsService.sendEmailVerificationDetails(customerIdTypeEmailDTO);
 		
+		CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(customerIdTypeEmailDTO.getCustomerId());
+		
+		model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
+		
 		if(result)
 		{
-			CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(customerIdTypeEmailDTO.getCustomerId());
-			
-			model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
-			
 			model.addAttribute("sendEmailVerificationStatus", "sucess");
 						
 		}
@@ -139,6 +189,10 @@ public class CustomerDetailsController {
 			model.addAttribute("sendEmailVerificationStatus", "failure");
 		}
 		
+		model=customerDetailsService.initialiseShowCustomerDetails(customerIdTypeEmailDTO.getCustomerId(), model);
+		
 		return "showCustomerDetails";
 	}
+	
+	
 }

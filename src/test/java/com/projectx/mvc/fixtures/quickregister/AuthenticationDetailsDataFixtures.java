@@ -22,7 +22,7 @@ public class AuthenticationDetailsDataFixtures {
 	
 	public static AuthenticationDetailsKey standardAuthenticationKey()
 	{
-		return new AuthenticationDetailsKey(CUST_ID, CUST_TYPE);
+		return new AuthenticationDetailsKey(CUST_ID, ENTITY_TYPE_CUSTOMER);
 	}
 	
 	public static AuthenticationDetailsDTO standardCustomerEmailMobileAuthenticationDetails()
@@ -81,7 +81,7 @@ public class AuthenticationDetailsDataFixtures {
 
 	public static UpdatePasswordDTO standardUpdatePassword()
 	{
-		return new UpdatePasswordDTO(new AuthenticationDetailsKey(CUST_ID,CUST_TYPE), CUST_PASSWORD_CHANGED);
+		return new UpdatePasswordDTO(new AuthenticationDetailsKey(CUST_ID,ENTITY_TYPE_CUSTOMER), CUST_PASSWORD_CHANGED);
 	}
 	
 	/*

@@ -11,9 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,12 +35,14 @@ import com.projectx.mvc.domain.quickregister.LoginDetailsDTO;
 import com.projectx.mvc.domain.quickregister.ResetPasswordRedirectDTO;
 import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
+import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
+import com.projectx.mvc.util.validator.CustomerQuickRegisterEntityValidator;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailDTO;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileDTO;
+import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileTypeDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterStringStatusDTO;
@@ -59,6 +65,25 @@ public class QuickRegisterController {
 	@Autowired
 	CustomerDetailsService customerDetailsService;
 	
+	@Autowired
+	VendorDetailsService vendorDetailsService;
+	
+	@Autowired
+    //@Qualifier("customerQuickRegisterValidator")
+    private CustomerQuickRegisterEntityValidator validator;
+ 	
+	@InitBinder("customerQuickRegisterEntity")
+    private void initBinder(WebDataBinder binder) {
+        binder.setValidator(validator);
+    }
+	
+	
+	private Integer ENTITY_TYPE_CUSTOMER=1;
+	private Integer ENTITY_TYPE_VENDOR=2;
+	
+	private Integer ENTITY_TYPE_PRIMARY=1;
+	private Integer ENTITY_TYPE_SECONDARY=2;
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public String showEmailForm(Model model) {
 		model.addAttribute("customerQuickRegisterEntity", new QuickRegisterEntity());
@@ -69,14 +94,17 @@ public class QuickRegisterController {
 	
 	@RequestMapping( method = RequestMethod.POST)
 	public String AddNewCustomer(
-			@Valid QuickRegisterEntity customerQuickRegisterEntity,
-			BindingResult result,Model model) throws Exception {
+			
+			 @Valid @ModelAttribute("customerQuickRegisterEntity")QuickRegisterEntity customerQuickRegisterEntity,
+				BindingResult result,Model model) throws Exception {
 		
 		if(customerQuickRegisterEntity.getEmail().equals(""))
 			customerQuickRegisterEntity.setEmail(null);
 			
+		
 		if(result.hasErrors())
 		{
+			model.addAttribute("customerQuickRegisterEntity", new QuickRegisterEntity());
 			return "customerQuickRegister";
 		}
 
@@ -131,7 +159,7 @@ public class QuickRegisterController {
 	}
 	
 	@RequestMapping(value="/resendMobilePin",method=RequestMethod.POST)
-	public String resendMobilePin(@ModelAttribute CustomerIdTypeMobileDTO mobileDTO,Model model)
+	public String resendMobilePin(@ModelAttribute CustomerIdTypeMobileTypeDTO mobileDTO,Model model)
 	{
 		Boolean result=customerQuickRegisterService.reSendMobilePin(mobileDTO);
 		
@@ -150,10 +178,10 @@ public class QuickRegisterController {
 	}
 	
 	
-	@RequestMapping(value="/verifyEmailHash/{customerId}/{customerType}/{email}/{emailHash}",method=RequestMethod.GET)
-	public String verifyEmailHash(@PathVariable Long customerId,@PathVariable Integer customerType, @PathVariable String email,@PathVariable String emailHash,Model model)
+	@RequestMapping(value="/verifyEmailHash/{customerId}/{customerType}/{emailType}/{emailHash}",method=RequestMethod.GET)
+	public String verifyEmailHash(@PathVariable Long customerId,@PathVariable Integer customerType, @PathVariable Integer emailType,@PathVariable String emailHash,Model model)
 	{
-		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId,customerType,email, emailHash);
+		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId,customerType,emailType, emailHash);
 		
 		Boolean result=customerQuickRegisterService.verifyEmail(verifyEmailDTO);
 		
@@ -174,7 +202,7 @@ public class QuickRegisterController {
 	}
 	
 	@RequestMapping(value="/resendEmailHash",method=RequestMethod.POST)
-	public String resendEmailHash(@ModelAttribute CustomerIdTypeEmailDTO mobileDTO,Model model)
+	public String resendEmailHash(@ModelAttribute CustomerIdTypeEmailTypeDTO mobileDTO,Model model)
 	{
 		Boolean result=customerQuickRegisterService.reSendEmailHash(mobileDTO);
 		
@@ -205,7 +233,9 @@ public class QuickRegisterController {
 		
 		AuthenticationDetailsDTO result=customerQuickRegisterService.verifyLoginDetails(loginVerificationDTO);
 		
-		if(result.getKey()==null && result.getKey().getCustomerId()!=null)
+	//	System.out.println(result);
+		
+		if(result.getKey()==null || (result.getKey()!=null && result.getKey().getCustomerId()==null))
 		{
 			model.addAttribute("verificationStatus","Sucess" );
 			return "loginForm";
@@ -222,7 +252,21 @@ public class QuickRegisterController {
 				ModelAndView modelAndView=customerQuickRegisterService
 						.populateCompleteRegisterRedirect(result);
 				
-				model.addAttribute("customerDetails", modelAndView.getModel().get("customerDetails"));
+				if(result.getKey().getCustomerType().equals(ENTITY_TYPE_CUSTOMER))
+				{	
+					model.addAttribute("customerDetails", modelAndView.getModel().get("customerDetails"));
+					model.addAttribute("mobileVerificationDetailsPrimary", modelAndView.getModel().get("mobileVerificationDetailsPrimary"));
+					model.addAttribute("emailVerificationDetails", modelAndView.getModel().get("emailVerificationDetails"));
+					model.addAttribute("mobileVerificationDetailsSeconadry", modelAndView.getModel().get("mobileVerificationDetailsSeconadry"));
+					
+				}
+				else
+				{
+					model.addAttribute("vendorDetails", modelAndView.getModel().get("vendorDetails"));
+					model.addAttribute("mobileVerificationDetailsPrimary", modelAndView.getModel().get("mobileVerificationDetailsPrimary"));
+					model.addAttribute("emailVerificationDetails", modelAndView.getModel().get("emailVerificationDetails"));
+				}
+				model.addAttribute("documentDetails", modelAndView.getModel().get("documentDetails"));
 				
 				return modelAndView.getViewName();
 			}
@@ -257,7 +301,17 @@ public class QuickRegisterController {
 				ModelAndView modelAndView=customerQuickRegisterService
 						.populateCompleteRegisterRedirect(result);
 				
-				model.addAttribute("customerDetails", modelAndView.getModelMap());
+				if(result.getKey().getCustomerType().equals(ENTITY_TYPE_CUSTOMER))
+				{	
+					model.addAttribute("customerDetails", modelAndView.getModel().get("customerDetails"));
+					model=customerDetailsService.initialiseShowCustomerDetails(customerId, model);
+				}
+				else
+				{
+					model.addAttribute("vendorDetails", modelAndView.getModel().get("vendorDetails"));
+					model=vendorDetailsService.initialiseShowVendorDetails(result.getKey().getCustomerId(), model);
+				}
+				model.addAttribute("documentDetails", modelAndView.getModel().get("documentDetails"));
 				
 				return modelAndView.getViewName();
 				
@@ -389,7 +443,7 @@ public class QuickRegisterController {
         }
     }
  
-	
+	/*
 	@RequestMapping(value="/getImage/{imageId}")
 	public void getImage(@PathVariable String imageId,HttpServletResponse response) throws IOException
 	{
@@ -420,12 +474,15 @@ public class QuickRegisterController {
 
 
         response.reset();
-       // response.setContentType(image.getContentType());
-       // response.setContentLength(image.getContent().length);
+        response.setContentType(image.getContentType());
+       
 
        response.getOutputStream().write(image.getImage());
 
 	}
+	
+	*/
+	
 	
 	@ModelAttribute("customerQuickRegisterDTO")
 	private QuickRegisterMVCDTO getcustomerQuickRegisterDTO()
