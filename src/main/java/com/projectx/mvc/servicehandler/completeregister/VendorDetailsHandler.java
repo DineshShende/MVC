@@ -1,6 +1,7 @@
 package com.projectx.mvc.servicehandler.completeregister;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -14,6 +15,10 @@ import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
+import com.projectx.rest.domain.completeregister.DriverList;
+import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
+import com.projectx.rest.domain.completeregister.VehicleList;
 import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
 import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
@@ -183,6 +188,142 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		return model;
 		
 		
+	}
+
+	@Override
+	public DriverDetailsDTO addDriver(DriverDetailsDTO driverDetailsDTO) {
+	
+		DriverDetailsDTO status=restTemplate
+				.postForObject(env.getProperty("rest.host")+"/vendor/driver", driverDetailsDTO, DriverDetailsDTO.class);
+		
+		return status;
+		
+	}
+
+	@Override
+	public DriverDetailsDTO update(DriverDetailsDTO driverDetailsDTO) {
+		
+		DriverDetailsDTO status=restTemplate
+				.postForObject(env.getProperty("rest.host")+"/vendor/driver/update", driverDetailsDTO, DriverDetailsDTO.class);
+		
+		return status;
+
+	}
+
+	@Override
+	public DriverDetailsDTO getDriverById(Long driverId) {
+		
+		DriverDetailsDTO result=restTemplate
+				.getForObject(env.getProperty("rest.host")+"/vendor/driver/getByDriverId/"+driverId, DriverDetailsDTO.class);
+		
+		return result;
+		
+
+		
+	}
+
+	@Override
+	public Boolean deleteDriverById(Long driverId) {
+		
+		Boolean result=restTemplate
+				.getForObject(env.getProperty("rest.host")+"/vendor/driver/deleteByDriverId/"+driverId, Boolean.class);
+		
+		return result;
+		
+	}
+
+	@Override
+	public List<DriverDetailsDTO> getDriversByVendor(Long venorId) {
+
+		DriverList result=restTemplate
+				.getForObject(env.getProperty("rest.host")+"/vendor/driver/getDriversByVendor/"+venorId, DriverList.class);
+		
+		return result.getDriverList();
+
+		
+	}
+
+	@Override
+	public Integer vehicleCount() {
+		
+		Integer result=restTemplate
+				.getForObject(env.getProperty("rest.host")+"/vendor/vehicle/count", Integer.class);
+		
+		return result;
+
+		
+	}
+
+	@Override
+	public Boolean vehicleClearTestData() {
+
+		Boolean result=restTemplate
+				.getForObject(env.getProperty("rest.host")+"/vendor/vehicle/clearTestData", Boolean.class);
+		
+		return result;
+
+	}
+
+	@Override
+	public VehicleDetailsDTO save(VehicleDetailsDTO vehicleDetailsDTO) {
+		
+	
+		VehicleDetailsDTO status=restTemplate
+				.postForObject(env.getProperty("rest.host")+"/vendor/vehicle", vehicleDetailsDTO, VehicleDetailsDTO.class);
+		
+		return status;
+		
+
+	}
+
+	@Override
+	public VehicleDetailsDTO getVehicleById(Long vehicleId) {
+		
+		VehicleDetailsDTO result=restTemplate
+				.getForObject(env.getProperty("rest.host")+"/vendor/vehicle/getByVehicleId/"+vehicleId, VehicleDetailsDTO.class);
+		
+		return result;
+
+		
+	}
+
+	@Override
+	public Boolean deleteVehicleById(Long vehicleId) {
+	
+		Boolean result=restTemplate
+				.getForObject(env.getProperty("rest.host")+"/vendor/vehicle/deleteByVehicleId/"+vehicleId, Boolean.class);
+		
+		return result;
+		
+	}
+
+	@Override
+	public List<VehicleDetailsDTO> getVehiclesByvendor(Long vendorId) {
+		
+		VehicleList result=restTemplate
+				.getForObject(env.getProperty("rest.host")+"/vendor/vehicle/getVehicleByVendor/"+vendorId, VehicleList.class);
+		
+		return result.getVehicleList();
+
+	}
+
+	@Override
+	public Integer driverCount() {
+		
+		Integer result=restTemplate
+				.getForObject(env.getProperty("rest.host")+"/vendor/driver/count", Integer.class);
+		
+		return result;
+	}
+
+	@Override
+	public Boolean driverClearTestData() {
+		
+		Boolean result=restTemplate
+				.getForObject(env.getProperty("rest.host")+"/vendor/driver/clearTestData", Boolean.class);
+		
+		return result;
+
 	}
 
 }

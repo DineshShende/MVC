@@ -26,6 +26,13 @@
                     <td><p th:text="${customerDetails.lastName}"/></td>
                
                 </tr>
+                
+                 <tr>
+                    <td>Date Of Birth:</td>
+                    <td><p th:text="${customerDetails.dateOfBirth}"/></td>
+               
+                </tr>
+                
                 <tr>
                     <td>Mobile:</td>
                     <td><p th:text="${customerDetails.mobile}"/>
@@ -63,6 +70,7 @@
         					<input type="submit" value="Send Verification Email" />
                		</form>
                		<p th:if="${sendEmailVerificationStatus != null}" th:text="${sendEmailVerificationStatus}"/>
+               		<p th:if="${emailVerificationStatus != null}" th:text="${emailVerificationStatus}"/>
                		</td>
                		
                 </tr>

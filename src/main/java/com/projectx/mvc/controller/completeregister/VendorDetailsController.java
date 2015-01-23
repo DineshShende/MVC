@@ -1,14 +1,20 @@
 package com.projectx.mvc.controller.completeregister;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
+import com.projectx.mvc.util.validator.VendorDetailsValidator;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
@@ -25,7 +31,13 @@ public class VendorDetailsController {
 	@Autowired
 	VendorDetailsService vendorDetailsService;
 	
+	@Autowired
+	VendorDetailsValidator vendorDetailsValidator;
 	
+	@InitBinder("vendorDetailsDTO")
+    private void initBinder(WebDataBinder binder) {
+        binder.setValidator(vendorDetailsValidator);
+    }
 	
 	
 	@RequestMapping(value="/createCustomerDetailsFromQuickRegisterEntity",method=RequestMethod.POST)
@@ -40,8 +52,15 @@ public class VendorDetailsController {
 	}
 	
 	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public String save(@ModelAttribute VendorDetailsDTO vendorDetailsDTO,Model model)
+	public String save(@Valid @ModelAttribute VendorDetailsDTO vendorDetailsDTO,BindingResult result,Model model)
 	{
+		if(result.hasErrors())
+		{
+			model.addAttribute("vendorDetails", vendorDetailsDTO);
+			
+			return "vendorDetailsForm";
+		}
+		
 		vendorDetailsDTO=vendorDetailsService.intializeMetaData(vendorDetailsDTO);
 	
 		System.out.println(vendorDetailsDTO);
@@ -56,8 +75,15 @@ public class VendorDetailsController {
 	}
 	
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
-	public String edit(@ModelAttribute VendorDetailsDTO vendorDetailsDTO,Model model)
+	public String edit(@Valid @ModelAttribute VendorDetailsDTO vendorDetailsDTO,BindingResult result,Model model)
 	{
+		if(result.hasErrors())
+		{
+			model.addAttribute("vendorDetails", vendorDetailsDTO);
+			
+			return "vendorDetailsForm";
+		}
+		
 		vendorDetailsDTO=vendorDetailsService.intializeMetaData(vendorDetailsDTO);
 		
 		VendorDetailsDTO newVendorDetailsDTO=vendorDetailsService

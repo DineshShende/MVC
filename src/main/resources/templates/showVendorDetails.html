@@ -26,6 +26,12 @@
                     <td><p th:text="${vendorDetails.lastName}"/></td>
                
                 </tr>
+                 <tr>
+                    <td>Date Of Birth:</td>
+                    <td><p th:text="${vendorDetails.dateOfBirth}"/></td>
+               
+                </tr>
+                
                 <tr>
                     <td>Mobile:</td>
                     <td><p th:text="${vendorDetails.mobile}"/>
@@ -58,11 +64,12 @@
                     <p th:if="${vendorDetails.email != emailVerificationDetails.email}" th:text="${emailVerificationDetails.email}"/></td>
                		<td><form th:if="${vendorDetails.isEmailVerified==false or vendorDetails.email != emailVerificationDetails.email}" action="/vendor/sendEmailVerificationDetails" method="post">
                				<input id="customerId" name="customerId" type="hidden" th:value="${vendorDetails.vendorId}"/>
-    						<input id="customerType" name="customerType" type="hidden" th:value="1"/>
-    						<input id="emailType" name="email" type="hidden" th:value="1"/>
+    						<input id="customerType" name="customerType" type="hidden" th:value="2"/>
+    						<input id="emailType" name="emailType" type="hidden" th:value="1"/>
         					<input type="submit" value="Send Verification Email" />
                		</form>
                		<p th:if="${sendEmailVerificationStatus != null}" th:text="${sendEmailVerificationStatus}"/>
+               		 <p th:if="${emailVerificationStatus != null}" th:text="${emailVerificationStatus}"/> 
                		</td>
                		
                 </tr>

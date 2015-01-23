@@ -12,7 +12,7 @@
     
        
     
-    <form action="/customer/quickregister/verifyMobilePin" method="post" >
+    <form action="/quickregister/verifyMobilePin" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
     <input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
@@ -21,7 +21,7 @@
     <input type="submit" value="Submit" />
     </form>       
     
-    <form action="/customer/quickregister/resendMobilePin" method="post" >
+    <form action="/quickregister/resendMobilePin" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
     <input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
@@ -29,7 +29,7 @@
     <input type="submit" value="Resend Pin" />       
     </form>
     
-    <form action="/customer/quickregister/resendEmailHash" method="post" >
+    <form action="/quickregister/resendEmailHash" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
     <input id="emailType" name="email" type="hidden" th:value="1"/>

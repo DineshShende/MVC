@@ -2,9 +2,14 @@ package com.projectx.mvc.controller.completeregister;
 
 import java.util.Date;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
+import com.projectx.mvc.util.validator.CustomerDetailsValidator;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
@@ -34,6 +40,14 @@ public class CustomerDetailsController {
 	@Autowired
 	QuickRegisterService quickRegisterService;
 	
+	@Autowired
+	CustomerDetailsValidator customerDetailsValidator;
+	
+	@InitBinder("customerDetailsDTO")
+    private void initBinder(WebDataBinder binder) {
+        binder.setValidator(customerDetailsValidator);
+    }
+	
 	private Integer ENTITY_TYPE_CUSTOMER=1;
 	private Integer ENTITY_TYPE_VENDOR=2;
 	
@@ -52,8 +66,15 @@ public class CustomerDetailsController {
 	}
 		
 	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public String save(@ModelAttribute CustomerDetailsDTO customerDetailsDTO,Model model)
+	public String save(@Valid @ModelAttribute CustomerDetailsDTO customerDetailsDTO,BindingResult result,Model model)
 	{
+		if(result.hasErrors())
+		{
+			model.addAttribute("customerDetails", customerDetailsDTO);
+			
+			return "customerDetailsForm";
+		}	
+		
 		customerDetailsDTO=customerDetailsService.InitializeMetaData(customerDetailsDTO);
 		
 		System.out.println(customerDetailsDTO);
@@ -68,7 +89,7 @@ public class CustomerDetailsController {
 	}
 	
 	@RequestMapping(value="/editForm",method=RequestMethod.POST)
-	public String editForm(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
+	public String editForm( @ModelAttribute EntityIdDTO entityIdDTO,Model model)
 	{
 		
 		CustomerDetailsDTO newCustomerDetailsDTO=customerDetailsService
@@ -81,8 +102,15 @@ public class CustomerDetailsController {
 	}
 	
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
-	public String edit(@ModelAttribute CustomerDetailsDTO customerDetailsDTO,Model model)
+	public String edit(@Valid @ModelAttribute CustomerDetailsDTO customerDetailsDTO,BindingResult result,Model model)
 	{
+		if(result.hasErrors())
+		{
+			model.addAttribute("customerDetails", customerDetailsDTO);
+			
+			return "customerDetailsForm";
+		}	
+		
 		customerDetailsDTO=customerDetailsService.InitializeMetaData(customerDetailsDTO);
 		
 		CustomerDetailsDTO newCustomerDetailsDTO=customerDetailsService

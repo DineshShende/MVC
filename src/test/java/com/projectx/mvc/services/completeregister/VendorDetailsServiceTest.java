@@ -1,6 +1,8 @@
 package com.projectx.mvc.services.completeregister;
 
 import static com.projectx.mvc.fixtures.completeregister.CustomerDetailsDataFixtures.*;
+import static com.projectx.mvc.fixtures.completeregister.VehicleDetailsDataFixtures.*;
+import static com.projectx.mvc.fixtures.completeregister.DriverDetailsDataFixtures.*;
 import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.*;
 import static org.junit.Assert.*;
 
@@ -17,6 +19,7 @@ import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
 import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
 import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
@@ -42,12 +45,16 @@ public class VendorDetailsServiceTest {
 	@Autowired
 	VendorDetailsService vendorDetailsService;
 	
+	
 	@Before
 	public void setUp()
 	{
 		customerDetailsService.clearTestData();
 		customerQuickRegisterService.clearTestData();
 		vendorDetailsService.clearTestData();
+		vendorDetailsService.driverClearTestData();
+		vendorDetailsService.vehicleClearTestData();
+		
 	}
 	
 	
@@ -56,6 +63,7 @@ public class VendorDetailsServiceTest {
 		
 	}
 	
+
 	
 	@Test
 	public void createCustomerDetailsFromQuickRegisterEntity()
@@ -277,5 +285,44 @@ public class VendorDetailsServiceTest {
 		assertEquals(0,vendorDetailsService.count().intValue());
 		
 	}
+	
+	
+	@Test
+	public void addDriverAndGetByDriverId()
+	{
+		
+		assertEquals(0, vendorDetailsService.driverCount().intValue());
+		
+		DriverDetailsDTO savedEntity=vendorDetailsService.addDriver(standardDriverDetails());
+		
+		assertEquals(savedEntity, vendorDetailsService.getDriverById(savedEntity.getDriverId()));
+		
+		assertEquals(1, vendorDetailsService.driverCount().intValue());
+	}
+
+	@Test
+	public void updateAndVerifyMobile()
+	{
+		assertEquals(0, vendorDetailsService.driverCount().intValue());
+		
+		DriverDetailsDTO savedEntity=vendorDetailsService.addDriver(standardDriverDetails());
+		
+		DriverDetailsDTO updatedEntity=vendorDetailsService.update(standardDriverDetailsNewMobileAndFirstName(savedEntity.getDriverId()));
+		
+		assertNotEquals(updatedEntity.getMobile(),standardDriverDetailsNewMobileAndFirstName(savedEntity.getDriverId()).getMobile());
+		
+		customerQuickRegisterService
+			.reSendMobilePin(new com.projectx.rest.domain.quickregister.CustomerIdTypeMobileTypeDTO(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY));
+		
+		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=
+				customerQuickRegisterService.getMobileVerificationDetailsByCustomerIdTypeAndMobile(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY);
+		
+		customerQuickRegisterService.verifyMobile(new com.projectx.rest.domain.quickregister
+				.VerifyMobileDTO(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin()));
+		
+		assertEquals(standardDriverDetailsNewMobileAndFirstName(savedEntity.getDriverId()).getMobile(),vendorDetailsService.getDriverById(savedEntity.getDriverId()).getMobile());
+	}
+	
+	
 	
 }

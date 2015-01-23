@@ -51,7 +51,7 @@ public class QuickRegisterStandAloneTest {
 		when(customerQuickRegisterService.verifyLoginDetails(standardLoginVerificationWithEmail())).thenReturn(standardCustomerEmailMobileAuthenticationDetails());
 		
 		this.mockMvc.perform(
-				post("/customer/quickregister/verifyLoginDetails").param("entity",CUST_EMAIL)
+				post("/quickregister/verifyLoginDetails").param("entity",CUST_EMAIL)
 											   .param("password", CUST_PASSWORD_DEFAULT)
 											   											  
 											)
@@ -78,7 +78,7 @@ public class QuickRegisterStandAloneTest {
 		when(customerQuickRegisterService.verifyLoginDetails(standardLoginVerificationWithMobile())).thenReturn(standardCustomerEmailMobileAuthenticationDetails());
 		
 		this.mockMvc.perform(
-				post("/customer/quickregister/verifyLoginDetails").param("entity",Long.toString(CUST_MOBILE))
+				post("/quickregister/verifyLoginDetails").param("entity",Long.toString(CUST_MOBILE))
 											   .param("password", CUST_PASSWORD_DEFAULT)
 											   											  
 											)
@@ -102,7 +102,7 @@ public class QuickRegisterStandAloneTest {
 		when(customerQuickRegisterService.updatePassword(standardUpdatePassword())).thenReturn(true);
 		
 		this.mockMvc.perform(
-				post("/customer/quickregister/updatePassword").param("key.customerId",Long.toString(CUST_ID))
+				post("/quickregister/updatePassword").param("key.customerId",Long.toString(CUST_ID))
 												.param("key.customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
 											   .param("password", CUST_PASSWORD_CHANGED)
 											   											  

@@ -1,4 +1,4 @@
-package com.projectx.rest.domain.completeregister;
+package com.projectx.mvc.domain.completeregister;
 
 import java.util.Date;
 
@@ -6,9 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.projectx.mvc.util.serializer.JsonDateDeSerializer;
 import com.projectx.mvc.util.serializer.JsonDateSerializer;
+import com.projectx.rest.domain.completeregister.Address;
 
 
-public class CustomerDetailsDTO {
+public class CustomerDetails {
 	
 	private Long customerId;
 	
@@ -50,12 +51,12 @@ public class CustomerDetailsDTO {
 	private String updatedBy;
 
 	
-	public CustomerDetailsDTO() {
+	public CustomerDetails() {
 
 	}
 
 
-	public CustomerDetailsDTO(Long customerId, String firstName, String lastName,
+	public CustomerDetails(Long customerId, String firstName, String lastName,
 			Date dateOfBirth, Address homeAddressId, Long mobile,
 			Boolean isMobileVerified, String email, Boolean isEmailVerified,
 			String language, String businessDomain, String nameOfFirm,
@@ -348,7 +349,7 @@ public class CustomerDetailsDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CustomerDetailsDTO other = (CustomerDetailsDTO) obj;
+		CustomerDetails other = (CustomerDetails) obj;
 		if (businessDomain == null) {
 			if (other.businessDomain != null)
 				return false;

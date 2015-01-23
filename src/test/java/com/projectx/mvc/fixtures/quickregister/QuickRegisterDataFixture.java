@@ -46,6 +46,7 @@ public class QuickRegisterDataFixture {
 	
 	public static Integer ENTITY_TYPE_CUSTOMER=1;
 	public static Integer ENTITY_TYPE_VENDOR=2;
+	public static Integer ENTITY_TYPE_DRIVER=3;
 	
 	public static Integer ENTITY_TYPE_PRIMARY=1;
 	public static Integer ENTITY_TYPE_SECONDARY=2;

@@ -9,7 +9,7 @@ import com.projectx.mvc.domain.quickregister.QuickRegisterEntity;
 
 
 @Component
-public class CustomerQuickRegisterEntityValidator implements Validator{
+public class QuickRegisterEntityValidator implements Validator{
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -26,6 +26,10 @@ public class CustomerQuickRegisterEntityValidator implements Validator{
 		
 		if(entity.getLastName().equals(""))
 			errors.rejectValue("lastName", "lastName can't be null", "lastName can't be null");
+		
+		
+		if(entity.getMobile()!=null && (entity.getMobile()<1000000000L || entity.getMobile()>9999999999L))
+			errors.rejectValue("mobile", "mobile out of range", "mobile should be between 1000000000L and 9999999999L");
 		
 		
 		if(entity.getEmail().equals("") && entity.getMobile()==null)

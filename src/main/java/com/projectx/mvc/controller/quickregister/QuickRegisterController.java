@@ -37,8 +37,9 @@ import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
-import com.projectx.mvc.util.validator.CustomerQuickRegisterEntityValidator;
+import com.projectx.mvc.util.validator.QuickRegisterEntityValidator;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
+import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailTypeDTO;
@@ -52,7 +53,7 @@ import com.projectx.rest.domain.quickregister.VerifyEmailLoginDetails;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
 
 @Controller
-@RequestMapping(value = "/customer/quickregister")
+@RequestMapping(value = "/quickregister")
 public class QuickRegisterController {
 
 	@Autowired
@@ -70,7 +71,7 @@ public class QuickRegisterController {
 	
 	@Autowired
     //@Qualifier("customerQuickRegisterValidator")
-    private CustomerQuickRegisterEntityValidator validator;
+    private QuickRegisterEntityValidator validator;
  	
 	@InitBinder("customerQuickRegisterEntity")
     private void initBinder(WebDataBinder binder) {
@@ -121,7 +122,9 @@ public class QuickRegisterController {
 		}
 		else
 		{
-			customerQuickRegisterDTO.toCustomerQuickRegisterMVC(status.getCustomer());			
+			customerQuickRegisterDTO.toCustomerQuickRegisterMVC(status.getCustomer());	
+			
+			model.addAttribute("customerQuickRegisterDTO", status.getCustomer());
 							
 			String message=customerQuickRegisterService.populateMessageForDuplicationField(status.getStatus());
 			model.addAttribute("message", message);
@@ -185,20 +188,65 @@ public class QuickRegisterController {
 		
 		Boolean result=customerQuickRegisterService.verifyEmail(verifyEmailDTO);
 		
-		if(result)
+		QuickRegisterDTO quickRegisterDTO=customerQuickRegisterService.getByCustomerIdType(new CustomerIdTypeDTO(customerId, customerType));
+		
+		if(quickRegisterDTO.getCustomerId()!=null)
 		{
-			model.addAttribute("emailVerificationStatus", "Email Verification Sucess");
-			customerQuickRegisterDTO.toCustomerQuickRegisterMVC(customerQuickRegisterService
-					.getByCustomerIdType(new CustomerIdTypeDTO(verifyEmailDTO.getCustomerId(),verifyEmailDTO.getCustomerType())));
-			
-			return "loginForm";
-		}
-		else
-		{	
-			model.addAttribute("emailVerificationStatus", "Email Verification Failed");
-			return "verifyEmailMobile";
-		}	
+			if(result)
+			{
+				model.addAttribute("emailVerificationStatus", "Email Verification Sucess");
+				customerQuickRegisterDTO.toCustomerQuickRegisterMVC(customerQuickRegisterService
+						.getByCustomerIdType(new CustomerIdTypeDTO(verifyEmailDTO.getCustomerId(),verifyEmailDTO.getCustomerType())));
 				
+				return "loginForm";
+			}
+			else
+			{	
+				model.addAttribute("emailVerificationStatus", "Email Verification Failed");
+				return "customerQuickRegister";
+			}
+		}
+		else if(customerType.equals(ENTITY_TYPE_CUSTOMER))
+		{
+			CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(customerId);
+			
+			model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
+			
+			if(result)
+			{
+				model.addAttribute("emailVerificationStatus", "sucess");
+							
+			}
+			else
+			{
+				model.addAttribute("emailVerificationStatus", "failure");
+			}
+			
+			model=customerDetailsService.initialiseShowCustomerDetails(customerId, model);
+			
+			return "showCustomerDetails";
+			
+		}
+		else if(customerType.equals(ENTITY_TYPE_VENDOR))
+		{
+			VendorDetailsDTO updatedVendorDetailsDTO=vendorDetailsService.getCustomerDetailsById(customerId);
+			
+			model.addAttribute("vendorDetails", updatedVendorDetailsDTO);
+			
+			if(result)
+			{
+				model.addAttribute("emailVerificationStatus", "sucess");
+							
+			}
+			else
+			{
+				model.addAttribute("emailVerificationStatus", "failure");
+			}
+			model=vendorDetailsService.initialiseShowVendorDetails(customerId, model);
+			return "showVendorDetails";
+		}
+			
+		return "loginForm";		
 	}
 	
 	@RequestMapping(value="/resendEmailHash",method=RequestMethod.POST)

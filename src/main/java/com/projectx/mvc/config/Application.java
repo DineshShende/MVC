@@ -1,6 +1,7 @@
 package com.projectx.mvc.config;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -47,6 +48,13 @@ public class Application extends SpringBootServletInitializer {
     }
     
     
+    @Bean
+    public SimpleDateFormat simpleDateFormat()
+    {
+    	SimpleDateFormat simpleDateFormat=new  SimpleDateFormat("MM-dd-yyyy");
+    	
+    	return simpleDateFormat;
+    }
     
    /* 
     @Bean

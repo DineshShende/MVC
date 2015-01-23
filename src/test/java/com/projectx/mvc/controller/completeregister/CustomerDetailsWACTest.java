@@ -12,6 +12,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +36,6 @@ import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 
-
 import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -53,6 +55,8 @@ public class CustomerDetailsWACTest {
 	@Autowired
 	QuickRegisterService quickRegisterService;
 	
+	@Autowired
+	SimpleDateFormat simpleDateFormat;
 	
 	
 	@Before
@@ -125,6 +129,159 @@ public class CustomerDetailsWACTest {
 								post("/customer/save").param("customerId", Long.toString(quickRegisterSavedEntityDTO.getCustomerId()))
 															.param("firstName",CUST_FIRSTNAME)
 															   .param("lastName", CUST_LASTNAME)
+															   .param("dateOfBirth", "01/01/1990")
+															   .param("email",CUST_EMAIL)
+															   .param("mobile",Long.toString(CUST_MOBILE))
+															   .param("pincode",Integer.toString(CUST_PIN))
+															   .param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
+															   .param("isEmailVerified", "false")
+															   .param("isMobileVerified", "false")
+															   .param("isSecondaryMobileVerified", "false")
+								
+														    // .param("dateOfBirth", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getDateOfBirth().toString())
+															   .param("homeAddressId.customerType", Integer.toString(standardAddress().getCustomerType()))
+															   .param("homeAddressId.addressLine", standardAddress().getAddressLine())
+															   .param("homeAddressId.city", standardAddress().getCity())
+															   .param("homeAddressId.district", standardAddress().getDistrict())
+						
+															    
+															   .param("homeAddressId.state", standardAddress().getState())
+															   .param("homeAddressId.pincode", Integer.toString(standardAddress().getPincode()))
+															   
+															   .param("language", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getLanguage())
+															   .param("businessDomain", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getBusinessDomain())
+															   .param("nameOfFirm", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getNameOfFirm())
+															   .param("firmAddressId.customerType", Integer.toString(standardAddress().getCustomerType()))
+															   .param("firmAddressId.addressLine", standardAddress().getAddressLine())
+															   .param("firmAddressId.city", standardAddress().getCity())
+															   .param("firmAddressId.district", standardAddress().getDistrict())
+															   .param("firmAddressId.state", standardAddress().getState())
+															   .param("firmAddressId.pincode", Integer.toString(standardAddress().getPincode()))
+															   
+															   .param("secondaryMobile", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryMobile().toString())
+															   .param("secondaryEmail", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryEmail())
+															   
+															  
+															)
+			.andDo(print())												
+			.andExpect(view().name("documentUpload"))
+			.andExpect(model().size(2))
+			.andExpect(model().attributeExists("customerDetails"))
+			.andExpect(model().attribute("customerDetails",hasProperty("customerId", is(quickRegisterSavedEntityDTO.getCustomerId()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("firstName", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getFirstName()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("lastName", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getLastName()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("dateOfBirth", is(simpleDateFormat.parse("01-01-1990")))))
+			.andExpect(model().attribute("customerDetails",hasProperty("email", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getEmail()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("mobile", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getMobile()))))
+			
+			.andExpect(model().attribute("customerDetails",hasProperty("isEmailVerified", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getIsEmailVerified()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("isMobileVerified", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getIsMobileVerified()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("isSecondaryMobileVerified", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getIsSecondaryMobileVerified()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("homeAddressId", is(standardAddress()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("language", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getLanguage()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("businessDomain", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getBusinessDomain()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("nameOfFirm", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getNameOfFirm()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("firmAddressId", is(standardAddress()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("secondaryMobile",isEmptyOrNullString() )))
+			.andExpect(model().attribute("customerDetails",hasProperty("isSecondaryMobileVerified", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getIsSecondaryMobileVerified()))))
+			.andExpect(model().attribute("customerDetails",hasProperty("secondaryEmail", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryEmail()))));
+						
+	}
+	
+	
+	@Test
+	public void saveWithError() throws Exception
+	{
+	
+			QuickRegisterDTO quickRegisterSavedEntityDTO=
+				quickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO()).getCustomer();
+	
+		
+		this.mockMvc.perform(
+				post("/customer/createCustomerDetailsFromQuickRegisterEntity").param("customerId", Long.toString(quickRegisterSavedEntityDTO.getCustomerId()))
+											.param("firstName",CUST_FIRSTNAME)
+											   .param("lastName", CUST_LASTNAME)
+											   .param("email",CUST_EMAIL)
+											   .param("mobile",Long.toString(CUST_MOBILE))
+											   .param("pincode",Integer.toString(CUST_PIN))
+											   .param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
+											   .param("isEmailVerified", "true")
+											   .param("isMobileVerified", "true")
+											   
+											  
+											);
+		
+		this.mockMvc.perform(
+								post("/customer/save").param("customerId", Long.toString(quickRegisterSavedEntityDTO.getCustomerId()))
+															.param("firstName","")
+															   .param("lastName", CUST_LASTNAME)
+															   .param("dateOfBirth", "01/01/1990")
+															   .param("email",CUST_EMAIL)
+															   .param("mobile",Long.toString(CUST_MOBILE))
+															   .param("pincode",Integer.toString(CUST_PIN))
+															   .param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
+															   .param("isEmailVerified", "false")
+															   .param("isMobileVerified", "false")
+															   .param("isSecondaryMobileVerified", "false")
+								
+														    // .param("dateOfBirth", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getDateOfBirth().toString())
+															   .param("homeAddressId.customerType", Integer.toString(standardAddress().getCustomerType()))
+															   .param("homeAddressId.addressLine", standardAddress().getAddressLine())
+															   .param("homeAddressId.city", standardAddress().getCity())
+															   .param("homeAddressId.district", standardAddress().getDistrict())
+						
+															    
+															   .param("homeAddressId.state", standardAddress().getState())
+															   .param("homeAddressId.pincode", Integer.toString(standardAddress().getPincode()))
+															   
+															   .param("language", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getLanguage())
+															   .param("businessDomain", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getBusinessDomain())
+															   .param("nameOfFirm", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getNameOfFirm())
+															   .param("firmAddressId.customerType", Integer.toString(standardAddress().getCustomerType()))
+															   .param("firmAddressId.addressLine", standardAddress().getAddressLine())
+															   .param("firmAddressId.city", standardAddress().getCity())
+															   .param("firmAddressId.district", standardAddress().getDistrict())
+															   .param("firmAddressId.state", standardAddress().getState())
+															   .param("firmAddressId.pincode", Integer.toString(standardAddress().getPincode()))
+															   
+															   .param("secondaryMobile", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryMobile().toString())
+															   .param("secondaryEmail", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryEmail())
+															   
+															  
+															)
+			.andDo(print())												
+			.andExpect(view().name("customerDetailsForm"))
+			.andExpect(model().size(2))
+			.andExpect(model().attributeExists("customerDetails"));			
+	}
+	
+	
+	@Test
+	public void editWithErrors() throws Exception
+	{
+		QuickRegisterDTO quickRegisterSavedEntityDTO=
+				quickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO()).getCustomer();
+	
+		
+		this.mockMvc.perform(
+				post("/customer/createCustomerDetailsFromQuickRegisterEntity").param("customerId", Long.toString(quickRegisterSavedEntityDTO.getCustomerId()))
+											.param("firstName",CUST_FIRSTNAME)
+											   .param("lastName", CUST_LASTNAME)
+											   .param("email",CUST_EMAIL)
+											   .param("mobile",Long.toString(CUST_MOBILE))
+											   .param("pincode",Integer.toString(CUST_PIN))
+											   .param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
+											   .param("isEmailVerified", "true")
+											   .param("isMobileVerified", "true")
+											   
+											  
+											);
+		
+		this.mockMvc.perform(
+								post("/customer/save").param("customerId", Long.toString(quickRegisterSavedEntityDTO.getCustomerId()))
+															.param("firstName",CUST_FIRSTNAME)
+															   .param("lastName", CUST_LASTNAME)
+															   .param("dateOfBirth", "01/01/1990")
 															   .param("email",CUST_EMAIL)
 															   .param("mobile",Long.toString(CUST_MOBILE))
 															   .param("pincode",Integer.toString(CUST_PIN))
@@ -155,31 +312,57 @@ public class CustomerDetailsWACTest {
 															   .param("secondaryEmail", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryEmail())
 															   
 															  
-															)
-			.andDo(print())												
-			.andExpect(view().name("documentUpload"))
-			.andExpect(model().size(2))
-			.andExpect(model().attributeExists("customerDetails"))
-			.andExpect(model().attribute("customerDetails",hasProperty("customerId", is(quickRegisterSavedEntityDTO.getCustomerId()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("firstName", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getFirstName()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("lastName", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getLastName()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("email", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getEmail()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("mobile", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getMobile()))))
-			
-			.andExpect(model().attribute("customerDetails",hasProperty("isEmailVerified", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getIsEmailVerified()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("isMobileVerified", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getIsMobileVerified()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("isSecondaryMobileVerified", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getIsSecondaryMobileVerified()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("homeAddressId", is(standardAddress()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("language", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getLanguage()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("businessDomain", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getBusinessDomain()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("nameOfFirm", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getNameOfFirm()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("firmAddressId", is(standardAddress()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("secondaryMobile",isEmptyOrNullString() )))
-			.andExpect(model().attribute("customerDetails",hasProperty("isSecondaryMobileVerified", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getIsSecondaryMobileVerified()))))
-			.andExpect(model().attribute("customerDetails",hasProperty("secondaryEmail", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryEmail()))));
-						
+															);
+		
+		
+		Address homeAddress=customerDetailsService.getCustomerDetailsById(quickRegisterSavedEntityDTO.getCustomerId()).getHomeAddressId();
+		
+		Address firmAddress=customerDetailsService.getCustomerDetailsById(quickRegisterSavedEntityDTO.getCustomerId()).getFirmAddressId();
+								
+		this.mockMvc.perform(
+				post("/customer/edit").param("customerId", Long.toString(quickRegisterSavedEntityDTO.getCustomerId()))
+											.param("firstName",CUST_FIRSTNAME)
+											   .param("lastName", "")
+											   .param("dateOfBirth", "01/01/1990")
+											   .param("email",CUST_EMAIL)
+											   .param("mobile",Long.toString(CUST_MOBILE))
+											   .param("pincode",Integer.toString(CUST_PIN))
+											   .param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
+											   .param("isEmailVerified", "false")
+											   .param("isMobileVerified", "false")
+											   .param("isSecondaryMobileVerified", "false")
+				
+										    // .param("dateOfBirth", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getDateOfBirth().toString())
+											   .param("homeAddressId.addressId", Long.toString(homeAddress.getAddressId()))
+											   .param("homeAddressId.customerType", Integer.toString(standardAddressUpdated().getCustomerType()))
+											   .param("homeAddressId.addressLine", standardAddressUpdated().getAddressLine())
+											   .param("homeAddressId.city", standardAddressUpdated().getCity())
+											   .param("homeAddressId.district", standardAddressUpdated().getDistrict())
+											   .param("homeAddressId.state", standardAddressUpdated().getState())
+											   .param("homeAddressId.pincode", Integer.toString(standardAddressUpdated().getPincode()))
+											   
+											   .param("language", standardCustomerDetailsNew(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getLanguage())
+											   .param("businessDomain", standardCustomerDetailsNew(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getBusinessDomain())
+											   .param("nameOfFirm", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getNameOfFirm())
+											   .param("firmAddressId.addressId", Long.toString(firmAddress.getAddressId()))
+											   .param("firmAddressId.customerType", Integer.toString(standardAddressUpdated().getCustomerType()))
+											   .param("firmAddressId.addressLine", standardAddressUpdated().getAddressLine())
+											   .param("firmAddressId.city", standardAddressUpdated().getCity())
+											   .param("firmAddressId.district", standardAddressUpdated().getDistrict())
+											   .param("firmAddressId.state", standardAddressUpdated().getState())
+											   .param("firmAddressId.pincode", Integer.toString(standardAddressUpdated().getPincode()))
+											   
+											   .param("secondaryMobile", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryMobile().toString())
+											   .param("secondaryEmail", standardCustomerDetailsNew(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryEmail())
+											   
+											  
+											)
+					.andDo(print())												
+					.andExpect(view().name("customerDetailsForm"))
+					.andExpect(model().size(2))
+					.andExpect(model().attributeExists("customerDetails"));
 	}
-	
+
 	
 	
 	@Test
@@ -207,6 +390,7 @@ public class CustomerDetailsWACTest {
 								post("/customer/save").param("customerId", Long.toString(quickRegisterSavedEntityDTO.getCustomerId()))
 															.param("firstName",CUST_FIRSTNAME)
 															   .param("lastName", CUST_LASTNAME)
+															   .param("dateOfBirth", "01/01/1990")
 															   .param("email",CUST_EMAIL)
 															   .param("mobile",Long.toString(CUST_MOBILE))
 															   .param("pincode",Integer.toString(CUST_PIN))
@@ -248,6 +432,7 @@ public class CustomerDetailsWACTest {
 				post("/customer/edit").param("customerId", Long.toString(quickRegisterSavedEntityDTO.getCustomerId()))
 											.param("firstName",CUST_FIRSTNAME)
 											   .param("lastName", CUST_LASTNAME)
+											   .param("dateOfBirth", "01/01/1990")
 											   .param("email",CUST_EMAIL)
 											   .param("mobile",Long.toString(CUST_MOBILE))
 											   .param("pincode",Integer.toString(CUST_PIN))
@@ -288,6 +473,7 @@ public class CustomerDetailsWACTest {
 					.andExpect(model().attribute("customerDetails",hasProperty("customerId", is(quickRegisterSavedEntityDTO.getCustomerId()))))
 					.andExpect(model().attribute("customerDetails",hasProperty("firstName", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getFirstName()))))
 					.andExpect(model().attribute("customerDetails",hasProperty("lastName", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getLastName()))))
+					.andExpect(model().attribute("customerDetails",hasProperty("dateOfBirth", is(simpleDateFormat.parse("01-01-1990")))))
 					.andExpect(model().attribute("customerDetails",hasProperty("email", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getEmail()))))
 					.andExpect(model().attribute("customerDetails",hasProperty("mobile", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getMobile()))))
 					
@@ -313,6 +499,7 @@ public class CustomerDetailsWACTest {
 								post("/customer/save").param("customerId", Long.toString(CUST_ID))
 															.param("firstName",CUST_FIRSTNAME)
 															   .param("lastName", CUST_LASTNAME)
+															   .param("dateOfBirth", "01/01/1990")
 															   .param("email",CUST_EMAIL)
 															   .param("mobile",Long.toString(CUST_MOBILE))
 															   .param("pincode",Integer.toString(CUST_PIN))
@@ -379,6 +566,7 @@ public class CustomerDetailsWACTest {
 								post("/customer/save").param("customerId", Long.toString(CUST_ID))
 															.param("firstName",CUST_FIRSTNAME)
 															   .param("lastName", CUST_LASTNAME)
+															   .param("dateOfBirth", "01/01/1990")
 															   .param("email",CUST_EMAIL)
 															   .param("mobile",Long.toString(CUST_MOBILE))
 															   .param("pincode",Integer.toString(CUST_PIN))
@@ -441,6 +629,7 @@ public class CustomerDetailsWACTest {
 				post("/customer/save").param("customerId", Long.toString(CUST_ID))
 											.param("firstName",CUST_FIRSTNAME)
 											   .param("lastName", CUST_LASTNAME)
+											   .param("dateOfBirth", "01/01/1990")
 											   .param("email",CUST_EMAIL)
 											   .param("mobile",Long.toString(CUST_MOBILE))
 											   .param("pincode",Integer.toString(CUST_PIN))
@@ -487,62 +676,7 @@ public class CustomerDetailsWACTest {
 	
 	
 	
-	@Test
-	public void verifyEmailDetails() throws Exception
-	{
 		
-		this.mockMvc.perform(
-								post("/customer/save").param("customerId", Long.toString(CUST_ID))
-															.param("firstName",CUST_FIRSTNAME)
-															   .param("lastName", CUST_LASTNAME)
-															   .param("email",CUST_EMAIL)
-															   .param("mobile",Long.toString(CUST_MOBILE))
-															   .param("pincode",Integer.toString(CUST_PIN))
-															   .param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
-															   .param("isEmailVerified", "false")
-															   .param("isMobileVerified", "false")
-															   .param("isSecondaryMobileVerified", "false")
-								
-														    // .param("dateOfBirth", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getDateOfBirth().toString())
-															   .param("homeAddressId.customerType", Integer.toString(standardAddress().getCustomerType()))
-															   .param("homeAddressId.addressLine", standardAddress().getAddressLine())
-															   .param("homeAddressId.city", standardAddress().getCity())
-															   .param("homeAddressId.district", standardAddress().getDistrict())
-															   .param("homeAddressId.state", standardAddress().getState())
-															   .param("homeAddressId.pincode", Integer.toString(standardAddress().getPincode()))
-															   
-															   .param("language", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getLanguage())
-															   .param("businessDomain", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getBusinessDomain())
-															   .param("nameOfFirm", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getNameOfFirm())
-															   .param("firmAddressId.customerType", Integer.toString(standardAddress().getCustomerType()))
-															   .param("firmAddressId.addressLine", standardAddress().getAddressLine())
-															   .param("firmAddressId.city", standardAddress().getCity())
-															   .param("firmAddressId.district", standardAddress().getDistrict())
-															   .param("firmAddressId.state", standardAddress().getState())
-															   .param("firmAddressId.pincode", Integer.toString(standardAddress().getPincode()))
-															   
-															   .param("secondaryMobile", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryMobile().toString())
-															   .param("secondaryEmail", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryEmail())
-															   
-															  
-															);
-
-		quickRegisterService.reSendEmailHash(new CustomerIdTypeEmailTypeDTO(CUST_ID, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY));
-		
-		EmailVerificationDetailsDTO emailVerificationDetailsDTO=
-				quickRegisterService.getEmailVerificationDetailsByCustomerIdTypeAndEmail(CUST_ID, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
-		
-		this.mockMvc.perform(
-				get("/customer/verifyEmailDetails/"+CUST_ID+"/"+ENTITY_TYPE_CUSTOMER+"/"+ENTITY_TYPE_PRIMARY+"/"+emailVerificationDetailsDTO.getEmailHash()))
-			.andDo(print())
-			.andExpect(model().attribute("emailVrificationStatus",is("sucess")))
-			.andExpect(model().attributeExists("customerDetails"))
-			.andExpect(model().attribute("customerDetails",hasProperty("isEmailVerified", is(true))));
-											   
-		
-			
-	}
-	
 	
 	@Test
 	public void sendEmailVerificationDetails() throws Exception
@@ -551,6 +685,7 @@ public class CustomerDetailsWACTest {
 				post("/customer/save").param("customerId", Long.toString(CUST_ID))
 											.param("firstName",CUST_FIRSTNAME)
 											   .param("lastName", CUST_LASTNAME)
+											   .param("dateOfBirth", "01/01/1990")
 											   .param("email",CUST_EMAIL)
 											   .param("mobile",Long.toString(CUST_MOBILE))
 											   .param("pincode",Integer.toString(CUST_PIN))

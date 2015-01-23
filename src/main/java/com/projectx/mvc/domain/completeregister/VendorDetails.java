@@ -1,19 +1,17 @@
-package com.projectx.rest.domain.completeregister;
+package com.projectx.mvc.domain.completeregister;
 
 import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.projectx.mvc.util.serializer.*;
+import com.projectx.mvc.util.serializer.JsonDateDeSerializer;
+import com.projectx.mvc.util.serializer.JsonDateSerializer;
+import com.projectx.rest.domain.completeregister.Address;
 
 
+public class VendorDetails {
 
-
-public class VendorDetailsDTO {
-
-	private Long vendorId;
+private Long vendorId;
 	
 	private String firstName;
 	
@@ -39,11 +37,11 @@ public class VendorDetailsDTO {
 	
 	private String updatedBy;
 
-	public VendorDetailsDTO() {
+	public VendorDetails() {
 
 	}
 
-	public VendorDetailsDTO(Long vendorId, String firstName, String lastName,
+	public VendorDetails(Long vendorId, String firstName, String lastName,
 			Date dateOfBirth, Address firmAddress, Long mobile,
 			Boolean isMobileVerified, String email, Boolean isEmailVerified,
 			String laguage, Date insertTime, Date updateTime, String updatedBy) {
@@ -89,8 +87,6 @@ public class VendorDetailsDTO {
 		this.lastName = lastName;
 	}
 
-	
-	//@DateTimeFormat(pattern="yyyy-MM-dd")
 	@JsonSerialize(using=JsonDateSerializer.class)
 	public Date getDateOfBirth() {
 		return dateOfBirth;
@@ -228,11 +224,11 @@ public class VendorDetailsDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		VendorDetailsDTO other = (VendorDetailsDTO) obj;
+		VendorDetails other = (VendorDetails) obj;
 		if (dateOfBirth == null) {
 			if (other.dateOfBirth != null)
 				return false;
-		} else if (Math.abs(dateOfBirth.getTime()-other.dateOfBirth.getTime())>100000)//
+		} else if (!dateOfBirth.equals(other.dateOfBirth))
 			return false;
 		if (email == null) {
 			if (other.email != null)
@@ -252,7 +248,7 @@ public class VendorDetailsDTO {
 		if (insertTime == null) {
 			if (other.insertTime != null)
 				return false;
-		} else if (Math.abs(insertTime.getTime()-other.insertTime.getTime())>100000)
+		} else if (!insertTime.equals(other.insertTime))
 			return false;
 		if (isEmailVerified == null) {
 			if (other.isEmailVerified != null)
@@ -282,24 +278,21 @@ public class VendorDetailsDTO {
 		if (updateTime == null) {
 			if (other.updateTime != null)
 				return false;
-		} else if (Math.abs(updateTime.getTime()-other.updateTime.getTime())>100000)
+		} else if (!updateTime.equals(other.updateTime))
 			return false;
 		if (updatedBy == null) {
 			if (other.updatedBy != null)
 				return false;
 		} else if (!updatedBy.equals(other.updatedBy))
 			return false;
-		/*
 		if (vendorId == null) {
 			if (other.vendorId != null)
 				return false;
 		} else if (!vendorId.equals(other.vendorId))
 			return false;
-			
-		*/	
 		return true;
 	}
 
-
 	
+
 }
