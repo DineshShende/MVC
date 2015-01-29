@@ -1,5 +1,6 @@
 package com.projectx.rest.domain.completeregister;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -7,23 +8,23 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class DriverList {
 	
-	List<DriverDetailsDTO> driverList;
+	ArrayList<DriverDetailsDTO> driverList;
 
 	public DriverList() {
 
 	}
 
 	@JsonCreator
-	public DriverList(List<DriverDetailsDTO> driverList) {
+	public DriverList(ArrayList<DriverDetailsDTO> driverList) {
 
 		this.driverList = driverList;
 	}
 
-	public List<DriverDetailsDTO> getDriverList() {
+	public ArrayList<DriverDetailsDTO> getDriverList() {
 		return driverList;
 	}
 
-	public void setDriverList(List<DriverDetailsDTO> driverList) {
+	public void setDriverList(ArrayList<DriverDetailsDTO> driverList) {
 		this.driverList = driverList;
 	}
 

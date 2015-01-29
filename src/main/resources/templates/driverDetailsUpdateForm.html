@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+
+<title>Insert title here</title>
+
+</head>
+<body>
+<h1>Driver details Form</h1>
+    
+    
+ 
+ 
+         <form action="/vendor/updateDriver" method="post">
+         <input id="driverId" name="driverId" type="hidden" th:value="${driverDetails.driverId}"/>
+         <input id="vendorId" name="vendorId" type="hidden" th:value="${driverDetails.vendorId}"/>
+         <input id="homeAddress.addressId" name="homeAddress.addressId" type="hidden" th:if="${driverDetails.homeAddress != null}" th:value="${driverDetails.homeAddress.addressId}"/>
+         <input id="homeAddress.customerType" name="homeAddress.customerType" type="hidden"  th:value="3"/>
+         
+            <table>
+                <tr>
+                    <td>FirstName:</td>
+                    <td> <input id="firstName" name="firstName" type="text" th:value="${driverDetails.firstName}"/></td>
+               
+                </tr>
+                
+                 <tr>
+                    <td>LastName:</td>
+                    <td><input id="middleName" name="middleName" type="text" th:value="${driverDetails.middleName}"/></td>
+               
+                </tr>
+                
+                <tr>
+                    <td>LastName:</td>
+                    <td><input id="lastName" name="lastName" type="text" th:value="${driverDetails.lastName}"/></td>
+               
+                </tr>
+                
+                 <tr>
+                    <td>Date Of Birth(MM/dd/yyyy):</td>
+                    <td><input id="dateOfBirth" name="dateOfBirth" type="text" th:value="${driverDetails.dateOfBirth}"/></td>
+               
+                </tr>
+               
+                <tr>
+                    <td>Blood Group:</td>
+                    <td><input id="bloodGroup" name="bloodGroup" type="text" th:value="${driverDetails.bloodGroup}"/></td>
+               
+                </tr>
+                
+                
+                 
+               <tr></tr>
+               <tr></tr>
+               <tr></tr>
+               
+                
+                         
+                          
+                 <tr>
+                    <td>Home Address AddressLine:</td>
+                    <td><input id="homeAddress.addressLine" name="homeAddress.addressLine" type="text" th:if="${driverDetails.homeAddress!=null}" th:value="${driverDetails.homeAddress.addressLine}"/>
+                    	<input id="homeAddress.addressLine" name="homeAddress.addressLine" type="text" th:if="${driverDetails.homeAddress==null}" />
+                    </td>
+               
+                </tr> 
+               
+               <tr>
+                    <td>Home Address City:</td>
+                    <td><input id="homeAddress.city" name="homeAddress.city" type="text" th:if="${driverDetails.homeAddress!=null}" th:value="${driverDetails.homeAddress.city}"/>
+                    	<input id="homeAddress.city" name="homeAddress.city" type="text" th:if="${driverDetails.homeAddress==null}" />
+                    </td>
+               
+                </tr> 
+                
+                <tr>
+                    <td>Home Address District:</td>
+                    <td><input id="homeAddress.district" name="homeAddress.district" type="text" th:if="${driverDetails.homeAddress!=null}" th:value="${driverDetails.homeAddress.district}"/>
+                    	<input id="homeAddress.district" name="homeAddress.district" type="text" th:if="${driverDetails.homeAddress==null}" />
+                    </td>
+               
+                </tr> 
+               
+               <tr>
+                    <td>Home Address State:</td>
+                    <td><input id="homeAddress.state" name="homeAddress.state" type="text" th:if="${driverDetails.homeAddress!=null}" th:value="${driverDetails.homeAddress.state}"/>
+                    	<input id="homeAddress.state" name="homeAddress.state" type="text" th:if="${driverDetails.homeAddress==null}" />
+                    </td>
+               
+                </tr> 
+               
+               
+               <tr>
+                    <td>Home Address Pin code:</td>
+                    <td><input id="homeAddress.pincode" name="homeAddress.pincode" type="text" th:if="${driverDetails.homeAddress!=null}" th:value="${driverDetails.homeAddress.pincode}"/>
+                    	<input id="homeAddress.pincode" name="homeAddress.pincode" type="text" th:if="${driverDetails.homeAddress==null}" />
+                    </td>
+               
+                </tr>
+               
+               <tr></tr>
+               <tr></tr>
+               <tr></tr>
+  
+   				
+   				<tr>
+                    <td>Mobile:</td>
+                    <td><input id="mobile" name="mobile" type="text" th:value="${driverDetails.mobile}"/></td>
+               
+                </tr>
+                
+                <tr>
+                    <td>Home Contact Number::</td>
+                    <td><input id="homeContactNumber" name="homeContactNumber" type="text" th:value="${driverDetails.homeContactNumber}"/></td>
+               
+                </tr>
+               
+               
+                <tr>
+                    <td>Driving License Number::</td>
+                    <td><input id="licenceNumber" name="licenceNumber" type="text" th:value="${driverDetails.licenceNumber}"/></td>
+               
+                </tr>
+               
+               
+                 <tr>
+                    <td>Driving Since(MM/dd/yyyy):</td>
+                    <td><input id="drivingSince" name="drivingSince" type="text" th:value="${driverDetails.drivingSince}"/></td>
+               
+                </tr>
+                
+                  <tr>
+                    <td>Joined Since(MM/dd/yyyy):</td>
+                    <td><input id="employedSince" name="employedSince" type="text" th:value="${driverDetails.employedSince}"/></td>
+               
+                </tr>
+               
+                
+                
+                  <tr>
+                    <td>
+                     FreightRequestPermission
+                    <input type="radio" name="isFreightRequestPermissionGiven" value="true"/>Yes<br/>
+                    <input type="radio" name="isFreightRequestPermissionGiven" value="false"/>No<br/>
+                    
+                    </td>
+                    
+                    <td>DealFinalization 
+                    <input id="isDealFinalizationPermissionGiven" name="isDealFinalizationPermissionGiven" type="radio" value="true"/>Yes<br/>
+                    <input type="radio" name="isDealFinalizationPermissionGiven" value="false"/>No <br/>
+                    
+                    </td>
+               
+                </tr>
+                   
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr>
+                    <td>Language:</td>
+                    <td> <input id="language" name="language" type="text" th:if="${driverDetails.language!=null}" th:value="${driverDetails.language}"/>
+                    <input id="language" name="language" type="text" th:if="${driverDetails.language==null}"/>
+                    </td>
+               </tr>
+                
+               
+  
+                <tr>
+                    <td><button type="submit">Submit</button></td>
+                </tr>
+            </table>
+        </form>
+ 
+</body>
+</html>

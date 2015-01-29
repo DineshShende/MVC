@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="../script.js"></script>
+
+</head>
+<body>
+
+  <table>
+      <tr>
+        <th>FIRST NAME</th>
+        <th>Mobile</th>
+        <th>Mobile Verified</th>
+        <th>Deal Request Permission</th>
+        <th>Deal Finalization Permission</th>
+      </tr>
+      <tr th:each="driver : ${driverList}">
+        <td><p th:text="${driver.firstName}"/></td>
+        <td><p th:text="${driver.mobile}"/>
+        
+        </td>
+        <td><p th:if="${driver.isMobileVerified==null}" th:text="false"/><p th:text="${driver.isMobileVerified}"/></td>
+		<td>
+		
+		<form id="sendSMS" th:if="${driver.isMobileVerified== null or (driver.isMobileVerified!= null and driver.isMobileVerified==false)}" action="/vendor/sendMobileVerificationDetails" method="post">
+               				<input id="customerId" name="customerId" type="hidden" th:value="${driver.driverId}"/>
+    						<input id="customerType" name="customerType" type="hidden" th:value="3"/>
+    						<input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
+        					<input type="submit" value="Send Verification SMS" />
+               		</form>
+          <div id="smsSentStatus"></div>     		
+		
+		<form id ="verifyMobile" th:if="${driver.isMobileVerified== null or (driver.isMobileVerified!= null and driver.isMobileVerified==false)}" action="/vendor/verifyMobileDetails" method="post">
+               				<input id="entityId" name="entityId" type="hidden" th:value="${driver.driverId}"/>
+    						<input id="entityType" name="entityType" type="hidden" th:value="3"/>
+    						<input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
+    						<input id="mobilePin" name="mobilePin" type="text"/>
+        					<input type="submit" value="VerifyMobile" />
+               		</form>
+               		<div id="verifyMobileStatus"></div>
+               		
+        </td>        
+
+
+		<td><p th:if="${driver.isFreightRequestPermissionGiven==null}" th:text="false"/><p th:text="${driver.isFreightRequestPermissionGiven}"/></td>
+		<td><p th:if="${driver.isDealFinalizationPermissionGiven==null}" th:text="false"/><p th:text="${driver.isDealFinalizationPermissionGiven}"/></td>
+ 
+		<td>
+		
+		<form action="/vendor/updateDriverDetails" method="post">
+		<input type="hidden" name="entityId" id="entityId" th:value="${driver.driverId}"/>
+		<input type="submit" value="Update"/>
+		
+		</form>
+		
+		<form action="/vendor/deleteDriver" method="post">
+		<input type="hidden" name="entityId" id="entityId" th:value="${driver.driverId}"/>
+		<input type="submit" value="Delete"/>
+		
+		</form>
+		
+		</td> 
+ 
+      </tr>
+    </table>
+  
+
+
+</body>
+</html>

@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8"></meta>
 <title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="../script.js"></script> 
 </head>
 <body>
 
@@ -17,7 +19,7 @@
  				</tr>
  
                 <tr>
-                    <td>FirstName:</td>
+                    <td>FirstName:</td>	
                     <td ><p th:text="${customerDetails.firstName}"/> </td>
                
                 </tr>
@@ -38,23 +40,27 @@
                     <td><p th:text="${customerDetails.mobile}"/>
                      <p th:if="${mobileVerificationDetailsPrimary.mobile != customerDetails.mobile and mobileVerificationDetailsPrimary.mobile!=null}" th:text="${mobileVerificationDetailsPrimary.mobile}"/>  
                     </td>
-               		<td><form th:if="${customerDetails.isMobileVerified==false or mobileVerificationDetailsPrimary.mobile != customerDetails.mobile and mobileVerificationDetailsPrimary.mobile!=null}"  action="/customer/sendMobileVerificationDetails" method="post">
+               		<td><form id="sendSMS" th:if="${customerDetails.isMobileVerified==false or mobileVerificationDetailsPrimary.mobile != customerDetails.mobile and mobileVerificationDetailsPrimary.mobile!=null}"  action="/customer/sendMobileVerificationDetails" method="post">
                				<input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
     						<input id="customerType" name="customerType" type="hidden" th:value="1"/>
     						<input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
         					<input type="submit" value="Send Verification SMS" />
                		</form>
-               		<p th:if="${sendMobileVerificationStatus != null}"  th:text="${sendMobileVerificationStatus}"/>
+               		
+         			<div id="smsSentStatus"></div>
+         			      		
                		</td>
                		
-               		<td><form th:if="${customerDetails.isMobileVerified==false or mobileVerificationDetailsPrimary.mobile != customerDetails.mobile and mobileVerificationDetailsPrimary.mobile!=null}" action="/customer/verifyMobileDetails" method="post">
+               		<td><form id ="verifyMobile" th:if="${customerDetails.isMobileVerified==false or mobileVerificationDetailsPrimary.mobile != customerDetails.mobile and mobileVerificationDetailsPrimary.mobile!=null}" action="/customer/verifyMobileDetails" method="post">
                				<input id="customerId" name="entityId" type="hidden" th:value="${customerDetails.customerId}"/>
     						<input id="customerType" name="entityType" type="hidden" th:value="1"/>
     						<input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
     						<input id="mobilePin" name="mobilePin" type="text"/>
         					<input type="submit" value="VerifyMobile" />
                		</form>
-               		<p th:if="${mobileVrificationStatus !=null }" th:text="${mobileVrificationStatus}"/>
+               		
+               		<div id="verifyMobileStatus"></div>
+               		
                		</td>
                		
                		
@@ -63,15 +69,20 @@
                     <td>Email:</td>
                     <td><p th:text="${customerDetails.email}"/>
                      <p th:if="${customerDetails.email != emailVerificationDetails.email}" th:text="${emailVerificationDetails.email}"/> </td>
-               		<td><form th:if="${customerDetails.isEmailVerified==false or customerDetails.email != emailVerificationDetails.email and emailVerificationDetails.email!=null}" action="/customer/sendEmailVerificationDetails" method="post">
+               		<td><form id="sendEmail" th:if="${customerDetails.isEmailVerified==false or customerDetails.email != emailVerificationDetails.email and emailVerificationDetails.email!=null}" action="/customer/sendEmailVerificationDetails" method="post">
                				<input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
     						<input id="customerType" name="customerType" type="hidden" th:value="1"/>
     						<input id="emailType" name="emailType" type="hidden" th:value="1"/>
         					<input type="submit" value="Send Verification Email" />
                		</form>
-               		<p th:if="${sendEmailVerificationStatus != null}" th:text="${sendEmailVerificationStatus}"/>
                		<p th:if="${emailVerificationStatus != null}" th:text="${emailVerificationStatus}"/>
+               		
+               		<div id="emailSentStatus"></div>
+               		
                		</td>
+               		
+               		
+               		
                		
                 </tr>
     
@@ -201,23 +212,27 @@
                     <p th:if="${customerDetails.secondaryMobile!=mobileVerificationDetailsSeconadry.mobile and mobileVerificationDetailsSeconadry.mobile!=null}" th:text="${mobileVerificationDetailsSeconadry.mobile}"/> 
                     </td>
                     
-                    <td><form th:if="${(customerDetails.isSecondaryMobileVerified==false or customerDetails.secondaryMobile!=mobileVerificationDetailsSeconadry.mobile) and mobileVerificationDetailsSeconadry.mobile!=null} " action="/customer/sendMobileVerificationDetails" method="post">
+                    <td><form id="sendSMSSec" th:if="${(customerDetails.isSecondaryMobileVerified==false or customerDetails.secondaryMobile!=mobileVerificationDetailsSeconadry.mobile) and mobileVerificationDetailsSeconadry.mobile!=null} " action="/customer/sendMobileVerificationDetails" method="post">
                				<input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
     						<input id="customerType" name="customerType" type="hidden" th:value="1"/>
     						<input id="mobileType" name="mobileType" type="hidden" th:value="2"/>
         					<input type="submit" value="Send Verification SMS" />
                		</form>
-               		<p th:if="${sendMobileVerificationStatus!=null}" th:text="${sendMobileVerificationStatus}"/>
+               		
+               		<div id="smsSentStatusSec"></div>
+               		
+               		
                		</td>
                		
-               		<td><form th:if="${(customerDetails.isSecondaryMobileVerified==false or customerDetails.secondaryMobile!=mobileVerificationDetailsSeconadry.mobile) and mobileVerificationDetailsSeconadry.mobile!=null} " action="/customer/verifyMobileDetails" method="post">
+               		<td><form id="verifyMobileSec" th:if="${(customerDetails.isSecondaryMobileVerified==false or customerDetails.secondaryMobile!=mobileVerificationDetailsSeconadry.mobile) and mobileVerificationDetailsSeconadry.mobile!=null} " action="/customer/verifyMobileDetails" method="post">
                				<input id="customerId" name="entityId" type="hidden" th:value="${customerDetails.customerId}"/>
     						<input id="customerType" name="entityType" type="hidden" th:value="1"/>
     						<input id="mobileType" name="mobileType" type="hidden" th:value="2"/>
     						<input id="mobilePin" name="mobilePin" type="text"/>
         					<input type="submit" value="VerifyMobile" />
                		</form>
-               		<p th:if="${mobileVrificationStatus!=null}" th:text="${mobileVrificationStatus}"/>
+               		
+               		<div id="verifyMobileStatusSec"></div>
                		</td>
                     
                     
@@ -270,6 +285,12 @@
                 
                                
          </table>
+          <!-- 
+<script type="text/javascript">
 
+/* attach a submit handler to the form */
+
+</script>         
+ -->
 </body>
 </html>

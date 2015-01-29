@@ -2,47 +2,65 @@ package com.projectx.rest.domain.completeregister;
 
 import java.util.Date;
 
+import javax.validation.constraints.Past;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.projectx.mvc.util.serializer.JsonDateDeSerializer;
 import com.projectx.mvc.util.serializer.JsonDateSerializer;
+import com.sun.istack.internal.NotNull;
 
 
 public class DriverDetailsDTO {
 	
+	
 	private Long driverId;
 	
+	@NotEmpty
 	private String firstName;
 	
+	@NotEmpty
 	private String middleName;
 	
+	@NotEmpty
 	private String lastName;
-	
+
+	@NotNull@Past
 	private Date dateOfBirth;
 	
+	@NotEmpty
 	private String bloodGroup;
 	
 	private Address homeAddress;
 	
+	@NotNull
 	private Long mobile;
 	
 	private Boolean isMobileVerified;
 	
+	@NotNull
 	private Long homeContactNumber;
 	
+	@NotEmpty
 	private String licenceNumber;
 	
+	@NotNull@Past
 	private Date drivingSince;
 	
+	@NotNull@Past
 	private Date employedSince;
 	
 	private Boolean isFreightRequestPermissionGiven;
 	
+
 	private Boolean isDealFinalizationPermissionGiven;
 
+	@NotEmpty
 	private String language;
 	
+	@NotNull
 	private Long vendorId;
 	
 	private Date insertTime;

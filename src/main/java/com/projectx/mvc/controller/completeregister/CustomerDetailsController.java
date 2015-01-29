@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
@@ -125,51 +126,23 @@ public class CustomerDetailsController {
 	}
 	
 	@RequestMapping(value="/verifyMobileDetails",method=RequestMethod.POST)
-	public String verifyMobileDetails(@ModelAttribute VerifyMobileDTO verifyMobileDTO,Model model)
+	@ResponseBody
+	public Boolean verifyMobileDetails(@ModelAttribute VerifyMobileDTO verifyMobileDTO,Model model)
 	{
 		Boolean result=customerDetailsService.verifyMobileDetails(verifyMobileDTO );
 		
-		CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(verifyMobileDTO.getEntityId());
 		
-		model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
-		
-		if(result)
-		{
-			model.addAttribute("mobileVrificationStatus", "sucess");
-						
-		}
-		else
-		{
-			model.addAttribute("mobileVrificationStatus", "failure");
-		}
-		
-		model=customerDetailsService.initialiseShowCustomerDetails(verifyMobileDTO.getEntityId(), model);
-		
-		return "showCustomerDetails";
+		return result;
 	}
 	
 	@RequestMapping(value="/sendMobileVerificationDetails",method=RequestMethod.POST)
-	public String sendMobileVerificationDetails(@ModelAttribute CustomerIdTypeMobileTypeDTO customerIdTypeMobileDTO,Model model)
+	@ResponseBody
+	public Boolean sendMobileVerificationDetails(@ModelAttribute CustomerIdTypeMobileTypeDTO customerIdTypeMobileDTO,Model model)
 	{
 		Boolean result=customerDetailsService.sendMobileVerificationDetails(customerIdTypeMobileDTO);
 		
-		CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(customerIdTypeMobileDTO.getCustomerId());
 		
-		model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
-		
-		if(result)
-		{
-			model.addAttribute("sendMobileVerificationStatus", "sucess");
-						
-		}
-		else
-		{
-			model.addAttribute("sendMobileVerificationStatus", "failure");
-		}
-		
-		model=customerDetailsService.initialiseShowCustomerDetails(customerIdTypeMobileDTO.getCustomerId(), model);
-		
-		return "showCustomerDetails";
+		return result;
 	}
 	
 	@RequestMapping(value="/verifyEmailDetails/{customerId}/{customerType}/{emailType}/{emailHash}",method=RequestMethod.GET)
@@ -199,28 +172,21 @@ public class CustomerDetailsController {
 	}
 	
 	@RequestMapping(value="/sendEmailVerificationDetails",method=RequestMethod.POST)
-	public String sendEmailVerificationDetails(@ModelAttribute CustomerIdTypeEmailTypeDTO customerIdTypeEmailDTO,Model model)
+	@ResponseBody
+	public Boolean sendEmailVerificationDetails(@ModelAttribute CustomerIdTypeEmailTypeDTO customerIdTypeEmailDTO,Model model)
 	{
 		Boolean result=customerDetailsService.sendEmailVerificationDetails(customerIdTypeEmailDTO);
 		
-		CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(customerIdTypeEmailDTO.getCustomerId());
 		
-		model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
-		
-		if(result)
-		{
-			model.addAttribute("sendEmailVerificationStatus", "sucess");
-						
-		}
-		else
-		{
-			model.addAttribute("sendEmailVerificationStatus", "failure");
-		}
-		
-		model=customerDetailsService.initialiseShowCustomerDetails(customerIdTypeEmailDTO.getCustomerId(), model);
-		
-		return "showCustomerDetails";
+		return result;
 	}
 	
+	
+	@RequestMapping(value="sayHi",method=RequestMethod.POST)
+	@ResponseBody
+	public String sayHi(@ModelAttribute EntityIdDTO entityIdDTO)
+	{
+		return ""+entityIdDTO.getEntityId();
+	}
 	
 }

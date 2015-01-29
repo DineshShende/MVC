@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -547,9 +548,7 @@ public class CustomerDetailsWACTest {
 											   .param("mobileType",Integer.toString(ENTITY_TYPE_PRIMARY))
 											   .param("mobilePin",Integer.toString(mobileVerificationDetailsDTO.getMobilePin())))
 			.andDo(print())
-			.andExpect(model().attribute("mobileVrificationStatus",is("sucess")))
-			.andExpect(model().attributeExists("customerDetails"))
-			.andExpect(model().attribute("customerDetails",hasProperty("isMobileVerified", is(true))));
+			.andExpect(content().string("true"));
 											   
 		
 			
@@ -612,9 +611,7 @@ public class CustomerDetailsWACTest {
 											   .param("mobileType",Integer.toString(ENTITY_TYPE_SECONDARY))
 											   .param("mobilePin",Integer.toString(mobileVerificationDetailsDTO.getMobilePin())))
 			.andDo(print())
-			.andExpect(model().attribute("mobileVrificationStatus",is("sucess")))
-			.andExpect(model().attributeExists("customerDetails"))
-			.andExpect(model().attribute("customerDetails",hasProperty("isSecondaryMobileVerified", is(true))));
+			.andExpect(content().string("true"));
 											   
 		
 			
@@ -668,8 +665,7 @@ public class CustomerDetailsWACTest {
 											  .param("mobileType", Integer.toString(ENTITY_TYPE_PRIMARY))
 											  )
 			.andDo(print())
-			.andExpect(model().attribute("sendMobileVerificationStatus",is("sucess")))
-			.andExpect(model().attributeExists("customerDetails"));
+			.andExpect(content().string("true"));
 											   
 		
 	}
@@ -724,8 +720,7 @@ public class CustomerDetailsWACTest {
 											  .param("emailType", Integer.toString(ENTITY_TYPE_PRIMARY))
 											  )
 			.andDo(print())
-			.andExpect(model().attribute("sendEmailVerificationStatus",is("sucess")))
-			.andExpect(model().attributeExists("customerDetails"));
+			.andExpect(content().string("true"));
 											   
 		
 	}

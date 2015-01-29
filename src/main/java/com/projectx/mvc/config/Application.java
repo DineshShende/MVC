@@ -19,7 +19,7 @@ import com.projectx.mvc.utils.ImageServlet;
 @EnableAutoConfiguration
 @EnableWebMvc
 
-@Import(value=BasicConfig.class)
+@Import(value={BasicConfig.class,MVCConfig.class})
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

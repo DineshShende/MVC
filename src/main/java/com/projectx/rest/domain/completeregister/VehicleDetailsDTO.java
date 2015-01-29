@@ -4,10 +4,15 @@ import java.util.Date;
 
 
 
+
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.projectx.mvc.util.serializer.JsonDateDeSerializer;
 import com.projectx.mvc.util.serializer.JsonDateSerializer;
+import com.sun.istack.internal.NotNull;
 
 
 
@@ -15,36 +20,51 @@ public class VehicleDetailsDTO {
 
 	private Long vehicleId;
 	
+	@NotEmpty
 	private String ownerFirstName;
 	
+	@NotEmpty
 	private String ownerMiddleName;
 	
+	@NotEmpty
 	private String ownerLastName;
+	
 	
 	private VehicleTypeDetails vehicleTypeId;
 	
 	private VehicleBrandDetails vehicleBrandId;
 	
+	@NotEmpty
 	private String vehicleBodyType;
 	
+	@NotNull
 	private Boolean isBodyTypeFlexible;
 	
+	@NotEmpty
 	private String registrationNumber;
 	
+	@NotEmpty
 	private String chassisNumber;
 	
+	@NotNull
 	private Integer loadCapacityInTons;
 	
+	@NotNull
 	private Integer numberOfWheels;
 	
+	@NotEmpty
 	private String permitType;
 	
+	@NotNull
 	private Boolean insuranceStatus;
 	
+	@NotEmpty
 	private String insuranceNumber;
 	
+	@NotEmpty
 	private String insuranceCompany;
 	
+	@NotNull
 	private Long vendorId;
 	
 	private Date insertTime;

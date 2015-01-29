@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="../script.js"></script>
+
+</head>
+<body>
+
+  <table>
+      <tr>
+        <th>Registration Number</th>
+        <th>Capacity (In tons)</th>
+        <th>Insurance Status</th>
+        <th>Permit Type</th>
+        
+      </tr>
+      <tr th:each="vehicle : ${vehicleList}">
+        <td><p th:text="${vehicle.registrationNumber}"/></td>
+        <td><p th:text="${vehicle.loadCapacityInTons}"/>
+        
+        </td>
+        <td><p th:if="${vehicle.insuranceStatus==null}" th:text="false"/><p th:text="${vehicle.insuranceStatus}"/></td>
+		
+
+		<td><p th:text="${vehicle.permitType}"/></td>
+		
+ 
+		<td>
+		
+		<form action="/vendor/updateVehicleDetails" method="post">
+		<input type="hidden" name="entityId" id="entityId" th:value="${vehicle.vehicleId}"/>
+		<input type="submit" value="Update"/>
+		
+		</form>
+		
+		<form action="/vendor/deleteVehicle" method="post">
+		<input type="hidden" name="entityId" id="entityId" th:value="${vehicle.vehicleId}"/>
+		<input type="submit" value="Delete"/>
+		
+		</form>
+		
+		</td> 
+ 
+      </tr>
+    </table>
+  
+
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+
+<title>Insert title here</title>
+
+</head>
+<body>
+
+
+  <form action="/vendor/addVehicle" method="post">
+         
+         <input id="vehicleId" name="vehicleId" type="hidden" th:if="${vehicleDetails.vehicleId!=null}" th:value="${vehicleDetails.vehicleId}"/>
+         <input id="vendorId" name="vendorId" type="hidden" th:value="${vehicleDetails.vendorId}"/>
+         
+            <table>
+                <tr>
+                    <td>FirstName:</td>
+                    <td> <input id="ownerFirstName" name="ownerFirstName" type="text" th:value="${vehicleDetails.ownerFirstName}"/></td>
+               
+                </tr>
+                
+                 <tr>
+                    <td>LastName:</td>
+                    <td><input id="ownerMiddleName" name="ownerMiddleName" type="text" th:value="${vehicleDetails.ownerMiddleName}"/></td>
+               
+                </tr>
+                
+                <tr>
+                    <td>LastName:</td>
+                    <td><input id="ownerLastName" name="ownerLastName" type="text" th:value="${vehicleDetails.ownerLastName}"/></td>
+               
+                </tr>
+                
+                 <tr>
+                    <td>Vehicle Type Name:</td>
+                    <td><input id="vehicleTypeId.vehicleTypeName" name="vehicleTypeId.vehicleTypeName" type="text" th:if="${vehicleDetails.vehicleTypeId!=null}" th:value="${vehicleDetails.vehicleTypeId.vehicleTypeName}"/>
+                    	<input id="vehicleTypeId.vehicleTypeName" name="vehicleTypeId.vehicleTypeName" type="text" th:if="${vehicleDetails.vehicleTypeId==null}" />
+                    </td>
+               
+                </tr>
+               
+                 <tr>
+                    <td>Vehicle Type Name:</td>
+                    <td><input id="vehicleBrandId.vehicleTypeId.vehicleTypeName" th:if="${vehicleDetails.vehicleTypeId!=null and vehicleDetails.vehicleBrandId.vehicleTypeId!= null}" name="vehicleBrandId.vehicleTypeId.vehicleTypeName" 
+                    type="text" th:value="${vehicleDetails.vehicleBrandId.vehicleTypeId.vehicleTypeName}"/>
+                    <input id="vehicleBrandId.vehicleTypeId.vehicleTypeName" th:if="${vehicleDetails.vehicleTypeId==null or vehicleDetails.vehicleBrandId.vehicleTypeId== null}" name="vehicleBrandId.vehicleTypeId.vehicleTypeName" 
+                    type="text" />
+                    </td>
+               
+                </tr>
+                
+                  <tr>
+                    <td>Vehicle Type Name:</td>
+                    <td><input id="vehicleBrandId.vehicleBrandName" name="vehicleBrandId.vehicleBrandName" type="text" th:if="${vehicleDetails.vehicleBrandId}!=null" th:value="${vehicleDetails.vehicleBrandId.vehicleBrandName}"/>
+                    <input id="vehicleBrandId.vehicleBrandName" name="vehicleBrandId.vehicleBrandName" type="text" th:if="${vehicleDetails.vehicleBrandId}==null" />
+                    </td>
+               
+                </tr>
+                
+                  <tr>
+                    <td>Vehicle Type Name:</td>
+                    <td><input id="vehicleBrandId.modelNumber" name="vehicleBrandId.modelNumber" type="text" th:if="${vehicleDetails.vehicleBrandId}!=null" th:value="${vehicleDetails.vehicleBrandId.modelNumber}"/>
+                    	<input id="vehicleBrandId.modelNumber" name="vehicleBrandId.modelNumber" type="text" th:if="${vehicleDetails.vehicleBrandId}==null" />
+                    </td>
+               
+                </tr> 
+                
+               <tr>
+                    <td>Body Type:</td>
+                    <td>
+                    <select name="vehicleBodyType">
+					<option value="Open">Open</option>
+					<option value="Closed">Closed</option>
+					
+					</select>
+					</td>
+                </tr>
+               
+               <tr>
+                    <td>Body Type Flexible:</td>
+                    <td>
+                    <select name="isBodyTypeFlexible">
+					<option value="true">Yes</option>
+					<option value="false">No</option>
+					
+					</select>
+					</td>
+                </tr>
+               
+               
+                 <tr>
+                    <td>Registration Number:</td>
+                    <td><input id="registrationNumber" name="registrationNumber" type="text" th:value="${vehicleDetails.registrationNumber}"/></td>
+               
+                </tr>
+                
+                  <tr>
+                    <td>Chassis Number:</td>
+                    <td><input id="chassisNumber" name="chassisNumber" type="text" th:value="${vehicleDetails.chassisNumber}"/></td>
+               
+                </tr>
+                
+                <tr>
+                    <td>Load capacity(In tons):</td>
+                    <td><input id="loadCapacityInTons" name="loadCapacityInTons" type="text" th:value="${vehicleDetails.loadCapacityInTons}"/></td>
+               
+                </tr>
+                 
+               <tr>
+                    <td>Number of wheels:</td>
+                    <td><input id="numberOfWheels" name="numberOfWheels" type="text" th:value="${vehicleDetails.numberOfWheels}"/></td>
+               
+                </tr>
+               
+               
+               <tr>
+                    <td>Permit Type:</td>
+                    <td>
+                    <select name="permitType" th:value="${vehicleDetails.permitType}">
+					<option value="National">National</option>
+					<option value="State">State</option>
+					
+					</select>
+					</td>
+                </tr>
+               
+               
+               <tr>
+                    <td>Insurance Status:</td>
+                    <td>
+                    <select name="insuranceStatus" th:value="${vehicleDetails.insuranceStatus}">
+					<option value="true">Yes</option>
+					<option value="false">No</option>
+					
+					</select>
+					</td>
+                </tr>
+               
+               <tr>
+                    <td>Insurance Number:</td>
+                    <td><input id="insuranceNumber" name="insuranceNumber" type="text" th:value="${vehicleDetails.insuranceNumber}"/></td>
+               
+                </tr>
+                
+                  <tr>
+                    <td>Insurance Company:</td>
+                    <td><input id="insuranceCompany" name="insuranceCompany" type="text" th:value="${vehicleDetails.insuranceCompany}"/></td>
+               
+                </tr>
+               
+               <tr>
+                    
+                    <td><input type="submit" value="Add"/></td>
+               
+                </tr>
+               
+               
+               
+               </table>
+        </form>
+ 
+
+</body>
+</html>

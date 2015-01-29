@@ -1,5 +1,6 @@
 package com.projectx.mvc.servicehandler.completeregister;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -233,7 +234,7 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	}
 
 	@Override
-	public List<DriverDetailsDTO> getDriversByVendor(Long venorId) {
+	public ArrayList<DriverDetailsDTO> getDriversByVendor(Long venorId) {
 
 		DriverList result=restTemplate
 				.getForObject(env.getProperty("rest.host")+"/vendor/driver/getDriversByVendor/"+venorId, DriverList.class);
