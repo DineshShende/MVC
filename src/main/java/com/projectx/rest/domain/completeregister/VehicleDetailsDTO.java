@@ -6,13 +6,19 @@ import java.util.Date;
 
 
 
+
+
+
+
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.projectx.mvc.util.serializer.JsonDateDeSerializer;
 import com.projectx.mvc.util.serializer.JsonDateSerializer;
-import com.sun.istack.internal.NotNull;
+
 
 
 
@@ -50,7 +56,17 @@ public class VehicleDetailsDTO {
 	private Integer loadCapacityInTons;
 	
 	@NotNull
+	private Integer length;
+	
+	@NotNull
+	private Integer width;
+	
+	@NotNull
+	private Integer height;
+	
+	@NotNull
 	private Integer numberOfWheels;
+	
 	
 	@NotEmpty
 	private String permitType;
@@ -79,14 +95,17 @@ public class VehicleDetailsDTO {
 
 
 
+	
+
+
 	public VehicleDetailsDTO(Long vehicleId, String ownerFirstName,
 			String ownerMiddleName, String ownerLastName,
 			VehicleTypeDetails vehicleTypeId,
 			VehicleBrandDetails vehicleBrandId, String vehicleBodyType,
 			Boolean isBodyTypeFlexible, String registrationNumber,
-			String chassisNumber, Integer loadCapacityInTons,
-			Integer numberOfVehicle, String permitType,
-			Boolean insuranceStatus, String insuranceNumber,
+			String chassisNumber, Integer loadCapacityInTons, Integer length,
+			Integer width, Integer height, Integer numberOfWheels,
+			String permitType, Boolean insuranceStatus, String insuranceNumber,
 			String insuranceCompany, Long vendorId, Date insertTime,
 			Date updateTime, String updatedBy) {
 		super();
@@ -101,7 +120,10 @@ public class VehicleDetailsDTO {
 		this.registrationNumber = registrationNumber;
 		this.chassisNumber = chassisNumber;
 		this.loadCapacityInTons = loadCapacityInTons;
-		this.numberOfWheels = numberOfVehicle;
+		this.length = length;
+		this.width = width;
+		this.height = height;
+		this.numberOfWheels = numberOfWheels;
 		this.permitType = permitType;
 		this.insuranceStatus = insuranceStatus;
 		this.insuranceNumber = insuranceNumber;
@@ -111,6 +133,9 @@ public class VehicleDetailsDTO {
 		this.updateTime = updateTime;
 		this.updatedBy = updatedBy;
 	}
+
+
+
 
 
 
@@ -353,24 +378,58 @@ public class VehicleDetailsDTO {
 	}
 
 
+	public Integer getLength() {
+		return length;
+	}
+
+	public void setLength(Integer length) {
+		this.length = length;
+	}
+
+	public Integer getWidth() {
+		return width;
+	}
+
+
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
+
+	public Integer getHeight() {
+		return height;
+	}
+
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
+
+
+
+
+
 
 	@Override
 	public String toString() {
-		return "VehicleDetails [vehicleId=" + vehicleId + ", ownerFirstName="
-				+ ownerFirstName + ", ownerMiddleName=" + ownerMiddleName
-				+ ", ownerLastName=" + ownerLastName + ", vehicleTypeId="
-				+ vehicleTypeId + ", vehicleBrandId=" + vehicleBrandId
-				+ ", vehicleBodyType=" + vehicleBodyType
+		return "VehicleDetailsDTO [vehicleId=" + vehicleId
+				+ ", ownerFirstName=" + ownerFirstName + ", ownerMiddleName="
+				+ ownerMiddleName + ", ownerLastName=" + ownerLastName
+				+ ", vehicleTypeId=" + vehicleTypeId + ", vehicleBrandId="
+				+ vehicleBrandId + ", vehicleBodyType=" + vehicleBodyType
 				+ ", isBodyTypeFlexible=" + isBodyTypeFlexible
 				+ ", registrationNumber=" + registrationNumber
 				+ ", chassisNumber=" + chassisNumber + ", loadCapacityInTons="
-				+ loadCapacityInTons + ", numberOfVehicle=" + numberOfWheels
-				+ ", permitType=" + permitType + ", insuranceStatus="
-				+ insuranceStatus + ", insuranceNumber=" + insuranceNumber
-				+ ", insuranceCompany=" + insuranceCompany + ", vendorId="
-				+ vendorId + ", insertTime=" + insertTime + ", updateTime="
-				+ updateTime + ", updatedBy=" + updatedBy + "]";
+				+ loadCapacityInTons + ", length=" + length + ", width="
+				+ width + ", height=" + height + ", numberOfWheels="
+				+ numberOfWheels + ", permitType=" + permitType
+				+ ", insuranceStatus=" + insuranceStatus + ", insuranceNumber="
+				+ insuranceNumber + ", insuranceCompany=" + insuranceCompany
+				+ ", vendorId=" + vendorId + ", insertTime=" + insertTime
+				+ ", updateTime=" + updateTime + ", updatedBy=" + updatedBy
+				+ "]";
 	}
+
+
+
 
 
 
@@ -380,6 +439,7 @@ public class VehicleDetailsDTO {
 		int result = 1;
 		result = prime * result
 				+ ((chassisNumber == null) ? 0 : chassisNumber.hashCode());
+		result = prime * result + ((height == null) ? 0 : height.hashCode());
 		result = prime * result
 				+ ((insertTime == null) ? 0 : insertTime.hashCode());
 		result = prime
@@ -393,6 +453,7 @@ public class VehicleDetailsDTO {
 				* result
 				+ ((isBodyTypeFlexible == null) ? 0 : isBodyTypeFlexible
 						.hashCode());
+		result = prime * result + ((length == null) ? 0 : length.hashCode());
 		result = prime
 				* result
 				+ ((loadCapacityInTons == null) ? 0 : loadCapacityInTons
@@ -425,8 +486,12 @@ public class VehicleDetailsDTO {
 				+ ((vehicleTypeId == null) ? 0 : vehicleTypeId.hashCode());
 		result = prime * result
 				+ ((vendorId == null) ? 0 : vendorId.hashCode());
+		result = prime * result + ((width == null) ? 0 : width.hashCode());
 		return result;
 	}
+
+
+
 
 
 
@@ -444,10 +509,15 @@ public class VehicleDetailsDTO {
 				return false;
 		} else if (!chassisNumber.equals(other.chassisNumber))
 			return false;
+		if (height == null) {
+			if (other.height != null)
+				return false;
+		} else if (!height.equals(other.height))
+			return false;
 		if (insertTime == null) {
 			if (other.insertTime != null)
 				return false;
-		} else if (Math.abs(insertTime.getTime()-other.insertTime.getTime())>1000000)
+		} else if (!insertTime.equals(other.insertTime))
 			return false;
 		if (insuranceCompany == null) {
 			if (other.insuranceCompany != null)
@@ -468,6 +538,11 @@ public class VehicleDetailsDTO {
 			if (other.isBodyTypeFlexible != null)
 				return false;
 		} else if (!isBodyTypeFlexible.equals(other.isBodyTypeFlexible))
+			return false;
+		if (length == null) {
+			if (other.length != null)
+				return false;
+		} else if (!length.equals(other.length))
 			return false;
 		if (loadCapacityInTons == null) {
 			if (other.loadCapacityInTons != null)
@@ -507,7 +582,7 @@ public class VehicleDetailsDTO {
 		if (updateTime == null) {
 			if (other.updateTime != null)
 				return false;
-		} else if (Math.abs(updateTime.getTime()-other.updateTime.getTime())>1000000)
+		} else if (!updateTime.equals(other.updateTime))
 			return false;
 		if (updatedBy == null) {
 			if (other.updatedBy != null)
@@ -538,6 +613,11 @@ public class VehicleDetailsDTO {
 			if (other.vendorId != null)
 				return false;
 		} else if (!vendorId.equals(other.vendorId))
+			return false;
+		if (width == null) {
+			if (other.width != null)
+				return false;
+		} else if (!width.equals(other.width))
 			return false;
 		return true;
 	}

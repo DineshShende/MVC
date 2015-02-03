@@ -9,6 +9,9 @@
 <body>
 
  <table>
+ 				
+ 				
+ 
  				<tr>
  					<td></td>
  					<td><form  action="/customer/editForm" method="post">
@@ -16,7 +19,24 @@
                				<input type="submit" value="Edit CustomerDetails" />
                			</form>
                		</td>
+               		
+               			<td></td>
+ 					<td><form  action="/request/freightrequestByCustomer/requestForm" method="post">
+               				<input id="entityId" name="entityId" type="hidden" th:value="${customerDetails.customerId}"/>
+               				<input type="submit" value="Request a freight" />
+               			</form>
+               		</td>
+ 				
+ 						<td></td>
+ 					<td><form  action="/request/freightrequestByCustomer/getByCustomerId" method="post">
+               				<input id="entityId" name="entityId" type="hidden" th:value="${customerDetails.customerId}"/>
+               				<input type="submit" value="Show freight status" />
+               			</form>
+               		</td>
+ 				
+ 				
  				</tr>
+ 
  
                 <tr>
                     <td>FirstName:</td>	

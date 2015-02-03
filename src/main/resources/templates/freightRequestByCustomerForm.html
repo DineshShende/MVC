@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+
+<title>Insert title here</title>
+
+</head>
+<body>
+
+
+  <form action="/request/freightrequestByCustomer" method="post">
+         
+         <input id="requestId" name="requestId" type="hidden" th:if="${freightRequestByCustomer.requestId!=null}" th:value="${freightRequestByCustomer.requestId}"/>
+         <input id="customerId" name="customerId" type="hidden" th:value="${freightRequestByCustomer.customerId}"/>
+         
+            <table>
+                <tr>
+                    <td>Source:</td>
+                    <td> <input id="source" name="source" type="text" th:value="${freightRequestByCustomer.source}"/></td>
+               
+                </tr>
+                
+                 <tr>
+                    <td>Destination:</td>
+                    <td><input id="destination" name="destination" type="text" th:value="${freightRequestByCustomer.destination}"/></td>
+               
+                </tr>
+                
+                <tr>
+                    <td>Pick Up Date(mm/dd/yyyy):</td>
+                    <td><input id="pickupDate" name="pickupDate" type="text" th:value="${freightRequestByCustomer.pickupDate}"/></td>
+               
+                </tr>
+                
+                <tr>
+                    <td>No of Vehicle:</td>
+                    <td><input id="noOfVehicles" name="noOfVehicles" type="text" th:value="${freightRequestByCustomer.noOfVehicles}"/></td>
+               
+                </tr>
+               
+               
+                             
+               
+               
+               <tr>
+                    <td>Load Type:</td>
+                    <td>
+               				<input type="radio" name="loadType" value="FullTruckLoad" />FullTruckLoad
+							<br/>
+							<input type="radio" name="loadType" value="LessThanTruckLoad"/>LessThanTruckLoad	
+					
+					</td>
+                </tr>
+               
+               
+                <tr>
+                    <td>Capacity:</td>
+                    <td><input id="capacity" name="capacity" type="text" th:value="${freightRequestByCustomer.capacity}"/></td>
+               
+                </tr>
+               
+               
+               <tr>
+                    <td>Body Type :</td>
+                    <td>
+                    <select name="bodyType">
+					<option value="Open">Open</option>
+					<option value="Closed">Closed</option>
+					
+					</select>
+					</td>
+                </tr>
+               
+               
+                <tr>
+                    <td>Gross Weight:</td>
+                    <td><input id="grossWeight" name="grossWeight" type="text" th:value="${freightRequestByCustomer.grossWeight}"/></td>
+               
+                </tr>
+               
+                <tr>
+                    <td>Length:</td>
+                    <td><input id="length" name="length" type="text" th:value="${freightRequestByCustomer.length}"/></td>
+               	
+               		<td>Width:</td>
+                    <td><input id="width" name="width" type="text" th:value="${freightRequestByCustomer.width}"/></td>
+                    
+                    <td>Height:</td>
+                    <td><input id="height" name="height" type="text" th:value="${freightRequestByCustomer.height}"/></td>
+               	
+                </tr>
+               
+                <tr>
+                    <td>Vehicle Brand:</td>
+                    <td><input id="vehicleBrand" name="vehicleBrand" type="text" th:value="${freightRequestByCustomer.vehicleBrand}"/></td>
+               
+                </tr>
+               
+                <tr>
+                    <td>Vehicle Model:</td>
+                    <td><input id="model" name="model" type="text" th:value="${freightRequestByCustomer.model}"/></td>
+               
+                </tr>
+               
+                <tr>
+                    <td>Commodity:</td>
+                    <td><input id="commodity" name="commodity" type="text" th:value="${freightRequestByCustomer.commodity}"/></td>
+               
+                </tr>
+               
+                <tr>
+                    <td>PickUpTime:</td>
+                     <td>
+                    <select name="pickupTime">
+					<option value="12:00PM">12:00PM</option>
+					<option value="9:00AM">9:00AM</option>
+										
+					</select>
+					</td>
+               
+                </tr>
+               
+                   
+                <tr>
+                    <td><button type="submit">Submit</button></td>
+                </tr>           
+               
+               </table>
+        </form>
+ 
+
+</body>
+</html>

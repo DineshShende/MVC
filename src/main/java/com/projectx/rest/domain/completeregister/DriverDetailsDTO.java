@@ -2,6 +2,7 @@ package com.projectx.rest.domain.completeregister;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -10,7 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.projectx.mvc.util.serializer.JsonDateDeSerializer;
 import com.projectx.mvc.util.serializer.JsonDateSerializer;
-import com.sun.istack.internal.NotNull;
+
 
 
 public class DriverDetailsDTO {

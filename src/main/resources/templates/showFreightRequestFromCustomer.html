@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="../script.js"></script>
+
+</head>
+<body>
+
+  <table>
+      <tr>
+      	<th>PickUpDate</th>
+        <th>PickUpTime</th>
+        <th>Capacity (In tons)</th>
+        <th>No Of Vehicles</th>
+        <th>Status</th>
+        <th>LoadType</th>
+        
+      </tr>
+      <tr th:each="request : ${requestList}">
+        <td><p th:text="${request.pickupDate}"/></td>
+        <td><p th:text="${request.pickupTime}"/></td>
+        <td><p th:text="${request.capacity}"/></td>
+        <td><p th:text="${request.noOfVehicles}"/></td>
+		<td><p th:text="${request.status}"/></td>
+
+		<td><p th:text="${request.loadType}"/></td>
+		
+ 
+		<td>
+		
+		<form action="/request/freightrequestByCustomer/updateFrom" method="post">
+		<input type="hidden" name="entityId" id="entityId" th:value="${request.requestId}"/>
+		<input type="submit" value="Update"/>
+		
+		</form>
+		
+		<form action="/request/freightrequestByCustomer/deleteRequestById" method="post">
+		<input type="hidden" name="entityId" id="entityId" th:value="${request.requestId}"/>
+		<input type="submit" value="Delete"/>
+		
+		</form>
+		
+		</td> 
+ 
+      </tr>
+    </table>
+  
+
+
+</body>
+</html>

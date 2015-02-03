@@ -52,7 +52,7 @@
                 </tr>
                 
                   <tr>
-                    <td>Vehicle Type Name:</td>
+                    <td>Vehicle Brand Name:</td>
                     <td><input id="vehicleBrandId.vehicleBrandName" name="vehicleBrandId.vehicleBrandName" type="text" th:if="${vehicleDetails.vehicleBrandId}!=null" th:value="${vehicleDetails.vehicleBrandId.vehicleBrandName}"/>
                     <input id="vehicleBrandId.vehicleBrandName" name="vehicleBrandId.vehicleBrandName" type="text" th:if="${vehicleDetails.vehicleBrandId}==null" />
                     </td>
@@ -60,7 +60,7 @@
                 </tr>
                 
                   <tr>
-                    <td>Vehicle Type Name:</td>
+                    <td>Vehicle Model Number:</td>
                     <td><input id="vehicleBrandId.modelNumber" name="vehicleBrandId.modelNumber" type="text" th:if="${vehicleDetails.vehicleBrandId}!=null" th:value="${vehicleDetails.vehicleBrandId.modelNumber}"/>
                     	<input id="vehicleBrandId.modelNumber" name="vehicleBrandId.modelNumber" type="text" th:if="${vehicleDetails.vehicleBrandId}==null" />
                     </td>
@@ -105,6 +105,25 @@
                 <tr>
                     <td>Load capacity(In tons):</td>
                     <td><input id="loadCapacityInTons" name="loadCapacityInTons" type="text" th:value="${vehicleDetails.loadCapacityInTons}"/></td>
+               
+                </tr>
+                
+                 <tr>
+                    <td>Length:</td>
+                    <td><input id="length" name="length" type="text" th:value="${vehicleDetails.length}"/></td>
+               
+                </tr>
+                
+                 <tr>
+                    <td>Width:</td>
+                    <td><input id="width" name="width" type="text" th:value="${vehicleDetails.width}"/></td>
+               
+                </tr>
+                
+                
+                 <tr>
+                    <td>Height:</td>
+                    <td><input id="height" name="height" type="text" th:value="${vehicleDetails.height}"/></td>
                
                 </tr>
                  

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+
+<title>Insert title here</title>
+
+</head>
+<body>
+
+
+  <form action="/request/freightrequestByVendor" method="post">
+         
+         <input id="requestId" name="requestId" type="hidden" th:if="${freightRequestByVendor.requestId!=null}" th:value="${freightRequestByVendor.requestId}"/>
+         <input id="vendorId" name="vendorId" type="hidden" th:value="${freightRequestByVendor.vendorId}"/>
+         
+            <table>
+               
+                <tr>
+                    <td>Select Vehicle:</td>
+                    <td> <input id="vehicleRegistrationNumber" name="vehicleRegistrationNumber" type="text"
+                     th:value="${freightRequestByVendor.vehicleRegistrationNumber}"/></td>
+               
+                </tr>
+                
+               
+                <tr>
+                    <td>Source:</td>
+                    <td> <input id="source" name="source" type="text" th:value="${freightRequestByVendor.source}"/></td>
+               
+                </tr>
+                
+                 <tr>
+                    <td>Destination:</td>
+                    <td><input id="destination" name="destination" type="text" th:value="${freightRequestByVendor.destination}"/></td>
+               
+                </tr>
+               
+                 <tr>
+                    <td>Select Driver:</td>
+                    <td><input id="driverId" name="driverId" type="text" th:value="${freightRequestByVendor.driverId}"/></td>
+               
+                </tr>
+                
+                <tr>
+                    <td>Available Date(mm/dd/yyyy):</td>
+                    <td><input id="availableDate" name="availableDate" type="text" th:value="${freightRequestByVendor.availableDate}"/></td>
+               
+                </tr>
+                
+                <tr>
+                    <td>AvailableTime :</td>
+                     <td>
+                    <select name="availableTime">
+					<option value="12:00PM">12:00PM</option>
+					<option value="9:00AM">9:00AM</option>
+										
+					</select>
+					</td>
+               
+                </tr>
+                
+                
+                <tr>
+                    <td>Pickup Range in KM:</td>
+                    <td><input id="pickupRangeInKm" name="pickupRangeInKm" type="text" th:value="${freightRequestByVendor.pickupRangeInKm}"/></td>
+               
+                </tr>
+               
+               
+                                            
+                
+               
+                   
+                <tr>
+                    <td><button type="submit">Submit</button></td>
+                </tr>           
+               
+               </table>
+        </form>
+ 
+
+</body>
+</html>
