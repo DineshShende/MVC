@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+
+	 
+	Name:<p th:text="${sessionData.name}"></p>
+	Password:<p th:text="${sessionData.password}"></p> 
+ 
+	<form action="/sessionTest/redirect" method="get">
+	<input type="submit"/>
+	</form>
+	
+	
+</body>
+</html>

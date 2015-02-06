@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.projectx.mvc.domain.request.FreightRequestByCustomer;
 import com.projectx.mvc.services.request.FreightRequestByCustomerService;
+import com.projectx.mvc.services.request.FreightRequestByVendorService;
 import com.projectx.rest.domain.completeregister.EntityIdDTO;
+import com.projectx.rest.domain.request.FreightRequestByVendorDTO;
 
 
 @Controller
@@ -23,6 +25,9 @@ public class FreightRequestByCustomerController {
 
 	@Autowired
 	FreightRequestByCustomerService freightRequestByCustomerService;
+	
+	@Autowired
+	FreightRequestByVendorService freightRequestByVendorService;
 	
 	
 	@RequestMapping(value="/requestForm",method=RequestMethod.POST)
@@ -38,15 +43,22 @@ public class FreightRequestByCustomerController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	@ResponseBody
-	public String save(@ModelAttribute FreightRequestByCustomer freightRequestByCustomerDTO)
+	public String save(@ModelAttribute FreightRequestByCustomer freightRequestByCustomerDTO,Model model)
 	{
 		freightRequestByCustomerDTO.setStatus("New");
 		
 		FreightRequestByCustomer savedEntity=freightRequestByCustomerService.save(freightRequestByCustomerDTO);
 		
 		if(savedEntity.getRequestId()!=null)
-			return "SUCESS";
+		{	
+		
+			List<FreightRequestByVendorDTO> requestList=freightRequestByVendorService
+					.getMatchingVendorReqForCustReq(savedEntity.toFreightRequestByCustomerDTO());
+		
+			model.addAttribute("requestList", requestList);
+		
+			return "showMatchingVendorRequests";
+		}
 		else
 			return "FAILURE";
 	}

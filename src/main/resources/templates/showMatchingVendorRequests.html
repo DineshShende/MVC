@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="../script.js"></script>
+
+</head>
+<body>
+
+  <table>
+      <tr>
+      	<th>Vehicle Number</th>
+      	<th>PickUpDate</th>
+        <th>PickUpTime</th>
+        <th>Status</th>
+        <th>PickUp Range</th>
+        
+      </tr>
+      <tr th:each="request : ${requestList}">
+        <td><p th:text="${request.vehicleRegistrationNumber}"/></td>
+        <td><p th:text="${request.availableDate}"/></td>
+        <td><p th:text="${request.availableTime}"/></td>
+        <td><p th:text="${request.status}"/></td>
+		<td><p th:text="${request.pickupRangeInKm}"/></td>
+
+	  </tr>
+	  
+    </table>
+  
+
+
+</body>
+</html>

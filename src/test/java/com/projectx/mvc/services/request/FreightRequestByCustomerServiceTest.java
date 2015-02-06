@@ -15,9 +15,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.projectx.mvc.config.BasicConfig;
 import com.projectx.mvc.domain.request.FreightRequestByCustomer;
+import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.rest.domain.request.FreightRequestByCustomerDTO;
+import com.projectx.rest.domain.request.FreightRequestByVendorDTO;
 
 import static com.projectx.mvc.fixtures.request.FreightRequestByCustomerDataFixture.*;
+import static com.projectx.mvc.fixtures.completeregister.VehicleDetailsDataFixtures.*;
+import static com.projectx.mvc.fixtures.request.FreightRequestByVendorDataFixture.*;
+
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BasicConfig.class)
@@ -27,10 +33,18 @@ public class FreightRequestByCustomerServiceTest {
 	@Autowired
 	FreightRequestByCustomerService freightRequestByCustomerService;
 	
+	@Autowired
+	FreightRequestByVendorService freightRequestByVendorService;
+	
+	@Autowired
+	VendorDetailsService vendorDetailsService;
+	
 	@Before
 	public void clearData()
 	{
 		freightRequestByCustomerService.clearTestData();
+		freightRequestByVendorService.clearTestData();
+		vendorDetailsService.vehicleClearTestData();
 	}
 	
 	
@@ -122,5 +136,39 @@ public class FreightRequestByCustomerServiceTest {
 		assertEquals(1, requestList.size());
 	}
 
+	
+	@Test
+	public void getCustmerReqForVendorReq()
+	{
+		freightRequestByCustomerService.clearTestData();
+		
+		FreightRequestByCustomer savedEntity=freightRequestByCustomerService.save(FreightRequestByCustomer.fromFreightRequestByCustomerDTO(standardFreightRequestByCustomerFullTruckLoad110()));
+		
+		savedEntity=freightRequestByCustomerService.save(FreightRequestByCustomer.fromFreightRequestByCustomerDTO(standardFreightRequestByCustomerFullTruckLoadClosedAcerReq()));
+		
+		savedEntity=freightRequestByCustomerService.save(FreightRequestByCustomer.fromFreightRequestByCustomerDTO(standardFreightRequestByCustomerFullTruckLoadOpenTataReq()));
+		
+		savedEntity=freightRequestByCustomerService.save(FreightRequestByCustomer.fromFreightRequestByCustomerDTO(standardFreightRequestByCustomerLessThanTruckLoad15()));
+		
+		savedEntity=freightRequestByCustomerService.save(FreightRequestByCustomer.fromFreightRequestByCustomerDTO(standardFreightRequestByCustomerLessThanTruckLoadOpenAcer()));
+		
+		savedEntity=freightRequestByCustomerService.save(FreightRequestByCustomer.fromFreightRequestByCustomerDTO(standardFreightRequestByCustomerLessThanTruckLoadOpenTata()));
+		
+		savedEntity=freightRequestByCustomerService.save(FreightRequestByCustomer.fromFreightRequestByCustomerDTO(standardFreightRequestByCustomerLessThanTruckLoadOpenNoBrand()));
+		
+		savedEntity=freightRequestByCustomerService.save(FreightRequestByCustomer.fromFreightRequestByCustomerDTO(standardFreightRequestByCustomerLessThanTruckLoadOpenNoBrandAndNoModel()));
+		
+		savedEntity=freightRequestByCustomerService.save(FreightRequestByCustomer.fromFreightRequestByCustomerDTO(standardFreightRequestByCustomerLessThanTruckLoadOpenNoModel()));
+		
+		//FreightRequestByVendor vendorRequest=freightRequestByVendorRepository.save(standardFreightRequestByVendor());
+		
+		
+		vendorDetailsService.save(standardVehicleDetails());
+		
+		FreightRequestByVendorDTO testRequest=freightRequestByVendorService.save(standardFreightRequestByVendor());
+		
+		//assertEquals(3, freightRequestByCustomerService.getCustmerReqForVendorReq(testRequest).size());
+
+	}
 
 }

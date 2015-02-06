@@ -20,6 +20,7 @@ import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
 import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
+import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
 import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
 import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
@@ -324,5 +325,18 @@ public class VendorDetailsServiceTest {
 	}
 	
 	
+	@Test
+	public void addVehicle()
+	{
+		
+		assertEquals(0, vendorDetailsService.vehicleCount().intValue());
+		
+		VehicleDetailsDTO vehicleDetailsDTO=vendorDetailsService.save(standardVehicleDetails());
+		
+		assertEquals(vehicleDetailsDTO, vendorDetailsService.getVehicleById(vehicleDetailsDTO.getVehicleId()));
+		
+		assertEquals(1, vendorDetailsService.vehicleCount().intValue());
+		
+	}
 	
 }

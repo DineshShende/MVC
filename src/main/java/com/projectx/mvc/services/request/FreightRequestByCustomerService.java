@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.projectx.mvc.domain.request.FreightRequestByCustomer;
 import com.projectx.rest.domain.request.FreightRequestByCustomerDTO;
+import com.projectx.rest.domain.request.FreightRequestByVendorDTO;
 
 public interface FreightRequestByCustomerService {
 
@@ -12,6 +13,8 @@ public interface FreightRequestByCustomerService {
 	FreightRequestByCustomer getRequestById(Long requestId);
 	
 	List<FreightRequestByCustomer> getAllRequestForCustomer(Long customerId);
+	
+	List<FreightRequestByCustomer> getCustmerReqForVendorReq(FreightRequestByVendorDTO freightRequestByVendorDTO);
 	
 	Boolean deleteRequestById(Long requestId);
 	

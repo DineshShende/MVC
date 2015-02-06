@@ -15,6 +15,7 @@ import com.projectx.mvc.services.request.FreightRequestByCustomerService;
 import com.projectx.rest.domain.quickregister.QuickRegisterStringStatusDTO;
 import com.projectx.rest.domain.request.FreightRequestByCustomerDTO;
 import com.projectx.rest.domain.request.FreightRequestByCustomerList;
+import com.projectx.rest.domain.request.FreightRequestByVendorDTO;
 
 @Component
 @Profile(value="Dev")
@@ -95,6 +96,26 @@ public class FreightRequestByCustomerHandler implements
 				.getForObject(env.getProperty("rest.host")+"/request/freightRequestByCustomer/count", Integer.class);
 		
 		return status;
+		
+	}
+
+	@Override
+	public List<FreightRequestByCustomer> getCustmerReqForVendorReq(
+			FreightRequestByVendorDTO freightRequestByVendorDTO) {
+	
+		FreightRequestByCustomerList status=restTemplate.postForObject(env.getProperty("rest.host")+"/request/freightRequestByCustomer/getMatchingCustomerReqForVendorReq",
+				freightRequestByVendorDTO, FreightRequestByCustomerList.class);
+		
+		List<FreightRequestByCustomer> returnList=new ArrayList<FreightRequestByCustomer>();
+		
+		for(int i=0;i<status.getRequestList().size();i++)
+			returnList.add(FreightRequestByCustomer.fromFreightRequestByCustomerDTO(status.getRequestList().get(i)));
+		
+		
+		return returnList;
+	
+
+		
 		
 	}
 

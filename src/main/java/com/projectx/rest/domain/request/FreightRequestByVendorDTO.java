@@ -1,3 +1,4 @@
+
 package com.projectx.rest.domain.request;
 
 import java.util.Date;
@@ -306,4 +307,6 @@ public class FreightRequestByVendorDTO {
 
 		
 	
-}
+}		
+	
+

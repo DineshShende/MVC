@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="../script.js"></script>
+
+</head>
+<body>
+
+  <table>
+      <tr>
+      	<th>Source</th>
+      	<th>Destination</th>
+      	<th>PickUpDate</th>
+        <th>PickUpTime</th>
+        <th>Status</th>
+        <th>Capacity</th>
+        
+      </tr>
+      <tr th:each="request : ${requestList}">
+        <td><p th:text="${request.source}"/></td>
+        <td><p th:text="${request.destination}"/></td>
+        <td><p th:text="${request.pickupDate}"/></td>
+        <td><p th:text="${request.pickupTime}"/></td>
+        <td><p th:text="${request.status}"/></td>
+		<td><p th:text="${request.capacity}"/></td>
+
+				
+      </tr>
+    </table>
+  
+
+
+</body>
+</html>
