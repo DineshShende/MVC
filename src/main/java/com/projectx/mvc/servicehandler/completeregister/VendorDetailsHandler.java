@@ -8,10 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
 
+import com.projectx.mvc.exception.repository.completeregister.DriverDetailsAlreadyPresentException;
+import com.projectx.mvc.exception.repository.completeregister.DriverDetailsNotFoundException;
+import com.projectx.mvc.exception.repository.completeregister.DriverDetailsUpdateFailedException;
+import com.projectx.mvc.exception.repository.completeregister.VehicleDetailsNotFoundException;
+import com.projectx.mvc.exception.repository.completeregister.VendorDetailsNotFoundException;
+import com.projectx.mvc.exception.repository.completeregister.VendorDetailsTransactionalUpdateFailedException;
+import com.projectx.mvc.exception.repository.quickregister.DeleteQuickCreateDetailsEntityFailedException;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
@@ -26,6 +37,10 @@ import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
+
+
+
+
 
 @Component
 @Profile(value="Dev")
@@ -51,18 +66,30 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	public VendorDetailsDTO createCustomerDetailsFromQuickRegisterEntity(
 			QuickRegisterDTO quickRegisterEntity) {
 	
-		VendorDetailsDTO status=restTemplate.postForObject(env.getProperty("rest.host")+"/vendor/createFromQuickRegister", quickRegisterEntity, VendorDetailsDTO.class);
+		HttpEntity<QuickRegisterDTO> entity=new HttpEntity<QuickRegisterDTO>(quickRegisterEntity);
 		
-		return status;
+		ResponseEntity<VendorDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/createFromQuickRegister",
+				HttpMethod.POST, entity, VendorDetailsDTO.class);
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		else
+			throw new DeleteQuickCreateDetailsEntityFailedException();
 		
 	}
 
 	@Override
 	public VendorDetailsDTO update(VendorDetailsDTO vendorDetails) {
 		
-		VendorDetailsDTO status=restTemplate.postForObject(env.getProperty("rest.host")+"/vendor/update", vendorDetails, VendorDetailsDTO.class);
+		HttpEntity<VendorDetailsDTO> entity=new HttpEntity<VendorDetailsDTO>(vendorDetails);
 		
-		return status;
+		ResponseEntity<VendorDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/update",
+				HttpMethod.POST, entity, VendorDetailsDTO.class);
+		
+		if(result.getStatusCode()==HttpStatus.OK)		
+			return result.getBody();
+		else
+			throw new VendorDetailsTransactionalUpdateFailedException();
 		
 		
 	}
@@ -70,10 +97,13 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	@Override
 	public VendorDetailsDTO getCustomerDetailsById(Long vendorId) {
 
-		VendorDetailsDTO customerDetailsDTO=restTemplate
-				.getForObject(env.getProperty("rest.host")+"/vendor/getVendorDetailsById/"+vendorId, VendorDetailsDTO.class);
+		ResponseEntity<VendorDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/getVendorDetailsById/"+vendorId,
+				HttpMethod.GET, null, VendorDetailsDTO.class);
 		
-		return customerDetailsDTO;
+		if(result.getStatusCode()==HttpStatus.FOUND)
+			return result.getBody();
+		else
+			throw new VendorDetailsNotFoundException();
 
 		
 	}
@@ -194,32 +224,44 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	@Override
 	public DriverDetailsDTO addDriver(DriverDetailsDTO driverDetailsDTO) {
 	
-		DriverDetailsDTO status=restTemplate
-				.postForObject(env.getProperty("rest.host")+"/vendor/driver", driverDetailsDTO, DriverDetailsDTO.class);
+		HttpEntity<DriverDetailsDTO> entity=new HttpEntity<DriverDetailsDTO>(driverDetailsDTO);
 		
-		return status;
+		ResponseEntity<DriverDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/driver", HttpMethod.POST,
+				entity, DriverDetailsDTO.class);
+		
+		if(result.getStatusCode()==HttpStatus.CREATED)		
+			return result.getBody();
+		else
+			throw new DriverDetailsAlreadyPresentException();
 		
 	}
 
 	@Override
 	public DriverDetailsDTO update(DriverDetailsDTO driverDetailsDTO) {
 		
-		DriverDetailsDTO status=restTemplate
-				.postForObject(env.getProperty("rest.host")+"/vendor/driver/update", driverDetailsDTO, DriverDetailsDTO.class);
+		HttpEntity<DriverDetailsDTO> entity=new HttpEntity<DriverDetailsDTO>(driverDetailsDTO);
 		
-		return status;
+		ResponseEntity<DriverDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/driver/update", HttpMethod.POST,
+				entity, DriverDetailsDTO.class);
+		
+		if(result.getStatusCode()==HttpStatus.OK)	
+			return result.getBody();
+		else
+			throw new DriverDetailsUpdateFailedException();
 
 	}
 
 	@Override
 	public DriverDetailsDTO getDriverById(Long driverId) {
 		
-		DriverDetailsDTO result=restTemplate
-				.getForObject(env.getProperty("rest.host")+"/vendor/driver/getByDriverId/"+driverId, DriverDetailsDTO.class);
+		ResponseEntity<DriverDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/driver/getByDriverId/"+driverId, 
+				HttpMethod.GET, null, DriverDetailsDTO.class);
 		
-		return result;
+		if(result.getStatusCode()==HttpStatus.FOUND)
+			return result.getBody();
+		else
+			throw new DriverDetailsNotFoundException();
 		
-
 		
 	}
 
@@ -280,10 +322,13 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	@Override
 	public VehicleDetailsDTO getVehicleById(Long vehicleId) {
 		
-		VehicleDetailsDTO result=restTemplate
-				.getForObject(env.getProperty("rest.host")+"/vendor/vehicle/getByVehicleId/"+vehicleId, VehicleDetailsDTO.class);
+		ResponseEntity<VehicleDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/vehicle/getByVehicleId/"+vehicleId,
+					HttpMethod.GET, null, VehicleDetailsDTO.class);
 		
-		return result;
+		if(result.getStatusCode()==HttpStatus.FOUND)
+			return result.getBody();
+		else
+			throw new VehicleDetailsNotFoundException();
 
 		
 	}

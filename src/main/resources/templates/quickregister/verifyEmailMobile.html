@@ -3,6 +3,10 @@
 <head>
     <title>Getting Started: Handing Form Submission</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="../script.js"></script> 
+    
+    
 </head>
 <body>
 	<h1></h1>
@@ -19,28 +23,29 @@
     Enter verification Pin:<input id="mobilePin" name="mobilePin" type="text"/>
     
     <input type="submit" value="Submit" />
-    </form>       
+    </form> 
+          
     
-    <form action="/quickregister/resendMobilePin" method="post" >
+    <form id="sendSMS" action="/quickregister/resendMobilePin" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
     <input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
     
     <input type="submit" value="Resend Pin" />       
     </form>
+    <p th:if="${smsSentStatus != null}" th:text="${smsSentStatus}"/>
+	<div id="smsSentStatus"></div>    
     
-    <form action="/quickregister/resendEmailHash" method="post" >
+    <form id="sendEmail" action="/quickregister/resendEmailHash" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
-    <input id="emailType" name="email" type="hidden" th:value="1"/>
+    <input id="emailType" name="emailType" type="hidden" th:value="1"/>
     
     <input type="submit" value="Resend Email" />       
     </form>
+    <p th:if="${emailVerificationStatus != null}" th:text="${emailVerificationStatus}"/>
+    <div id="emailSentStatus"></div>
     
-    <p th:text="${verificationStatus}"></p>
-    <p th:text="${mobileVerificationStatus}"></p>
-    <p th:text="${verificationNeed}"></p>
-    <p th:text="${emailVerificationStatus}"></p>
     
      
     

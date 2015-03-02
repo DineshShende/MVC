@@ -10,19 +10,22 @@ public class VerifyEmailDTO {
 	
 	private String emailHash;
 	
+	private String updatedBy;
+	
 	public VerifyEmailDTO() {
 		super();
 	}
 
-
 	public VerifyEmailDTO(Long customerId, Integer customerType,
-			Integer emailType, String emailHash) {
+			Integer emailType, String emailHash, String updatedBy) {
 		super();
 		this.customerId = customerId;
 		this.customerType = customerType;
 		this.emailType = emailType;
 		this.emailHash = emailHash;
+		this.updatedBy = updatedBy;
 	}
+
 
 
 
@@ -63,13 +66,21 @@ public class VerifyEmailDTO {
 	}
 
 
+	
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
 	@Override
 	public String toString() {
 		return "VerifyEmailDTO [customerId=" + customerId + ", customerType="
 				+ customerType + ", emailType=" + emailType + ", emailHash="
-				+ emailHash + "]";
+				+ emailHash + ", updatedBy=" + updatedBy + "]";
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -83,9 +94,10 @@ public class VerifyEmailDTO {
 				+ ((emailHash == null) ? 0 : emailHash.hashCode());
 		result = prime * result
 				+ ((emailType == null) ? 0 : emailType.hashCode());
+		result = prime * result
+				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -116,10 +128,14 @@ public class VerifyEmailDTO {
 				return false;
 		} else if (!emailType.equals(other.emailType))
 			return false;
+		if (updatedBy == null) {
+			if (other.updatedBy != null)
+				return false;
+		} else if (!updatedBy.equals(other.updatedBy))
+			return false;
 		return true;
 	}
 
-
-
+	
 	
 }

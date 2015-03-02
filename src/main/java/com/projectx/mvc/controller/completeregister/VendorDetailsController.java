@@ -49,10 +49,6 @@ public class VendorDetailsController {
         binder.setValidator(vendorDetailsValidator);
     }
 	
-
-	
-	
-	
 	@RequestMapping(value="/createCustomerDetailsFromQuickRegisterEntity",method=RequestMethod.POST)
 	public String createCustomerDetailsFromQuickRegisterEntity(@ModelAttribute QuickRegisterDTO quickRegisterDTO,Model model)
 	{
@@ -63,7 +59,7 @@ public class VendorDetailsController {
 		
 		model.addAttribute("vendorDetails", vendorDetailsDTO);
 		
-		return "vendorDetailsForm";
+		return "completeregister/vendorDetailsForm";
 	}
 	
 	@RequestMapping(value="/save",method=RequestMethod.POST)
@@ -73,7 +69,7 @@ public class VendorDetailsController {
 		{
 			model.addAttribute("vendorDetails", vendorDetailsDTO);
 			
-			return "vendorDetailsForm";
+			return "completeregister/vendorDetailsForm";
 		}
 		
 		vendorDetailsDTO=vendorDetailsService.intializeMetaData(vendorDetailsDTO);
@@ -85,7 +81,7 @@ public class VendorDetailsController {
 		
 		model.addAttribute("vendorDetails", newVendorDetailsDTO);
 		
-		return "documentUploadVendor";
+		return "completeregister/documentUploadVendor";
 	
 	}
 	
@@ -96,7 +92,7 @@ public class VendorDetailsController {
 		{
 			model.addAttribute("vendorDetails", vendorDetailsDTO);
 			
-			return "vendorDetailsForm";
+			return "completeregister/vendorDetailsForm";
 		}
 		
 		vendorDetailsDTO=vendorDetailsService.intializeMetaData(vendorDetailsDTO);
@@ -108,7 +104,7 @@ public class VendorDetailsController {
 		
 		model=vendorDetailsService.initialiseShowVendorDetails(vendorDetailsDTO.getVendorId(), model);
 		
-		return "showVendorDetails";
+		return "completeregister/showVendorDetails";
 	
 	}
 
@@ -121,7 +117,7 @@ public class VendorDetailsController {
 		
 		model.addAttribute("vendorDetails", newVendorDetailsDTO);
 		
-		return "vendorDetailsForm";
+		return "completeregister/vendorDetailsForm";
 	
 	}
 	
@@ -145,14 +141,15 @@ public class VendorDetailsController {
 		return result;
 	}
 	
-	@RequestMapping(value="/verifyEmailDetails/{customerId}/{customerType}/{emailType}/{emailHash}",method=RequestMethod.GET)
-	public String verifyEmailDetails(@PathVariable Long customerId,@PathVariable Integer customerType,@PathVariable Integer emailType,@PathVariable String emailHash ,Model model)
+	@RequestMapping(value="/verifyEmailDetails/{customerId}/{customerType}/{emailType}/{updatedBy}/{emailHash}",method=RequestMethod.GET)
+	public String verifyEmailDetails(@PathVariable Long customerId,@PathVariable Integer customerType,@PathVariable Integer emailType,
+			@PathVariable String updatedBy ,@PathVariable String emailHash ,Model model)
 	{
-		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId, customerType, emailType, emailHash);
+		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId, customerType, emailType, emailHash,updatedBy);
 		
 		Boolean result=vendorDetailsService.verifyEmailDetails(verifyEmailDTO);
 		
-		VendorDetailsDTO updatedVendorDetailsDTO=vendorDetailsService.getCustomerDetailsById(verifyEmailDTO.getEntityId());
+		VendorDetailsDTO updatedVendorDetailsDTO=vendorDetailsService.getCustomerDetailsById(verifyEmailDTO.getCustomerId());
 		
 		model.addAttribute("vendorDetails", updatedVendorDetailsDTO);
 		
@@ -166,7 +163,7 @@ public class VendorDetailsController {
 			model.addAttribute("emailVrificationStatus", "failure");
 		}
 		model=vendorDetailsService.initialiseShowVendorDetails(customerId, model);
-		return "showVendorDetails";
+		return "completeregister/showVendorDetails";
 	}
 	
 	@RequestMapping(value="/sendEmailVerificationDetails",method=RequestMethod.POST)
@@ -280,7 +277,7 @@ public class VendorDetailsController {
 		
 		model.addAttribute("vehicleDetails", vehicleDetailsDTO);
 		
-		return "vehicleDetailsForm";
+		return "completeregister/vehicleDetailsForm";
 	}
 	
 	@RequestMapping(value="/addVehicle",method=RequestMethod.POST)
@@ -290,7 +287,7 @@ public class VendorDetailsController {
 		{
 			model.addAttribute("vehicleDetails", vehicleDetailsDTO);
 			
-			return "vehicleDetailsForm";
+			return "completeregister/vehicleDetailsForm";
 		}
 		
 		VehicleDetailsDTO detailsDTO=vendorDetailsService.save(vehicleDetailsDTO);
@@ -305,7 +302,7 @@ public class VendorDetailsController {
 		
 		
 		model=vendorDetailsService.initialiseShowVendorDetails(vehicleDetailsDTO.getVendorId(), model);
-		return "showVendorDetails";
+		return "completeregister/showVendorDetails";
 	}
 	
 	@RequestMapping(value="/showVehicleDetails",method=RequestMethod.POST)
@@ -316,7 +313,7 @@ public class VendorDetailsController {
 			
 		model.addAttribute("vehicleList", vehicleList);
 		
-		return "showVehicleDetails";
+		return "completeregister/showVehicleDetails";
 	}
 
 	
@@ -327,7 +324,7 @@ public class VendorDetailsController {
 		
 		model.addAttribute("vehicleDetails", vehicleDetailsDTO);
 		
-		return "vehicleDetailsForm";
+		return "completeregister/vehicleDetailsForm";
 	}
 	
 	/*

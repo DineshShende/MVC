@@ -47,7 +47,7 @@ public class DriverDetailsController {
 		
 		model.addAttribute("driverDetails", detailsDTO);
 		
-		return "driverDetailsForm";
+		return "completeregister/driverDetailsForm";
 	}
 	
 	@RequestMapping(value="/updateDriverDetails",method=RequestMethod.POST)
@@ -57,7 +57,7 @@ public class DriverDetailsController {
 		
 		model.addAttribute("driverDetails", detailsDTO);
 		
-		return "driverDetailsUpdateForm";
+		return "completeregister/driverDetailsUpdateForm";
 	}
 	
 	@RequestMapping(value="/addDriver",method=RequestMethod.POST)
@@ -68,7 +68,7 @@ public class DriverDetailsController {
 		{
 			model.addAttribute("driverDetails", driverDetailsDTO);
 			
-			return "driverDetailsForm";
+			return "completeregister/driverDetailsForm";
 		}
 		
 		DriverDetailsDTO detailsDTO=vendorDetailsService.addDriver(driverDetailsDTO);
@@ -83,7 +83,7 @@ public class DriverDetailsController {
 		
 		
 		model=vendorDetailsService.initialiseShowVendorDetails(driverDetailsDTO.getVendorId(), model);
-		return "showVendorDetails";
+		return "completeregister/showVendorDetails";
 	}
 	
 	@RequestMapping(value="/updateDriver",method=RequestMethod.POST)
@@ -93,7 +93,7 @@ public class DriverDetailsController {
 		{
 			model.addAttribute("driverDetails", driverDetailsDTO);
 			
-			return "driverDetailsUpdateForm";
+			return "completeregister/driverDetailsUpdateForm";
 		}
 		
 		DriverDetailsDTO detailsDTO=vendorDetailsService.update(driverDetailsDTO);
@@ -105,7 +105,7 @@ public class DriverDetailsController {
 		
 				
 		model=vendorDetailsService.initialiseShowVendorDetails(driverDetailsDTO.getVendorId(), model);
-		return "showVendorDetails";
+		return "completeregister/showVendorDetails";
 	}
 	
 	@RequestMapping(value="/deleteDriver",method=RequestMethod.POST)
@@ -126,7 +126,7 @@ public class DriverDetailsController {
 			
 		model.addAttribute("driverList", driverList);
 		
-		return "showDriverDetails";
+		return "completeregister/showDriverDetails";
 	}
 
 }

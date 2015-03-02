@@ -34,6 +34,11 @@ public class DocumentDetailsDataFixture {
 		return new DocumentKey(CUST_ID, CUST_TYPE_CUSTOMER, DOCUMENT_NAME);
 	}
 	
+	public static DocumentKey standardDocumentKey(Long customerId)
+	{
+		return new DocumentKey(customerId, CUST_TYPE_CUSTOMER, DOCUMENT_NAME);
+	}
+	
 	public static byte[] documentDummy()
 	{
 		return "abcdefghijklmn".getBytes();
@@ -44,59 +49,17 @@ public class DocumentDetailsDataFixture {
 		return "jhsdjheudhdfj".getBytes();
 	}
 	
-	public static byte[] document()
-	{
-		File file = new File("/home/dinesh/10582917_673092789452549_6548939224392088956_o.jpg");
 
-		
-		
-	    byte[] bFile = new byte[(int) file.length()];
-
-		try {
-
-		        FileInputStream fileInputStream = new FileInputStream(file);
-
-		        fileInputStream.read(bFile);
-
-		        
-		        fileInputStream.close();
-	        } catch (Exception e) {
-
-		         e.printStackTrace();
-
-	        }
-		
-		return bFile;
-	}
-	
-	public static byte[] documentNew()
-	{
-		File file = new File("/home/dinesh/DomainModel.pdf");
-
-		
-		
-	    byte[] bFile = new byte[(int) file.length()];
-
-		try {
-
-		        FileInputStream fileInputStream = new FileInputStream(file);
-
-		        fileInputStream.read(bFile);
-
-		        
-		        fileInputStream.close();
-	        } catch (Exception e) {
-
-		         e.printStackTrace();
-
-	        }
-		
-		return bFile;
-	}
 	
 	public static DocumentDetails standardDocumentDetails()
 	{
-		return new DocumentDetails(standardDocumentKey(), document(), DOCUMENT_CONTENT_TYPE, DOCUMENT_VERIFICATION_STATUS,
+		return new DocumentDetails(standardDocumentKey(), documentDummy(), DOCUMENT_CONTENT_TYPE, DOCUMENT_VERIFICATION_STATUS,
+				DOCUMENT_VERIFICATION_REMARKS, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
+	}
+	
+	public static DocumentDetails standardDocumentDetails(Long customerId)
+	{
+		return new DocumentDetails(standardDocumentKey(customerId), documentDummy(), DOCUMENT_CONTENT_TYPE, DOCUMENT_VERIFICATION_STATUS,
 				DOCUMENT_VERIFICATION_REMARKS, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
 	}
 	
@@ -120,13 +83,13 @@ public class DocumentDetailsDataFixture {
 	
 	public static DocumentDetails standardDocumentDetailsWithNewDocumentContentType()
 	{
-		return new DocumentDetails(standardDocumentKey(), documentNew(), DOCUMENT_CONTENT_TYPE_NEW, DOCUMENT_VERIFICATION_STATUS,
+		return new DocumentDetails(standardDocumentKey(), documentDummyNew(), DOCUMENT_CONTENT_TYPE_NEW, DOCUMENT_VERIFICATION_STATUS,
 				DOCUMENT_VERIFICATION_REMARKS, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
 	}
 	
 	public static DocumentDetails standardDocumentDetailsWithNewVerificationStatusAndRemark()
 	{
-		return new DocumentDetails(standardDocumentKey(), document(), DOCUMENT_CONTENT_TYPE, DOCUMENT_VERIFICATION_STATUS_FAILED,
+		return new DocumentDetails(standardDocumentKey(), documentDummy(), DOCUMENT_CONTENT_TYPE, DOCUMENT_VERIFICATION_STATUS_FAILED,
 				DOCUMENT_VERIFICATION_REMARKS_FAILED, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
 	}
 	

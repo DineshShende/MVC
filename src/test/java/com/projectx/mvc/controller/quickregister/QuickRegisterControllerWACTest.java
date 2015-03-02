@@ -1,5 +1,6 @@
 package com.projectx.mvc.controller.quickregister;
 
+import static com.projectx.mvc.fixture.quickregister.QuickRegisterDataConstants.REGISTER_MOBILE_ALREADY_REGISTERED_NOT_VERIFIED;
 import static com.projectx.mvc.fixtures.quickregister.AuthenticationDetailsDataFixtures.*;
 import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.*;
 import static com.projectx.mvc.fixtures.completeregister.VendorDetailsDataFixture.*;
@@ -10,9 +11,12 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.hamcrest.Matchers.*;
+
+import javax.servlet.http.HttpSession;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -20,6 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,6 +32,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.projectx.mvc.config.Application;
+import com.projectx.mvc.domain.quickregister.QuickRegisterMVCDTO;
 import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.completeregister.DocumentDetailsService;
@@ -74,7 +80,6 @@ public class QuickRegisterControllerWACTest {
 	public void setUp() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		
-				
 	}
 	
 	@Before
@@ -96,13 +101,22 @@ public class QuickRegisterControllerWACTest {
 															   .param("email",CUST_EMAIL)
 															   .param("mobile",Long.toString(CUST_MOBILE))
 															   .param("pin",Integer.toString(CUST_PIN))
-															   .param("customerType", "1")
-															   
+															   .param("customerType", Integer.toString(1))										   
 															  
 															)
 			.andDo(print())												
-			.andExpect(view().name("verifyEmailMobile"));
-	//		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("firstName", is(CUST_FIRSTNAME)))));
+			.andExpect(view().name("quickregister/verifyEmailMobile"))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("firstName", is(CUST_FIRSTNAME)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("lastName", is(CUST_LASTNAME)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("email", is(CUST_EMAIL)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("mobile", is(CUST_MOBILE)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("pincode", is(CUST_PIN)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("customerType", is(CUST_TYPE_CUSTOMER)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("isEmailVerified", is(false)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("isMobileVerified", is(false)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("updatedBy", is(CUST_UPDATED_BY)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("insertTime", notNullValue()))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("updateTime", notNullValue()))));
 			
 			
 	}
@@ -117,19 +131,29 @@ public class QuickRegisterControllerWACTest {
 															   .param("email","")
 															   .param("mobile",Long.toString(CUST_MOBILE))
 															   .param("pin",Integer.toString(CUST_PIN))
-															   
+															   .param("customerType", Integer.toString(1))
 															  
 															)
 			.andDo(print())												
-			.andExpect(view().name("verifyEmailMobile"));
-	//		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("firstName", is(CUST_FIRSTNAME)))));
+			.andExpect(view().name("quickregister/verifyEmailMobile"))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("firstName", is(CUST_FIRSTNAME)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("lastName", is(CUST_LASTNAME)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("email", nullValue()))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("mobile", is(CUST_MOBILE)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("pincode", is(CUST_PIN)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("customerType", is(CUST_TYPE_CUSTOMER)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("isEmailVerified", nullValue()))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("isMobileVerified", is(false)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("updatedBy", is(CUST_UPDATED_BY)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("insertTime", notNullValue()))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("updateTime", notNullValue()))));
 			
 			
 	}
 
 	
 	@Test
-	public void thatCustomerQuickRegistrationWithAlreadyPresnetEmail() throws Exception
+	public void thatCustomerQuickRegistrationWithMobileAlreadyPresent() throws Exception
 	{
 		quickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
 		
@@ -139,10 +163,24 @@ public class QuickRegisterControllerWACTest {
 															   .param("email","")
 															   .param("mobile",Long.toString(CUST_MOBILE))
 															   .param("pin",Integer.toString(CUST_PIN))
-															  
+															   .param("customerType", Integer.toString(1))
 															)
-			.andExpect(view().name("alreadyRegistered"))
-			.andDo(print());
+			.andDo(print())
+			.andExpect(view().name("quickregister/alreadyRegistered"))
+						.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("firstName", is(CUST_FIRSTNAME)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("firstName", is(CUST_FIRSTNAME)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("lastName", is(CUST_LASTNAME)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("email", is(CUST_EMAIL)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("mobile", is(CUST_MOBILE)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("pincode", is(CUST_PIN)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("customerType", is(CUST_TYPE_CUSTOMER)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("isEmailVerified", is(false)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("isMobileVerified", is(false)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("updatedBy", is(CUST_UPDATED_BY)))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("insertTime", notNullValue()))))
+			.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("updateTime", notNullValue()))))
+
+			.andExpect(model().attribute("message", "Provided Mobile Already Registered. Click Here to verify mobile."));
 			
 	}
 
@@ -151,7 +189,15 @@ public class QuickRegisterControllerWACTest {
 	@Test
 	public void verifyMobilePin() throws Exception
 	{
+		
+		
 		QuickRegisterDTO savedEntity=quickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO()).getCustomer();
+		
+		
+		
+		MockHttpSession httpSession=new MockHttpSession();
+		
+		httpSession.setAttribute("customerQuickRegisterDTO", new QuickRegisterMVCDTO(savedEntity));
 		
 		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=quickRegisterService
 				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(savedEntity.getCustomerId(),ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
@@ -159,12 +205,13 @@ public class QuickRegisterControllerWACTest {
 				this.mockMvc.perform(
 						post("/quickregister/verifyMobilePin").param("customerId",Long.toString(savedEntity.getCustomerId()))
 													   .param("mobilePin", Integer.toString(mobileVerificationDetailsDTO.getMobilePin()))
+													   .session(httpSession)
 													   
 													)
 				.andDo(print())
 			//	.andExpect(model().attribute("mobileVerificationStatus", "Mobile Verification Sucess"))
 				//.andExpect(model().attribute("customerQuickRegisterDTO", isA(CustomerQuickRegisterMVCDTO.class)))
-				.andExpect(view().name("verifyEmailMobile"));		
+				.andExpect(view().name("quickregister/verifyEmailMobile"));		
 	}
 	
 	
@@ -180,23 +227,18 @@ public class QuickRegisterControllerWACTest {
 				.getEmailVerificationDetailsByCustomerIdTypeAndEmail(savedEntity.getCustomerId(),ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
 		
 		
-		this.mockMvc.perform(get("/quickregister/verifyEmailHash/"+savedEntity.getCustomerId()+"/"+emailVerificationDetailsDTO.getEmailHash()+""))
+		this.mockMvc.perform(get("/quickregister/verifyEmailHash/"+savedEntity.getCustomerId()+"/"+ENTITY_TYPE_CUSTOMER+"/"
+						+ENTITY_TYPE_CUSTOMER+"/"+emailVerificationDetailsDTO.getEmailHash()))
 		
-		.andDo(print());
-		//.andExpect(model().attribute("emailVerificationStatus", "Email Verification Sucess"))
-		//.andExpect(view().name("verifyEmailMobile"));
+		.andDo(print())
+		.andExpect(model().attribute("emailVerificationStatus", "Email Verification Sucess"))
+		.andExpect(view().name("quickregister/loginForm"));
 	}
 	
 	@Test
 	public void reSendMobilePin() throws Exception
 	{
 		QuickRegisterDTO savedEntity=quickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO()).getCustomer();
-		
-		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=quickRegisterService
-				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(savedEntity.getCustomerId(),ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
-		
-		
-		System.out.println(mobileVerificationDetailsDTO.getMobilePin());
 		
 		this.mockMvc.perform(
 				post("/quickregister/resendMobilePin").param("customerId",Long.toString(savedEntity.getCustomerId())														)
@@ -205,8 +247,7 @@ public class QuickRegisterControllerWACTest {
 											   
 											)
 		.andDo(print())
-		//.andExpect(model().attribute("mobileVerificationStatus", "Mobile Pin is sent.Please Enter that code"))
-		.andExpect(view().name("verifyEmailMobile"));
+		.andExpect(content().string("Sucess"));
 	}
 	
 	
@@ -216,11 +257,7 @@ public class QuickRegisterControllerWACTest {
 	{
 		QuickRegisterDTO savedEntity=quickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO()).getCustomer();
 		
-		EmailVerificationDetailsDTO emailVerificationDetailsDTO=quickRegisterService
-				.getEmailVerificationDetailsByCustomerIdTypeAndEmail(savedEntity.getCustomerId(),ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
-		
-		System.out.println(emailVerificationDetailsDTO.getEmailHash());
-		
+				
 		
 		this.mockMvc.perform(
 				post("/quickregister/resendEmailHash").param("customerId",Long.toString(savedEntity.getCustomerId()))
@@ -228,8 +265,7 @@ public class QuickRegisterControllerWACTest {
 																.param("emailType",Integer.toString(ENTITY_TYPE_PRIMARY))
 					)
 		.andDo(print())
-	//	.andExpect(model().attribute("emailVerificationStatus", "Verification Email Sent"))
-		.andExpect(view().name("verifyEmailMobile"));
+		.andExpect(content().string("Sucess"));
 	}
 	
 
@@ -245,12 +281,10 @@ public class QuickRegisterControllerWACTest {
 						ENTITY_TYPE_PRIMARY);
 		
 		quickRegisterService.verifyMobile(new VerifyMobileDTO(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType(),
-				ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin()));
+				ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY));
 		
 		AuthenticationDetailsDTO authenticationDetailsDTO=quickRegisterService
 				.getAuthenticationDetailsByCustomerIdType(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType());
-		
-		//customerQuickRegisterService.updatePassword(updatePasswordDTO)
 		
 		
 		this.mockMvc.perform(
@@ -259,7 +293,7 @@ public class QuickRegisterControllerWACTest {
 											   											  
 											)
 				.andDo(print())
-				.andExpect(view().name("forcePasswordChange"))
+				.andExpect(view().name("quickregister/forcePasswordChange"))
 				.andExpect(model().attributeExists("loginDetails"))	
 				.andExpect(model().attribute("loginDetails",Matchers.allOf(
 			//	hasProperty("key", equalTo(standardCustomerEmailMobileAuthenticationDetails().getKey())),
@@ -284,7 +318,7 @@ public class QuickRegisterControllerWACTest {
 						ENTITY_TYPE_PRIMARY);
 		
 		quickRegisterService.verifyMobile(new VerifyMobileDTO(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType(),
-				ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin()));
+				ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY));
 		
 		AuthenticationDetailsDTO authenticationDetailsDTO=quickRegisterService
 				.getAuthenticationDetailsByCustomerIdType(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType());
@@ -298,7 +332,7 @@ public class QuickRegisterControllerWACTest {
 											   											  
 											)
 				.andDo(print())
-				.andExpect(view().name("customerDetailsForm"))
+				.andExpect(view().name("completeregister/customerDetailsForm"))
 				.andExpect(model().attributeExists("customerDetails"))
 				.andExpect(model().attribute("customerDetails",hasProperty("firstName", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getFirstName()))))
 				.andExpect(model().attribute("customerDetails",hasProperty("lastName", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getLastName()))))
@@ -338,7 +372,7 @@ public class QuickRegisterControllerWACTest {
 						ENTITY_TYPE_PRIMARY);
 		
 		quickRegisterService.verifyMobile(new VerifyMobileDTO(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType(),
-				ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin()));
+				ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY));
 		
 		AuthenticationDetailsDTO authenticationDetailsDTO=quickRegisterService
 				.getAuthenticationDetailsByCustomerIdType(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType());
@@ -358,7 +392,7 @@ public class QuickRegisterControllerWACTest {
 											   											  
 											)
 				.andDo(print())
-				.andExpect(view().name("showCustomerDetails"))
+				.andExpect(view().name("completeregister/showCustomerDetails"))
 				.andExpect(model().attributeExists("customerDetails"))
 				.andExpect(model().attribute("customerDetails",hasProperty("firstName", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getFirstName()))))
 				.andExpect(model().attribute("customerDetails",hasProperty("lastName", is(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getLastName()))))
@@ -391,7 +425,7 @@ public class QuickRegisterControllerWACTest {
 						ENTITY_TYPE_PRIMARY);
 		
 		quickRegisterService.verifyMobile(new VerifyMobileDTO(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType(),
-				ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin()));
+				ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY));
 		
 		AuthenticationDetailsDTO authenticationDetailsDTO=quickRegisterService
 				.getAuthenticationDetailsByCustomerIdType(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType());
@@ -405,7 +439,7 @@ public class QuickRegisterControllerWACTest {
 											   											  
 											)
 				.andDo(print())
-				.andExpect(view().name("vendorDetailsForm"))
+				.andExpect(view().name("completeregister/vendorDetailsForm"))
 				.andExpect(model().attributeExists("vendorDetails"))
 				.andExpect(model().attribute("vendorDetails",hasProperty("vendorId", is(quickRegisterDTO.getCustomer().getCustomerId()))))
 				.andExpect(model().attribute("vendorDetails",hasProperty("firstName", is(standardVendor(standardVendorCreatedFromQuickRegister()).getFirstName()))))
@@ -439,7 +473,7 @@ public class QuickRegisterControllerWACTest {
 						ENTITY_TYPE_PRIMARY);
 		
 		quickRegisterService.verifyMobile(new VerifyMobileDTO(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType(),
-				ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin()));
+				ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY));
 		
 		AuthenticationDetailsDTO authenticationDetailsDTO=quickRegisterService
 				.getAuthenticationDetailsByCustomerIdType(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType());
@@ -459,7 +493,7 @@ public class QuickRegisterControllerWACTest {
 											   											  
 											)
 				.andDo(print())
-				.andExpect(view().name("showVendorDetails"))
+				.andExpect(view().name("completeregister/showVendorDetails"))
 				.andExpect(model().attributeExists("vendorDetails"))
 				.andExpect(model().attribute("vendorDetails",hasProperty("vendorId", is(quickRegisterDTO.getCustomer().getCustomerId()))))
 				.andExpect(model().attribute("vendorDetails",hasProperty("firstName", is(standardVendor(standardVendorCreatedFromQuickRegister()).getFirstName()))))
@@ -523,9 +557,9 @@ public class QuickRegisterControllerWACTest {
 		this.mockMvc.perform(
 				get("/quickregister/verifyEmailHash/"+CUST_ID+"/"+ENTITY_TYPE_CUSTOMER+"/"+ENTITY_TYPE_PRIMARY+"/"+emailVerificationDetailsDTO.getEmailHash()))
 			.andDo(print())
-			.andExpect(model().attribute("emailVerificationStatus",is("sucess")))
-			.andExpect(model().attributeExists("customerDetails"))
-			.andExpect(model().attribute("customerDetails",hasProperty("isEmailVerified", is(true))));
+			.andExpect(view().name("quickregister/loginForm"))
+			.andExpect(model().attribute("emailVerificationStatus",is("Email Verification Sucess")))
+			;
 											   
 		
 			
@@ -571,9 +605,9 @@ public class QuickRegisterControllerWACTest {
 		
 		
 		this.mockMvc.perform(
-				get("/quickregister/verifyEmailHash/"+VENDOR_ID+"/"+ENTITY_TYPE_VENDOR+"/"+ENTITY_TYPE_PRIMARY+"/"+emailVerificationDetailsDTO.getEmailHash()))
+				get("/quickregister/verifyEmailHash/"+VENDOR_ID+"/"+ENTITY_TYPE_VENDOR+"/"+ENTITY_TYPE_PRIMARY+"/CUST_ONLINE/"+emailVerificationDetailsDTO.getEmailHash()))
 			.andDo(print())
-			.andExpect(model().attribute("emailVerificationStatus",is("sucess")))
+			.andExpect(model().attribute("emailVerificationStatus",is("Email Verification Sucess")))
 			.andExpect(model().attributeExists("vendorDetails"))
 			.andExpect(model().attribute("vendorDetails",hasProperty("isEmailVerified", is(true))));
 					
@@ -599,5 +633,10 @@ public class QuickRegisterControllerWACTest {
 	}
 	*/
 
+	@Test
+	public void test()
+	{
+		System.out.println(new AuthenticationDetailsDTO());
+	}
 	
 }

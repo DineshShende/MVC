@@ -2,39 +2,46 @@ package com.projectx.rest.domain.quickregister;
 
 public class VerifyMobileDTO {
 	
-	Long customerId;
+	private Long customerId;
 	
-	Integer customerType;
+	private Integer customerType;
 	
-	Integer mobileType;
+	private Integer mobileType;
 	
-	Integer mobilePin;
+	private Integer mobilePin;
+	
+	private String requestBy;
+	
 	
 
 	public VerifyMobileDTO() {
 	
 	}
-	
-	public VerifyMobileDTO(Long customerId, Integer customerType,
-			Integer mobileType, Integer mobilePin) {
 
+	public VerifyMobileDTO(Long customerId, Integer customerType,
+			Integer mobileType, Integer mobilePin, String requestBy) {
+		super();
 		this.customerId = customerId;
 		this.customerType = customerType;
 		this.mobileType = mobileType;
 		this.mobilePin = mobilePin;
+		this.requestBy = requestBy;
 	}
-
-
-
-
 
 	public Long getCustomerId() {
 		return customerId;
 	}
 
-
 	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
+	}
+
+	public Integer getCustomerType() {
+		return customerType;
+	}
+
+	public void setCustomerType(Integer customerType) {
+		this.customerType = customerType;
 	}
 
 	public Integer getMobileType() {
@@ -49,28 +56,23 @@ public class VerifyMobileDTO {
 		return mobilePin;
 	}
 
-
 	public void setMobilePin(Integer mobilePin) {
 		this.mobilePin = mobilePin;
 	}
 
-
-	
-	
-	public Integer getCustomerType() {
-		return customerType;
+	public String getRequestBy() {
+		return requestBy;
 	}
 
-
-	public void setCustomerType(Integer customerType) {
-		this.customerType = customerType;
+	public void setRequestBy(String requestBy) {
+		this.requestBy = requestBy;
 	}
 
 	@Override
 	public String toString() {
 		return "VerifyMobileDTO [customerId=" + customerId + ", customerType="
 				+ customerType + ", mobileType=" + mobileType + ", mobilePin="
-				+ mobilePin + "]";
+				+ mobilePin + ", requestBy=" + requestBy + "]";
 	}
 
 	@Override
@@ -85,6 +87,8 @@ public class VerifyMobileDTO {
 				+ ((mobilePin == null) ? 0 : mobilePin.hashCode());
 		result = prime * result
 				+ ((mobileType == null) ? 0 : mobileType.hashCode());
+		result = prime * result
+				+ ((requestBy == null) ? 0 : requestBy.hashCode());
 		return result;
 	}
 
@@ -117,12 +121,15 @@ public class VerifyMobileDTO {
 				return false;
 		} else if (!mobileType.equals(other.mobileType))
 			return false;
+		if (requestBy == null) {
+			if (other.requestBy != null)
+				return false;
+		} else if (!requestBy.equals(other.requestBy))
+			return false;
 		return true;
 	}
-
-
-
-
 	
+	
+		
 
 }

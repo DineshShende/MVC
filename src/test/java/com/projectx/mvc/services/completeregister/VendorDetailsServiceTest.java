@@ -169,7 +169,7 @@ public class VendorDetailsServiceTest {
 				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY);
 		
 		VerifyMobileDTO verifyMobileDTO=new VerifyMobileDTO(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY,
-				MobileVerificationDetailsDTO.getMobilePin());
+				MobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY);
 		
 		assertTrue(vendorDetailsService.verifyMobileDetails(verifyMobileDTO));
 		
@@ -208,7 +208,7 @@ public class VendorDetailsServiceTest {
 				.getEmailVerificationDetailsByCustomerIdTypeAndEmail(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY);
 		
 		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY,
-				emailVerificationDetailsDTO.getEmailHash());
+				emailVerificationDetailsDTO.getEmailHash(),CUST_UPDATED_BY);
 		
 		assertTrue(customerDetailsService.verifyEmailDetails(verifyEmailDTO));
 		
@@ -319,7 +319,7 @@ public class VendorDetailsServiceTest {
 				customerQuickRegisterService.getMobileVerificationDetailsByCustomerIdTypeAndMobile(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY);
 		
 		customerQuickRegisterService.verifyMobile(new com.projectx.rest.domain.quickregister
-				.VerifyMobileDTO(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin()));
+				.VerifyMobileDTO(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY));
 		
 		assertEquals(standardDriverDetailsNewMobileAndFirstName(savedEntity.getDriverId()).getMobile(),vendorDetailsService.getDriverById(savedEntity.getDriverId()).getMobile());
 	}

@@ -34,7 +34,7 @@ public class FreightRequestByVendorController {
 		
 		model.addAttribute("freightRequestByVendor", newRequest);
 		
-		return "freightRequestByVendorForm";
+		return "request/freightRequestByVendorForm";
 		
 	}
 	
@@ -51,7 +51,7 @@ public class FreightRequestByVendorController {
 			
 			model.addAttribute("requestList", reuqestList);
 			
-			return "showMatchingCustomerRequests";
+			return "response/showMatchingCustomerRequests";
 			
 		}
 		else
@@ -65,7 +65,7 @@ public class FreightRequestByVendorController {
 		
 		model.addAttribute("freightRequestByVendor", request);
 		
-		return "freightRequestByVendorForm";
+		return "request/freightRequestByVendorForm";
 		
 	}
 	
@@ -76,7 +76,7 @@ public class FreightRequestByVendorController {
 		
 		model.addAttribute("requestList", requestList);
 		
-		return "showFreightRequestFromVendor";
+		return "request/showFreightRequestFromVendor";
 	}
 	
 	@RequestMapping(value="/deleteRequestById",method=RequestMethod.POST)

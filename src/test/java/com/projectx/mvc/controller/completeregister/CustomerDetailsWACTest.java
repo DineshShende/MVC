@@ -27,6 +27,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+
+
 import com.projectx.mvc.config.Application;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
@@ -97,7 +99,7 @@ public class CustomerDetailsWACTest {
 															  
 															)
 			.andDo(print())												
-			.andExpect(view().name("customerDetailsForm"));
+			.andExpect(view().name("completeregister/customerDetailsForm"));
 	//		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("firstName", is(CUST_FIRSTNAME)))));
 			
 			
@@ -165,7 +167,7 @@ public class CustomerDetailsWACTest {
 															  
 															)
 			.andDo(print())												
-			.andExpect(view().name("documentUpload"))
+			.andExpect(view().name("completeregister/documentUpload"))
 			.andExpect(model().size(2))
 			.andExpect(model().attributeExists("customerDetails"))
 			.andExpect(model().attribute("customerDetails",hasProperty("customerId", is(quickRegisterSavedEntityDTO.getCustomerId()))))
@@ -251,7 +253,7 @@ public class CustomerDetailsWACTest {
 															  
 															)
 			.andDo(print())												
-			.andExpect(view().name("customerDetailsForm"))
+			.andExpect(view().name("completeregister/customerDetailsForm"))
 			.andExpect(model().size(2))
 			.andExpect(model().attributeExists("customerDetails"));			
 	}
@@ -359,7 +361,7 @@ public class CustomerDetailsWACTest {
 											  
 											)
 					.andDo(print())												
-					.andExpect(view().name("customerDetailsForm"))
+					.andExpect(view().name("completeregister/customerDetailsForm"))
 					.andExpect(model().size(2))
 					.andExpect(model().attributeExists("customerDetails"));
 	}
@@ -468,7 +470,7 @@ public class CustomerDetailsWACTest {
 											  
 											)
 					.andDo(print())												
-					.andExpect(view().name("showCustomerDetails"))
+					.andExpect(view().name("completeregister/showCustomerDetails"))
 					.andExpect(model().size(5))
 					.andExpect(model().attributeExists("customerDetails"))
 					.andExpect(model().attribute("customerDetails",hasProperty("customerId", is(quickRegisterSavedEntityDTO.getCustomerId()))))
@@ -546,7 +548,8 @@ public class CustomerDetailsWACTest {
 											.param("entityType",Integer.toString(ENTITY_TYPE_CUSTOMER))
 											   //.param("mobile", Long.toString(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getMobile()))
 											   .param("mobileType",Integer.toString(ENTITY_TYPE_PRIMARY))
-											   .param("mobilePin",Integer.toString(mobileVerificationDetailsDTO.getMobilePin())))
+											   .param("mobilePin",Integer.toString(mobileVerificationDetailsDTO.getMobilePin()))
+											   .param("requestBy","CUST_ONLINE"))
 			.andDo(print())
 			.andExpect(content().string("true"));
 											   
@@ -609,7 +612,8 @@ public class CustomerDetailsWACTest {
 											.param("entityType",Integer.toString(ENTITY_TYPE_CUSTOMER))
 											   //.param("mobile", Long.toString(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryMobile()))
 											   .param("mobileType",Integer.toString(ENTITY_TYPE_SECONDARY))
-											   .param("mobilePin",Integer.toString(mobileVerificationDetailsDTO.getMobilePin())))
+											   .param("mobilePin",Integer.toString(mobileVerificationDetailsDTO.getMobilePin()))
+											   .param("requestBy","CUST_ONLINE"))
 			.andDo(print())
 			.andExpect(content().string("true"));
 											   

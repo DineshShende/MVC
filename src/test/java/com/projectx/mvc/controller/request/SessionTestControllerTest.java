@@ -23,6 +23,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.projectx.mvc.config.Application;
+import com.projectx.mvc.domain.request.SessionData;
+import com.projectx.mvc.domain.request.SessionTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -47,6 +49,13 @@ public class SessionTestControllerTest {
 	{
 		MockHttpSession mockHttpSession=new MockHttpSession();
 		
+		//mockHttpSession.putValue("sessionTest", new SessionTest("dinesh",123));
+		
+		//mockHttpSession.setAttribute("sessionData", new SessionTest(new SessionData("dinesh", 123)));
+		
+		mockHttpSession.putValue("sessionData", new SessionTest(new SessionData("dinesh", 123)));
+		
+		/*
 		this.mockMvc.perform(
 				post("/sessionTest").param("name","dinesh")
 											   .param("password", "123")
@@ -62,7 +71,7 @@ public class SessionTestControllerTest {
 				.session(mockHttpSession)
 				)
 		.andDo(print());
-		
+		*/
 				
 		this.mockMvc.perform(
 				get("/sessionTest/redirect")

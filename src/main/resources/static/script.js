@@ -25,7 +25,7 @@ $(function(){
 	    /* Put the results in a div */
 	    posting.done(function(data) {
 	        	var content = $(data).find('#content');
-	        	
+
 	        $("#smsSentStatus").empty().append("Status:"+data);
 	    });
 	});

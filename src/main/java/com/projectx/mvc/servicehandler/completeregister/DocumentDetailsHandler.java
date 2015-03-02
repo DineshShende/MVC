@@ -8,10 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.projectx.mvc.exception.repository.completeregister.DocumentDetailsNotFoundException;
 import com.projectx.mvc.services.completeregister.DocumentDetailsService;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.DocumentDetails;
@@ -66,9 +71,15 @@ public class DocumentDetailsHandler implements DocumentDetailsService {
 	@Override
 	public DocumentDetails getDocumentById(DocumentKey documentKey) {
 		
-		DocumentDetails status=restTemplate.postForObject(env.getProperty("rest.host")+"/document/getCustomerDocumentById", documentKey, DocumentDetails.class);
+		HttpEntity<DocumentKey> entity=new HttpEntity<DocumentKey>(documentKey);
 		
-		return status;
+		ResponseEntity<DocumentDetails> result=restTemplate.exchange(env.getProperty("rest.host")+"/document/getCustomerDocumentById",
+				HttpMethod.POST, entity, DocumentDetails.class);
+		
+		if(result.getStatusCode()==HttpStatus.FOUND)
+			return result.getBody();
+		else
+			throw new DocumentDetailsNotFoundException();
 		
 		
 	}

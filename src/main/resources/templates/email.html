@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+</head>
+<body>
+
+<form id="emailAsync" action="/quickregister/sendEmailAsync" method="post">
+Email:<input type="text" name="email" id="email"/>
+Message:<input type="text" name="message" id="message"/>
+<input type="submit"/>
+</form>
+
+<p th:if="${emailSent !=null}" th:text="${emailSent}"></p>
+
+
+<script type="text/javascript">
+
+$("#emailAsync").submit(function(event) {
+
+    /* stop form from submitting normally */
+    event.preventDefault();
+
+    /* get some values from elements on the page: */
+    var $form = $(this),
+    customerId_par = $form.find('input[name="email"]').val(),
+    customerType_par = $form.find('input[name="message"]').val(),
+    
+        url = $form.attr('action');
+
+    /* Send the data using post */
+    var posting = $.post(url, {
+    	email: customerId_par,
+    	message: customerType_par
+    
+        
+    });
+
+    /* Put the results in a div */
+    posting.done(function(data) {
+        	var content = $(data).find('#content');
+        alert(content);	
+        $("#emailSent").empty().append("Status:"+content);
+    });
+});
+
+
+</script>
+
+</body>
+</html>

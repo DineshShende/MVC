@@ -97,7 +97,7 @@ public class VendorDetailsWACTest {
 															  
 															)
 			.andDo(print())												
-			.andExpect(view().name("vendorDetailsForm"));
+			.andExpect(view().name("completeregister/vendorDetailsForm"));
 	//		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("firstName", is(CUST_FIRSTNAME)))));
 			
 			
@@ -152,7 +152,7 @@ public class VendorDetailsWACTest {
 															  
 															)
 			.andDo(print())											
-			.andExpect(view().name("documentUploadVendor"))
+			.andExpect(view().name("completeregister/documentUploadVendor"))
 			.andExpect(model().size(2))
 			.andExpect(model().attributeExists("vendorDetails"))
 			.andExpect(model().attribute("vendorDetails",hasProperty("vendorId", is(quickRegisterSavedEntityDTO.getCustomerId()))))
@@ -216,7 +216,7 @@ public class VendorDetailsWACTest {
 															  
 															)
 			.andDo(print())											
-			.andExpect(view().name("vendorDetailsForm"))
+			.andExpect(view().name("completeregister/vendorDetailsForm"))
 			.andExpect(model().size(2))
 			.andExpect(model().attributeExists("vendorDetails"));
 			
@@ -300,7 +300,7 @@ public class VendorDetailsWACTest {
 											  
 															)
 				.andDo(print())											
-				.andExpect(view().name("vendorDetailsForm"))
+				.andExpect(view().name("completeregister/vendorDetailsForm"))
 				.andExpect(model().size(2))
 				.andExpect(model().attributeExists("vendorDetails"));
 		
@@ -388,7 +388,7 @@ public class VendorDetailsWACTest {
 											  
 															)
 				.andDo(print())											
-				.andExpect(view().name("showVendorDetails"))
+				.andExpect(view().name("completeregister/showVendorDetails"))
 				.andExpect(model().size(4))
 				.andExpect(model().attributeExists("vendorDetails"))
 				.andExpect(model().attribute("vendorDetails",hasProperty("vendorId", is(quickRegisterSavedEntityDTO.getCustomerId()))))

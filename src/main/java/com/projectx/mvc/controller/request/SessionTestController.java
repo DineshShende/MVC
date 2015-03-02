@@ -28,13 +28,15 @@ public class SessionTestController {
 	public String sessionSave(@ModelAttribute SessionData sessionTest1,Model model)
 	{
 		
-		SessionTest newSessionTest=new SessionTest(sessionTest1.getName(), sessionTest1.getPassword());
+		//SessionTest newSessionTest=new SessionTest(sessionTest1.getName(), sessionTest1.getPassword());
 		
 		//sessionTest.setName(name);
 		
 		//System.out.println(newSessionTest);
 		
-		model.addAttribute("sessionData", newSessionTest);
+		sessionTest.setSessionData(sessionTest1);
+		
+		model.addAttribute("sessionData", sessionTest.getSessionData());
 		
 		return "showSession";
 	}
@@ -42,9 +44,9 @@ public class SessionTestController {
 	@RequestMapping(value="/redirect",method=RequestMethod.GET)
 	public String redirect(Model model)
 	{
-		SessionTest newSessionTest=new SessionTest(sessionTest.getName(), sessionTest.getPassword());
+		//SessionTest newSessionTest=new SessionTest(sessionTest.getName(), sessionTest.getPassword());
 		
-		model.addAttribute("sessionData", newSessionTest);
+		model.addAttribute("sessionData", sessionTest.getSessionData());
 		
 		return "showSessionRedirect";
 	}

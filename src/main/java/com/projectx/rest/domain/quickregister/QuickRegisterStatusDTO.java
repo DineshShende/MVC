@@ -1,6 +1,6 @@
 package com.projectx.rest.domain.quickregister;
 
-public class QuickRegisterStringStatusDTO {
+public class QuickRegisterStatusDTO {
 	
 	private String status;
 	
@@ -8,11 +8,11 @@ public class QuickRegisterStringStatusDTO {
 
 	
 	
-	public QuickRegisterStringStatusDTO() {
+	public QuickRegisterStatusDTO() {
 		super();
 	}
 
-	public QuickRegisterStringStatusDTO(String status,
+	public QuickRegisterStatusDTO(String status,
 			QuickRegisterDTO customer) {
 		super();
 		this.status = status;

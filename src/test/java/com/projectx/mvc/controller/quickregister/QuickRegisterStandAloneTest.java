@@ -1,5 +1,6 @@
 package com.projectx.mvc.controller.quickregister;
 
+import static com.projectx.mvc.fixtures.completeregister.DocumentDetailsDataFixture.CUST_TYPE_CUSTOMER;
 import static com.projectx.mvc.fixtures.quickregister.AuthenticationDetailsDataFixtures.*;
 import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.*;
 import static org.mockito.Matchers.any;
@@ -23,6 +24,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.projectx.mvc.controller.quickregister.QuickRegisterController;
 import com.projectx.mvc.domain.quickregister.QuickRegisterEntity;
 import com.projectx.mvc.servicefixtures.quickregister.QuickRegisterServiceFixture;
+import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
+import com.projectx.rest.domain.quickregister.QuickRegisterStatusDTO;
 
 public class QuickRegisterStandAloneTest {
 
@@ -44,6 +47,40 @@ public class QuickRegisterStandAloneTest {
 	    
 	}
 	
+	/*
+	@Test
+	public void verifyMobilePin() throws Exception
+	{
+		when(customerQuickRegisterService.checkIfAlreadyExist(standardCustomerQuickRegisterEntity())).thenReturn(new QuickRegisterStringStatusDTO("NOT_REGISTERED", standardEmailMobileCustomer()));
+		
+		when(customerQuickRegisterService.addNewCustomer(standardCustomerQuickRegisterEntity())).thenReturn(new QuickRegisterSavedEntityDTO(true, standardEmailMobileCustomer()));
+		
+		this.mockMvc.perform(
+				post("/quickregister/").param("firstName",CUST_FIRSTNAME)
+											   .param("lastName", CUST_LASTNAME)
+											   .param("email",CUST_EMAIL)
+											   .param("mobile",Long.toString(CUST_MOBILE))
+											   .param("pin",Integer.toString(CUST_PIN))
+											   .param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))										   
+											  
+											)
+		.andDo(print())												
+		.andExpect(view().name("quickregister/verifyEmailMobile"))
+		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("firstName", is(CUST_FIRSTNAME)))))
+		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("lastName", is(CUST_LASTNAME)))))
+		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("email", is(CUST_EMAIL)))))
+		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("mobile", is(CUST_MOBILE)))))
+		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("pincode", is(CUST_PIN)))))
+		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("customerType", is(CUST_TYPE_CUSTOMER)))))
+		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("isEmailVerified", is(false)))))
+		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("isMobileVerified", is(false)))))
+		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("updatedBy", is(CUST_UPDATED_BY)))))
+		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("insertTime", notNullValue()))))
+		.andExpect(model().attribute("customerQuickRegisterDTO", allOf(hasProperty("updateTime", notNullValue()))));
+
+		
+	}
+	*/
 	
 	@Test
 	public void verifyLoginDetailsEmailAsUserIdProceedToForcefulPasswordChange() throws Exception
@@ -56,7 +93,7 @@ public class QuickRegisterStandAloneTest {
 											   											  
 											)
 				.andDo(print())
-				.andExpect(view().name("forcePasswordChange"))
+				.andExpect(view().name("quickregister/forcePasswordChange"))
 				.andExpect(model().attributeExists("loginDetails"))	
 				.andExpect(model().attribute("loginDetails",Matchers.allOf(
 				hasProperty("key", equalTo(standardCustomerEmailMobileAuthenticationDetails().getKey())),
@@ -83,7 +120,7 @@ public class QuickRegisterStandAloneTest {
 											   											  
 											)
 				.andDo(print())
-				.andExpect(view().name("forcePasswordChange"))
+				.andExpect(view().name("quickregister/forcePasswordChange"))
 				.andExpect(model().attributeExists("loginDetails"))	
 				.andExpect(model().attribute("loginDetails",Matchers.allOf(
 				hasProperty("key", equalTo(standardCustomerEmailMobileAuthenticationDetails().getKey())),
@@ -108,7 +145,7 @@ public class QuickRegisterStandAloneTest {
 											   											  
 											)
 				.andDo(print())
-				.andExpect(view().name("loginForm"));
+				.andExpect(view().name("quickregister/loginForm"));
 		
 	}
 	

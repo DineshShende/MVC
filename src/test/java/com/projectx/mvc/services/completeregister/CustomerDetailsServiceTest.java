@@ -160,7 +160,7 @@ public class CustomerDetailsServiceTest {
 				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_SECONDARY);
 		
 		VerifyMobileDTO verifyMobileDTO=new VerifyMobileDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_SECONDARY,
-				MobileVerificationDetailsDTO.getMobilePin());
+				MobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY);
 		
 		assertNotEquals(standardCustomerDetails(savedEntity).getSecondaryMobile(), customerDetailsService.getCustomerDetailsById(savedEntity.getCustomerId()).getSecondaryMobile());
 		
@@ -198,7 +198,7 @@ public class CustomerDetailsServiceTest {
 				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
 		
 		VerifyMobileDTO verifyMobileDTO=new VerifyMobileDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY,
-				MobileVerificationDetailsDTO.getMobilePin());
+				MobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY);
 		
 		assertTrue(customerDetailsService.verifyMobileDetails(verifyMobileDTO));
 		
@@ -232,7 +232,7 @@ public class CustomerDetailsServiceTest {
 				.getEmailVerificationDetailsByCustomerIdTypeAndEmail(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
 		
 		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY,
-				emailVerificationDetailsDTO.getEmailHash());
+				emailVerificationDetailsDTO.getEmailHash(),CUST_UPDATED_BY);
 		
 		assertTrue(customerDetailsService.verifyEmailDetails(verifyEmailDTO));
 		

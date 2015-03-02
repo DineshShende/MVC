@@ -63,7 +63,7 @@ public class CustomerDetailsController {
 		
 		model.addAttribute("customerDetails", customerDetailsDTO);
 		
-		return "customerDetailsForm";
+		return "completeregister/customerDetailsForm";
 	}
 		
 	@RequestMapping(value="/save",method=RequestMethod.POST)
@@ -73,19 +73,17 @@ public class CustomerDetailsController {
 		{
 			model.addAttribute("customerDetails", customerDetailsDTO);
 			
-			return "customerDetailsForm";
+			return "completeregister/customerDetailsForm";
 		}	
 		
 		customerDetailsDTO=customerDetailsService.InitializeMetaData(customerDetailsDTO);
-		
-		System.out.println(customerDetailsDTO);
 		
 		CustomerDetailsDTO newCustomerDetailsDTO=customerDetailsService
 				.merge(customerDetailsDTO);
 		
 		model.addAttribute("customerDetails", newCustomerDetailsDTO);
 		
-		return "documentUpload";
+		return "completeregister/documentUpload";
 	
 	}
 	
@@ -98,7 +96,7 @@ public class CustomerDetailsController {
 		
 		model.addAttribute("customerDetails", newCustomerDetailsDTO);
 		
-		return "customerDetailsForm";
+		return "completeregister/customerDetailsForm";
 	
 	}
 	
@@ -109,7 +107,7 @@ public class CustomerDetailsController {
 		{
 			model.addAttribute("customerDetails", customerDetailsDTO);
 			
-			return "customerDetailsForm";
+			return "completeregister/customerDetailsForm";
 		}	
 		
 		customerDetailsDTO=customerDetailsService.InitializeMetaData(customerDetailsDTO);
@@ -121,7 +119,7 @@ public class CustomerDetailsController {
 		
 		model=customerDetailsService.initialiseShowCustomerDetails(customerDetailsDTO.getCustomerId(), model);
 		
-		return "showCustomerDetails";
+		return "completeregister/showCustomerDetails";
 	
 	}
 	
@@ -145,14 +143,15 @@ public class CustomerDetailsController {
 		return result;
 	}
 	
-	@RequestMapping(value="/verifyEmailDetails/{customerId}/{customerType}/{emailType}/{emailHash}",method=RequestMethod.GET)
-	public String verifyEmailDetails(@PathVariable Long customerId,@PathVariable Integer customerType,@PathVariable Integer emailType,@PathVariable String emailHash ,Model model)
+	@RequestMapping(value="/verifyEmailDetails/{customerId}/{customerType}/{emailType}/{updatedBy}/{emailHash}",method=RequestMethod.GET)
+	public String verifyEmailDetails(@PathVariable Long customerId,@PathVariable Integer customerType,@PathVariable Integer emailType,
+			@PathVariable String updatedBy,@PathVariable String emailHash ,Model model)
 	{
-		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId, customerType, emailType, emailHash);
+		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId, customerType, emailType, emailHash,updatedBy);
 		
 		Boolean result=customerDetailsService.verifyEmailDetails(verifyEmailDTO );
 		
-		CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(verifyEmailDTO.getEntityId());
+		CustomerDetailsDTO updatedCustomerDetailsDTO=customerDetailsService.getCustomerDetailsById(verifyEmailDTO.getCustomerId());
 		
 		model.addAttribute("customerDetails", updatedCustomerDetailsDTO);
 		
@@ -168,7 +167,7 @@ public class CustomerDetailsController {
 		
 		model=customerDetailsService.initialiseShowCustomerDetails(customerId, model);
 		
-		return "showCustomerDetails";
+		return "completeregister/showCustomerDetails";
 	}
 	
 	@RequestMapping(value="/sendEmailVerificationDetails",method=RequestMethod.POST)
@@ -181,12 +180,5 @@ public class CustomerDetailsController {
 		return result;
 	}
 	
-	
-	@RequestMapping(value="sayHi",method=RequestMethod.POST)
-	@ResponseBody
-	public String sayHi(@ModelAttribute EntityIdDTO entityIdDTO)
-	{
-		return ""+entityIdDTO.getEntityId();
-	}
 	
 }

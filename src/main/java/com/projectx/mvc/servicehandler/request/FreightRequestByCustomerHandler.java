@@ -7,12 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.projectx.mvc.domain.request.FreightRequestByCustomer;
+import com.projectx.mvc.exception.repository.completeregister.ResourceAlreadyPresentException;
+import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
+import com.projectx.mvc.exception.repository.completeregister.ValidationFailedException;
 import com.projectx.mvc.services.request.FreightRequestByCustomerService;
-import com.projectx.rest.domain.quickregister.QuickRegisterStringStatusDTO;
+import com.projectx.rest.domain.quickregister.QuickRegisterStatusDTO;
 import com.projectx.rest.domain.request.FreightRequestByCustomerDTO;
 import com.projectx.rest.domain.request.FreightRequestByCustomerList;
 import com.projectx.rest.domain.request.FreightRequestByVendorDTO;
@@ -31,25 +39,40 @@ public class FreightRequestByCustomerHandler implements
 	
 	@Override
 	public FreightRequestByCustomer save(
-			FreightRequestByCustomer freightRequestByCustomer) {
+			FreightRequestByCustomer freightRequestByCustomer)throws ResourceAlreadyPresentException,ValidationFailedException {
 		
 			
 		FreightRequestByCustomerDTO freightRequestByCustomerDTO=freightRequestByCustomer.toFreightRequestByCustomerDTO();
 		
-			
-		FreightRequestByCustomerDTO status=restTemplate.postForObject(env.getProperty("rest.host")+"/request/freightRequestByCustomer",
-				freightRequestByCustomerDTO, FreightRequestByCustomerDTO.class);
+		HttpEntity<FreightRequestByCustomerDTO> entity=new HttpEntity<FreightRequestByCustomerDTO>(freightRequestByCustomerDTO);
 		
-		return FreightRequestByCustomer.fromFreightRequestByCustomerDTO(status);
+		ResponseEntity<FreightRequestByCustomerDTO> result=null;
+		
+		try{	
+		result=restTemplate.exchange(env.getProperty("rest.host")+"/request/freightRequestByCustomer",
+				HttpMethod.POST,entity, FreightRequestByCustomerDTO.class);
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.CREATED)
+			return FreightRequestByCustomer.fromFreightRequestByCustomerDTO(result.getBody());
+		
+		throw new ResourceAlreadyPresentException();
 		
 	}
 
 	@Override
-	public FreightRequestByCustomer getRequestById(Long requestId) {
+	public FreightRequestByCustomer getRequestById(Long requestId) throws ResourceNotFoundException{
 		
-		FreightRequestByCustomerDTO status=restTemplate.getForObject(env.getProperty("rest.host")+"/request/freightRequestByCustomer/getById/"+requestId, FreightRequestByCustomerDTO.class);
+		ResponseEntity<FreightRequestByCustomerDTO> status=restTemplate.exchange(env.getProperty("rest.host")+"/request/freightRequestByCustomer/getById/"+requestId,
+				HttpMethod.GET,null,FreightRequestByCustomerDTO.class);
 		
-		return FreightRequestByCustomer.fromFreightRequestByCustomerDTO(status);
+		if(status.getStatusCode()==HttpStatus.FOUND)
+			return FreightRequestByCustomer.fromFreightRequestByCustomerDTO(status.getBody());
+		
+		throw new ResourceNotFoundException();
 	}
 
 	@Override

@@ -19,7 +19,7 @@ import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileTypeDTO;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
-import com.projectx.rest.domain.quickregister.QuickRegisterStringStatusDTO;
+import com.projectx.rest.domain.quickregister.QuickRegisterStatusDTO;
 import com.projectx.rest.domain.quickregister.LoginVerificationDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailLoginDetails;
@@ -30,7 +30,7 @@ public class QuickRegisterServiceFixture implements
 		QuickRegisterService {
 
 	@Override
-	public QuickRegisterStringStatusDTO checkIfAlreadyExist(
+	public QuickRegisterStatusDTO checkIfAlreadyExist(
 			QuickRegisterEntity customerQuickRegisterEntity) {
 		// TODO Auto-generated method stub
 		return null;
@@ -143,18 +143,6 @@ public class QuickRegisterServiceFixture implements
 		return null;
 	}
 
-	@Override
-	public CustomerDocumetDTO saveCustomerDocumet(
-			CustomerDocumetDTO customerDocumetDTO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public CustomerDocumetDTO getCustomerDocumetById(Long customerId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public AuthenticationDetailsDTO verifyEmailLoginDetails(

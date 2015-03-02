@@ -39,6 +39,7 @@ configurations {
 
 dependencies 
 {
+	compile("org.springframework.boot:spring-boot-starter-web")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     compile("com.jayway.jsonpath:json-path:0.9.1")
     compile('com.google.code.gson:gson:2.3')

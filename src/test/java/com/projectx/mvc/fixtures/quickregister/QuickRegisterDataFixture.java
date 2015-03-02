@@ -207,12 +207,12 @@ public class QuickRegisterDataFixture {
 	*/
 	public static VerifyMobileDTO standardVerifyMobileDTO()
 	{
-		return new VerifyMobileDTO(CUST_ID,ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY, CUST_MOBILEPIN);
+		return new VerifyMobileDTO(CUST_ID,ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY, CUST_MOBILEPIN,CUST_UPDATED_BY);
 	}
 	
 	public static VerifyEmailDTO standardVerifyEmailDTO()
 	{
-		return new VerifyEmailDTO(CUST_ID,ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY, CUST_EMAILHASH);
+		return new VerifyEmailDTO(CUST_ID,ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY, CUST_EMAILHASH,CUST_UPDATED_BY);
 	}
 	
 	

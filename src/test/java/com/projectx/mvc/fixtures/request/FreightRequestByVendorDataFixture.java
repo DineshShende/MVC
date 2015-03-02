@@ -53,7 +53,12 @@ public class FreightRequestByVendorDataFixture {
 		return new FreightRequestByVendorDTO(REQ_VEHICLE.getRegistrationNumber(), REQ_SOURCE, REQ_DESTINATION, REQ_DRIVER, REQ_AVAIL_DATE, REQ_AVAIL_TIME,
 				REQ_PICK_UP_RANGE,REQ_VENDOR_ID,REQ_STATUS, REQ_DATE, REQ_DATE, REQ_UPDATED_BY);
 		
-		
+	}
+	
+	public static FreightRequestByVendorDTO standardFreightRequestByVendorWithError()
+	{
+		return new FreightRequestByVendorDTO(REQ_VEHICLE.getRegistrationNumber(), null, null, REQ_DRIVER, REQ_AVAIL_DATE, REQ_AVAIL_TIME,
+				REQ_PICK_UP_RANGE,REQ_VENDOR_ID,REQ_STATUS, REQ_DATE, REQ_DATE, REQ_UPDATED_BY);
 		
 	}
 	

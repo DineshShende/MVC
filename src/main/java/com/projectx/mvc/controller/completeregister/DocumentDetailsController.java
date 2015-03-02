@@ -73,7 +73,7 @@ public class DocumentDetailsController {
 	                
 	                model.addAttribute("uploadStatus", "You successfully uploaded file");
 	                model=customerDetailsService.initialiseShowCustomerDetails(customerId, model);
-	                return "showCustomerDetails";
+	                return "completeregister/showCustomerDetails";
                 
                 }
                 else if(customerType.equals(ENTITY_TYPE_VENDOR))
@@ -85,7 +85,7 @@ public class DocumentDetailsController {
         	                
   	                model.addAttribute("uploadStatus", "You successfully uploaded file");
   	                model=vendorDetailsService.initialiseShowVendorDetails(customerId, model);
-   	                return "showVendorDetails";
+   	                return "completeregister/showVendorDetails";
 
                 	
                 }
@@ -129,7 +129,7 @@ public class DocumentDetailsController {
                 
                 model=customerDetailsService.initialiseShowCustomerDetails(customerId, model);
                 
-                return "showCustomerDetails";
+                return "completeregister/showCustomerDetails";
                 
             } catch (Exception e) {
 
@@ -167,7 +167,7 @@ public class DocumentDetailsController {
                 model.addAttribute("updateStatus", "You successfully uploaded file");
                 model=customerDetailsService.initialiseShowCustomerDetails(customerId, model);
                 
-                return "showCustomerDetails";
+                return "completeregister/showCustomerDetails";
                 
 
 		
@@ -212,7 +212,7 @@ public class DocumentDetailsController {
 	@RequestMapping(value="/viewDocument",method=RequestMethod.GET)
 	public String showDocument()
 	{
-		return "showDocument";
+		return "completeregister/showDocument";
 	}
 
 	/*

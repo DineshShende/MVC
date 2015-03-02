@@ -28,7 +28,7 @@ public class ImageServlet {
             return;
         }
 
-        CustomerDocumetDTO image = customerQuickRegisterService.getCustomerDocumetById(Long.parseLong(imageId)) ;
+        CustomerDocumetDTO image = null;//customerQuickRegisterService.getCustomerDocumetById(Long.parseLong(imageId)) ;
 
         if (image == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.

@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
@@ -18,6 +22,16 @@ import com.projectx.mvc.domain.quickregister.CustomerDocumetDTO;
 import com.projectx.mvc.domain.quickregister.QuickRegisterEntity;
 import com.projectx.mvc.domain.quickregister.ResetPasswordRedirectDTO;
 import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
+import com.projectx.mvc.exception.repository.completeregister.CustomerDetailsNotFoundException;
+import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
+import com.projectx.mvc.exception.repository.completeregister.ValidationFailedException;
+import com.projectx.mvc.exception.repository.completeregister.VendorDetailsNotFoundException;
+import com.projectx.mvc.exception.repository.quickregister.AuthenticationDetailsNotFoundException;
+import com.projectx.mvc.exception.repository.quickregister.EmailVerificationDetailNotFoundException;
+import com.projectx.mvc.exception.repository.quickregister.MobileVerificationDetailsNotFoundException;
+import com.projectx.mvc.exception.repository.quickregister.PasswordRestFailedException;
+import com.projectx.mvc.exception.repository.quickregister.QuickRegisterDetailsAlreadyPresentException;
+import com.projectx.mvc.exception.repository.quickregister.QuickRegisterEntityNotFoundException;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.completeregister.DocumentDetailsService;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
@@ -34,12 +48,13 @@ import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileTypeDTO;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
-import com.projectx.rest.domain.quickregister.QuickRegisterStringStatusDTO;
+import com.projectx.rest.domain.quickregister.QuickRegisterStatusDTO;
 import com.projectx.rest.domain.quickregister.LoginVerificationDTO;
 import com.projectx.rest.domain.quickregister.UpdatePasswordMVCDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailLoginDetails;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
+
 
 @Component
 @Profile(value="Dev")
@@ -71,10 +86,10 @@ public class QuickRegisterHandler implements QuickRegisterService {
 	private Integer ENTITY_TYPE_SECONDARY=2;
 	
 	@Override
-	public QuickRegisterStringStatusDTO checkIfAlreadyExist(
+	public QuickRegisterStatusDTO checkIfAlreadyExist(
 			QuickRegisterEntity customerQuickRegisterEntity) {
 		
-		QuickRegisterStringStatusDTO status=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/checkifexist", customerQuickRegisterEntity, QuickRegisterStringStatusDTO.class);
+		QuickRegisterStatusDTO status=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/checkifexist", customerQuickRegisterEntity, QuickRegisterStatusDTO.class);
 		
 		return status;
 	}
@@ -108,69 +123,122 @@ public class QuickRegisterHandler implements QuickRegisterService {
 
 	@Override
 	public QuickRegisterSavedEntityDTO addNewCustomer(
-			QuickRegisterEntity customerQuickRegisterEntity) {
-
-		QuickRegisterSavedEntityDTO saveResultEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister", customerQuickRegisterEntity, QuickRegisterSavedEntityDTO.class);
+			QuickRegisterEntity customerQuickRegisterEntity) throws QuickRegisterDetailsAlreadyPresentException{
 		
-		return saveResultEntity;
+		HttpEntity<QuickRegisterEntity> entity=new HttpEntity<QuickRegisterEntity>(customerQuickRegisterEntity);
+		
+		ResponseEntity<QuickRegisterSavedEntityDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister",
+				HttpMethod.POST, entity, QuickRegisterSavedEntityDTO.class);
+
+		if(result.getStatusCode()==HttpStatus.CREATED)
+			return result.getBody();
+		else if(result.getStatusCode()==HttpStatus.NOT_ACCEPTABLE)
+			throw new ValidationFailedException();
+		else if(result.getStatusCode()==HttpStatus.ALREADY_REPORTED)
+			throw new QuickRegisterDetailsAlreadyPresentException();
+		
+		throw new ResourceNotFoundException();
 	}
 
 	@Override
-	public QuickRegisterDTO getByCustomerIdType(CustomerIdTypeDTO customerIdDTO) {
+	public QuickRegisterDTO getByCustomerIdType(CustomerIdTypeDTO customerIdDTO) throws QuickRegisterEntityNotFoundException{
 
-		QuickRegisterDTO fetchedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/getByCustomerId", customerIdDTO, QuickRegisterDTO.class);
+		HttpEntity<CustomerIdTypeDTO> entity=new HttpEntity<CustomerIdTypeDTO>(customerIdDTO);
 		
-		return fetchedEntity;
+		ResponseEntity<QuickRegisterDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/getByCustomerId",
+					HttpMethod.POST, entity, QuickRegisterDTO.class);
+		
+		if(result.getStatusCode()==HttpStatus.FOUND)
+			return result.getBody();
+		else
+			throw new QuickRegisterEntityNotFoundException();
 	}
 
 	
 	@Override
 	public Boolean verifyMobile(VerifyMobileDTO mobileDTO) {
-
-		Boolean verificationStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/verifyMobilePin", mobileDTO, Boolean.class);
 		
-		return verificationStatus;
+		HttpEntity<VerifyMobileDTO > entity=new HttpEntity<VerifyMobileDTO>(mobileDTO);
+
+		ResponseEntity<Boolean> verificationStatus=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/verifyMobilePin",
+					HttpMethod.POST,entity, Boolean.class);
+		
+		if(verificationStatus.getStatusCode()==HttpStatus.OK)
+			return verificationStatus.getBody();
+		else
+			throw new ResourceNotFoundException();
 	}
 
 	@Override
-	public Boolean verifyEmail(VerifyEmailDTO emailDTO) {
+	public Boolean verifyEmail(VerifyEmailDTO emailDTO) throws ResourceNotFoundException {
 
-		Boolean verificationStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/verifyEmailHash", emailDTO, Boolean.class);
+		HttpEntity<VerifyEmailDTO> entity=new HttpEntity<VerifyEmailDTO>(emailDTO);
 		
-		return verificationStatus;
+		ResponseEntity<Boolean> verificationStatus=restTemplate.
+				exchange(env.getProperty("rest.host")+"/customer/quickregister/verifyEmailHash",HttpMethod.POST, entity, Boolean.class);
+		
+		if(verificationStatus.getStatusCode()==HttpStatus.OK)
+			return verificationStatus.getBody();
+		else
+			throw new ResourceNotFoundException();
 	}
 
 	@Override
 	public Boolean reSendMobilePin(CustomerIdTypeMobileTypeDTO customerDTO) {
 		
-		Boolean detailsSentStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/resendMobilePin", customerDTO, Boolean.class);
+		HttpEntity<CustomerIdTypeMobileTypeDTO> entity=new HttpEntity<CustomerIdTypeMobileTypeDTO>(customerDTO);
+		
+		ResponseEntity<Boolean> detailsSentStatus=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/resendMobilePin",
+							HttpMethod.POST,entity, Boolean.class);
 
-		return detailsSentStatus;
+		if(detailsSentStatus.getStatusCode()==HttpStatus.OK)
+			return detailsSentStatus.getBody();
+		else
+			throw new ResourceNotFoundException();
 	}
 
 	@Override
 	public Boolean reSendEmailHash(CustomerIdTypeEmailTypeDTO customerDTO) {
+				
+		HttpEntity<CustomerIdTypeEmailTypeDTO> entity=new HttpEntity<CustomerIdTypeEmailTypeDTO>(customerDTO);
+		
+		ResponseEntity<Boolean> detailsSentStatus=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/resendEmailHash",
+						HttpMethod.POST,entity, Boolean.class);
 
-		Boolean detailsSentStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/resendEmailHash", customerDTO, Boolean.class);
-
-		return detailsSentStatus;
+		if(detailsSentStatus.getStatusCode()==HttpStatus.OK)
+			return detailsSentStatus.getBody();
+		else
+			throw new ResourceNotFoundException();
 	}
 	
 	@Override
 	public Boolean reSetMobilePin(CustomerIdTypeMobileTypeDTO customerDTO) {
+		
+		HttpEntity<CustomerIdTypeMobileTypeDTO> entity=new HttpEntity<CustomerIdTypeMobileTypeDTO>(customerDTO);
 
-		Boolean detailsSentStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/resetMobilePin", customerDTO, Boolean.class);
+		ResponseEntity<Boolean> detailsSentStatus=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/resetMobilePin",
+					HttpMethod.POST,entity, Boolean.class);
 
-		return detailsSentStatus;
+		if(detailsSentStatus.getStatusCode()==HttpStatus.OK)
+			return detailsSentStatus.getBody();
+		else
+			throw new ResourceNotFoundException();
 
 	}
 
 	@Override
 	public Boolean reSetEmailHash(CustomerIdTypeEmailTypeDTO customerDTO) {
 
-		Boolean detailsSentStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/resetEmailHash", customerDTO, Boolean.class);
+		HttpEntity<CustomerIdTypeEmailTypeDTO> entity=new HttpEntity<CustomerIdTypeEmailTypeDTO>(customerDTO);
+		
+		ResponseEntity<Boolean> detailsSentStatus=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/resetEmailHash",HttpMethod.POST,
+				entity, Boolean.class);
 
-		return detailsSentStatus;
+		if(detailsSentStatus.getStatusCode()==HttpStatus.OK)
+			return detailsSentStatus.getBody();
+		else
+			throw new ResourceNotFoundException();
+		
 	}
 
 
@@ -180,18 +248,7 @@ public class QuickRegisterHandler implements QuickRegisterService {
 		
 	}
 
-	@Override
-	public AuthenticationDetailsDTO verifyLoginDetails(
-			LoginVerificationDTO loginVerificationDTO) {
-		
-		//System.out.println(loginVerificationDTO);
-		
-		AuthenticationDetailsDTO verifiedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/verifyLoginDetails", loginVerificationDTO, AuthenticationDetailsDTO.class);
-		
-		
-		
-		return verifiedEntity;
-	}
+	
 
 	@Override
 	public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO) {
@@ -207,91 +264,129 @@ public class QuickRegisterHandler implements QuickRegisterService {
 	}
 
 
-	@Override
-	public CustomerDocumetDTO saveCustomerDocumet(
-			CustomerDocumetDTO customerDocumetDTO) {
-		
-		CustomerDocumetDTO savedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/saveCustomerDocument", customerDocumetDTO, CustomerDocumetDTO.class);
-		
-		return savedEntity;
-
-	}
-
-	@Override
-	public CustomerDocumetDTO getCustomerDocumetById(Long customerId) {
-		
-		//CustomerDocumetDTO savedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/getCustomerDocumentById", new CustomerIdTypeDTO(customerId,cu), CustomerDocumetDTO.class);
-		
-		return new CustomerDocumetDTO();
-
-	}
-
-	@Override
-	public Boolean resetPassword(Long customerId,Integer customerType) {
-	
-		CustomerIdTypeDTO customerIdDTO=new CustomerIdTypeDTO(customerId,customerType);
-		
-		Boolean updateStatus=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/resetPassword", customerIdDTO, Boolean.class);
-		
-		return updateStatus;	
-		
-	}
-
-	@Override
-	public QuickRegisterDTO resetPasswordRedirect(String entity) {
-
-		ResetPasswordRedirectDTO resetPasswordRedirectDTO=new ResetPasswordRedirectDTO(entity);
-		
-		QuickRegisterDTO fetchedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/resetPasswordRedirect",
-																		resetPasswordRedirectDTO, QuickRegisterDTO.class);
-		return fetchedEntity;
-	}
 
 	@Override
 	public EmailVerificationDetailsDTO getEmailVerificationDetailsByCustomerIdTypeAndEmail(
-			Long customerId,Integer customerType, Integer emailType) {
+			Long customerId,Integer customerType, Integer emailType) throws EmailVerificationDetailNotFoundException {
 
 		CustomerIdTypeEmailTypeDTO emailDTO=new CustomerIdTypeEmailTypeDTO(customerId,customerType, emailType);
 		
-		EmailVerificationDetailsDTO fetchedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/getEmailVerificationDetails", emailDTO, EmailVerificationDetailsDTO.class);
+		HttpEntity<CustomerIdTypeEmailTypeDTO> entity=new HttpEntity<CustomerIdTypeEmailTypeDTO>(emailDTO);
 		
-		return fetchedEntity;
+		ResponseEntity<EmailVerificationDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/getEmailVerificationDetails",
+					HttpMethod.POST, entity, EmailVerificationDetailsDTO.class);
+		
+		
+		if(result.getStatusCode()==HttpStatus.FOUND)
+			return result.getBody();
+		else
+			throw new EmailVerificationDetailNotFoundException();
 	}
 
 	@Override
 	public MobileVerificationDetailsDTO getMobileVerificationDetailsByCustomerIdTypeAndMobile(
-			Long customerId,Integer customerType, Integer mobileType) {
+			Long customerId,Integer customerType, Integer mobileType) throws MobileVerificationDetailsNotFoundException{
 
 		CustomerIdTypeMobileTypeDTO mobileDTO=new CustomerIdTypeMobileTypeDTO(customerId,customerType, mobileType);
 		
-		MobileVerificationDetailsDTO fetchedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/getMobileVerificationDetails", mobileDTO, MobileVerificationDetailsDTO.class);
+		HttpEntity<CustomerIdTypeMobileTypeDTO> entity=new HttpEntity<CustomerIdTypeMobileTypeDTO>(mobileDTO);
 		
-		return fetchedEntity;
+		ResponseEntity<MobileVerificationDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/getMobileVerificationDetails",
+					HttpMethod.POST, entity, MobileVerificationDetailsDTO.class);
+		
+		
+		if(result.getStatusCode()==HttpStatus.FOUND)
+			return result.getBody();
+		else
+			throw new MobileVerificationDetailsNotFoundException();
+		
 	}
 
 	@Override
+	public AuthenticationDetailsDTO verifyLoginDetails(
+			LoginVerificationDTO loginVerificationDTO) throws AuthenticationDetailsNotFoundException {
+		
+		HttpEntity<LoginVerificationDTO> entity=new HttpEntity<LoginVerificationDTO>(loginVerificationDTO);
+		
+		ResponseEntity<AuthenticationDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/verifyLoginDetails",
+					HttpMethod.POST, entity, AuthenticationDetailsDTO.class);
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		else
+			throw new AuthenticationDetailsNotFoundException();
+		
+		
+	}
+	
+	@Override
 	public AuthenticationDetailsDTO getAuthenticationDetailsByCustomerIdType(
-			Long customerId,Integer customerType) {
+			Long customerId,Integer customerType) throws AuthenticationDetailsNotFoundException{
 
 		CustomerIdTypeDTO customerIdDTO=new CustomerIdTypeDTO(customerId,customerType);
 	
-		AuthenticationDetailsDTO fetchedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/getAuthenticationDetailsById", customerIdDTO, AuthenticationDetailsDTO.class);
+		HttpEntity<CustomerIdTypeDTO> entity=new HttpEntity<CustomerIdTypeDTO>(customerIdDTO);
 		
-		return fetchedEntity;
+		ResponseEntity<AuthenticationDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/getAuthenticationDetailsById", 
+					HttpMethod.POST, entity, AuthenticationDetailsDTO.class);
 		
+		if(result.getStatusCode()==HttpStatus.FOUND)
+			return result.getBody();
+		else
+			throw new AuthenticationDetailsNotFoundException();
+		
+				
 	}
 
 	@Override
 	public AuthenticationDetailsDTO verifyEmailLoginDetails(
-			VerifyEmailLoginDetails emailLoginDetails) {
+			VerifyEmailLoginDetails emailLoginDetails) throws AuthenticationDetailsNotFoundException{
 
-		System.out.println(emailLoginDetails);
+		HttpEntity<VerifyEmailLoginDetails> entity=new HttpEntity<VerifyEmailLoginDetails>(emailLoginDetails);
 		
-		AuthenticationDetailsDTO fetchedEntity=restTemplate.postForObject(env.getProperty("rest.host")+"/customer/quickregister/verifyLoginDefaultEmailPassword", emailLoginDetails, AuthenticationDetailsDTO.class);
+		ResponseEntity<AuthenticationDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/verifyLoginDefaultEmailPassword",
+					HttpMethod.POST, entity, AuthenticationDetailsDTO.class);
 		
-		return fetchedEntity;
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		else
+			throw new AuthenticationDetailsNotFoundException();
 	}
 
+	@Override
+	public Boolean resetPassword(Long customerId,Integer customerType) throws PasswordRestFailedException{
+	
+		CustomerIdTypeDTO customerIdDTO=new CustomerIdTypeDTO(customerId,customerType);
+		
+		HttpEntity<CustomerIdTypeDTO> entity=new HttpEntity<CustomerIdTypeDTO>(customerIdDTO);
+		
+		ResponseEntity<Boolean> result=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/resetPassword",
+				HttpMethod.POST, entity, Boolean.class);
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		else
+			throw new PasswordRestFailedException();
+		
+		
+	}
+
+	@Override
+	public QuickRegisterDTO resetPasswordRedirect(String entityInp) throws PasswordRestFailedException{
+		
+		ResetPasswordRedirectDTO resetPasswordRedirectDTO=new ResetPasswordRedirectDTO(entityInp);
+		
+		HttpEntity<ResetPasswordRedirectDTO> entity=new HttpEntity<ResetPasswordRedirectDTO>(resetPasswordRedirectDTO);
+		
+		ResponseEntity<QuickRegisterDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/customer/quickregister/resetPasswordRedirect",
+						HttpMethod.POST, entity, QuickRegisterDTO.class);
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		else
+			throw new PasswordRestFailedException();
+	}
+	
 	@Override
 	public ModelAndView populateCompleteRegisterRedirect(
 			AuthenticationDetailsDTO result) {
@@ -300,10 +395,12 @@ public class QuickRegisterHandler implements QuickRegisterService {
 
 		if(result.getKey().getCustomerType().equals(ENTITY_TYPE_CUSTOMER))
 		{	
-			CustomerDetailsDTO detailsDTO=customerDetailsService.getCustomerDetailsById(result.getKey().getCustomerId());
-			
-			if(detailsDTO.getCustomerId()!=null)
-			{
+			CustomerDetailsDTO detailsDTO=new CustomerDetailsDTO();
+					
+			try{
+				
+				detailsDTO=customerDetailsService.getCustomerDetailsById(result.getKey().getCustomerId());
+				
 				modelAndView.addObject("customerDetails", detailsDTO);
 				
 				DocumentDetails documentDetails=documentDetailsService.getDocumentById(new DocumentKey(detailsDTO.getCustomerId(), 1, "DrivingLicense"));
@@ -312,11 +409,11 @@ public class QuickRegisterHandler implements QuickRegisterService {
 				
 				modelAndView=initialiseShowDetails(result.getKey().getCustomerId(), result.getKey().getCustomerType(), modelAndView);
 				
-				modelAndView.setViewName("showCustomerDetails");
+				modelAndView.setViewName("completeregister/showCustomerDetails");
 				
 				return modelAndView;
-			}
-			else
+				
+			}catch(CustomerDetailsNotFoundException e)
 			{
 				QuickRegisterDTO quickRegisterEntity=
 						getByCustomerIdType(new CustomerIdTypeDTO(result.getKey().getCustomerId(),result.getKey().getCustomerType()));
@@ -325,20 +422,19 @@ public class QuickRegisterHandler implements QuickRegisterService {
 				
 							
 				modelAndView.addObject("customerDetails", createdRecord);
-				modelAndView.setViewName("customerDetailsForm");
+				modelAndView.setViewName("completeregister/customerDetailsForm");
 				
 				return modelAndView;
-				
 			}
+			
 		}
 		else if(result.getKey().getCustomerType().equals(ENTITY_TYPE_VENDOR))
 		{
-		
+			VendorDetailsDTO vendorDetailsDTO=new VendorDetailsDTO();
 			
-			VendorDetailsDTO vendorDetailsDTO=vendorDetailsService.getCustomerDetailsById(result.getKey().getCustomerId());
-			
-			if(vendorDetailsDTO.getVendorId()!=null)
-			{
+			try{
+				vendorDetailsDTO=vendorDetailsService.getCustomerDetailsById(result.getKey().getCustomerId());
+				
 				modelAndView.addObject("vendorDetails", vendorDetailsDTO);
 				
 				DocumentDetails documentDetails=documentDetailsService.getDocumentById(new DocumentKey(vendorDetailsDTO.getVendorId(), 2, "DrivingLicense"));
@@ -347,11 +443,11 @@ public class QuickRegisterHandler implements QuickRegisterService {
 				
 				modelAndView=initialiseShowDetails(result.getKey().getCustomerId(), result.getKey().getCustomerType(), modelAndView);
 				
-				modelAndView.setViewName("showVendorDetails");
+				modelAndView.setViewName("completeregister/showVendorDetails");
 				
 				return modelAndView;
-			}
-			else
+				
+			}catch(VendorDetailsNotFoundException e)
 			{
 				QuickRegisterDTO quickRegisterEntity=
 						getByCustomerIdType(new CustomerIdTypeDTO(result.getKey().getCustomerId(),result.getKey().getCustomerType()));
@@ -360,11 +456,12 @@ public class QuickRegisterHandler implements QuickRegisterService {
 				
 							
 				modelAndView.addObject("vendorDetails", createdRecord);
-				modelAndView.setViewName("vendorDetailsForm");
+				modelAndView.setViewName("completeregister/vendorDetailsForm");
 				
 				return modelAndView;
-				
+
 			}
+					
 		}
 		
 		return modelAndView;
@@ -375,16 +472,35 @@ public class QuickRegisterHandler implements QuickRegisterService {
 			ModelAndView model) {
 
 
-		EmailVerificationDetailsDTO emailVerificationDetails=getEmailVerificationDetailsByCustomerIdTypeAndEmail(entityId,entityType , ENTITY_TYPE_PRIMARY);
+		EmailVerificationDetailsDTO emailVerificationDetails=null;
+				
+		try{
+			emailVerificationDetails=getEmailVerificationDetailsByCustomerIdTypeAndEmail(entityId,entityType , ENTITY_TYPE_PRIMARY);
+		}catch(EmailVerificationDetailNotFoundException e)
+		{
+			emailVerificationDetails=new EmailVerificationDetailsDTO();
+		}
 		
-		MobileVerificationDetailsDTO mobileVerificationDetailsPrimary=getMobileVerificationDetailsByCustomerIdTypeAndMobile(entityId, entityType, ENTITY_TYPE_PRIMARY);
+		MobileVerificationDetailsDTO mobileVerificationDetailsPrimary=null;
+		
+		try{
+			mobileVerificationDetailsPrimary=getMobileVerificationDetailsByCustomerIdTypeAndMobile(entityId, entityType, ENTITY_TYPE_PRIMARY);
+		}
+		catch(MobileVerificationDetailsNotFoundException e)
+		{
+			mobileVerificationDetailsPrimary=new MobileVerificationDetailsDTO();
+		}
 		
 		MobileVerificationDetailsDTO mobileVerificationDetailsSeconadry=null;
 		
 		if(entityType.equals(ENTITY_TYPE_CUSTOMER))
 		{	
-			mobileVerificationDetailsSeconadry=getMobileVerificationDetailsByCustomerIdTypeAndMobile(entityId, entityType, ENTITY_TYPE_SECONDARY);
-			
+			try{
+				mobileVerificationDetailsSeconadry=getMobileVerificationDetailsByCustomerIdTypeAndMobile(entityId, entityType, ENTITY_TYPE_SECONDARY);
+			}catch(MobileVerificationDetailsNotFoundException e)
+			{
+				mobileVerificationDetailsSeconadry=new MobileVerificationDetailsDTO();
+			}
 			model.addObject("mobileVerificationDetailsSeconadry", mobileVerificationDetailsSeconadry);
 		}
 		
@@ -395,21 +511,6 @@ public class QuickRegisterHandler implements QuickRegisterService {
 		return model;
 	}
 
-
-
-	/*
-	@Override
-	public ModelAndView handleNewCustomer(CustomerQuickRegisterEntity customer) {
-		
-		ModelAndView modelAndView=new ModelAndView();
-		
-		if(checkIfAlreadyExist(customer).equals(REGISTER_NOT_REGISTERED))
-		{
-			CustomerQuickRegisterSavedEntityDTO saveResultEntity=addNewCustomer(customer);
-		}
-		return null;
-	}
-*/		
-	 
-
+	
+	
 }
