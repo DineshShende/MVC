@@ -2,6 +2,8 @@ package com.projectx.mvc.domain.request;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.projectx.mvc.util.serializer.JsonDateDeSerializer;
@@ -12,17 +14,24 @@ public class FreightRequestByCustomer {
 	
 	private Long requestId;
 
+	@NotNull
 	private Integer source;
 	
+	@NotNull
 	private Integer destination;
 	
+	@NotNull
 	private Date pickupDate;
 	
+	@NotNull
 	private Integer noOfVehicles;
 	
+	@NotNull
 	private String loadType;
 
+	
 	private Integer capacity;
+	
 	
 	private String bodyType;
 	
@@ -42,17 +51,26 @@ public class FreightRequestByCustomer {
 	
 	private  String pickupTime;
 
+	@NotNull
 	private Long customerId;
 	
+	
 	private String status;
-
+	
+	
 	private Date insertTime;
 	
+	@NotNull
 	private String updatedBy;
+	
+	
+	private Date updateTime;
 	
 	public FreightRequestByCustomer() {
 
 	}
+
+	
 
 	public FreightRequestByCustomer(Long requestId, Integer source,
 			Integer destination, Date pickupDate, Integer noOfVehicles,
@@ -60,7 +78,7 @@ public class FreightRequestByCustomer {
 			Integer grossWeight, Integer length, Integer width, Integer height,
 			String vehicleBrand, String model, String commodity,
 			String pickupTime, Long customerId, String status, Date insertTime,
-			String updatedBy) {
+			String updatedBy, Date updateTime) {
 		super();
 		this.requestId = requestId;
 		this.source = source;
@@ -82,7 +100,9 @@ public class FreightRequestByCustomer {
 		this.status = status;
 		this.insertTime = insertTime;
 		this.updatedBy = updatedBy;
+		this.updateTime = updateTime;
 	}
+
 
 
 	public  FreightRequestByCustomerDTO toFreightRequestByCustomerDTO()
@@ -95,7 +115,7 @@ public class FreightRequestByCustomer {
 				(this.loadType.equals("FullTruckLoad")), (this.loadType.equals("LessThanTruckLoad")), this.capacity, this.bodyType, 
 				this.grossWeight, this.length, this.width, this.height, this.vehicleBrand, 
 				this.model, this.commodity, this.customerId, this.status, this.pickupTime, 
-				this.insertTime, new Date(), this.updatedBy);
+				this.insertTime, this.updateTime, this.updatedBy);
 		
 		return newDTO;
 	}
@@ -113,7 +133,8 @@ public class FreightRequestByCustomer {
 						freightRequestByCustomerDTO.getLength(), freightRequestByCustomerDTO.getWidth(),freightRequestByCustomerDTO.getHeight(),
 						freightRequestByCustomerDTO.getVehicleBrand(), freightRequestByCustomerDTO.getModel(),freightRequestByCustomerDTO.getCommodity(),
 						freightRequestByCustomerDTO.getPickupTime(), freightRequestByCustomerDTO.getCustomerId(),freightRequestByCustomerDTO.getStatus(),
-						freightRequestByCustomerDTO.getInsertTime(), freightRequestByCustomerDTO.getUpdatedBy());
+						freightRequestByCustomerDTO.getInsertTime(), freightRequestByCustomerDTO.getUpdatedBy(),
+						freightRequestByCustomerDTO.getUpdateTime());
 		
 		return freightRequestByCustomer;
 	}
@@ -164,6 +185,20 @@ public class FreightRequestByCustomer {
 		this.insertTime = insertTime;
 	}
 
+	
+
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+
+	@JsonDeserialize(using = JsonDateDeSerializer.class)
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	
 	public String getUpdatedBy() {
 		return updatedBy;
 	}
@@ -283,6 +318,9 @@ public class FreightRequestByCustomer {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	
+
 
 	@Override
 	public String toString() {

@@ -29,10 +29,14 @@ import org.springframework.web.context.WebApplicationContext;
 
 
 
+
+
+
 import com.projectx.mvc.config.Application;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.Address;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileTypeDTO;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
@@ -95,6 +99,7 @@ public class CustomerDetailsWACTest {
 															   .param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
 															   .param("isEmailVerified", "true")
 															   .param("isMobileVerified", "true")
+															   .param("updatedBy", "CUST_ONLINE")
 															   
 															  
 															)
@@ -124,7 +129,7 @@ public class CustomerDetailsWACTest {
 											   .param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
 											   .param("isEmailVerified", "true")
 											   .param("isMobileVerified", "true")
-											   
+											   .param("updatedBy", "CUST_ONLINE")
 											  
 											);
 		
@@ -210,7 +215,7 @@ public class CustomerDetailsWACTest {
 											   .param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
 											   .param("isEmailVerified", "true")
 											   .param("isMobileVerified", "true")
-											   
+											   .param("updatedBy", "CUST_ONLINE")
 											  
 											);
 		
@@ -276,6 +281,7 @@ public class CustomerDetailsWACTest {
 											   .param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
 											   .param("isEmailVerified", "true")
 											   .param("isMobileVerified", "true")
+											   .param("updatedBy", "CUST_ONLINE")
 											   
 											  
 											);
@@ -385,7 +391,7 @@ public class CustomerDetailsWACTest {
 											   .param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
 											   .param("isEmailVerified", "true")
 											   .param("isMobileVerified", "true")
-											   
+											   .param("updatedBy", "CUST_ONLINE")
 											  
 											);
 		
@@ -535,7 +541,8 @@ public class CustomerDetailsWACTest {
 															  
 															);
 
-		quickRegisterService.reSendMobilePin(new CustomerIdTypeMobileTypeDTO(CUST_ID, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY));
+		quickRegisterService.reSendMobilePin(new CustomerIdTypeMobileTypeUpdatedByDTO(CUST_ID, ENTITY_TYPE_CUSTOMER,
+				ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY));
 		
 		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=
 				quickRegisterService.getMobileVerificationDetailsByCustomerIdTypeAndMobile(CUST_ID, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
@@ -602,7 +609,8 @@ public class CustomerDetailsWACTest {
 															);
 
 		
-		quickRegisterService.reSendMobilePin(new CustomerIdTypeMobileTypeDTO(CUST_ID, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_SECONDARY));
+		quickRegisterService.reSendMobilePin(new CustomerIdTypeMobileTypeUpdatedByDTO(CUST_ID, ENTITY_TYPE_CUSTOMER,
+				ENTITY_TYPE_SECONDARY,CUST_UPDATED_BY));
 		
 		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=
 				quickRegisterService.getMobileVerificationDetailsByCustomerIdTypeAndMobile(CUST_ID, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_SECONDARY);
@@ -667,6 +675,7 @@ public class CustomerDetailsWACTest {
 				post("/customer/sendMobileVerificationDetails").param("customerId", Long.toString(CUST_ID))
 											.param("customerType",Integer.toString(ENTITY_TYPE_CUSTOMER))
 											  .param("mobileType", Integer.toString(ENTITY_TYPE_PRIMARY))
+											  .param("updatedBy", "CUST_ONLINE")
 											  )
 			.andDo(print())
 			.andExpect(content().string("true"));
@@ -722,6 +731,7 @@ public class CustomerDetailsWACTest {
 				post("/customer/sendEmailVerificationDetails").param("customerId", Long.toString(CUST_ID))
 											.param("customerType",Integer.toString(ENTITY_TYPE_CUSTOMER))
 											  .param("emailType", Integer.toString(ENTITY_TYPE_PRIMARY))
+											  .param("updatedBy", "CUST_ONLINE")
 											  )
 			.andDo(print())
 			.andExpect(content().string("true"));

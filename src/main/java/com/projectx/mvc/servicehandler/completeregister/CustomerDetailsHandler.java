@@ -2,6 +2,8 @@ package com.projectx.mvc.servicehandler.completeregister;
 
 import java.util.Date;
 
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
@@ -12,15 +14,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.projectx.mvc.exception.repository.completeregister.CustomerDetailsNotFoundException;
+import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
+import com.projectx.mvc.exception.repository.completeregister.ValidationFailedException;
 import com.projectx.mvc.exception.repository.quickregister.DeleteQuickCreateDetailsEntityFailedException;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
@@ -29,8 +36,9 @@ import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 
 
 
+
 @Component
-@Profile(value="Dev")
+@Profile(value={"Dev","Prod"})
 @PropertySource(value="classpath:/application.properties")
 public class CustomerDetailsHandler implements CustomerDetailsService {
 
@@ -53,6 +61,18 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 	public CustomerDetailsDTO createCustomerDetailsFromQuickRegisterEntity(
 			QuickRegisterDTO quickRegisterEntity) {
 		
+		if(quickRegisterEntity.getInsertTime()==null)
+			quickRegisterEntity.setInsertTime(new Date());
+		
+		if(quickRegisterEntity.getUpdateTime()==null)
+			quickRegisterEntity.setUpdateTime(new Date());
+		
+		if(quickRegisterEntity.getEmail()!=null && quickRegisterEntity.getIsEmailVerified()==null)
+			quickRegisterEntity.setIsEmailVerified(false);
+		
+		if(quickRegisterEntity.getMobile()==null && quickRegisterEntity.getIsMobileVerified()==null)
+			quickRegisterEntity.setIsMobileVerified(false);
+		
 		HttpEntity<QuickRegisterDTO> entity=new HttpEntity<QuickRegisterDTO>(quickRegisterEntity);
 		
 		ResponseEntity<CustomerDetailsDTO> result=
@@ -71,6 +91,12 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 	public CustomerDetailsDTO merge(CustomerDetailsDTO customerDetails) {
 		
 		HttpEntity<CustomerDetailsDTO> entity=new HttpEntity<CustomerDetailsDTO>(customerDetails);
+		
+		if(customerDetails.getEmail()!=null && customerDetails.getIsEmailVerified()==null)
+			customerDetails.setIsEmailVerified(false);
+		
+		if(customerDetails.getMobile()==null && customerDetails.getIsMobileVerified()==null)
+			customerDetails.setIsMobileVerified(false);
 		
 		ResponseEntity<CustomerDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/customer",
 				HttpMethod.POST, entity, CustomerDetailsDTO.class);
@@ -91,6 +117,9 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 		
 		if(customerDetails.getUpdatedBy()==null)
 			customerDetails.setUpdatedBy("CUST_ONLINE");
+		
+		if(customerDetails.getEmail().equals(""))
+			customerDetails.setEmail(null);
 		
 		customerDetails.setUpdateTime(new Date());
 			
@@ -128,14 +157,38 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 	@Override
 	public Model initialiseShowCustomerDetails(Long customerId,Model model)
 	{
-		EmailVerificationDetailsDTO emailVerificationDetails=quickRegisterService
-				.getEmailVerificationDetailsByCustomerIdTypeAndEmail(customerId,ENTITY_TYPE_CUSTOMER , ENTITY_TYPE_PRIMARY);
+		EmailVerificationDetailsDTO emailVerificationDetails=null;
 		
-		MobileVerificationDetailsDTO mobileVerificationDetailsPrimary=quickRegisterService
-				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(customerId, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
+		try{
+			emailVerificationDetails=quickRegisterService
+					.getEmailVerificationDetailsByCustomerIdTypeAndEmail(customerId,ENTITY_TYPE_CUSTOMER , ENTITY_TYPE_PRIMARY);
+		}catch(ResourceNotFoundException e)
+		{
+			emailVerificationDetails=new EmailVerificationDetailsDTO();
+		}
 		
-		MobileVerificationDetailsDTO mobileVerificationDetailsSeconadry=quickRegisterService
-				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(customerId, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_SECONDARY);
+		
+		MobileVerificationDetailsDTO mobileVerificationDetailsPrimary=null;
+		
+		try{
+			mobileVerificationDetailsPrimary=quickRegisterService
+					.getMobileVerificationDetailsByCustomerIdTypeAndMobile(customerId, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
+		}catch(ResourceNotFoundException e)
+		{
+			mobileVerificationDetailsPrimary=new MobileVerificationDetailsDTO();
+		}
+		
+		
+		MobileVerificationDetailsDTO mobileVerificationDetailsSeconadry=null;
+		
+		try{
+			mobileVerificationDetailsSeconadry=quickRegisterService
+					.getMobileVerificationDetailsByCustomerIdTypeAndMobile(customerId, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_SECONDARY);
+			
+		}catch(ResourceNotFoundException e)
+		{
+			mobileVerificationDetailsSeconadry=new MobileVerificationDetailsDTO();
+		}
 		
 		model.addAttribute("emailVerificationDetails", emailVerificationDetails);
 		model.addAttribute("mobileVerificationDetailsPrimary", mobileVerificationDetailsPrimary);
@@ -146,42 +199,93 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 	
 	@Override
 	public Boolean verifyMobileDetails(VerifyMobileDTO verifyMobileDTO) {
+	
+		HttpEntity<VerifyMobileDTO> entity=new HttpEntity<VerifyMobileDTO>(verifyMobileDTO);
 		
-		Boolean status=restTemplate
-				.postForObject(env.getProperty("rest.host")+"/customer/verifyMobileDetails", verifyMobileDTO, Boolean.class);
+		ResponseEntity<Boolean> result=null;
 		
-		return status;
+		try{
+			result=restTemplate
+					.exchange(env.getProperty("rest.host")+"/customer/verifyMobileDetails",HttpMethod.POST,entity, Boolean.class);
+			
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		
+		throw new ResourceNotFoundException();
 		
 	}
 
 	@Override
 	public Boolean verifyEmailDetails(VerifyEmailDTO verifyEmailDTO) {
 		
-		Boolean status=restTemplate
-				.postForObject(env.getProperty("rest.host")+"/customer/verifyEmailDetails", verifyEmailDTO, Boolean.class);
+		HttpEntity<VerifyEmailDTO> entity=new HttpEntity<VerifyEmailDTO>(verifyEmailDTO);
 		
-		return status;
+		ResponseEntity<Boolean> result=null;
+		
+		try{
+			result=restTemplate
+					.exchange(env.getProperty("rest.host")+"/customer/verifyEmailDetails",HttpMethod.POST, entity, Boolean.class);
+			
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		
+		throw new ResourceNotFoundException();
 		
 	}
 
 	@Override
 	public Boolean sendMobileVerificationDetails(
-			CustomerIdTypeMobileTypeDTO customerIdTypeMobileDTO) {
+			CustomerIdTypeMobileTypeUpdatedByDTO customerIdTypeMobileDTO) {
 		
-		Boolean status=restTemplate
-				.postForObject(env.getProperty("rest.host")+"/customer/sendMobileVerificationDetails", customerIdTypeMobileDTO, Boolean.class);
+		HttpEntity<CustomerIdTypeMobileTypeUpdatedByDTO> entity=new HttpEntity<CustomerIdTypeMobileTypeUpdatedByDTO>(customerIdTypeMobileDTO);
 		
-		return status;
+		ResponseEntity<Boolean> result=null;
+		
+		try{
+			result=restTemplate
+					.exchange(env.getProperty("rest.host")+"/customer/sendMobileVerificationDetails",HttpMethod.POST, entity, Boolean.class);
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		
+		throw new ResourceNotFoundException();
 	}
 
 	@Override
 	public Boolean sendEmailVerificationDetails(
-			CustomerIdTypeEmailTypeDTO customerIdTypeEmailDTO) {
+			CustomerIdTypeEmailTypeUpdatedByDTO customerIdTypeEmailDTO) {
 
-		Boolean status=restTemplate
-				.postForObject(env.getProperty("rest.host")+"/customer/sendEmailVerificationDetails", customerIdTypeEmailDTO, Boolean.class);
+		HttpEntity<CustomerIdTypeEmailTypeUpdatedByDTO> entity=new HttpEntity<CustomerIdTypeEmailTypeUpdatedByDTO>(customerIdTypeEmailDTO);
 		
-		return status;
+		ResponseEntity<Boolean> result=null;
+		
+		
+		try{
+			result=restTemplate
+					.exchange(env.getProperty("rest.host")+"/customer/sendEmailVerificationDetails",HttpMethod.POST, entity, Boolean.class);
+		}catch(RestClientException e)
+		{
+			throw new ValidationException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		
+		throw new ResourceNotFoundException();
 		
 	}
 

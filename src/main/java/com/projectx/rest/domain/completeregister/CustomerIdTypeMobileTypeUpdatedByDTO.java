@@ -1,80 +1,65 @@
-package com.projectx.rest.domain.quickregister;
+package com.projectx.rest.domain.completeregister;
 
-import com.projectx.rest.domain.quickregister.AuthenticationDetailsKey;
+public class CustomerIdTypeMobileTypeUpdatedByDTO {
 
-public class UpdatePasswordMVCDTO {
-	
 	private Long customerId;
 	
 	private Integer customerType;
-
-	private String password;
-
-	private String requestedBy;
 	
-	public UpdatePasswordMVCDTO() {
+	private Integer mobileType;
+	
+	private String updatedBy;
+
+	public CustomerIdTypeMobileTypeUpdatedByDTO() {
 
 	}
 
-	public UpdatePasswordMVCDTO(Long customerId, Integer customerType,
-			String password, String requestedBy) {
+	public CustomerIdTypeMobileTypeUpdatedByDTO(Long customerId,
+			Integer customerType, Integer mobileType, String updatedBy) {
 		super();
 		this.customerId = customerId;
 		this.customerType = customerType;
-		this.password = password;
-		this.requestedBy = requestedBy;
+		this.mobileType = mobileType;
+		this.updatedBy = updatedBy;
 	}
-
-
-
 
 	public Long getCustomerId() {
 		return customerId;
 	}
 
-
-
 	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
-
-
 
 	public Integer getCustomerType() {
 		return customerType;
 	}
 
-
-
 	public void setCustomerType(Integer customerType) {
 		this.customerType = customerType;
 	}
 
-
-
-	public String getPassword() {
-		return password;
+	public Integer getMobileType() {
+		return mobileType;
 	}
 
-
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setMobileType(Integer mobileType) {
+		this.mobileType = mobileType;
 	}
 
-	public String getRequestedBy() {
-		return requestedBy;
+	public String getUpdatedBy() {
+		return updatedBy;
 	}
 
-	public void setRequestedBy(String requestedBy) {
-		this.requestedBy = requestedBy;
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 
 	@Override
 	public String toString() {
-		return "UpdatePasswordMVCDTO [customerId=" + customerId
-				+ ", customerType=" + customerType + ", password=" + password
-				+ ", requestedBy=" + requestedBy + "]";
+		return "CustomerIdTypeMobileTypeUpdatedByDTO [customerId=" + customerId
+				+ ", customerType=" + customerType + ", mobileType="
+				+ mobileType + ", updatedBy=" + updatedBy + "]";
 	}
 
 	@Override
@@ -86,9 +71,9 @@ public class UpdatePasswordMVCDTO {
 		result = prime * result
 				+ ((customerType == null) ? 0 : customerType.hashCode());
 		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
+				+ ((mobileType == null) ? 0 : mobileType.hashCode());
 		result = prime * result
-				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
+				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
 		return result;
 	}
 
@@ -100,7 +85,7 @@ public class UpdatePasswordMVCDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UpdatePasswordMVCDTO other = (UpdatePasswordMVCDTO) obj;
+		CustomerIdTypeMobileTypeUpdatedByDTO other = (CustomerIdTypeMobileTypeUpdatedByDTO) obj;
 		if (customerId == null) {
 			if (other.customerId != null)
 				return false;
@@ -111,19 +96,19 @@ public class UpdatePasswordMVCDTO {
 				return false;
 		} else if (!customerType.equals(other.customerType))
 			return false;
-		if (password == null) {
-			if (other.password != null)
+		if (mobileType == null) {
+			if (other.mobileType != null)
 				return false;
-		} else if (!password.equals(other.password))
+		} else if (!mobileType.equals(other.mobileType))
 			return false;
-		if (requestedBy == null) {
-			if (other.requestedBy != null)
+		if (updatedBy == null) {
+			if (other.updatedBy != null)
 				return false;
-		} else if (!requestedBy.equals(other.requestedBy))
+		} else if (!updatedBy.equals(other.updatedBy))
 			return false;
 		return true;
 	}
-
-
+	
+	
 	
 }

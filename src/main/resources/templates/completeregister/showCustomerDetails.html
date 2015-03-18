@@ -14,21 +14,21 @@
  
  				<tr>
  					<td></td>
- 					<td><form  action="/customer/editForm" method="post">
+ 					<td><form  action="#" th:action="@{/customer/editForm}" method="post">
                				<input id="entityId" name="entityId" type="hidden" th:value="${customerDetails.customerId}"/>
                				<input type="submit" value="Edit CustomerDetails" />
                			</form>
                		</td>
                		
                			<td></td>
- 					<td><form  action="/request/freightrequestByCustomer/requestForm" method="post">
+ 					<td><form  action="#" th:action="@{/request/freightrequestByCustomer/requestForm}" method="post">
                				<input id="entityId" name="entityId" type="hidden" th:value="${customerDetails.customerId}"/>
                				<input type="submit" value="Request a freight" />
                			</form>
                		</td>
  				
  						<td></td>
- 					<td><form  action="/request/freightrequestByCustomer/getByCustomerId" method="post">
+ 					<td><form  action="#" th:action="@{/request/freightrequestByCustomer/getByCustomerId}" method="post">
                				<input id="entityId" name="entityId" type="hidden" th:value="${customerDetails.customerId}"/>
                				<input type="submit" value="Show freight status" />
                			</form>
@@ -60,10 +60,11 @@
                     <td><p th:text="${customerDetails.mobile}"/>
                      <p th:if="${mobileVerificationDetailsPrimary.mobile != customerDetails.mobile and mobileVerificationDetailsPrimary.mobile!=null}" th:text="${mobileVerificationDetailsPrimary.mobile}"/>  
                     </td>
-               		<td><form id="sendSMS" th:if="${customerDetails.isMobileVerified==false or mobileVerificationDetailsPrimary.mobile != customerDetails.mobile and mobileVerificationDetailsPrimary.mobile!=null}"  action="/customer/sendMobileVerificationDetails" method="post">
+               		<td><form id="sendSMS" th:if="${mobileVerificationDetailsPrimary.mobile!=null and customerDetails.isMobileVerified==false or mobileVerificationDetailsPrimary.mobile != customerDetails.mobile }"  action="#" th:action="@{/customer/sendMobileVerificationDetails}" method="post">
                				<input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
     						<input id="customerType" name="customerType" type="hidden" th:value="1"/>
     						<input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
+    						<input id="updatedBy" name="updatedBy" type="hidden" value="CUST_ONLINE"/>
         					<input type="submit" value="Send Verification SMS" />
                		</form>
                		
@@ -71,11 +72,12 @@
          			      		
                		</td>
                		
-               		<td><form id ="verifyMobile" th:if="${customerDetails.isMobileVerified==false or mobileVerificationDetailsPrimary.mobile != customerDetails.mobile and mobileVerificationDetailsPrimary.mobile!=null}" action="/customer/verifyMobileDetails" method="post">
+               		<td><form id ="verifyMobile" th:if="${customerDetails.isMobileVerified==false or mobileVerificationDetailsPrimary.mobile != customerDetails.mobile and mobileVerificationDetailsPrimary.mobile!=null}" action="#" th:action="@{/customer/verifyMobileDetails}" method="post">
                				<input id="customerId" name="entityId" type="hidden" th:value="${customerDetails.customerId}"/>
     						<input id="customerType" name="entityType" type="hidden" th:value="1"/>
     						<input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
     						<input id="mobilePin" name="mobilePin" type="text"/>
+    						<input id="requestBy" name="requestBy" type="hidden" value="CUST_ONLINE"/>
         					<input type="submit" value="VerifyMobile" />
                		</form>
                		
@@ -88,11 +90,12 @@
                 <tr>
                     <td>Email:</td>
                     <td><p th:text="${customerDetails.email}"/>
-                     <p th:if="${customerDetails.email != emailVerificationDetails.email}" th:text="${emailVerificationDetails.email}"/> </td>
-               		<td><form id="sendEmail" th:if="${customerDetails.isEmailVerified==false or customerDetails.email != emailVerificationDetails.email and emailVerificationDetails.email!=null}" action="/customer/sendEmailVerificationDetails" method="post">
+                     <p th:if="${emailVerificationDetails.email!=null and customerDetails.email != emailVerificationDetails.email }" th:text="${emailVerificationDetails.email}"/> </td>
+               		<td><form id="sendEmail" th:if="${customerDetails.isEmailVerified==false or customerDetails.email != emailVerificationDetails.email and emailVerificationDetails.email!=null}" action="#" th:action="@{/customer/sendEmailVerificationDetails}" method="post">
                				<input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
     						<input id="customerType" name="customerType" type="hidden" th:value="1"/>
     						<input id="emailType" name="emailType" type="hidden" th:value="1"/>
+    						<input id="updatedBy" name="updatedBy" type="hidden" th:value="CUST_ONLINE"/>
         					<input type="submit" value="Send Verification Email" />
                		</form>
                		<p th:if="${emailVerificationStatus != null}" th:text="${emailVerificationStatus}"/>
@@ -232,10 +235,11 @@
                     <p th:if="${customerDetails.secondaryMobile!=mobileVerificationDetailsSeconadry.mobile and mobileVerificationDetailsSeconadry.mobile!=null}" th:text="${mobileVerificationDetailsSeconadry.mobile}"/> 
                     </td>
                     
-                    <td><form id="sendSMSSec" th:if="${(customerDetails.isSecondaryMobileVerified==false or customerDetails.secondaryMobile!=mobileVerificationDetailsSeconadry.mobile) and mobileVerificationDetailsSeconadry.mobile!=null} " action="/customer/sendMobileVerificationDetails" method="post">
+                    <td><form id="sendSMSSec" th:if="${(customerDetails.isSecondaryMobileVerified==false or customerDetails.secondaryMobile!=mobileVerificationDetailsSeconadry.mobile) and mobileVerificationDetailsSeconadry.mobile!=null} " action="#" th:action="@{/customer/sendMobileVerificationDetails}" method="post">
                				<input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
     						<input id="customerType" name="customerType" type="hidden" th:value="1"/>
     						<input id="mobileType" name="mobileType" type="hidden" th:value="2"/>
+    						<input id="updatedBy" name="updatedBy" type="hidden" value="CUST_ONLINE"/>
         					<input type="submit" value="Send Verification SMS" />
                		</form>
                		
@@ -244,11 +248,12 @@
                		
                		</td>
                		
-               		<td><form id="verifyMobileSec" th:if="${(customerDetails.isSecondaryMobileVerified==false or customerDetails.secondaryMobile!=mobileVerificationDetailsSeconadry.mobile) and mobileVerificationDetailsSeconadry.mobile!=null} " action="/customer/verifyMobileDetails" method="post">
+               		<td><form id="verifyMobileSec" th:if="${(customerDetails.isSecondaryMobileVerified==false or customerDetails.secondaryMobile!=mobileVerificationDetailsSeconadry.mobile) and mobileVerificationDetailsSeconadry.mobile!=null} " action="#" th:action="@{/customer/verifyMobileDetails}" method="post">
                				<input id="customerId" name="entityId" type="hidden" th:value="${customerDetails.customerId}"/>
     						<input id="customerType" name="entityType" type="hidden" th:value="1"/>
     						<input id="mobileType" name="mobileType" type="hidden" th:value="2"/>
     						<input id="mobilePin" name="mobilePin" type="text"/>
+    						<input id="requestBy" name="requestBy" type="hidden" value="CUST_ONLINE"/>
         					<input type="submit" value="VerifyMobile" />
                		</form>
                		
@@ -265,14 +270,15 @@
                     </td>
                </tr>
        
+       <!-- 
                 <tr>
-                    <!-- <td><p th:if="${documentDetails!=null and documentDetails.key !=null and documentDetails.key.documentName != null }" th:text="${documentDetails.key.documentName}"/></td>
+                     <td><p th:if="${documentDetails!=null and documentDetails.key !=null and documentDetails.key.documentName != null }" th:text="${documentDetails.key.documentName}"/></td>
                     <td> 
 						<object width="400" height="400" data="/document/1/1/DrivingLicense">
 						</object>
                     
                     </td>
-                     -->
+                    
                     <td>
                     	<p th:if="${documentDetails!=null}" th:text="${documentDetails.verificationStatus}"/>
                     </td>
@@ -302,7 +308,7 @@
     					</form>
                     </td>
                </tr>
-                
+          -->       
                                
          </table>
           <!-- 

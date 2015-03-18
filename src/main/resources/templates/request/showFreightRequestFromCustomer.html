@@ -32,13 +32,13 @@
  
 		<td>
 		
-		<form action="/request/freightrequestByCustomer/updateFrom" method="post">
+		<form action="#" th:action="@{/request/freightrequestByCustomer/updateFrom}" method="post">
 		<input type="hidden" name="entityId" id="entityId" th:value="${request.requestId}"/>
 		<input type="submit" value="Update"/>
 		
 		</form>
 		
-		<form action="/request/freightrequestByCustomer/deleteRequestById" method="post">
+		<form action="#" th:action="@{/request/freightrequestByCustomer/deleteRequestById}" method="post">
 		<input type="hidden" name="entityId" id="entityId" th:value="${request.requestId}"/>
 		<input type="submit" value="Delete"/>
 		

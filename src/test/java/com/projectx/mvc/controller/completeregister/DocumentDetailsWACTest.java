@@ -28,6 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.projectx.mvc.config.Application;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
+import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
 
 import static com.projectx.mvc.fixtures.completeregister.DocumentDetailsDataFixture.*;
@@ -68,9 +69,10 @@ public class DocumentDetailsWACTest {
 		
 		MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
 		
-		customerDetailsService.createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer());
+		CustomerDetailsDTO customerDetailsDTO=customerDetailsService.
+				createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer());
 		
-		customerDetailsService.merge(standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()));
+		customerDetailsService.merge(standardCustomerDetails(customerDetailsDTO));
 		
 		this.mockMvc.perform(
 				fileUpload("/document/save")
@@ -81,7 +83,7 @@ public class DocumentDetailsWACTest {
 											  
 											)
 			 .andDo(print())												
-	         .andExpect(view().name("showCustomerDetails"))
+	         .andExpect(view().name("completeregister/showCustomerDetails"))
 	         .andExpect(model().attributeExists("documentDetails"))
 			// .andExpect(model().attribute("documentDetails",hasProperty("key", is(standardDocumentKey()))))
 			 .andExpect(model().attribute("documentDetails",hasProperty("document", is("some xml".getBytes()))))

@@ -21,7 +21,9 @@ import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.mvc.util.validator.CustomerDetailsValidator;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.EntityIdDTO;
 import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
@@ -135,7 +137,7 @@ public class CustomerDetailsController {
 	
 	@RequestMapping(value="/sendMobileVerificationDetails",method=RequestMethod.POST)
 	@ResponseBody
-	public Boolean sendMobileVerificationDetails(@ModelAttribute CustomerIdTypeMobileTypeDTO customerIdTypeMobileDTO,Model model)
+	public Boolean sendMobileVerificationDetails(@ModelAttribute CustomerIdTypeMobileTypeUpdatedByDTO customerIdTypeMobileDTO,Model model)
 	{
 		Boolean result=customerDetailsService.sendMobileVerificationDetails(customerIdTypeMobileDTO);
 		
@@ -172,7 +174,7 @@ public class CustomerDetailsController {
 	
 	@RequestMapping(value="/sendEmailVerificationDetails",method=RequestMethod.POST)
 	@ResponseBody
-	public Boolean sendEmailVerificationDetails(@ModelAttribute CustomerIdTypeEmailTypeDTO customerIdTypeEmailDTO,Model model)
+	public Boolean sendEmailVerificationDetails(@ModelAttribute CustomerIdTypeEmailTypeUpdatedByDTO customerIdTypeEmailDTO,Model model)
 	{
 		Boolean result=customerDetailsService.sendEmailVerificationDetails(customerIdTypeEmailDTO);
 		

@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
 import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
 import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
@@ -30,9 +32,9 @@ public interface VendorDetailsService {
 	
 	Boolean verifyEmailDetails( VerifyEmailDTO verifyEmailDTO);
 	
-	Boolean sendMobileVerificationDetails(CustomerIdTypeMobileTypeDTO customerIdTypeMobileDTO);
+	Boolean sendMobileVerificationDetails(CustomerIdTypeMobileTypeUpdatedByDTO customerIdTypeMobileDTO);
 	
-	Boolean sendEmailVerificationDetails(CustomerIdTypeEmailTypeDTO customerIdTypeEmailDTO);
+	Boolean sendEmailVerificationDetails(CustomerIdTypeEmailTypeUpdatedByDTO customerIdTypeEmailDTO);
 	
 	Model initialiseShowVendorDetails(Long entityId,Model model);
 	

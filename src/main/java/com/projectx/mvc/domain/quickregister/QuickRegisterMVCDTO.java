@@ -32,6 +32,13 @@ public class QuickRegisterMVCDTO {
 		this.quickRegisterDTO = quickRegisterDTO;
 	}
 
-		
+	@Override
+	public String toString() {
+		return "QuickRegisterMVCDTO [quickRegisterDTO=" + quickRegisterDTO
+				+ "]";
+	}
+
+	
+	
 	
 }

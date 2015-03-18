@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.projectx.mvc.utils.ImageServlet;
+
 
 @ComponentScan(basePackages="com.projectx")
 @EnableAutoConfiguration
@@ -39,12 +39,6 @@ public class Application extends SpringBootServletInitializer {
        	RestTemplate restTemplate=new RestTemplate();
     
     	return restTemplate;
-    }
-    
-    @Bean
-    public ImageServlet getImage()
-    {
-    	return  new ImageServlet();
     }
     
     

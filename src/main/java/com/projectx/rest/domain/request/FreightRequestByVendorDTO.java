@@ -7,6 +7,9 @@ import java.util.Date;
 
 
 
+
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.projectx.mvc.util.serializer.JsonDateDeSerializer;
@@ -17,20 +20,25 @@ public class FreightRequestByVendorDTO {
 
 	private Long requestId;
 	
+	@NotNull
 	private String vehicleRegistrationNumber;
 	
+	@NotNull
 	private Integer source;
 	
+	@NotNull
 	private Integer destination;
 	
 	private Long driverId;
 	
+	@NotNull
 	private Date availableDate;
 	
 	private String availableTime;
 	
 	private Integer pickupRangeInKm;
 	
+	@NotNull
 	private Long vendorId;
 
 
@@ -41,6 +49,7 @@ public class FreightRequestByVendorDTO {
 	
 	private Date updateTime;
 	
+	@NotNull
 	private String updatedBy;
 	
 
@@ -256,11 +265,7 @@ public class FreightRequestByVendorDTO {
 				return false;
 		} else if (!driverId.equals(other.driverId))
 			return false;
-		if (insertTime == null) {
-			if (other.insertTime != null)
-				return false;
-		} else if (!insertTime.equals(other.insertTime))
-			return false;
+		
 		if (pickupRangeInKm == null) {
 			if (other.pickupRangeInKm != null)
 				return false;
@@ -280,11 +285,6 @@ public class FreightRequestByVendorDTO {
 			if (other.status != null)
 				return false;
 		} else if (!status.equals(other.status))
-			return false;
-		if (updateTime == null) {
-			if (other.updateTime != null)
-				return false;
-		} else if (!updateTime.equals(other.updateTime))
 			return false;
 		if (updatedBy == null) {
 			if (other.updatedBy != null)

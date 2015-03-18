@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +22,9 @@ import com.projectx.mvc.util.validator.DriverDetailsValidator;
 import com.projectx.mvc.util.validator.VendorDetailsValidator;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
 import com.projectx.rest.domain.completeregister.EntityIdDTO;
 import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
@@ -52,7 +53,6 @@ public class VendorDetailsController {
 	@RequestMapping(value="/createCustomerDetailsFromQuickRegisterEntity",method=RequestMethod.POST)
 	public String createCustomerDetailsFromQuickRegisterEntity(@ModelAttribute QuickRegisterDTO quickRegisterDTO,Model model)
 	{
-		//logger.
 		
 		VendorDetailsDTO vendorDetailsDTO=vendorDetailsService
 				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterDTO);
@@ -74,8 +74,6 @@ public class VendorDetailsController {
 		
 		vendorDetailsDTO=vendorDetailsService.intializeMetaData(vendorDetailsDTO);
 	
-		System.out.println(vendorDetailsDTO);
-				
 		VendorDetailsDTO newVendorDetailsDTO=vendorDetailsService
 				.update(vendorDetailsDTO);
 		
@@ -133,7 +131,7 @@ public class VendorDetailsController {
 	
 	@RequestMapping(value="/sendMobileVerificationDetails",method=RequestMethod.POST)
 	@ResponseBody
-	public Boolean sendMobileVerificationDetails(@ModelAttribute CustomerIdTypeMobileTypeDTO customerIdTypeMobileDTO,Model model)
+	public Boolean sendMobileVerificationDetails(@ModelAttribute CustomerIdTypeMobileTypeUpdatedByDTO customerIdTypeMobileDTO,Model model)
 	{
 		
 		Boolean result=vendorDetailsService.sendMobileVerificationDetails(customerIdTypeMobileDTO);
@@ -168,7 +166,7 @@ public class VendorDetailsController {
 	
 	@RequestMapping(value="/sendEmailVerificationDetails",method=RequestMethod.POST)
 	@ResponseBody
-	public Boolean sendEmailVerificationDetails(@ModelAttribute CustomerIdTypeEmailTypeDTO customerIdTypeEmailDTO,Model model)
+	public Boolean sendEmailVerificationDetails(@ModelAttribute CustomerIdTypeEmailTypeUpdatedByDTO customerIdTypeEmailDTO,Model model)
 	{
 		Boolean result=vendorDetailsService.sendEmailVerificationDetails(customerIdTypeEmailDTO);
 		

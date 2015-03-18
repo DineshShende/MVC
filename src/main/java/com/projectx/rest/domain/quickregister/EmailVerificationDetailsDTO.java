@@ -174,30 +174,15 @@ public class EmailVerificationDetailsDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		EmailVerificationDetailsDTO other = (EmailVerificationDetailsDTO) obj;
-		if (UpdateTime == null) {
-			if (other.UpdateTime != null)
-				return false;
-		} else if (Math.abs(UpdateTime.getTime()-other.UpdateTime.getTime())>10000)
-			return false;
 		if (emailHash == null) {
 			if (other.emailHash != null)
 				return false;
 		} else if (!emailHash.equals(other.emailHash))
 			return false;
-		if (emailHashSentTime == null) {
-			if (other.emailHashSentTime != null)
-				return false;
-		} else if (Math.abs(emailHashSentTime.getTime()-other.emailHashSentTime.getTime())>10000)
-			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
-			return false;
-		if (insertTime == null) {
-			if (other.insertTime != null)
-				return false;
-		} else if (Math.abs(insertTime.getTime()-other.insertTime.getTime())>10000)
 			return false;
 		if (key == null) {
 			if (other.key != null)

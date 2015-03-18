@@ -12,6 +12,7 @@ $(function(){
 	    customerId_par = $form.find('input[name="customerId"]').val(),
 	    customerType_par = $form.find('input[name="customerType"]').val(),
 	    mobileType_par = $form.find('input[name="mobileType"]').val(),
+	    updatedBy_par = $form.find('input[name="updatedBy"]').val(),
 	        url = $form.attr('action');
 
 	    /* Send the data using post */
@@ -19,7 +20,7 @@ $(function(){
 	    	customerId: customerId_par,
 	    	customerType: customerType_par,
 	    	mobileType : mobileType_par
-	        
+	    	updatedBy:updatedBy_par
 	    });
 
 	    /* Put the results in a div */
@@ -131,6 +132,7 @@ $(function(){
 	    customerId_par = $form.find('input[name="customerId"]').val(),
 	    customerType_par = $form.find('input[name="customerType"]').val(),
 	    emailType_par = $form.find('input[name="emailType"]').val(),
+	    updatedBy_par = $form.find('input[name="updatedBy"]').val(),
 	        url = $form.attr('action');
 
 	    /* Send the data using post */
@@ -138,6 +140,7 @@ $(function(){
 	    	customerId: customerId_par,
 	    	customerType: customerType_par,
 	    	emailType : emailType_par
+	    	updatedBy:updatedBy_par
 	        
 	    });
 

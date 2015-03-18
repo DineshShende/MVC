@@ -32,13 +32,14 @@ public class QuickRegisterEntity {
 	
 	private Integer customerType;
 	
+	private String  requestBy;
+	
 	public QuickRegisterEntity() {
 
 	}
 
-
 	public QuickRegisterEntity(String firstName, String lastName, String email,
-			Long mobile, Integer pin, Integer customerType) {
+			Long mobile, Integer pin, Integer customerType, String requestBy) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -46,7 +47,9 @@ public class QuickRegisterEntity {
 		this.mobile = mobile;
 		this.pin = pin;
 		this.customerType = customerType;
+		this.requestBy = requestBy;
 	}
+
 
 
 	public String getFirstName() {
@@ -116,14 +119,21 @@ public class QuickRegisterEntity {
 		this.customerType = customerType;
 	}
 
+	public String getRequestBy() {
+		return requestBy;
+	}
+
+	public void setRequestBy(String requestBy) {
+		this.requestBy = requestBy;
+	}
 
 	@Override
 	public String toString() {
 		return "QuickRegisterEntity [firstName=" + firstName + ", lastName="
 				+ lastName + ", email=" + email + ", mobile=" + mobile
-				+ ", pin=" + pin + ", customerType=" + customerType + "]";
+				+ ", pin=" + pin + ", customerType=" + customerType
+				+ ", requestBy=" + requestBy + "]";
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -138,9 +148,10 @@ public class QuickRegisterEntity {
 				+ ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
 		result = prime * result + ((pin == null) ? 0 : pin.hashCode());
+		result = prime * result
+				+ ((requestBy == null) ? 0 : requestBy.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -181,11 +192,14 @@ public class QuickRegisterEntity {
 				return false;
 		} else if (!pin.equals(other.pin))
 			return false;
+		if (requestBy == null) {
+			if (other.requestBy != null)
+				return false;
+		} else if (!requestBy.equals(other.requestBy))
+			return false;
 		return true;
 	}
 
-
-	
-	
+		
 	
 }

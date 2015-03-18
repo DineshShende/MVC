@@ -179,16 +179,6 @@ public class MobileVerificationDetailsDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		MobileVerificationDetailsDTO other = (MobileVerificationDetailsDTO) obj;
-		if (UpdateTime == null) {
-			if (other.UpdateTime != null)
-				return false;
-		} else if (Math.abs(UpdateTime.getTime()-other.UpdateTime.getTime())>10000)
-			return false;
-		if (insertTime == null) {
-			if (other.insertTime != null)
-				return false;
-		} else if (Math.abs(insertTime.getTime()-other.insertTime.getTime())>10000)
-			return false;
 		if (key == null) {
 			if (other.key != null)
 				return false;

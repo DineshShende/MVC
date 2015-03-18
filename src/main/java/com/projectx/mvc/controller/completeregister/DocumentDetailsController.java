@@ -106,7 +106,7 @@ public class DocumentDetailsController {
 	
 	@RequestMapping(value="/updateDocument",method=RequestMethod.POST)
 	public String updateDocument(@RequestParam("customerId") Long customerId,@RequestParam("customerType") Integer customerType,
-			@RequestParam("documentName") String documentName,
+			@RequestParam("documentName") String documentName,@RequestParam("requestedBy") String requestedBy,
             @RequestParam("file") MultipartFile file,Model model)
 	{
 		
@@ -116,7 +116,7 @@ public class DocumentDetailsController {
                 DocumentDetails documentDetails=documentDetailsService.initializeDocumentDetails(customerId, customerType, documentName, file);
                 
                 UpdateDocumentDTO updateDocumentDTO=
-                		new UpdateDocumentDTO(documentDetails.getKey(), documentDetails.getDocument(), documentDetails.getContentType());
+                		new UpdateDocumentDTO(documentDetails.getKey(), documentDetails.getDocument(), documentDetails.getContentType(),requestedBy);
                 
                 documentDetails=documentDetailsService.updateDocument(updateDocumentDTO);
                 
@@ -148,14 +148,15 @@ public class DocumentDetailsController {
 	
 	@RequestMapping(value="/updateVerificationStatusRemark",method=RequestMethod.POST)
 	public String updateVerificationStatusRemark(@RequestParam("customerId") Long customerId,@RequestParam("customerType") Integer customerType,
-			@RequestParam("documentName") String documentName,
-            @RequestParam("verificationStatus") Integer verificationStatus,@RequestParam("verificationRemark") String verificationRemark,Model model)
+			@RequestParam("documentName") String documentName,@RequestParam("verificationStatus") Integer verificationStatus,
+			@RequestParam("verificationRemark") String verificationRemark,@RequestParam("requestedBy") String requestedBy,
+            Model model)
 	{
 		
                 DocumentKey key=new DocumentKey(customerId, customerType, documentName);
                         
                 UpdateDocumentVerificationStatusAndRemarkDTO dto=
-                		new UpdateDocumentVerificationStatusAndRemarkDTO(key, verificationStatus, verificationRemark);
+                		new UpdateDocumentVerificationStatusAndRemarkDTO(key, verificationStatus, verificationRemark,requestedBy);
                 
                DocumentDetails documentDetails=documentDetailsService.updateDocumentVerificationDetails(dto);
                 

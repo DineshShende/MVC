@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.projectx.mvc.config.BasicConfig;
 import com.projectx.mvc.domain.request.FreightRequestByCustomer;
+import com.projectx.mvc.exception.repository.completeregister.ValidationFailedException;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.rest.domain.request.FreightRequestByCustomerDTO;
 import com.projectx.rest.domain.request.FreightRequestByVendorDTO;
@@ -167,8 +168,24 @@ public class FreightRequestByCustomerServiceTest {
 		
 		FreightRequestByVendorDTO testRequest=freightRequestByVendorService.save(standardFreightRequestByVendor());
 		
-		//assertEquals(3, freightRequestByCustomerService.getCustmerReqForVendorReq(testRequest).size());
+		freightRequestByCustomerService.getCustmerReqForVendorReq(standardFreightRequestByVendor());
+		
+		
 
+	}
+	
+	@Test
+	public void getCustmerReqForVendorReqWithError()
+	{
+		try{
+			freightRequestByCustomerService.getCustmerReqForVendorReq(standardFreightRequestByVendorWithError());
+			assertEquals(0, 1);
+		}catch(ValidationFailedException e)
+		{
+			assertEquals(0, 0);
+		}
+		
+		
 	}
 
 }

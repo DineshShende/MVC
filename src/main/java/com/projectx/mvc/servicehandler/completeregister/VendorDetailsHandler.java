@@ -14,11 +14,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.projectx.mvc.exception.repository.completeregister.DriverDetailsAlreadyPresentException;
 import com.projectx.mvc.exception.repository.completeregister.DriverDetailsNotFoundException;
 import com.projectx.mvc.exception.repository.completeregister.DriverDetailsUpdateFailedException;
+import com.projectx.mvc.exception.repository.completeregister.ResourceAlreadyPresentException;
+import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
+import com.projectx.mvc.exception.repository.completeregister.ValidationFailedException;
 import com.projectx.mvc.exception.repository.completeregister.VehicleDetailsNotFoundException;
 import com.projectx.mvc.exception.repository.completeregister.VendorDetailsNotFoundException;
 import com.projectx.mvc.exception.repository.completeregister.VendorDetailsTransactionalUpdateFailedException;
@@ -26,7 +30,9 @@ import com.projectx.mvc.exception.repository.quickregister.DeleteQuickCreateDeta
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
 import com.projectx.rest.domain.completeregister.DriverList;
 import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
@@ -38,12 +44,8 @@ import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 
-
-
-
-
 @Component
-@Profile(value="Dev")
+@Profile(value={"Dev","Prod"})
 @PropertySource(value="classpath:/application.properties")
 public class VendorDetailsHandler implements VendorDetailsService {
 
@@ -65,11 +67,31 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	@Override
 	public VendorDetailsDTO createCustomerDetailsFromQuickRegisterEntity(
 			QuickRegisterDTO quickRegisterEntity) {
+		
+		if(quickRegisterEntity.getInsertTime()==null)
+			quickRegisterEntity.setInsertTime(new Date());
+			
+		if(quickRegisterEntity.getUpdateTime()==null)	
+			quickRegisterEntity.setUpdateTime(new Date());
+		
+		if(quickRegisterEntity.getEmail()!=null && quickRegisterEntity.getIsEmailVerified()==null)
+			quickRegisterEntity.setIsEmailVerified(false);
+		
+		if(quickRegisterEntity.getMobile()!=null && quickRegisterEntity.getIsMobileVerified()==null)
+			quickRegisterEntity.setIsMobileVerified(false);
 	
 		HttpEntity<QuickRegisterDTO> entity=new HttpEntity<QuickRegisterDTO>(quickRegisterEntity);
 		
-		ResponseEntity<VendorDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/createFromQuickRegister",
-				HttpMethod.POST, entity, VendorDetailsDTO.class);
+		ResponseEntity<VendorDetailsDTO> result=null;
+		
+		try{
+			result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/createFromQuickRegister",
+					HttpMethod.POST, entity, VendorDetailsDTO.class);
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
 		
 		if(result.getStatusCode()==HttpStatus.OK)
 			return result.getBody();
@@ -81,11 +103,24 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	@Override
 	public VendorDetailsDTO update(VendorDetailsDTO vendorDetails) {
 		
+		if(vendorDetails.getEmail()!=null && vendorDetails.getIsEmailVerified()==null)
+			vendorDetails.setIsEmailVerified(false);
+		
+		if(vendorDetails.getMobile()!=null && vendorDetails.getIsMobileVerified()==null)
+			vendorDetails.setIsMobileVerified(false);
+		
 		HttpEntity<VendorDetailsDTO> entity=new HttpEntity<VendorDetailsDTO>(vendorDetails);
 		
-		ResponseEntity<VendorDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/update",
-				HttpMethod.POST, entity, VendorDetailsDTO.class);
+		ResponseEntity<VendorDetailsDTO> result=null;
 		
+		try{
+			result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/update",
+					HttpMethod.POST, entity, VendorDetailsDTO.class);
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+				
 		if(result.getStatusCode()==HttpStatus.OK)		
 			return result.getBody();
 		else
@@ -111,42 +146,102 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	@Override
 	public Boolean verifyMobileDetails(VerifyMobileDTO verifyMobileDTO) {
 
-		Boolean status=restTemplate
-				.postForObject(env.getProperty("rest.host")+"/vendor/verifyMobileDetails", verifyMobileDTO, Boolean.class);
+		HttpEntity<VerifyMobileDTO> entity=new HttpEntity<VerifyMobileDTO>(verifyMobileDTO);
 		
-		return status;
+		ResponseEntity<Boolean> result=null;
+		
+		try{
+			result=restTemplate
+					.exchange(env.getProperty("rest.host")+"/vendor/verifyMobileDetails",HttpMethod.POST, entity, Boolean.class);
+			
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		
+		throw new ResourceNotFoundException();
 		
 	}
 
 	@Override
 	public Boolean verifyEmailDetails(VerifyEmailDTO verifyEmailDTO) {
 	
-		Boolean status=restTemplate
-				.postForObject(env.getProperty("rest.host")+"/vendor/verifyEmailDetails", verifyEmailDTO, Boolean.class);
 		
-		return status;
+		HttpEntity<VerifyEmailDTO> entity=new HttpEntity<VerifyEmailDTO>(verifyEmailDTO);
+		
+		ResponseEntity<Boolean> result=null;
+		
+		try{
+			result=restTemplate
+					.exchange(env.getProperty("rest.host")+"/vendor/verifyEmailDetails",HttpMethod.POST, entity, Boolean.class);
+			
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		
+		throw new ResourceNotFoundException();
+		
+		
 		
 	}
 
 	@Override
 	public Boolean sendMobileVerificationDetails(
-			CustomerIdTypeMobileTypeDTO customerIdTypeMobileDTO) {
+			CustomerIdTypeMobileTypeUpdatedByDTO customerIdTypeMobileDTO) {
+	
 		
-		Boolean status=restTemplate
-				.postForObject(env.getProperty("rest.host")+"/vendor/sendMobileVerificationDetails", customerIdTypeMobileDTO, Boolean.class);
+		HttpEntity<CustomerIdTypeMobileTypeUpdatedByDTO> entity=new HttpEntity<CustomerIdTypeMobileTypeUpdatedByDTO>(customerIdTypeMobileDTO);
 		
-		return status;
+		ResponseEntity<Boolean> result=null;
+		
+		try{
+			result=restTemplate
+					.exchange(env.getProperty("rest.host")+"/vendor/sendMobileVerificationDetails",HttpMethod.POST, entity, Boolean.class);
+			
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		
+		throw new ResourceNotFoundException();
+	
+		
 
 	}
 
 	@Override
 	public Boolean sendEmailVerificationDetails(
-			CustomerIdTypeEmailTypeDTO customerIdTypeEmailDTO) {
+			CustomerIdTypeEmailTypeUpdatedByDTO customerIdTypeEmailDTO) {
 
-		Boolean status=restTemplate
-				.postForObject(env.getProperty("rest.host")+"/vendor/sendEmailVerificationDetails", customerIdTypeEmailDTO, Boolean.class);
 		
-		return status;
+		HttpEntity<CustomerIdTypeEmailTypeUpdatedByDTO> entity=new HttpEntity<CustomerIdTypeEmailTypeUpdatedByDTO>(customerIdTypeEmailDTO);
+		
+		ResponseEntity<Boolean> result=null;
+		
+		try{
+			result=restTemplate
+					.exchange(env.getProperty("rest.host")+"/vendor/sendEmailVerificationDetails",HttpMethod.POST, entity, Boolean.class);
+			
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		
+		throw new ResourceNotFoundException();
+	
 		
 	}
 
@@ -182,7 +277,8 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		if(vendorDetails.getInsertTime()==null)
 			vendorDetails.setInsertTime(new Date());
 		
-		
+		if(vendorDetails.getEmail().equals(""))
+			vendorDetails.setEmail(null);
 		
 		if(vendorDetails.getFirmAddress()!=null)
 		{
@@ -205,11 +301,30 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	@Override
 	public Model initialiseShowVendorDetails(Long entityId, Model model) {
 		
-		EmailVerificationDetailsDTO emailVerificationDetails=quickRegisterService
-				.getEmailVerificationDetailsByCustomerIdTypeAndEmail(entityId,ENTITY_TYPE_VENDOR , ENTITY_TYPE_PRIMARY);
 		
-		MobileVerificationDetailsDTO mobileVerificationDetailsPrimary=quickRegisterService
-				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(entityId, ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY);
+		
+		EmailVerificationDetailsDTO emailVerificationDetails=null;
+		
+		try{
+			emailVerificationDetails=quickRegisterService
+					.getEmailVerificationDetailsByCustomerIdTypeAndEmail(entityId,ENTITY_TYPE_VENDOR , ENTITY_TYPE_PRIMARY);
+		}catch(ResourceNotFoundException e)
+		{
+			emailVerificationDetails=new EmailVerificationDetailsDTO();
+		}
+		
+		
+		MobileVerificationDetailsDTO mobileVerificationDetailsPrimary;
+		
+		try{
+			mobileVerificationDetailsPrimary=quickRegisterService
+					.getMobileVerificationDetailsByCustomerIdTypeAndMobile(entityId, ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY);
+			
+		}catch(ResourceNotFoundException e)
+		{
+			mobileVerificationDetailsPrimary=new MobileVerificationDetailsDTO();
+		}
+		
 		
 		
 		model.addAttribute("emailVerificationDetails", emailVerificationDetails);
@@ -224,10 +339,30 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	@Override
 	public DriverDetailsDTO addDriver(DriverDetailsDTO driverDetailsDTO) {
 	
+		driverDetailsDTO.setInsertTime(new Date());
+		
+		driverDetailsDTO.setUpdateTime(new Date());
+		
+		driverDetailsDTO.getHomeAddress().setInsertTime(new Date());
+		
+		driverDetailsDTO.getHomeAddress().setUpdateTime(new Date());
+		
+		driverDetailsDTO.setIsMobileVerified(false);
+		
+		driverDetailsDTO.getHomeAddress().setUpdatedBy(driverDetailsDTO.getUpdatedBy());
+		
 		HttpEntity<DriverDetailsDTO> entity=new HttpEntity<DriverDetailsDTO>(driverDetailsDTO);
 		
-		ResponseEntity<DriverDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/driver", HttpMethod.POST,
-				entity, DriverDetailsDTO.class);
+		ResponseEntity<DriverDetailsDTO> result=null;
+		
+		try{
+			result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/driver", HttpMethod.POST,
+					entity, DriverDetailsDTO.class);
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
 		
 		if(result.getStatusCode()==HttpStatus.CREATED)		
 			return result.getBody();
@@ -239,10 +374,33 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	@Override
 	public DriverDetailsDTO update(DriverDetailsDTO driverDetailsDTO) {
 		
+		if(driverDetailsDTO.getInsertTime()==null)
+			driverDetailsDTO.setInsertTime(new Date());
+		
+		driverDetailsDTO.setUpdateTime(new Date());
+		
+		if(driverDetailsDTO.getHomeAddress().getInsertTime()==null)
+			driverDetailsDTO.getHomeAddress().setInsertTime(new Date());
+		
+		driverDetailsDTO.getHomeAddress().setUpdateTime(new Date());
+		
+		driverDetailsDTO.getHomeAddress().setUpdatedBy(driverDetailsDTO.getUpdatedBy());
+		
+		if(driverDetailsDTO.getIsMobileVerified()==null)
+		driverDetailsDTO.setIsMobileVerified(false);
+		
 		HttpEntity<DriverDetailsDTO> entity=new HttpEntity<DriverDetailsDTO>(driverDetailsDTO);
 		
-		ResponseEntity<DriverDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/driver/update", HttpMethod.POST,
-				entity, DriverDetailsDTO.class);
+		ResponseEntity<DriverDetailsDTO> result=null;
+		
+		try{
+			result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/driver/update", HttpMethod.POST,
+					entity, DriverDetailsDTO.class);
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
 		
 		if(result.getStatusCode()==HttpStatus.OK)	
 			return result.getBody();
@@ -310,12 +468,28 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	@Override
 	public VehicleDetailsDTO save(VehicleDetailsDTO vehicleDetailsDTO) {
 		
-	
-		VehicleDetailsDTO status=restTemplate
-				.postForObject(env.getProperty("rest.host")+"/vendor/vehicle", vehicleDetailsDTO, VehicleDetailsDTO.class);
+		if(vehicleDetailsDTO.getInsertTime()==null)
+			vehicleDetailsDTO.setInsertTime(new Date());
 		
-		return status;
+		vehicleDetailsDTO.setUpdateTime(new Date());
 		
+		HttpEntity<VehicleDetailsDTO> entity=new HttpEntity<VehicleDetailsDTO>(vehicleDetailsDTO);
+		
+		ResponseEntity<VehicleDetailsDTO> result=null;
+		
+		try{
+			result=restTemplate
+					.exchange(env.getProperty("rest.host")+"/vendor/vehicle",HttpMethod.POST, entity, VehicleDetailsDTO.class);
+			
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.CREATED)
+			return result.getBody();
+		
+		throw new ResourceAlreadyPresentException(); 
 
 	}
 

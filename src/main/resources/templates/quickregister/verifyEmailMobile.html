@@ -16,19 +16,22 @@
     
        
     
-    <form action="/quickregister/verifyMobilePin" method="post" >
+    <form action="#" th:action="@{/quickregister/verifyMobilePin}" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
     <input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
+    <input id="requestBy" name="requestBy" type="hidden" value="CUST_ONLINE"/>
     Enter verification Pin:<input id="mobilePin" name="mobilePin" type="text"/>
+    
     
     <input type="submit" value="Submit" />
     </form> 
           
     
-    <form id="sendSMS" action="/quickregister/resendMobilePin" method="post" >
+    <form id="sendSMS" action="#" th:action="@{/quickregister/resendMobilePin}" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
+    <input id="updatedBy" name="updatedBy" type="hidden" value="CUST_ONLINE"/>
     <input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
     
     <input type="submit" value="Resend Pin" />       
@@ -36,10 +39,11 @@
     <p th:if="${smsSentStatus != null}" th:text="${smsSentStatus}"/>
 	<div id="smsSentStatus"></div>    
     
-    <form id="sendEmail" action="/quickregister/resendEmailHash" method="post" >
+    <form id="sendEmail" action="#" th:action="@{/quickregister/resendEmailHash}" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
     <input id="emailType" name="emailType" type="hidden" th:value="1"/>
+    <input id="updatedBy" name="updatedBy" type="hidden" value="CUST_ONLINE"/>
     
     <input type="submit" value="Resend Email" />       
     </form>

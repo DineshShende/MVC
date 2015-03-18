@@ -6,6 +6,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -51,11 +52,16 @@ import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.mvc.util.validator.QuickRegisterEntityValidator;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
+import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailOrMobileOptionUpdatedBy;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.quickregister.CustomerIdTypeUpdatedBy;
+import com.projectx.rest.domain.quickregister.ForgetPasswordEntity;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterStatusDTO;
@@ -185,7 +191,7 @@ public class QuickRegisterController {
 	
 	@RequestMapping(value="/verifyEmailHash/{customerId}/{customerType}/{emailType}/{updatedBy}/{emailHash}",method=RequestMethod.GET)
 	public String verifyEmailHash(@PathVariable Long customerId,@PathVariable Integer customerType, @PathVariable Integer emailType,@PathVariable String emailHash
-			,String updatedBy,Model model)
+			,@PathVariable String updatedBy,Model model)
 	{
 		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId,customerType,emailType, emailHash,updatedBy);
 		
@@ -215,7 +221,7 @@ public class QuickRegisterController {
 	
 	@RequestMapping(value="/resendMobilePin",method=RequestMethod.POST)
 	@ResponseBody
-	public String resendMobilePin(@ModelAttribute CustomerIdTypeMobileTypeDTO mobileDTO,Model model)
+	public String resendMobilePin(@ModelAttribute CustomerIdTypeMobileTypeUpdatedByDTO mobileDTO,Model model)
 	{
 		Boolean result=customerQuickRegisterService.reSendMobilePin(mobileDTO);
 		String status=null;
@@ -232,7 +238,7 @@ public class QuickRegisterController {
 	
 	@RequestMapping(value="/resendEmailHash",method=RequestMethod.POST)
 	@ResponseBody
-	public String resendEmailHash(@ModelAttribute CustomerIdTypeEmailTypeDTO mobileDTO,Model model)
+	public String resendEmailHash(@ModelAttribute CustomerIdTypeEmailTypeUpdatedByDTO mobileDTO,Model model)
 	{
 		Boolean result=customerQuickRegisterService.reSendEmailHash(mobileDTO);
 		
@@ -385,9 +391,10 @@ public class QuickRegisterController {
 	
 	@RequestMapping(value="/resetPassword",method=RequestMethod.POST)
 	@ResponseBody
-	public String resetPassword(@ModelAttribute CustomerIdTypeDTO customerIdDTO)
+	public String resetPassword(@ModelAttribute CustomerIdTypeEmailOrMobileOptionUpdatedBy customerIdDTO)
 	{
-		Boolean result=customerQuickRegisterService.resetPassword(customerIdDTO.getCustomerId(),customerIdDTO.getCustomerType());
+		Boolean result=customerQuickRegisterService.resetPassword(customerIdDTO.getCustomerId(),
+				customerIdDTO.getCustomerType(),customerIdDTO.getEmailOrMobile(),customerIdDTO.getUpdatedBy());
 		
 		if(result)
 			return "sucess";
@@ -405,14 +412,29 @@ public class QuickRegisterController {
 	public String resetPasswordRedirect(@ModelAttribute ResetPasswordRedirectDTO resetPasswordRedirectDTO,Model model)
 	{
 		
-		QuickRegisterDTO fetchedResult=customerQuickRegisterService.resetPasswordRedirect(resetPasswordRedirectDTO.getEntity());
+		ForgetPasswordEntity fetchedResult=customerQuickRegisterService
+				.resetPasswordRedirect(resetPasswordRedirectDTO.getEntity(),resetPasswordRedirectDTO.getRequestedBy());
+		
+		QuickRegisterDTO quickRegisterDTO=new QuickRegisterDTO(fetchedResult.getCustomerId(), null, null, 
+				fetchedResult.getEmail(), fetchedResult.getMobile(), null,
+				fetchedResult.getCustomerType(), fetchedResult.getIsEmailVerified(), fetchedResult.getIsMobileVerified(),
+				null, new Date(), null);
 		
 		if(fetchedResult.getCustomerId()!=null)
 		{
 			
-			customerQuickRegisterDTO.setQuickRegisterDTO(fetchedResult);			
+			if(fetchedResult.getIsPasswordSent())
+			{
+				return "quickregister/loginForm";
+			}
+			else
+			{
+				model.addAttribute("customerQuickRegisterDTO", quickRegisterDTO);
+			
+				//customerQuickRegisterDTO.setQuickRegisterDTO(quickRegisterDTO);			
 					
-			return "quickregister/alreadyRegistered";
+				return "quickregister/alreadyRegistered";
+			}
 			
 		}
 		else
@@ -422,63 +444,13 @@ public class QuickRegisterController {
 		}
 		
 	}
-		
-	@RequestMapping(value="/email",method=RequestMethod.GET)
-	public String email()
+
+	@RequestMapping(value="/getTestData",method=RequestMethod.GET)
+	public String getTestData(Model model)
 	{
-		return "email";
+		model.addAttribute("list", customerQuickRegisterService.getTestData());
+		
+		return "showTestData";
 	}
-	
-	@RequestMapping(value="/sendEmailAsync",method=RequestMethod.POST)
-	@ResponseBody
-	public Boolean sendEmailAsync(@ModelAttribute EmailMessageDTO emailMessageDTO1,Model model)
-	{
-		DeferredResult<Boolean> resultObject=new DeferredResult<Boolean>();
-		
-		AsyncRestTemplate asyncRestTemplate=new AsyncRestTemplate();
-				
-		EmailMessageDTO emailMessageDTO=new EmailMessageDTO(emailMessageDTO1.getEmail(),emailMessageDTO1.getMessage());
-		
-		HttpEntity<EmailMessageDTO> emailMessage=new HttpEntity<EmailMessageDTO>(emailMessageDTO);
-		
-		ListenableFuture<ResponseEntity<Integer>>		
-		 status=asyncRestTemplate.exchange(env.getProperty("async.host")+"/sendVerificationDetails/sendEmailAsync", HttpMethod.POST,
-				 emailMessage, Integer.class);
-		 
-		 //restTemplate.postForObject(env.getProperty("async.url")+"/sendVerificationDetails/sendEmailAsync", emailMessageDTO, Integer.class);
-		
-		BooleanStatus booleanStatus=new BooleanStatus(false);
-	
-		 
-		status.addCallback(new ListenableFutureCallback<ResponseEntity<Integer>>() {
 
-			@Override
-			public void onSuccess(ResponseEntity<Integer> result) {
-				
-				if(result.getBody().equals(new Integer(2)))
-				{
-					System.out.println("Email Sent asynchronously");
-					booleanStatus.setStatus(true);
-					resultObject.setResult(true);
-					
-				}	
-				
-			}
-
-			@Override
-			public void onFailure(Throwable t) {
-
-				System.out.println("Email Failed asynchronously");			
-				booleanStatus.setStatus(false);
-				resultObject.setResult(false);
-			}
-
-
-		});
-	
-		model.addAttribute("emailSent", booleanStatus.getStatus());
-		
-		return booleanStatus.getStatus();
-
-	}
 }

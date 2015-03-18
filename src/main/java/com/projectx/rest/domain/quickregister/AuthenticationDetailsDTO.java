@@ -30,16 +30,20 @@ public class AuthenticationDetailsDTO {
 	private Date UpdateTime;
 	
 	private String updatedBy;
+	
+	private Boolean isCompleteRegisterCompleted;
 
 	public AuthenticationDetailsDTO() {
 
 	}
 
+	
+
 	public AuthenticationDetailsDTO(AuthenticationDetailsKey key, String email,
 			Long mobile, String password, String passwordType,
 			String emailPassword, Integer resendCount,
 			Integer lastUnsucessfullAttempts, Date insertTime, Date updateTime,
-			String updatedBy) {
+			String updatedBy, Boolean isCompleteRegisterCompleted) {
 		super();
 		this.key = key;
 		this.email = email;
@@ -52,7 +56,10 @@ public class AuthenticationDetailsDTO {
 		this.insertTime = insertTime;
 		UpdateTime = updateTime;
 		this.updatedBy = updatedBy;
+		this.isCompleteRegisterCompleted = isCompleteRegisterCompleted;
 	}
+
+
 
 	public AuthenticationDetailsKey getKey() {
 		return key;
@@ -147,16 +154,30 @@ public class AuthenticationDetailsDTO {
 		this.updatedBy = updatedBy;
 	}
 
+	
+	public Boolean getIsCompleteRegisterCompleted() {
+		return isCompleteRegisterCompleted;
+	}
+
+	public void setIsCompleteRegisterCompleted(Boolean isCompleteRegisterCompleted) {
+		this.isCompleteRegisterCompleted = isCompleteRegisterCompleted;
+	}
+
+
+
 	@Override
 	public String toString() {
-		return "AuthenticationDetails [key=" + key + ", email=" + email
+		return "AuthenticationDetailsDTO [key=" + key + ", email=" + email
 				+ ", mobile=" + mobile + ", password=" + password
 				+ ", passwordType=" + passwordType + ", emailPassword="
 				+ emailPassword + ", resendCount=" + resendCount
 				+ ", lastUnsucessfullAttempts=" + lastUnsucessfullAttempts
 				+ ", insertTime=" + insertTime + ", UpdateTime=" + UpdateTime
-				+ ", updatedBy=" + updatedBy + "]";
+				+ ", updatedBy=" + updatedBy + ", isCompleteRegisterCompleted="
+				+ isCompleteRegisterCompleted + "]";
 	}
+
+
 
 	@Override
 	public int hashCode() {
@@ -169,6 +190,10 @@ public class AuthenticationDetailsDTO {
 				+ ((emailPassword == null) ? 0 : emailPassword.hashCode());
 		result = prime * result
 				+ ((insertTime == null) ? 0 : insertTime.hashCode());
+		result = prime
+				* result
+				+ ((isCompleteRegisterCompleted == null) ? 0
+						: isCompleteRegisterCompleted.hashCode());
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
 		result = prime
 				* result
@@ -186,6 +211,8 @@ public class AuthenticationDetailsDTO {
 		return result;
 	}
 
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -198,7 +225,7 @@ public class AuthenticationDetailsDTO {
 		if (UpdateTime == null) {
 			if (other.UpdateTime != null)
 				return false;
-		} else if (Math.abs(UpdateTime.getTime()-other.UpdateTime.getTime())>10000)//!UpdateTime.equals(other.UpdateTime)
+		} else if (!UpdateTime.equals(other.UpdateTime))
 			return false;
 		if (email == null) {
 			if (other.email != null)
@@ -213,7 +240,13 @@ public class AuthenticationDetailsDTO {
 		if (insertTime == null) {
 			if (other.insertTime != null)
 				return false;
-		} else if (Math.abs(insertTime.getTime()-other.insertTime.getTime())>10000)
+		} else if (!insertTime.equals(other.insertTime))
+			return false;
+		if (isCompleteRegisterCompleted == null) {
+			if (other.isCompleteRegisterCompleted != null)
+				return false;
+		} else if (!isCompleteRegisterCompleted
+				.equals(other.isCompleteRegisterCompleted))
 			return false;
 		if (key == null) {
 			if (other.key != null)
@@ -253,6 +286,8 @@ public class AuthenticationDetailsDTO {
 			return false;
 		return true;
 	}
+
+
 
 
 	

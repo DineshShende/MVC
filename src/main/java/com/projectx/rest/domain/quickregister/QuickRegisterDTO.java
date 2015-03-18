@@ -245,11 +245,6 @@ private Long customerId;
 				return false;
 		} else if (!firstName.equals(other.firstName))
 			return false;
-		if (insertTime == null) {
-			if (other.insertTime != null)
-				return false;
-		} else if (Math.abs(insertTime.getTime()-other.insertTime.getTime())>100000)
-			return false;
 		if (isEmailVerified == null) {
 			if (other.isEmailVerified != null)
 				return false;
@@ -274,11 +269,6 @@ private Long customerId;
 			if (other.pincode != null)
 				return false;
 		} else if (!pincode.equals(other.pincode))
-			return false;
-		if (updateTime == null) {
-			if (other.updateTime != null)
-				return false;
-		} else if (Math.abs(updateTime.getTime()-other.updateTime.getTime())>100000)
 			return false;
 		if (updatedBy == null) {
 			if (other.updatedBy != null)

@@ -393,11 +393,6 @@ public class FreightRequestByCustomerDTO {
 				return false;
 		} else if (!height.equals(other.height))
 			return false;
-		if (insertTime == null) {
-			if (other.insertTime != null)
-				return false;
-		} else if (!insertTime.equals(other.insertTime))
-			return false;
 		if (isFullTruckLoad == null) {
 			if (other.isFullTruckLoad != null)
 				return false;
@@ -428,11 +423,6 @@ public class FreightRequestByCustomerDTO {
 				return false;
 		} else if (!pickupDate.equals(other.pickupDate))
 			return false;
-		if (pickupTime == null) {
-			if (other.pickupTime != null)
-				return false;
-		} else if (!pickupTime.equals(other.pickupTime))
-			return false;
 		if (requestId == null) {
 			if (other.requestId != null)
 				return false;
@@ -447,11 +437,6 @@ public class FreightRequestByCustomerDTO {
 			if (other.status != null)
 				return false;
 		} else if (!status.equals(other.status))
-			return false;
-		if (updateTime == null) {
-			if (other.updateTime != null)
-				return false;
-		} else if (!updateTime.equals(other.updateTime))
 			return false;
 		if (updatedBy == null) {
 			if (other.updatedBy != null)

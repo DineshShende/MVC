@@ -142,6 +142,7 @@ public class QuickRegisterStandAloneTest {
 				post("/quickregister/updatePassword").param("key.customerId",Long.toString(CUST_ID))
 												.param("key.customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
 											   .param("password", CUST_PASSWORD_CHANGED)
+											   .param("requestedBy", "CUST_ONLINE")
 											   											  
 											)
 				.andDo(print())

@@ -15,10 +15,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.projectx.mvc.config.BasicConfig;
+import com.projectx.mvc.exception.repository.completeregister.ValidationFailedException;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
 import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
 import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
@@ -242,7 +245,8 @@ public class VendorDetailsServiceTest {
 		assertEquals(1,vendorDetailsService.count().intValue());
 	
 		assertTrue(vendorDetailsService
-				.sendMobileVerificationDetails(new CustomerIdTypeMobileTypeDTO(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY)));
+				.sendMobileVerificationDetails(new CustomerIdTypeMobileTypeUpdatedByDTO(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR,
+						ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY)));
 	}
 	
 	
@@ -274,7 +278,8 @@ public class VendorDetailsServiceTest {
 	
 		
 		assertTrue(customerDetailsService
-				.sendEmailVerificationDetails(new CustomerIdTypeEmailTypeDTO(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY)));
+				.sendEmailVerificationDetails(new CustomerIdTypeEmailTypeUpdatedByDTO(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR, 
+						ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY)));
 	}
 
 	
@@ -301,6 +306,25 @@ public class VendorDetailsServiceTest {
 		assertEquals(1, vendorDetailsService.driverCount().intValue());
 	}
 
+	
+	@Test
+	public void addDriverWithError()
+	{
+		
+		assertEquals(0, vendorDetailsService.driverCount().intValue());
+		
+		DriverDetailsDTO savedEntity=null;
+		try{
+			savedEntity=vendorDetailsService.addDriver(standardDriverDetailsWithError());
+		}catch(ValidationFailedException e)
+		{
+			assertNull(savedEntity);
+		}
+		
+		
+		
+		
+	}
 	@Test
 	public void updateAndVerifyMobile()
 	{
@@ -313,7 +337,7 @@ public class VendorDetailsServiceTest {
 		assertNotEquals(updatedEntity.getMobile(),standardDriverDetailsNewMobileAndFirstName(savedEntity.getDriverId()).getMobile());
 		
 		customerQuickRegisterService
-			.reSendMobilePin(new com.projectx.rest.domain.quickregister.CustomerIdTypeMobileTypeDTO(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY));
+			.reSendMobilePin(new CustomerIdTypeMobileTypeUpdatedByDTO(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY));
 		
 		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=
 				customerQuickRegisterService.getMobileVerificationDetailsByCustomerIdTypeAndMobile(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY);

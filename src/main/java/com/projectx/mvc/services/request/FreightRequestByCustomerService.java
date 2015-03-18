@@ -18,7 +18,7 @@ public interface FreightRequestByCustomerService {
 	
 	List<FreightRequestByCustomer> getAllRequestForCustomer(Long customerId);
 	
-	List<FreightRequestByCustomer> getCustmerReqForVendorReq(FreightRequestByVendorDTO freightRequestByVendorDTO);
+	void getCustmerReqForVendorReq(FreightRequestByVendorDTO freightRequestByVendorDTO);
 	
 	Boolean deleteRequestById(Long requestId);
 	

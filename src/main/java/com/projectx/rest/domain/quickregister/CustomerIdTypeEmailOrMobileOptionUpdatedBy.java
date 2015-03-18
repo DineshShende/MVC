@@ -1,31 +1,30 @@
 package com.projectx.rest.domain.quickregister;
 
-import com.projectx.rest.domain.quickregister.AuthenticationDetailsKey;
+public class CustomerIdTypeEmailOrMobileOptionUpdatedBy {
 
-public class UpdatePasswordMVCDTO {
-	
 	private Long customerId;
 	
 	private Integer customerType;
-
-	private String password;
-
-	private String requestedBy;
 	
-	public UpdatePasswordMVCDTO() {
+	private Integer emailOrMobile;
+	
+	
+	private String updatedBy;
+
+
+	public CustomerIdTypeEmailOrMobileOptionUpdatedBy() {
 
 	}
 
-	public UpdatePasswordMVCDTO(Long customerId, Integer customerType,
-			String password, String requestedBy) {
-		super();
+
+	public CustomerIdTypeEmailOrMobileOptionUpdatedBy(Long customerId,
+			Integer customerType, Integer emailOrMobile, String updatedBy) {
+
 		this.customerId = customerId;
 		this.customerType = customerType;
-		this.password = password;
-		this.requestedBy = requestedBy;
+		this.emailOrMobile = emailOrMobile;
+		this.updatedBy = updatedBy;
 	}
-
-
 
 
 	public Long getCustomerId() {
@@ -33,11 +32,9 @@ public class UpdatePasswordMVCDTO {
 	}
 
 
-
 	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
-
 
 
 	public Integer getCustomerType() {
@@ -45,37 +42,39 @@ public class UpdatePasswordMVCDTO {
 	}
 
 
-
 	public void setCustomerType(Integer customerType) {
 		this.customerType = customerType;
 	}
 
 
-
-	public String getPassword() {
-		return password;
+	public Integer getEmailOrMobile() {
+		return emailOrMobile;
 	}
 
 
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setEmailOrMobile(Integer emailOrMobile) {
+		this.emailOrMobile = emailOrMobile;
 	}
 
-	public String getRequestedBy() {
-		return requestedBy;
+
+	public String getUpdatedBy() {
+		return updatedBy;
 	}
 
-	public void setRequestedBy(String requestedBy) {
-		this.requestedBy = requestedBy;
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
+
 
 	@Override
 	public String toString() {
-		return "UpdatePasswordMVCDTO [customerId=" + customerId
-				+ ", customerType=" + customerType + ", password=" + password
-				+ ", requestedBy=" + requestedBy + "]";
+		return "CustomerIdTypeEmailOrMobileOptionUpdatedBy [customerId="
+				+ customerId + ", customerType=" + customerType
+				+ ", emailOrMobile=" + emailOrMobile + ", updatedBy="
+				+ updatedBy + "]";
 	}
+
 
 	@Override
 	public int hashCode() {
@@ -86,11 +85,12 @@ public class UpdatePasswordMVCDTO {
 		result = prime * result
 				+ ((customerType == null) ? 0 : customerType.hashCode());
 		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
+				+ ((emailOrMobile == null) ? 0 : emailOrMobile.hashCode());
 		result = prime * result
-				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
+				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -100,7 +100,7 @@ public class UpdatePasswordMVCDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UpdatePasswordMVCDTO other = (UpdatePasswordMVCDTO) obj;
+		CustomerIdTypeEmailOrMobileOptionUpdatedBy other = (CustomerIdTypeEmailOrMobileOptionUpdatedBy) obj;
 		if (customerId == null) {
 			if (other.customerId != null)
 				return false;
@@ -111,19 +111,20 @@ public class UpdatePasswordMVCDTO {
 				return false;
 		} else if (!customerType.equals(other.customerType))
 			return false;
-		if (password == null) {
-			if (other.password != null)
+		if (emailOrMobile == null) {
+			if (other.emailOrMobile != null)
 				return false;
-		} else if (!password.equals(other.password))
+		} else if (!emailOrMobile.equals(other.emailOrMobile))
 			return false;
-		if (requestedBy == null) {
-			if (other.requestedBy != null)
+		if (updatedBy == null) {
+			if (other.updatedBy != null)
 				return false;
-		} else if (!requestedBy.equals(other.requestedBy))
+		} else if (!updatedBy.equals(other.updatedBy))
 			return false;
 		return true;
 	}
-
-
+	
+	
+	
 	
 }

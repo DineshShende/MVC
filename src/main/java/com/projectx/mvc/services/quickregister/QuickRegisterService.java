@@ -1,6 +1,7 @@
 package com.projectx.mvc.services.quickregister;
 
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
@@ -16,11 +17,15 @@ import com.projectx.mvc.exception.repository.quickregister.MobileVerificationDet
 import com.projectx.mvc.exception.repository.quickregister.PasswordRestFailedException;
 import com.projectx.mvc.exception.repository.quickregister.QuickRegisterDetailsAlreadyPresentException;
 import com.projectx.mvc.exception.repository.quickregister.QuickRegisterEntityNotFoundException;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.quickregister.ForgetPasswordEntity;
+import com.projectx.rest.domain.quickregister.MobilePinPasswordDTO;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
@@ -46,13 +51,13 @@ public interface QuickRegisterService {
 	
 	public Boolean verifyEmail(VerifyEmailDTO emailDTO);
 	
-	public Boolean reSendMobilePin(CustomerIdTypeMobileTypeDTO customerDTO);
+	public Boolean reSendMobilePin(CustomerIdTypeMobileTypeUpdatedByDTO customerDTO);
 	
-	public Boolean reSendEmailHash(CustomerIdTypeEmailTypeDTO customerDTO);
+	public Boolean reSendEmailHash(CustomerIdTypeEmailTypeUpdatedByDTO customerDTO);
 	
-	public Boolean reSetMobilePin(CustomerIdTypeMobileTypeDTO customerDTO);
+	public Boolean reSetMobilePin(CustomerIdTypeMobileTypeUpdatedByDTO customerDTO);
 	
-	public Boolean reSetEmailHash(CustomerIdTypeEmailTypeDTO customerDTO);
+	public Boolean reSetEmailHash(CustomerIdTypeEmailTypeUpdatedByDTO customerDTO);
 	
 	public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO);
 	
@@ -66,9 +71,9 @@ public interface QuickRegisterService {
 	public AuthenticationDetailsDTO verifyLoginDetails(LoginVerificationDTO loginVerificationDTO) 
 			throws AuthenticationDetailsNotFoundException;
 	
-	public Boolean resetPassword(Long customerId,Integer customerType) throws PasswordRestFailedException;
+	public Boolean resetPassword(Long customerId,Integer customerType,Integer emailOrMobile,String requestedBy) throws PasswordRestFailedException;
 	
-	public QuickRegisterDTO resetPasswordRedirect(String entity) throws PasswordRestFailedException;
+	public ForgetPasswordEntity resetPasswordRedirect(String entity,String requestedBy) throws PasswordRestFailedException;
 	
 	public void clearTestData();
 
@@ -82,6 +87,9 @@ public interface QuickRegisterService {
 	
 	public AuthenticationDetailsDTO getAuthenticationDetailsByCustomerIdType(Long customerId,Integer customerType)
 		throws AuthenticationDetailsNotFoundException;
+	
+	
+	public List<MobilePinPasswordDTO> getTestData();
 	
 	
 }

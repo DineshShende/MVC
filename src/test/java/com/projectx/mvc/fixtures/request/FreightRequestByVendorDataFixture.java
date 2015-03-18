@@ -55,6 +55,8 @@ public class FreightRequestByVendorDataFixture {
 		
 	}
 	
+	
+	
 	public static FreightRequestByVendorDTO standardFreightRequestByVendorWithError()
 	{
 		return new FreightRequestByVendorDTO(REQ_VEHICLE.getRegistrationNumber(), null, null, REQ_DRIVER, REQ_AVAIL_DATE, REQ_AVAIL_TIME,

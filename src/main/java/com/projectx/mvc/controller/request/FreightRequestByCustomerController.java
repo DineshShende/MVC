@@ -2,6 +2,8 @@ package com.projectx.mvc.controller.request;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,8 +45,11 @@ public class FreightRequestByCustomerController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public String save(@ModelAttribute FreightRequestByCustomer freightRequestByCustomerDTO,Model model)
+	public String save(@Valid @ModelAttribute FreightRequestByCustomer freightRequestByCustomerDTO,BindingResult bindingResult,Model model)
 	{
+		if(bindingResult.hasErrors())
+			return "request/freightRequestByCustomerForm";
+		
 		freightRequestByCustomerDTO.setStatus("New");
 		
 		FreightRequestByCustomer savedEntity=freightRequestByCustomerService.save(freightRequestByCustomerDTO);

@@ -1,5 +1,6 @@
 package com.projectx.mvc.servicehandler.request;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import com.projectx.rest.domain.request.FreightRequestByVendorDTO;
 import com.projectx.rest.domain.request.FreightRequestByVendorList;
 
 @Component
-@Profile(value="Dev")
+@Profile(value={"Dev","Prod"})
 @PropertySource(value="classpath:/application.properties")
 public class FreightRequestByVendorHandler implements
 		FreightRequestByVendorService {
@@ -40,6 +41,12 @@ public class FreightRequestByVendorHandler implements
 	public FreightRequestByVendorDTO save(
 			FreightRequestByVendorDTO freightRequestByCustomer) throws ResourceAlreadyPresentException,ValidationFailedException {
 
+		
+		if(freightRequestByCustomer.getInsertTime()==null)
+			freightRequestByCustomer.setInsertTime(new Date());
+		
+		freightRequestByCustomer.setUpdateTime(new Date());
+		
 		HttpEntity<FreightRequestByVendorDTO> entity=new HttpEntity<FreightRequestByVendorDTO>(freightRequestByCustomer);
 		
 		ResponseEntity<FreightRequestByVendorDTO> result=null;
@@ -84,6 +91,28 @@ public class FreightRequestByVendorHandler implements
 
 		
 	}
+	
+	@Override
+	public List<FreightRequestByVendorDTO> getMatchingVendorReqForCustReq(
+			FreightRequestByCustomerDTO freightRequestByCustomer) {
+	
+		FreightRequestByVendorList status=null;
+		
+		try{
+			status=restTemplate.postForObject(env.getProperty("rest.host")+"/request/freightRequestByVendor/getMatchingVendorReqForCustomerReq",
+					freightRequestByCustomer, FreightRequestByVendorList.class);
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		
+		return status.getRequestList();
+		
+		
+		
+		
+	}
 
 	@Override
 	public Boolean deleteRequestById(Long requestId) {
@@ -115,18 +144,6 @@ public class FreightRequestByVendorHandler implements
 		
 	}
 
-	@Override
-	public List<FreightRequestByVendorDTO> getMatchingVendorReqForCustReq(
-			FreightRequestByCustomerDTO freightRequestByCustomer) {
-	
-		FreightRequestByVendorList status=restTemplate.postForObject(env.getProperty("rest.host")+"/request/freightRequestByVendor/getMatchingVendorReqForCustomerReq",
-				freightRequestByCustomer, FreightRequestByVendorList.class);
-		
-		return status.getRequestList();
-		
-		
-		
-		
-	}
+
 
 }

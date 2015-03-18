@@ -63,6 +63,13 @@ public static Long CREQ_REQ_ID=414L;
 				CREQ_CUST_ID,CREQ_PICKUP_TIME, CREQ_STATUS,CREQ_DATE, CREQ_DATE, CREQ_UPDATED_BY);
 	}
 	
+	public static FreightRequestByCustomerDTO standardFreightRequestByCustomerFullTruckLoadError()
+	{
+		return new FreightRequestByCustomerDTO(1L,null, null, CREQ_PICK_UP_TIME, CREQ_NOOFVEHICLE, CREQ_BOOL_TRUE, CREQ_BOOL_FALSE,
+				100,CREQ_BODYTYPE_OPEN,null , null, null,null, CREQ_VEHICLE_BRAND, CREQ_VEHICLE_MODEL, CREQ_COMMITITY,
+				CREQ_CUST_ID,CREQ_PICKUP_TIME, CREQ_STATUS,CREQ_DATE, CREQ_DATE, CREQ_UPDATED_BY);
+	}
+	
 	public static FreightRequestByCustomerDTO standardFreightRequestByCustomerFullTruckLoad110()
 	{
 		return new FreightRequestByCustomerDTO(1L,CREQ_SOURCE, CREQ_DEST, CREQ_PICK_UP_TIME, CREQ_NOOFVEHICLE, CREQ_BOOL_TRUE, CREQ_BOOL_FALSE,

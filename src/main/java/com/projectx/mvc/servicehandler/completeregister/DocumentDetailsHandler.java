@@ -13,10 +13,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.projectx.mvc.exception.repository.completeregister.DocumentDetailsNotFoundException;
+import com.projectx.mvc.exception.repository.completeregister.ValidationFailedException;
 import com.projectx.mvc.services.completeregister.DocumentDetailsService;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.DocumentDetails;
@@ -25,7 +27,7 @@ import com.projectx.rest.domain.completeregister.UpdateDocumentDTO;
 import com.projectx.rest.domain.completeregister.UpdateDocumentVerificationStatusAndRemarkDTO;
 
 @Component
-@Profile(value="Dev")
+@Profile(value={"Dev","Prod"})
 @PropertySource(value="classpath:/application.properties")
 public class DocumentDetailsHandler implements DocumentDetailsService {
 
@@ -73,8 +75,16 @@ public class DocumentDetailsHandler implements DocumentDetailsService {
 		
 		HttpEntity<DocumentKey> entity=new HttpEntity<DocumentKey>(documentKey);
 		
-		ResponseEntity<DocumentDetails> result=restTemplate.exchange(env.getProperty("rest.host")+"/document/getCustomerDocumentById",
-				HttpMethod.POST, entity, DocumentDetails.class);
+		ResponseEntity<DocumentDetails> result=null;
+		
+		try{
+			result=restTemplate.exchange(env.getProperty("rest.host")+"/document/getCustomerDocumentById",
+					HttpMethod.POST, entity, DocumentDetails.class);
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
 		
 		if(result.getStatusCode()==HttpStatus.FOUND)
 			return result.getBody();
@@ -86,10 +96,23 @@ public class DocumentDetailsHandler implements DocumentDetailsService {
 
 	@Override
 	public DocumentDetails updateDocument(UpdateDocumentDTO updateDocumentDTO) {
+
+		HttpEntity<UpdateDocumentDTO> entity=new HttpEntity<UpdateDocumentDTO>(updateDocumentDTO);
 		
-		DocumentDetails status=restTemplate.postForObject(env.getProperty("rest.host")+"/document/updateDocument", updateDocumentDTO, DocumentDetails.class);
+		ResponseEntity<DocumentDetails> result=null;
 		
-		return status;		
+		try{
+			result=restTemplate.exchange(env.getProperty("rest.host")+"/document/updateDocument",HttpMethod.POST,
+					entity, DocumentDetails.class);
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		
+		throw new DocumentDetailsNotFoundException();
 
 	}
 
@@ -97,9 +120,23 @@ public class DocumentDetailsHandler implements DocumentDetailsService {
 	public DocumentDetails updateDocumentVerificationDetails(
 			UpdateDocumentVerificationStatusAndRemarkDTO updateDocumentDTO) {
 	
-		DocumentDetails status=restTemplate.postForObject(env.getProperty("rest.host")+"/document/updateVerificationStatusAndRemark", updateDocumentDTO, DocumentDetails.class);
+		HttpEntity<UpdateDocumentVerificationStatusAndRemarkDTO> entity=
+				new HttpEntity<UpdateDocumentVerificationStatusAndRemarkDTO>(updateDocumentDTO);
 		
-		return status;		
+		ResponseEntity<DocumentDetails> result=null;
+		
+		try{
+			result=restTemplate.exchange(env.getProperty("rest.host")+"/document/updateVerificationStatusAndRemark",HttpMethod.POST,
+					entity, DocumentDetails.class);
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.OK)
+			return result.getBody();
+		
+		throw new DocumentDetailsNotFoundException();
 
 	}
 

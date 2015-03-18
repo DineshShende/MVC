@@ -10,6 +10,8 @@ import java.util.Date;
 
 
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -82,6 +84,8 @@ public class VehicleDetailsDTO {
 	
 	@NotNull
 	private Long vendorId;
+
+	private List<String> commodityList;
 	
 	private Date insertTime;
 	
@@ -94,10 +98,6 @@ public class VehicleDetailsDTO {
 	}
 
 
-
-	
-
-
 	public VehicleDetailsDTO(Long vehicleId, String ownerFirstName,
 			String ownerMiddleName, String ownerLastName,
 			VehicleTypeDetails vehicleTypeId,
@@ -106,8 +106,8 @@ public class VehicleDetailsDTO {
 			String chassisNumber, Integer loadCapacityInTons, Integer length,
 			Integer width, Integer height, Integer numberOfWheels,
 			String permitType, Boolean insuranceStatus, String insuranceNumber,
-			String insuranceCompany, Long vendorId, Date insertTime,
-			Date updateTime, String updatedBy) {
+			String insuranceCompany, Long vendorId, List<String> commodityList,
+			Date insertTime, Date updateTime, String updatedBy) {
 		super();
 		this.vehicleId = vehicleId;
 		this.ownerFirstName = ownerFirstName;
@@ -129,10 +129,13 @@ public class VehicleDetailsDTO {
 		this.insuranceNumber = insuranceNumber;
 		this.insuranceCompany = insuranceCompany;
 		this.vendorId = vendorId;
+		this.commodityList = commodityList;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
 		this.updatedBy = updatedBy;
 	}
+
+
 
 
 
@@ -404,8 +407,14 @@ public class VehicleDetailsDTO {
 	}
 
 
+	public List<String> getCommodityList() {
+		return commodityList;
+	}
 
 
+	public void setCommodityList(List<String> commodityList) {
+		this.commodityList = commodityList;
+	}
 
 
 	@Override
@@ -423,14 +432,10 @@ public class VehicleDetailsDTO {
 				+ numberOfWheels + ", permitType=" + permitType
 				+ ", insuranceStatus=" + insuranceStatus + ", insuranceNumber="
 				+ insuranceNumber + ", insuranceCompany=" + insuranceCompany
-				+ ", vendorId=" + vendorId + ", insertTime=" + insertTime
-				+ ", updateTime=" + updateTime + ", updatedBy=" + updatedBy
-				+ "]";
+				+ ", vendorId=" + vendorId + ", commodityList=" + commodityList
+				+ ", insertTime=" + insertTime + ", updateTime=" + updateTime
+				+ ", updatedBy=" + updatedBy + "]";
 	}
-
-
-
-
 
 
 	@Override
@@ -439,6 +444,8 @@ public class VehicleDetailsDTO {
 		int result = 1;
 		result = prime * result
 				+ ((chassisNumber == null) ? 0 : chassisNumber.hashCode());
+		result = prime * result
+				+ ((commodityList == null) ? 0 : commodityList.hashCode());
 		result = prime * result + ((height == null) ? 0 : height.hashCode());
 		result = prime * result
 				+ ((insertTime == null) ? 0 : insertTime.hashCode());
@@ -491,10 +498,6 @@ public class VehicleDetailsDTO {
 	}
 
 
-
-
-
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -508,6 +511,11 @@ public class VehicleDetailsDTO {
 			if (other.chassisNumber != null)
 				return false;
 		} else if (!chassisNumber.equals(other.chassisNumber))
+			return false;
+		if (commodityList == null) {
+			if (other.commodityList != null)
+				return false;
+		} else if (!commodityList.equals(other.commodityList))
 			return false;
 		if (height == null) {
 			if (other.height != null)

@@ -65,7 +65,8 @@ public class DocumentDetailsServiceTest {
 		
 		assertEquals(standardDocumentDetailsWithDummyDocumentNew(),
 				documentDetailsService.updateDocument(new UpdateDocumentDTO(standardDocumentKey(), 
-						standardDocumentDetailsWithDummyDocumentNew().getDocument(), standardDocumentDetailsWithDummyDocumentNew().getContentType())));
+						standardDocumentDetailsWithDummyDocumentNew().getDocument(), standardDocumentDetailsWithDummyDocumentNew().getContentType(),
+						"CUST_ONLINE")));
 		
 		assertEquals(1, documentDetailsService.count().intValue());
 	}
@@ -83,7 +84,8 @@ public class DocumentDetailsServiceTest {
 				documentDetailsService
 				.updateDocumentVerificationDetails(new UpdateDocumentVerificationStatusAndRemarkDTO(standardDocumentKey(),
 						standardDocumentDetailsWithDummyDocumentWithNewVerificationStatusAndRemark().getVerificationStatus(), 
-						standardDocumentDetailsWithDummyDocumentWithNewVerificationStatusAndRemark().getVerificationRemark())));
+						standardDocumentDetailsWithDummyDocumentWithNewVerificationStatusAndRemark().getVerificationRemark(),
+						"CUST_ONLINE")));
 		
 		assertEquals(1, documentDetailsService.count().intValue());
 	}

@@ -2,15 +2,17 @@ package com.projectx.mvc.controller.request;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.projectx.mvc.domain.request.FreightRequestByCustomer;
 import com.projectx.mvc.services.request.FreightRequestByCustomerService;
 import com.projectx.mvc.services.request.FreightRequestByVendorService;
 import com.projectx.rest.domain.completeregister.EntityIdDTO;
@@ -39,17 +41,22 @@ public class FreightRequestByVendorController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public String save(@ModelAttribute FreightRequestByVendorDTO freightRequestByVendorDTO,Model model)
+	public String save(@Valid @ModelAttribute FreightRequestByVendorDTO freightRequestByVendorDTO,BindingResult bindingResult,Model model)
 	{
+		if(bindingResult.hasErrors())
+			return "request/freightRequestByVendorForm";
+		
 		freightRequestByVendorDTO.setStatus("New");
 		
 		FreightRequestByVendorDTO savedEntity=freightRequestByVendorService.save(freightRequestByVendorDTO);
 		
 		if(savedEntity.getRequestId()!=null)
 		{
-			List<FreightRequestByCustomer> reuqestList=freightRequestByCustomerService.getCustmerReqForVendorReq(savedEntity);
+			//List<FreightRequestByCustomer> reuqestList=
+					
+			freightRequestByCustomerService.getCustmerReqForVendorReq(savedEntity);
 			
-			model.addAttribute("requestList", reuqestList);
+			//model.addAttribute("requestList", reuqestList);
 			
 			return "response/showMatchingCustomerRequests";
 			

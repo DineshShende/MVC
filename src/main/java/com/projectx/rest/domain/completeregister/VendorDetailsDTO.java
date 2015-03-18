@@ -229,11 +229,6 @@ public class VendorDetailsDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		VendorDetailsDTO other = (VendorDetailsDTO) obj;
-		if (dateOfBirth == null) {
-			if (other.dateOfBirth != null)
-				return false;
-		} else if (Math.abs(dateOfBirth.getTime()-other.dateOfBirth.getTime())>100000)//
-			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -248,11 +243,6 @@ public class VendorDetailsDTO {
 			if (other.firstName != null)
 				return false;
 		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (insertTime == null) {
-			if (other.insertTime != null)
-				return false;
-		} else if (Math.abs(insertTime.getTime()-other.insertTime.getTime())>100000)
 			return false;
 		if (isEmailVerified == null) {
 			if (other.isEmailVerified != null)
@@ -278,11 +268,6 @@ public class VendorDetailsDTO {
 			if (other.mobile != null)
 				return false;
 		} else if (!mobile.equals(other.mobile))
-			return false;
-		if (updateTime == null) {
-			if (other.updateTime != null)
-				return false;
-		} else if (Math.abs(updateTime.getTime()-other.updateTime.getTime())>100000)
 			return false;
 		if (updatedBy == null) {
 			if (other.updatedBy != null)

@@ -46,7 +46,7 @@ public class VendorDetailsDataFixture {
 	
 	public static QuickRegisterEntity standardEmailMobileVendorDTO()
 	{
-		return new QuickRegisterEntity(VENDER_FIRSTNAME,VENDER_LASTNAME,VENDOR_EMAIL,VENDOR_MOBILE,ADDRESS_PINCODE,ENTITY_TYPE_VENDOR);
+		return new QuickRegisterEntity(VENDER_FIRSTNAME,VENDER_LASTNAME,VENDOR_EMAIL,VENDOR_MOBILE,ADDRESS_PINCODE,ENTITY_TYPE_VENDOR,CUST_UPDATED_BY);
 	}
 	
 	public static QuickRegisterDTO standardEmailMobileVendorQuick()
@@ -115,7 +115,7 @@ public class VendorDetailsDataFixture {
 	public static AuthenticationDetailsDTO standardCustomerEmailMobileAuthenticationDetailsVendor()
 	{
 		
-		return new AuthenticationDetailsDTO(standardAuthenticationDetailsKeyVendor(), VENDOR_EMAIL, VENDOR_MOBILE, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT, CUST_EMAILHASH, 0, 0,new Date(),new Date(),CUST_UPDATED_BY);
+		return new AuthenticationDetailsDTO(standardAuthenticationDetailsKeyVendor(), VENDOR_EMAIL, VENDOR_MOBILE, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT, CUST_EMAILHASH, 0, 0,new Date(),new Date(),CUST_UPDATED_BY,false);
 	}
 	
 	public static UpdateMobileVerificationStatusDTO standardMobileUpdateVerificationStatusDTO()

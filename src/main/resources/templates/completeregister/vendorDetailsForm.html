@@ -12,11 +12,14 @@
     
  
  
-         <form action="/vendor/save" method="post">
+         <form action="#" th:action="@{/vendor/save}" method="post">
          <input id="vendorId" name="vendorId" type="hidden" th:value="${vendorDetails.vendorId}"/>
          <input id="firmAddress.addressId" name="firmAddress.addressId" type="hidden" th:if="${vendorDetails.firmAddress != null}" th:value="${vendorDetails.firmAddress.addressId}"/>
          <input id="firmAddress.customerType" name="firmAddress.customerType" type="hidden"  th:value="2"/>
-         
+		
+	      <input id="isEmailVerified" name="isEmailVerified" type="hidden" th:if="${vendorDetails.isEmailVerified != null}" th:value="false"/>
+	      <input id="isMobileVerified" name="isMobileVerified" type="hidden" th:if="${vendorDetails.isMobileVerified != null}" th:value="false"/>         
+			         
             <table>
                 <tr>
                     <td>FirstName:</td>

@@ -2,6 +2,8 @@ package com.projectx.rest.domain.completeregister;
 
 import java.util.Arrays;
 
+import javax.validation.constraints.NotNull;
+
 import com.projectx.rest.domain.completeregister.DocumentKey;
 
 public class UpdateDocumentDTO {
@@ -9,18 +11,22 @@ public class UpdateDocumentDTO {
 	private DocumentKey key;
 	
 	private byte [] document;
-	
+
 	private String contentType;
+	
+	private String requestedBy;
 
 	public UpdateDocumentDTO() {
 
 	}
 
 	public UpdateDocumentDTO(DocumentKey key, byte[] document,
-			String contentType) {
+			String contentType, String requestedBy) {
+		super();
 		this.key = key;
 		this.document = document;
 		this.contentType = contentType;
+		this.requestedBy = requestedBy;
 	}
 
 	public DocumentKey getKey() {
@@ -47,11 +53,19 @@ public class UpdateDocumentDTO {
 		this.contentType = contentType;
 	}
 
+	public String getRequestedBy() {
+		return requestedBy;
+	}
+
+	public void setRequestedBy(String requestedBy) {
+		this.requestedBy = requestedBy;
+	}
+
 	@Override
 	public String toString() {
 		return "UpdateDocumentDTO [key=" + key + ", document="
 				+ Arrays.toString(document) + ", contentType=" + contentType
-				+ "]";
+				+ ", requestedBy=" + requestedBy + "]";
 	}
 
 	@Override
@@ -62,6 +76,8 @@ public class UpdateDocumentDTO {
 				+ ((contentType == null) ? 0 : contentType.hashCode());
 		result = prime * result + Arrays.hashCode(document);
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
+		result = prime * result
+				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
 		return result;
 	}
 
@@ -86,10 +102,15 @@ public class UpdateDocumentDTO {
 				return false;
 		} else if (!key.equals(other.key))
 			return false;
+		if (requestedBy == null) {
+			if (other.requestedBy != null)
+				return false;
+		} else if (!requestedBy.equals(other.requestedBy))
+			return false;
 		return true;
 	}
-	
 
-	
+
+		
 	
 }

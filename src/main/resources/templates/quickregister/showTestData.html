@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="../script.js"></script>
+
+</head>
+<body>
+
+  <table>
+      <tr>
+        <th>Mobile</th>
+        <th>MobilePin</th>
+        <th>Password</th>
+        
+        
+      </tr>
+      <tr th:each="listElement : ${list}">
+        <td><p th:if="${listElement.mobile} != null"  th:text="${listElement.mobile}"/></td>
+        <td><p th:if="${listElement.mobilePin} != null"  th:text="${listElement.mobilePin}"/>
+        
+        </td>
+        <td><p th:if="${listElement.password} != null" th:text="${listElement.password}"/></td>
+		
+
+		 </tr>
+    </table>
+  
+
+
+</body>
+</html>

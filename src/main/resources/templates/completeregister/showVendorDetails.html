@@ -12,32 +12,32 @@
  
  				<tr>
  					<td></td>
- 					<td><form  action="/vendor/editForm" method="post">
+ 					<td><form  action="#" th:action="@{/vendor/editForm}" method="post">
                				<input id="entityId" name="entityId" type="hidden" th:value="${vendorDetails.vendorId}"/>
                				<input type="submit" value="Edit VendorDetails" />
                			</form>
                		</td>
                		
                		<td></td>
- 					<td><form  action="/vendor/driverDetailsForm" method="post">
+ 					<td><form  action="#" th:action="@{/vendor/driverDetailsForm}" method="post">
                				<input id="entityId" name="entityId" type="hidden" th:value="${vendorDetails.vendorId}"/>
                				<input type="submit" value="Add Driver" />
                			</form>
                		</td>
                		
-               		<td><form  action="/vendor/showDriverDetails" method="post">
+               		<td><form  action="#" th:action="@{/vendor/showDriverDetails}" method="post">
                				<input id="entityId" name="entityId" type="hidden" th:value="${vendorDetails.vendorId}"/>
                				<input type="submit" value="Show Drivers" />
                			</form>
                		</td>
                		
-               		<td><form  action="/vendor/vehicleDetailsForm" method="post">
+               		<td><form  action="#" th:action="@{/vendor/vehicleDetailsForm}"  method="post">
                				<input id="entityId" name="entityId" type="hidden" th:value="${vendorDetails.vendorId}"/>
                				<input type="submit" value="Add Vehicle" />
                			</form>
                		</td>
                		
-               		<td><form  action="/vendor/showVehicleDetails" method="post">
+               		<td><form  action="#" th:action="@{/vendor/showVehicleDetails}" method="post">
                				<input id="entityId" name="entityId" type="hidden" th:value="${vendorDetails.vendorId}"/>
                				<input type="submit" value="Show Vehicles" />
                			</form>
@@ -47,13 +47,13 @@
  				</tr>
  				
  				<tr>
- 						<td><form  action="/request/freightrequestByVendor/requestForm" method="post">
+ 						<td><form  action="#" th:action="@{/request/freightrequestByVendor/requestForm}"  method="post">
                				<input id="entityId" name="entityId" type="hidden" th:value="${vendorDetails.vendorId}"/>
                				<input type="submit" value="Request A Freight" />
                			</form>
                		</td>
                		
-               		<td><form  action="/request/freightrequestByVendor/getByVendorId" method="post">
+               		<td><form  action="#" th:action="@{/request/freightrequestByVendor/getByVendorId}" method="post">
                				<input id="entityId" name="entityId" type="hidden" th:value="${vendorDetails.vendorId}"/>
                				<input type="submit" value="Freight Status" />
                			</form>
@@ -83,21 +83,23 @@
                     <td><p th:text="${vendorDetails.mobile}"/>
                     <p th:if="${vendorDetails.mobile != mobileVerificationDetailsPrimary.mobile}" th:text="${mobileVerificationDetailsPrimary.mobile}"/>
                     </td>
-               		<td><form id="sendSMS" th:if="${vendorDetails.isMobileVerified==false or vendorDetails.mobile != mobileVerificationDetailsPrimary.mobile}" action="/vendor/sendMobileVerificationDetails" method="post">
+               		<td><form id="sendSMS" th:if="${vendorDetails.isMobileVerified==false or vendorDetails.mobile != mobileVerificationDetailsPrimary.mobile}" action="#" th:action="@{/vendor/sendMobileVerificationDetails}" method="post">
                				<input id="customerId" name="customerId" type="hidden" th:value="${vendorDetails.vendorId}"/>
     						<input id="customerType" name="customerType" type="hidden" th:value="2"/>
     						<input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
+    						<input id="updatedBy" name="updatedBy" type="hidden" value="CUST_ONLINE"/>
         					<input type="submit" value="Send Verification SMS" />
                		</form>
                		<div id="smsSentStatus"></div>
                		
                		</td>
                		
-               		<td><form id ="verifyMobile" th:if="${vendorDetails.isMobileVerified==false or vendorDetails.mobile != mobileVerificationDetailsPrimary.mobile}" action="/vendor/verifyMobileDetails" method="post">
+               		<td><form id ="verifyMobile" th:if="${vendorDetails.isMobileVerified==false or vendorDetails.mobile != mobileVerificationDetailsPrimary.mobile}" action="#" th:action="@{/vendor/verifyMobileDetails}" method="post">
                				<input id="entityId" name="entityId" type="hidden" th:value="${vendorDetails.vendorId}"/>
     						<input id="entityType" name="entityType" type="hidden" th:value="2"/>
     						<input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
     						<input id="mobilePin" name="mobilePin" type="text"/>
+    						<input id="requestBy" name="requestBy" type="hidden" value="CUST_ONLINE"/>
         					<input type="submit" value="VerifyMobile" />
                		</form>
                		<div id="verifyMobileStatus"></div>
@@ -108,11 +110,12 @@
                 <tr>
                     <td>Email:</td>
                     <td><p th:text="${vendorDetails.email}"/>
-                    <p th:if="${vendorDetails.email != emailVerificationDetails.email}" th:text="${emailVerificationDetails.email}"/></td>
-               		<td><form id="sendEmail" th:if="${vendorDetails.isEmailVerified==false or vendorDetails.email != emailVerificationDetails.email}" action="/vendor/sendEmailVerificationDetails" method="post">
+                    <p th:if="${vendorDetails.email != emailVerificationDetails.email and emailVerificationDetails.email}" th:text="${emailVerificationDetails.email}"/></td>
+               		<td><form id="sendEmail" th:if="${vendorDetails.isEmailVerified==false or vendorDetails.email != emailVerificationDetails.email}" action="#" th:action="@{/vendor/sendEmailVerificationDetails}" method="post">
                				<input id="customerId" name="customerId" type="hidden" th:value="${vendorDetails.vendorId}"/>
     						<input id="customerType" name="customerType" type="hidden" th:value="2"/>
     						<input id="emailType" name="emailType" type="hidden" th:value="1"/>
+    						<input id="updatedBy" name="updatedBy" type="hidden" value="CUST_ONLINE"/>
         					<input type="submit" value="Send Verification Email" />
                		</form>
                		
@@ -182,7 +185,7 @@
                <tr></tr>
                
                 
-        
+	<!--         
                 <tr>
                     <td><p th:if="${documentDetails!=null}" th:text="${documentDetails.key.documentName}"/></td>
                     <td> 
@@ -220,7 +223,7 @@
     					</form>
                     </td>
                </tr>
-                
+          -->       
                                
          </table>
 

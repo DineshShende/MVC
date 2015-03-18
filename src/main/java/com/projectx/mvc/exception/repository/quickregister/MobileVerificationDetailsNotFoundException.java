@@ -1,7 +1,9 @@
 package com.projectx.mvc.exception.repository.quickregister;
 
+import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
+
 public class MobileVerificationDetailsNotFoundException extends
-		RuntimeException {
+		ResourceNotFoundException {
 	
 	public MobileVerificationDetailsNotFoundException(Throwable cause) {
         super(cause);

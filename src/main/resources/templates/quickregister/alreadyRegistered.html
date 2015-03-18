@@ -11,25 +11,41 @@
      <p th:text="'Status: ' + ${message}" />
     
     <p th:if="${customerQuickRegisterDTO.isMobileVerified!=null and !customerQuickRegisterDTO.isMobileVerified}">Click Below link to receive verification SMS </p>
-    <form th:if="${customerQuickRegisterDTO.isMobileVerified!=null and !customerQuickRegisterDTO.isMobileVerified}" action="/quickregister/resendMobilePin" method="post" >
+    <form th:if="${customerQuickRegisterDTO.isMobileVerified!=null and !customerQuickRegisterDTO.isMobileVerified}" action="#" th:action="@{/quickregister/resendMobilePin}" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
     <input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
+    <input id="updatedBy" name="updatedBy" type="hidden" th:value="CUST_ONLINE"/>
     <input type="submit" value="Resend Mobile Pin" />       
     </form>
     
+   <form th:if="${customerQuickRegisterDTO.isMobileVerified!=null and !customerQuickRegisterDTO.isMobileVerified}" action="#" th:action="@{/quickregister/verifyMobilePin}" method="post" >
+    <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
+    <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
+    <input id="mobileType" name="mobileType" type="hidden" th:value="1"/>
+    <input id="requestBy" name="requestBy" type="hidden" value="CUST_ONLINE"/>
+    Enter verification Pin:<input id="mobilePin" name="mobilePin" type="text"/>
+        
+    <input type="submit" value="Submit" />
+    </form> 
+
+    
+    
     <p th:if="${customerQuickRegisterDTO.isEmailVerified!=null and !customerQuickRegisterDTO.isEmailVerified}">Click Below link to receive verification email </p>
-    <form th:if="${customerQuickRegisterDTO.isEmailVerified!=null and !customerQuickRegisterDTO.isEmailVerified}" action="/quickregister/resendEmailHash" method="post" >
+    <form th:if="${customerQuickRegisterDTO.isEmailVerified!=null and !customerQuickRegisterDTO.isEmailVerified}" action="#" th:action="@{/quickregister/resendEmailHash}" method="post" >
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
     <input id="emailType" name="emailType" type="hidden" th:value="1"/>
+    <input id="updatedBy" name="updatedBy" type="hidden" value="CUST_ONLINE"/>
     <input type="submit" value="Resend Verication Email" />
     </form>
     
     <p th:if="${(customerQuickRegisterDTO.isEmailVerified!=null and customerQuickRegisterDTO.isEmailVerified )  or (customerQuickRegisterDTO.isMobileVerified!=null and customerQuickRegisterDTO.isMobileVerified)}">Your email or mobile is already verified..Click below to receive One Time Password</p>
-    <form th:if="${(customerQuickRegisterDTO.isEmailVerified!=null and customerQuickRegisterDTO.isEmailVerified )  or (customerQuickRegisterDTO.isMobileVerified!=null and customerQuickRegisterDTO.isMobileVerified)}" action="/quickregister/resetPassword" method="post">
+    <form th:if="${(customerQuickRegisterDTO.isEmailVerified!=null and customerQuickRegisterDTO.isEmailVerified )  or (customerQuickRegisterDTO.isMobileVerified!=null and customerQuickRegisterDTO.isMobileVerified)}" action="#" th:action="@{/quickregister/resetPassword}" method="post">
     <input id="customerId" name="customerId" type="hidden" th:value="${customerQuickRegisterDTO.customerId}"/>
     <input id="customerType" name="customerType" type="hidden" th:value="${customerQuickRegisterDTO.customerType}"/>
+    <input id="updatedBy" name="updatedBy" type="hidden" value="CUST_ONLINE"/>
+    
     <input type="submit" value="Reset Password"/> 
     
     </form>

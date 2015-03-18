@@ -31,13 +31,13 @@
  
 		<td>
 		
-		<form action="/vendor/updateVehicleDetails" method="post">
+		<form action="#" th:action="@{/vendor/updateVehicleDetails}"  method="post">
 		<input type="hidden" name="entityId" id="entityId" th:value="${vehicle.vehicleId}"/>
 		<input type="submit" value="Update"/>
 		
 		</form>
 		
-		<form action="/vendor/deleteVehicle" method="post">
+		<form action="#" th:action="@{/vendor/deleteVehicle}" method="post">
 		<input type="hidden" name="entityId" id="entityId" th:value="${vehicle.vehicleId}"/>
 		<input type="submit" value="Delete"/>
 		

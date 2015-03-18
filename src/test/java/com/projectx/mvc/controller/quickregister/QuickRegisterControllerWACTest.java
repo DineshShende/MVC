@@ -1,6 +1,6 @@
 package com.projectx.mvc.controller.quickregister;
 
-import static com.projectx.mvc.fixture.quickregister.QuickRegisterDataConstants.REGISTER_MOBILE_ALREADY_REGISTERED_NOT_VERIFIED;
+
 import static com.projectx.mvc.fixtures.quickregister.AuthenticationDetailsDataFixtures.*;
 import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.*;
 import static com.projectx.mvc.fixtures.completeregister.VendorDetailsDataFixture.*;
@@ -38,6 +38,7 @@ import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.completeregister.DocumentDetailsService;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.DocumentDetails;
 import com.projectx.rest.domain.completeregister.DocumentKey;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
@@ -102,7 +103,7 @@ public class QuickRegisterControllerWACTest {
 															   .param("mobile",Long.toString(CUST_MOBILE))
 															   .param("pin",Integer.toString(CUST_PIN))
 															   .param("customerType", Integer.toString(1))										   
-															  
+															   .param("requestBy", "CUST_ONLINE")
 															)
 			.andDo(print())												
 			.andExpect(view().name("quickregister/verifyEmailMobile"))
@@ -132,6 +133,7 @@ public class QuickRegisterControllerWACTest {
 															   .param("mobile",Long.toString(CUST_MOBILE))
 															   .param("pin",Integer.toString(CUST_PIN))
 															   .param("customerType", Integer.toString(1))
+															   .param("requestBy", "CUST_ONLINE")
 															  
 															)
 			.andDo(print())												
@@ -164,6 +166,7 @@ public class QuickRegisterControllerWACTest {
 															   .param("mobile",Long.toString(CUST_MOBILE))
 															   .param("pin",Integer.toString(CUST_PIN))
 															   .param("customerType", Integer.toString(1))
+															   .param("requestBy", "CUST_ONLINE")
 															)
 			.andDo(print())
 			.andExpect(view().name("quickregister/alreadyRegistered"))
@@ -204,14 +207,17 @@ public class QuickRegisterControllerWACTest {
 		
 				this.mockMvc.perform(
 						post("/quickregister/verifyMobilePin").param("customerId",Long.toString(savedEntity.getCustomerId()))
+														.param("customerType",Integer.toString(ENTITY_TYPE_CUSTOMER))
+														.param("mobileType",Integer.toString(ENTITY_TYPE_PRIMARY))
 													   .param("mobilePin", Integer.toString(mobileVerificationDetailsDTO.getMobilePin()))
+													   .param("requestBy", "CUST_ONLINE")
 													   .session(httpSession)
 													   
 													)
 				.andDo(print())
 			//	.andExpect(model().attribute("mobileVerificationStatus", "Mobile Verification Sucess"))
 				//.andExpect(model().attribute("customerQuickRegisterDTO", isA(CustomerQuickRegisterMVCDTO.class)))
-				.andExpect(view().name("quickregister/verifyEmailMobile"));		
+				.andExpect(view().name("quickregister/loginForm"));		
 	}
 	
 	
@@ -228,7 +234,7 @@ public class QuickRegisterControllerWACTest {
 		
 		
 		this.mockMvc.perform(get("/quickregister/verifyEmailHash/"+savedEntity.getCustomerId()+"/"+ENTITY_TYPE_CUSTOMER+"/"
-						+ENTITY_TYPE_CUSTOMER+"/"+emailVerificationDetailsDTO.getEmailHash()))
+						+ENTITY_TYPE_CUSTOMER+"/"+"UPDATEDBYCUST"+"/"+emailVerificationDetailsDTO.getEmailHash()))
 		
 		.andDo(print())
 		.andExpect(model().attribute("emailVerificationStatus", "Email Verification Sucess"))
@@ -244,6 +250,7 @@ public class QuickRegisterControllerWACTest {
 				post("/quickregister/resendMobilePin").param("customerId",Long.toString(savedEntity.getCustomerId())														)
 																.param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
 																.param("mobileType",Integer.toString(ENTITY_TYPE_PRIMARY))
+																.param("updatedBy", "CUST_ONLINE")
 											   
 											)
 		.andDo(print())
@@ -263,6 +270,7 @@ public class QuickRegisterControllerWACTest {
 				post("/quickregister/resendEmailHash").param("customerId",Long.toString(savedEntity.getCustomerId()))
 																.param("customerType", Integer.toString(ENTITY_TYPE_CUSTOMER))
 																.param("emailType",Integer.toString(ENTITY_TYPE_PRIMARY))
+																.param("updatedBy","CUST_ONLINE")
 					)
 		.andDo(print())
 		.andExpect(content().string("Sucess"));
@@ -323,7 +331,7 @@ public class QuickRegisterControllerWACTest {
 		AuthenticationDetailsDTO authenticationDetailsDTO=quickRegisterService
 				.getAuthenticationDetailsByCustomerIdType(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType());
 		
-		quickRegisterService.updatePassword(new UpdatePasswordDTO(authenticationDetailsDTO.getKey(), CUST_PASSWORD_CHANGED));
+		quickRegisterService.updatePassword(new UpdatePasswordDTO(authenticationDetailsDTO.getKey(), CUST_PASSWORD_CHANGED,CUST_UPDATED_BY));
 		
 		
 		this.mockMvc.perform(
@@ -377,7 +385,7 @@ public class QuickRegisterControllerWACTest {
 		AuthenticationDetailsDTO authenticationDetailsDTO=quickRegisterService
 				.getAuthenticationDetailsByCustomerIdType(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType());
 		
-		quickRegisterService.updatePassword(new UpdatePasswordDTO(authenticationDetailsDTO.getKey(), CUST_PASSWORD_CHANGED));
+		quickRegisterService.updatePassword(new UpdatePasswordDTO(authenticationDetailsDTO.getKey(), CUST_PASSWORD_CHANGED,CUST_UPDATED_BY));
 		
 		
 		this.mockMvc.perform(
@@ -430,7 +438,7 @@ public class QuickRegisterControllerWACTest {
 		AuthenticationDetailsDTO authenticationDetailsDTO=quickRegisterService
 				.getAuthenticationDetailsByCustomerIdType(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType());
 		
-		quickRegisterService.updatePassword(new UpdatePasswordDTO(authenticationDetailsDTO.getKey(), CUST_PASSWORD_CHANGED));
+		quickRegisterService.updatePassword(new UpdatePasswordDTO(authenticationDetailsDTO.getKey(), CUST_PASSWORD_CHANGED,CUST_UPDATED_BY));
 		
 		
 		this.mockMvc.perform(
@@ -478,7 +486,7 @@ public class QuickRegisterControllerWACTest {
 		AuthenticationDetailsDTO authenticationDetailsDTO=quickRegisterService
 				.getAuthenticationDetailsByCustomerIdType(quickRegisterDTO.getCustomer().getCustomerId(), quickRegisterDTO.getCustomer().getCustomerType());
 		
-		quickRegisterService.updatePassword(new UpdatePasswordDTO(authenticationDetailsDTO.getKey(), CUST_PASSWORD_CHANGED));
+		quickRegisterService.updatePassword(new UpdatePasswordDTO(authenticationDetailsDTO.getKey(), CUST_PASSWORD_CHANGED,CUST_UPDATED_BY));
 		
 		
 		this.mockMvc.perform(
@@ -511,6 +519,8 @@ public class QuickRegisterControllerWACTest {
 	@Test
 	public void verifyEmailDetailsWithCustomer() throws Exception
 	{
+
+		MockHttpSession httpSession=new MockHttpSession();
 		
 		this.mockMvc.perform(
 								post("/customer/save").param("customerId", Long.toString(CUST_ID))
@@ -545,17 +555,18 @@ public class QuickRegisterControllerWACTest {
 															   
 															   .param("secondaryMobile", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryMobile().toString())
 															   .param("secondaryEmail", standardCustomerDetails(standardCustomerDetailsCopiedFromQuickRegisterEntity()).getSecondaryEmail())
-															   
+															   .session(httpSession)
 															  
 															);
 
-		quickRegisterService.reSendEmailHash(new CustomerIdTypeEmailTypeDTO(CUST_ID, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY));
+		quickRegisterService.reSendEmailHash(new CustomerIdTypeEmailTypeUpdatedByDTO(CUST_ID, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY));
 		
 		EmailVerificationDetailsDTO emailVerificationDetailsDTO=
 				quickRegisterService.getEmailVerificationDetailsByCustomerIdTypeAndEmail(CUST_ID, ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY);
 		
 		this.mockMvc.perform(
-				get("/quickregister/verifyEmailHash/"+CUST_ID+"/"+ENTITY_TYPE_CUSTOMER+"/"+ENTITY_TYPE_PRIMARY+"/"+emailVerificationDetailsDTO.getEmailHash()))
+				get("/quickregister/verifyEmailHash/"+CUST_ID+"/"+ENTITY_TYPE_CUSTOMER+"/"+ENTITY_TYPE_PRIMARY+"/CUST_ONLINE/"+emailVerificationDetailsDTO.getEmailHash())
+				.session(httpSession))
 			.andDo(print())
 			.andExpect(view().name("quickregister/loginForm"))
 			.andExpect(model().attribute("emailVerificationStatus",is("Email Verification Sucess")))
@@ -596,7 +607,8 @@ public class QuickRegisterControllerWACTest {
 											  
 											);
 		
-		quickRegisterService.reSendEmailHash(new CustomerIdTypeEmailTypeDTO(VENDOR_ID, ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY));
+		quickRegisterService.reSendEmailHash(new CustomerIdTypeEmailTypeUpdatedByDTO(VENDOR_ID, ENTITY_TYPE_VENDOR,
+				ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY));
 		
 		EmailVerificationDetailsDTO emailVerificationDetailsDTO=
 				quickRegisterService.getEmailVerificationDetailsByCustomerIdTypeAndEmail(VENDOR_ID, ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY);
@@ -608,8 +620,9 @@ public class QuickRegisterControllerWACTest {
 				get("/quickregister/verifyEmailHash/"+VENDOR_ID+"/"+ENTITY_TYPE_VENDOR+"/"+ENTITY_TYPE_PRIMARY+"/CUST_ONLINE/"+emailVerificationDetailsDTO.getEmailHash()))
 			.andDo(print())
 			.andExpect(model().attribute("emailVerificationStatus",is("Email Verification Sucess")))
-			.andExpect(model().attributeExists("vendorDetails"))
-			.andExpect(model().attribute("vendorDetails",hasProperty("isEmailVerified", is(true))));
+			.andExpect(view().name("quickregister/loginForm"));
+			//.andExpect(model().attributeExists("vendorDetails"))
+			//.andExpect(model().attribute("vendorDetails",hasProperty("isEmailVerified", is(true))));
 					
 		
 	}
@@ -633,10 +646,5 @@ public class QuickRegisterControllerWACTest {
 	}
 	*/
 
-	@Test
-	public void test()
-	{
-		System.out.println(new AuthenticationDetailsDTO());
-	}
 	
 }

@@ -361,11 +361,6 @@ public class CustomerDetailsDTO {
 		} else if (!customerId.equals(other.customerId))
 			return false;
 		*/	
-		if (dateOfBirth == null) {
-			if (other.dateOfBirth != null)
-				return false;
-		} else if (Math.abs(dateOfBirth.getTime()-other.dateOfBirth.getTime())>100000)
-			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -385,11 +380,6 @@ public class CustomerDetailsDTO {
 			if (other.homeAddressId != null)
 				return false;
 		} else if (!homeAddressId.equals(other.homeAddressId))
-			return false;
-		if (insertTime == null) {
-			if (other.insertTime != null)
-				return false;
-		} else if (Math.abs(insertTime.getTime()-other.insertTime.getTime())>100000)
 			return false;
 		if (isEmailVerified == null) {
 			if (other.isEmailVerified != null)
@@ -436,11 +426,6 @@ public class CustomerDetailsDTO {
 			if (other.secondaryMobile != null)
 				return false;
 		} else if (!secondaryMobile.equals(other.secondaryMobile))
-			return false;
-		if (updateTime == null) {
-			if (other.updateTime != null)
-				return false;
-		} else if (Math.abs(updateTime.getTime()-other.updateTime.getTime())>100000)//!updateTime.equals(other.updateTime)
 			return false;
 		if (updatedBy == null) {
 			if (other.updatedBy != null)

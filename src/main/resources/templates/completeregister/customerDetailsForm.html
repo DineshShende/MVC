@@ -12,7 +12,7 @@
     
  
  
-         <form action="/customer/save" method="post">
+         <form action="#" th:action="@{/customer/save}" method="post">
          <input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
          <input id="isMobileVerified" name="isMobileVerified" type="hidden" th:value="${customerDetails.isMobileVerified}"/>
          <input id="isEmailVerified" name="isEmailVerified" type="hidden" th:value="${customerDetails.isEmailVerified}"/>

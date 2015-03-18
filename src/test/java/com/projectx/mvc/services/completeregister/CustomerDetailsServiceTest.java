@@ -14,7 +14,9 @@ import com.projectx.mvc.config.BasicConfig;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
@@ -153,7 +155,8 @@ public class CustomerDetailsServiceTest {
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 		
-		assertTrue(customerDetailsService.sendMobileVerificationDetails(new CustomerIdTypeMobileTypeDTO(savedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_SECONDARY)));
+		assertTrue(customerDetailsService.sendMobileVerificationDetails(new CustomerIdTypeMobileTypeUpdatedByDTO(savedEntity.getCustomerId(), 
+				ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_SECONDARY,CUST_UPDATED_BY)));
 		
 		MobileVerificationDetailsDTO MobileVerificationDetailsDTO=
 				customerQuickRegisterService
@@ -260,7 +263,8 @@ public class CustomerDetailsServiceTest {
 		assertEquals(1,customerDetailsService.count().intValue());
 		
 		assertTrue(customerDetailsService
-				.sendMobileVerificationDetails(new CustomerIdTypeMobileTypeDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY)));
+				.sendMobileVerificationDetails(new CustomerIdTypeMobileTypeUpdatedByDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, 
+						ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY)));
 	}
 	
 	@Test
@@ -282,7 +286,8 @@ public class CustomerDetailsServiceTest {
 		assertEquals(1,customerDetailsService.count().intValue());
 		
 		assertTrue(customerDetailsService
-				.sendEmailVerificationDetails(new CustomerIdTypeEmailTypeDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY)));
+				.sendEmailVerificationDetails(new CustomerIdTypeEmailTypeUpdatedByDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, 
+						ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY)));
 	}
 
 	

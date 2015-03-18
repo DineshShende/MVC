@@ -406,25 +406,10 @@ public class DriverDetailsDTO {
 				return false;
 		} else if (!bloodGroup.equals(other.bloodGroup))
 			return false;
-		if (dateOfBirth == null) {
-			if (other.dateOfBirth != null)
-				return false;
-		} else if (Math.abs(dateOfBirth.getTime()-other.dateOfBirth.getTime())>1000000)
-			return false;
 		if (driverId == null) {
 			if (other.driverId != null)
 				return false;
 		} else if (!driverId.equals(other.driverId))
-			return false;
-		if (drivingSince == null) {
-			if (other.drivingSince != null)
-				return false;
-		} else if (Math.abs(drivingSince.getTime()-other.drivingSince.getTime())>1000000)
-			return false;
-		if (employedSince == null) {
-			if (other.employedSince != null)
-				return false;
-		} else if (Math.abs(employedSince.getTime()-other.employedSince.getTime())>1000000)
 			return false;
 		if (firstName == null) {
 			if (other.firstName != null)
@@ -440,11 +425,6 @@ public class DriverDetailsDTO {
 			if (other.homeContactNumber != null)
 				return false;
 		} else if (!homeContactNumber.equals(other.homeContactNumber))
-			return false;
-		if (insertTime == null) {
-			if (other.insertTime != null)
-				return false;
-		} else if (Math.abs(insertTime.getTime()-other.insertTime.getTime())>1000000)
 			return false;
 		if (isDealFinalizationPermissionGiven == null) {
 			if (other.isDealFinalizationPermissionGiven != null)
@@ -487,11 +467,6 @@ public class DriverDetailsDTO {
 			if (other.mobile != null)
 				return false;
 		} else if (!mobile.equals(other.mobile))
-			return false;
-		if (updateTime == null) {
-			if (other.updateTime != null)
-				return false;
-		} else if (Math.abs(updateTime.getTime()-other.updateTime.getTime())>1000000)
 			return false;
 		if (updatedBy == null) {
 			if (other.updatedBy != null)

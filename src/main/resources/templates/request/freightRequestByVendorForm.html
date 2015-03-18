@@ -9,10 +9,11 @@
 <body>
 
 
-  <form action="/request/freightrequestByVendor" method="post">
+  <form action="#" th:action="@{/request/freightrequestByVendor}" method="post">
          
          <input id="requestId" name="requestId" type="hidden" th:if="${freightRequestByVendor.requestId!=null}" th:value="${freightRequestByVendor.requestId}"/>
          <input id="vendorId" name="vendorId" type="hidden" th:value="${freightRequestByVendor.vendorId}"/>
+         <input id="updatedBy" name="updatedBy" type="hidden" value="CUST_ONLINE"/>
          
             <table>
                

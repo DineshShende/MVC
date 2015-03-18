@@ -1,6 +1,7 @@
 package com.projectx.mvc.servicehandler.request;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ import com.projectx.rest.domain.request.FreightRequestByCustomerList;
 import com.projectx.rest.domain.request.FreightRequestByVendorDTO;
 
 @Component
-@Profile(value="Dev")
+@Profile(value={"Dev","Prod"})
 @PropertySource(value="classpath:/application.properties")
 public class FreightRequestByCustomerHandler implements
 		FreightRequestByCustomerService {
@@ -41,6 +42,11 @@ public class FreightRequestByCustomerHandler implements
 	public FreightRequestByCustomer save(
 			FreightRequestByCustomer freightRequestByCustomer)throws ResourceAlreadyPresentException,ValidationFailedException {
 		
+		if(freightRequestByCustomer.getInsertTime()==null)
+			freightRequestByCustomer.setInsertTime(new Date());
+		
+		if(freightRequestByCustomer.getUpdateTime()==null)
+			freightRequestByCustomer.setUpdateTime(new Date());
 			
 		FreightRequestByCustomerDTO freightRequestByCustomerDTO=freightRequestByCustomer.toFreightRequestByCustomerDTO();
 		
@@ -78,8 +84,18 @@ public class FreightRequestByCustomerHandler implements
 	@Override
 	public List<FreightRequestByCustomer> getAllRequestForCustomer(
 			Long customerId) {
-		FreightRequestByCustomerList status=restTemplate
-				.getForObject(env.getProperty("rest.host")+"/request/freightRequestByCustomer/getByCustomerId/"+customerId, FreightRequestByCustomerList.class);
+		
+		
+		FreightRequestByCustomerList status=null;
+		
+		try{
+			status=restTemplate
+					.getForObject(env.getProperty("rest.host")+"/request/freightRequestByCustomer/getByCustomerId/"+customerId, FreightRequestByCustomerList.class);
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
 		
 		List<FreightRequestByCustomer> customerList=new ArrayList<FreightRequestByCustomer>();
 		
@@ -93,6 +109,32 @@ public class FreightRequestByCustomerHandler implements
 		
 	}
 
+
+
+	@Override
+	public void getCustmerReqForVendorReq(
+			FreightRequestByVendorDTO freightRequestByVendorDTO) {
+	
+				
+		HttpEntity<FreightRequestByVendorDTO > entity=new HttpEntity<FreightRequestByVendorDTO>(freightRequestByVendorDTO);
+		
+		try{
+			restTemplate.exchange(env.getProperty("rest.host")+"/request/freightRequestByCustomer/getMatchingCustomerReqForVendorReq",
+					HttpMethod.POST,entity, Void.class);
+			
+		}catch(RestClientException e)
+		{
+			//throw new ValidationFailedException();
+		}
+		
+				
+		
+	
+
+		
+		
+	}
+	
 	@Override
 	public Boolean deleteRequestById(Long requestId) {
 
@@ -119,26 +161,6 @@ public class FreightRequestByCustomerHandler implements
 				.getForObject(env.getProperty("rest.host")+"/request/freightRequestByCustomer/count", Integer.class);
 		
 		return status;
-		
-	}
-
-	@Override
-	public List<FreightRequestByCustomer> getCustmerReqForVendorReq(
-			FreightRequestByVendorDTO freightRequestByVendorDTO) {
-	
-		FreightRequestByCustomerList status=restTemplate.postForObject(env.getProperty("rest.host")+"/request/freightRequestByCustomer/getMatchingCustomerReqForVendorReq",
-				freightRequestByVendorDTO, FreightRequestByCustomerList.class);
-		
-		List<FreightRequestByCustomer> returnList=new ArrayList<FreightRequestByCustomer>();
-		
-		for(int i=0;i<status.getRequestList().size();i++)
-			returnList.add(FreightRequestByCustomer.fromFreightRequestByCustomerDTO(status.getRequestList().get(i)));
-		
-		
-		return returnList;
-	
-
-		
 		
 	}
 

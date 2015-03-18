@@ -8,20 +8,20 @@ public class UpdatePasswordDTO {
 
 	private String password;
 
-	
+	private String requestedBy;
 	
 	public UpdatePasswordDTO() {
 
 	}
 
 
-
-	public UpdatePasswordDTO(AuthenticationDetailsKey key, String password) {
+	public UpdatePasswordDTO(AuthenticationDetailsKey key, String password,
+			String requestedBy) {
 		super();
 		this.key = key;
 		this.password = password;
+		this.requestedBy = requestedBy;
 	}
-
 
 
 	public AuthenticationDetailsKey getKey() {
@@ -46,13 +46,21 @@ public class UpdatePasswordDTO {
 		this.password = password;
 	}
 
+	public String getRequestedBy() {
+		return requestedBy;
+	}
+
+
+	public void setRequestedBy(String requestedBy) {
+		this.requestedBy = requestedBy;
+	}
 
 
 	@Override
 	public String toString() {
-		return "UpdatePasswordDTO [key=" + key + ", password=" + password + "]";
+		return "UpdatePasswordDTO [key=" + key + ", password=" + password
+				+ ", requestedBy=" + requestedBy + "]";
 	}
-
 
 
 	@Override
@@ -62,9 +70,10 @@ public class UpdatePasswordDTO {
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
 		result = prime * result
 				+ ((password == null) ? 0 : password.hashCode());
+		result = prime * result
+				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
 		return result;
 	}
-
 
 
 	@Override
@@ -85,6 +94,11 @@ public class UpdatePasswordDTO {
 			if (other.password != null)
 				return false;
 		} else if (!password.equals(other.password))
+			return false;
+		if (requestedBy == null) {
+			if (other.requestedBy != null)
+				return false;
+		} else if (!requestedBy.equals(other.requestedBy))
 			return false;
 		return true;
 	}

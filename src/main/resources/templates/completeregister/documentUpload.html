@@ -1,10 +1,10 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Upload File Request Page</title>
 </head>
 <body>
  
-    <form method="POST" action="/document/save" enctype="multipart/form-data">
+    <form method="POST" action="#" th:action="@{/document/save}" enctype="multipart/form-data">
         File to upload: <input type="file" name="file"></input><br /> 
         <input id="customerId" name="customerId" type="hidden" th:value="${customerDetails.customerId}"/>
         <input id="customerType" name="customerType" type="hidden" value="1"/>
