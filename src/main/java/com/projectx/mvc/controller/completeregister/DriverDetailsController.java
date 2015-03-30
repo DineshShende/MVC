@@ -5,24 +5,26 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.util.validator.DriverDetailsValidator;
 import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
 import com.projectx.rest.domain.completeregister.EntityIdDTO;
-import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
 
-@Controller
-@RequestMapping(value = "/vendor")
+@RestController
+@RequestMapping(value = "/driver")
 public class DriverDetailsController {
 	
 	@Autowired
@@ -38,95 +40,100 @@ public class DriverDetailsController {
     }
 
 	
-	@RequestMapping(value="/driverDetailsForm",method=RequestMethod.POST)
-	public String driverForn(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
-	{
-		DriverDetailsDTO detailsDTO=new  DriverDetailsDTO();
-		
-		detailsDTO.setVendorId(entityIdDTO.getEntityId());
-		
-		model.addAttribute("driverDetails", detailsDTO);
-		
-		return "completeregister/driverDetailsForm";
-	}
 	
-	@RequestMapping(value="/updateDriverDetails",method=RequestMethod.POST)
-	public String updateDriverForn(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
-	{
-		DriverDetailsDTO detailsDTO=vendorDetailsService.getDriverById(entityIdDTO.getEntityId());
-		
-		model.addAttribute("driverDetails", detailsDTO);
-		
-		return "completeregister/driverDetailsUpdateForm";
-	}
-	
-	@RequestMapping(value="/addDriver",method=RequestMethod.POST)
-	public String addDriver(@Valid @ModelAttribute DriverDetailsDTO driverDetailsDTO,BindingResult result,Model model)
+	@RequestMapping(value="/save",method=RequestMethod.POST)
+	public ResponseEntity<DriverDetailsDTO> addDriver(@Valid @RequestBody DriverDetailsDTO driverDetailsDTO,BindingResult result)
 	{
 		
 		if(result.hasErrors())
 		{
-			model.addAttribute("driverDetails", driverDetailsDTO);
-			
-			return "completeregister/driverDetailsForm";
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		}
 		
-		DriverDetailsDTO detailsDTO=vendorDetailsService.addDriver(driverDetailsDTO);
+		DriverDetailsDTO detailsDTOInitialized=vendorDetailsService.initializeDriverDetails(driverDetailsDTO);
 		
-		if(detailsDTO.getDriverId()!=null)
-			model.addAttribute("addDriverStatus","Driver Added Sucessfully");
+		DriverDetailsDTO detailsDTO=vendorDetailsService.addDriver(detailsDTOInitialized);
 		
-		
-		VendorDetailsDTO updatedVendorDetailsDTO=vendorDetailsService.getCustomerDetailsById(driverDetailsDTO.getVendorId());
-		
-		model.addAttribute("vendorDetails", updatedVendorDetailsDTO);
-		
-		
-		model=vendorDetailsService.initialiseShowVendorDetails(driverDetailsDTO.getVendorId(), model);
-		return "completeregister/showVendorDetails";
+		return new ResponseEntity<DriverDetailsDTO>(detailsDTO, HttpStatus.OK);
+	
 	}
 	
-	@RequestMapping(value="/updateDriver",method=RequestMethod.POST)
-	public String  updateDriver(@Valid @ModelAttribute DriverDetailsDTO driverDetailsDTO,BindingResult result,Model model)
+	@RequestMapping(value="/getById",method=RequestMethod.POST)
+	public ResponseEntity<DriverDetailsDTO> getById(@RequestBody EntityIdDTO entityIdDTO)
 	{
-		if(result.hasErrors())
+		try{
+			DriverDetailsDTO fetchedEntity=vendorDetailsService.getDriverById(entityIdDTO.getEntityId());
+			return new ResponseEntity<DriverDetailsDTO>(fetchedEntity, HttpStatus.OK);
+		}catch(ResourceNotFoundException e)
 		{
-			model.addAttribute("driverDetails", driverDetailsDTO);
-			
-			return "completeregister/driverDetailsUpdateForm";
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		
-		DriverDetailsDTO detailsDTO=vendorDetailsService.update(driverDetailsDTO);
-		
-		model.addAttribute("vendorDetails", vendorDetailsService.getCustomerDetailsById(driverDetailsDTO.getVendorId()));
-		
-		if(detailsDTO.getDriverId()!=null)
-			model.addAttribute("updateDriverStatus","Driver Updated Sucessfully");
-		
-				
-		model=vendorDetailsService.initialiseShowVendorDetails(driverDetailsDTO.getVendorId(), model);
-		return "completeregister/showVendorDetails";
 	}
 	
-	@RequestMapping(value="/deleteDriver",method=RequestMethod.POST)
-	@ResponseBody
+	@RequestMapping(value="/getByVendorId",method=RequestMethod.POST)
+	public List<DriverDetailsDTO> showDriverDetails(@RequestBody EntityIdDTO entityIdDTO,Model model)
+	{
+		List<DriverDetailsDTO> driverList=vendorDetailsService.getDriversByVendor(entityIdDTO.getEntityId());
+		
+		
+		return driverList;
+	}
+	
+	
+	
+	
+	@RequestMapping(value="/deleteById",method=RequestMethod.POST)
 	public Boolean  deleteDriver(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
 	{
 		Boolean detailsDTO=vendorDetailsService.deleteDriverById(entityIdDTO.getEntityId());
 		
-		
 		return detailsDTO;
 	}
 
-	@RequestMapping(value="/showDriverDetails",method=RequestMethod.POST)
-	public String showDriverDetails(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
-	{
-		List<DriverDetailsDTO> driverList=vendorDetailsService.getDriversByVendor(entityIdDTO.getEntityId());
-		
-			
-		model.addAttribute("driverList", driverList);
-		
-		return "completeregister/showDriverDetails";
-	}
+	
 
 }
+/*
+@RequestMapping(value="/updateDriver",method=RequestMethod.POST)
+public ResponseEntity<DriverDetailsDTO>  updateDriver(@Valid @ModelAttribute DriverDetailsDTO driverDetailsDTO,BindingResult result,Model model)
+{
+	if(result.hasErrors())
+	{
+		//model.addAttribute("driverDetails", driverDetailsDTO);
+		
+		return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+	}
+	
+	DriverDetailsDTO detailsDTOInitialized=vendorDetailsService.initializeDriverDetails(driverDetailsDTO);
+	
+	DriverDetailsDTO detailsDTO=vendorDetailsService.update(driverDetailsDTO);
+	
+	return new ResponseEntity<DriverDetailsDTO>(detailsDTO, HttpStatus.OK);
+}
+*/
+
+/*
+@RequestMapping(value="/driverDetailsForm",method=RequestMethod.POST)
+public String driverForn(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
+{
+	DriverDetailsDTO detailsDTO=new  DriverDetailsDTO();
+	
+	detailsDTO.setVendorId(entityIdDTO.getEntityId());
+	
+	model.addAttribute("driverDetails", detailsDTO);
+	
+	return "completeregister/driverDetailsForm";
+}
+
+
+@RequestMapping(value="/updateDriverDetails",method=RequestMethod.POST)
+public String updateDriverForn(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
+{
+	DriverDetailsDTO detailsDTO=vendorDetailsService.getDriverById(entityIdDTO.getEntityId());
+	
+	model.addAttribute("driverDetails", detailsDTO);
+	
+	return "completeregister/driverDetailsUpdateForm";
+}
+*/

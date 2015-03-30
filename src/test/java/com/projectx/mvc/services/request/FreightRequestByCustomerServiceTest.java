@@ -169,7 +169,7 @@ public class FreightRequestByCustomerServiceTest {
 		FreightRequestByVendorDTO testRequest=freightRequestByVendorService.save(standardFreightRequestByVendor());
 		
 		freightRequestByCustomerService.getCustmerReqForVendorReq(standardFreightRequestByVendor());
-		
+		//TODO internal error need to setup things
 		
 
 	}

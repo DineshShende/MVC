@@ -68,11 +68,6 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	public VendorDetailsDTO createCustomerDetailsFromQuickRegisterEntity(
 			QuickRegisterDTO quickRegisterEntity) {
 		
-		if(quickRegisterEntity.getInsertTime()==null)
-			quickRegisterEntity.setInsertTime(new Date());
-			
-		if(quickRegisterEntity.getUpdateTime()==null)	
-			quickRegisterEntity.setUpdateTime(new Date());
 		
 		if(quickRegisterEntity.getEmail()!=null && quickRegisterEntity.getIsEmailVerified()==null)
 			quickRegisterEntity.setIsEmailVerified(false);
@@ -337,20 +332,32 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	}
 
 	@Override
-	public DriverDetailsDTO addDriver(DriverDetailsDTO driverDetailsDTO) {
+	public DriverDetailsDTO initializeDriverDetails(
+			DriverDetailsDTO driverDetailsDTO) {
 	
-		driverDetailsDTO.setInsertTime(new Date());
+		if(driverDetailsDTO.getInsertTime()==null)
+			driverDetailsDTO.setInsertTime(new Date());
 		
 		driverDetailsDTO.setUpdateTime(new Date());
 		
-		driverDetailsDTO.getHomeAddress().setInsertTime(new Date());
+		if(driverDetailsDTO.getHomeAddress().getInsertTime()==null)
+			driverDetailsDTO.getHomeAddress().setInsertTime(new Date());
 		
 		driverDetailsDTO.getHomeAddress().setUpdateTime(new Date());
 		
-		driverDetailsDTO.setIsMobileVerified(false);
-		
 		driverDetailsDTO.getHomeAddress().setUpdatedBy(driverDetailsDTO.getUpdatedBy());
 		
+		if(driverDetailsDTO.getIsMobileVerified()==null)
+		driverDetailsDTO.setIsMobileVerified(false);
+		
+		return driverDetailsDTO;
+	
+	}
+	
+	@Override
+	public DriverDetailsDTO addDriver(DriverDetailsDTO driverDetailsDTO) {
+	
+			
 		HttpEntity<DriverDetailsDTO> entity=new HttpEntity<DriverDetailsDTO>(driverDetailsDTO);
 		
 		ResponseEntity<DriverDetailsDTO> result=null;
@@ -371,23 +378,10 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		
 	}
 
+	/*
 	@Override
 	public DriverDetailsDTO update(DriverDetailsDTO driverDetailsDTO) {
 		
-		if(driverDetailsDTO.getInsertTime()==null)
-			driverDetailsDTO.setInsertTime(new Date());
-		
-		driverDetailsDTO.setUpdateTime(new Date());
-		
-		if(driverDetailsDTO.getHomeAddress().getInsertTime()==null)
-			driverDetailsDTO.getHomeAddress().setInsertTime(new Date());
-		
-		driverDetailsDTO.getHomeAddress().setUpdateTime(new Date());
-		
-		driverDetailsDTO.getHomeAddress().setUpdatedBy(driverDetailsDTO.getUpdatedBy());
-		
-		if(driverDetailsDTO.getIsMobileVerified()==null)
-		driverDetailsDTO.setIsMobileVerified(false);
 		
 		HttpEntity<DriverDetailsDTO> entity=new HttpEntity<DriverDetailsDTO>(driverDetailsDTO);
 		
@@ -408,6 +402,7 @@ public class VendorDetailsHandler implements VendorDetailsService {
 			throw new DriverDetailsUpdateFailedException();
 
 	}
+	*/
 
 	@Override
 	public DriverDetailsDTO getDriverById(Long driverId) {
@@ -434,7 +429,7 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	}
 
 	@Override
-	public ArrayList<DriverDetailsDTO> getDriversByVendor(Long venorId) {
+	public List<DriverDetailsDTO> getDriversByVendor(Long venorId) {
 
 		DriverList result=restTemplate
 				.getForObject(env.getProperty("rest.host")+"/vendor/driver/getDriversByVendor/"+venorId, DriverList.class);
@@ -545,5 +540,7 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		return result;
 
 	}
+
+	
 
 }

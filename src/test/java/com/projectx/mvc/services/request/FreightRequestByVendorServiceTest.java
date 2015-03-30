@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,6 @@ import com.projectx.mvc.domain.request.FreightRequestByCustomer;
 import com.projectx.mvc.exception.repository.completeregister.ValidationFailedException;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
-
 import com.projectx.rest.domain.request.FreightRequestByVendorDTO;
 
 import static com.projectx.mvc.fixtures.completeregister.VehicleDetailsDataFixtures.*;
@@ -39,8 +39,10 @@ public class FreightRequestByVendorServiceTest {
 	FreightRequestByCustomerService freightRequestByCustomerService;
 
 	@Before
+	@After
 	public void clearData()
 	{
+			
 		freightRequestByVendorService.clearTestData();
 		vendorDetailsService.clearTestData();
 		vendorDetailsService.vehicleClearTestData();

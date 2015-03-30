@@ -3,8 +3,9 @@ package com.projectx.mvc.controller.completeregister;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.concurrent.Callable;
+import java.util.Iterator;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.context.request.async.WebAsyncTask;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.projectx.async.domain.quickregister.EmailDTO;
-import com.projectx.mvc.domain.quickregister.CustomerDocumetDTO;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.completeregister.DocumentDetailsService;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
@@ -31,8 +28,6 @@ import com.projectx.rest.domain.completeregister.DocumentKey;
 import com.projectx.rest.domain.completeregister.UpdateDocumentDTO;
 import com.projectx.rest.domain.completeregister.UpdateDocumentVerificationStatusAndRemarkDTO;
 import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
-import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
-import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 
 @Controller
 @RequestMapping(value = "/document")
@@ -50,6 +45,67 @@ public class DocumentDetailsController {
 	private Integer ENTITY_TYPE_CUSTOMER=1;
 	private Integer ENTITY_TYPE_VENDOR=2;
 	
+	/*
+	@RequestMapping(value="/",method=RequestMethod.POST)
+	public DocumentContainer documentContainer(@RequestBody DocumentContainer documentContainer)
+	{
+		
+	}
+	*/
+	
+	/*
+	@RequestMapping(value="/save",method=RequestMethod.POST)//,consumes = {"multipart/form-data"}
+	@ResponseBody
+	public String save(
+	        @RequestParam(value = "file") MultipartFile file)
+	{
+		
+		System.out.println(file.getContentType());
+		
+		
+		//System.out.println(dto.getFile().getContentType());
+		//try {
+			//System.out.println(dto.getFile().getBytes());
+		//} catch (IOException e) {
+			// TODO Auto-generated catch block
+		//	e.printStackTrace();
+		//}
+		
+		return "abc";
+	}
+	*/
+	
+	
+	@RequestMapping(value="/save",method=RequestMethod.POST)//,consumes = {"multipart/form-data"}
+	@ResponseBody
+	public String save(MultipartHttpServletRequest request,HttpServletResponse response)
+	{
+		
+		MultipartHttpServletRequest mRequest;
+        try {
+            mRequest = (MultipartHttpServletRequest) request;
+            mRequest.getParameterMap();
+
+            Iterator<String> itr = mRequest.getFileNames();
+            while (itr.hasNext()) {
+                MultipartFile mFile = mRequest.getFile(itr.next());
+                String fileName = mFile.getOriginalFilename();
+                System.out.println(fileName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		
+		return "abc";
+	}
+	
+	
+	@RequestMapping(value="/documentUpload")
+	public String documentUpload()
+	{
+		return "completeregister/documentUpload";
+	}
+	/*
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	public String save(@RequestParam("customerId") Long customerId,@RequestParam("customerType") Integer customerType,
 			@RequestParam("documentName") String documentName,
@@ -104,6 +160,7 @@ public class DocumentDetailsController {
 		return "failure";
 	}
 	
+	*/
 	@RequestMapping(value="/updateDocument",method=RequestMethod.POST)
 	public String updateDocument(@RequestParam("customerId") Long customerId,@RequestParam("customerType") Integer customerType,
 			@RequestParam("documentName") String documentName,@RequestParam("requestedBy") String requestedBy,

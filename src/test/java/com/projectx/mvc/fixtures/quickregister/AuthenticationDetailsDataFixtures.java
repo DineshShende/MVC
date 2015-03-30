@@ -27,32 +27,36 @@ public class AuthenticationDetailsDataFixtures {
 	
 	public static AuthenticationDetailsDTO standardCustomerEmailMobileAuthenticationDetails()
 	{
-		return new AuthenticationDetailsDTO(standardAuthenticationKey(), CUST_EMAIL, CUST_MOBILE, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT, CUST_EMAILHASH, ZERO_COUNT, ZERO_COUNT,CUST_DATE,CUST_DATE,CUST_UPDATED_BY,false);
+		return new  AuthenticationDetailsDTO(standardAuthenticationKey(), "completeName",  CUST_PASSWORD_DEFAULT, false);
 	}
 	
 	public static AuthenticationDetailsDTO standardCustomerEmailAuthenticationDetails()
 	{
-		return new AuthenticationDetailsDTO(standardAuthenticationKey(), CUST_EMAIL, null, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT, CUST_EMAILHASH, ZERO_COUNT, ZERO_COUNT,CUST_DATE,CUST_DATE,CUST_UPDATED_BY,false);
+		return new  AuthenticationDetailsDTO(standardAuthenticationKey(), "completeName",  CUST_PASSWORD_DEFAULT, false);
 	}
 
 	public static AuthenticationDetailsDTO standardCustomerMobileAuthenticationDetails()
 	{
-		return new AuthenticationDetailsDTO(standardAuthenticationKey(), null, CUST_MOBILE, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT, null, ZERO_COUNT, ZERO_COUNT,CUST_DATE,CUST_DATE,CUST_UPDATED_BY,false);
+		return new  AuthenticationDetailsDTO(standardAuthenticationKey(), "completeName",  CUST_PASSWORD_DEFAULT, false);
 	}
 
 	public static AuthenticationDetailsDTO standardCustomerEmailMobileAuthenticationDetailsWithNewPassword()
 	{
-		return new AuthenticationDetailsDTO(standardAuthenticationKey(), CUST_EMAIL, CUST_MOBILE, CUST_PASSWORD_CHANGED, CUST_PASSWORD_TYPE_CHANGED, CUST_EMAILHASH, ZERO_COUNT, ZERO_COUNT,CUST_DATE,CUST_DATE,CUST_UPDATED_BY,false);
+		return new  AuthenticationDetailsDTO(standardAuthenticationKey(), "completeName", CUST_PASSWORD_CHANGED, false);
 	}
 	
 	public static AuthenticationDetailsDTO standardCustomerEmailAuthenticationDetailsWithNewPassword()
 	{
-		return new AuthenticationDetailsDTO(standardAuthenticationKey(), CUST_EMAIL, null, CUST_PASSWORD_CHANGED, CUST_PASSWORD_TYPE_CHANGED, CUST_EMAILHASH, ZERO_COUNT, ZERO_COUNT,CUST_DATE,CUST_DATE,CUST_UPDATED_BY,false);
+		
+		
+		return new  AuthenticationDetailsDTO(standardAuthenticationKey(), "completeName", CUST_PASSWORD_CHANGED, false);
+		
+		
 	}
 
 	public static AuthenticationDetailsDTO standardCustomerMobileAuthenticationDetailsWithNewPassword()
 	{
-		return new AuthenticationDetailsDTO(standardAuthenticationKey(), null, CUST_MOBILE, CUST_PASSWORD_CHANGED, CUST_PASSWORD_TYPE_CHANGED, null, ZERO_COUNT, ZERO_COUNT,CUST_DATE,CUST_DATE,CUST_UPDATED_BY,false);
+		return new  AuthenticationDetailsDTO(standardAuthenticationKey(), "completeName", CUST_PASSWORD_DEFAULT, false);
 	}
 	
 	
@@ -81,7 +85,7 @@ public class AuthenticationDetailsDataFixtures {
 
 	public static UpdatePasswordDTO standardUpdatePassword()
 	{
-		return new UpdatePasswordDTO(new AuthenticationDetailsKey(CUST_ID,ENTITY_TYPE_CUSTOMER), CUST_PASSWORD_CHANGED,CUST_UPDATED_BY);
+		return new UpdatePasswordDTO(new AuthenticationDetailsKey(CUST_ID,ENTITY_TYPE_CUSTOMER), CUST_PASSWORD_CHANGED,true,CUST_UPDATED_BY);
 	}
 	
 	/*

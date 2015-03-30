@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,10 +14,13 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.mvc.util.validator.CustomerDetailsValidator;
@@ -33,7 +38,7 @@ import com.projectx.rest.domain.quickregister.EmailVerificationDetailsKey;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 
-@Controller
+@RestController
 @RequestMapping(value = "/customer")
 public class CustomerDetailsController {
 
@@ -53,29 +58,19 @@ public class CustomerDetailsController {
 	
 	private Integer ENTITY_TYPE_CUSTOMER=1;
 	private Integer ENTITY_TYPE_VENDOR=2;
-	
+		
 	private Integer ENTITY_TYPE_PRIMARY=1;
 	private Integer ENTITY_TYPE_SECONDARY=2;
 	
-	@RequestMapping(value="/createCustomerDetailsFromQuickRegisterEntity",method=RequestMethod.POST)
-	public String createCustomerDetailsFromQuickRegisterEntity(@ModelAttribute QuickRegisterDTO quickRegisterDTO,Model model)
-	{
-		CustomerDetailsDTO customerDetailsDTO=customerDetailsService
-				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterDTO);
+	
 		
-		model.addAttribute("customerDetails", customerDetailsDTO);
-		
-		return "completeregister/customerDetailsForm";
-	}
-		
+	
 	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public String save(@Valid @ModelAttribute CustomerDetailsDTO customerDetailsDTO,BindingResult result,Model model)
+	public ResponseEntity<CustomerDetailsDTO> save( @Valid @RequestBody CustomerDetailsDTO customerDetailsDTO,BindingResult result)
 	{
 		if(result.hasErrors())
 		{
-			model.addAttribute("customerDetails", customerDetailsDTO);
-			
-			return "completeregister/customerDetailsForm";
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		}	
 		
 		customerDetailsDTO=customerDetailsService.InitializeMetaData(customerDetailsDTO);
@@ -83,50 +78,30 @@ public class CustomerDetailsController {
 		CustomerDetailsDTO newCustomerDetailsDTO=customerDetailsService
 				.merge(customerDetailsDTO);
 		
-		model.addAttribute("customerDetails", newCustomerDetailsDTO);
+		//model.addAttribute("customerDetails", newCustomerDetailsDTO);
 		
-		return "completeregister/documentUpload";
+		return new ResponseEntity<CustomerDetailsDTO>(newCustomerDetailsDTO, HttpStatus.OK);
 	
 	}
 	
-	@RequestMapping(value="/editForm",method=RequestMethod.POST)
-	public String editForm( @ModelAttribute EntityIdDTO entityIdDTO,Model model)
+	@RequestMapping(value="/getById",method=RequestMethod.POST)
+	public ResponseEntity<CustomerDetailsDTO> getCustomerDetailsByIdAndType(@RequestBody EntityIdDTO customerIdDTO)
 	{
 		
-		CustomerDetailsDTO newCustomerDetailsDTO=customerDetailsService
-				.getCustomerDetailsById(entityIdDTO.getEntityId());
+		ResponseEntity<CustomerDetailsDTO> result=null;
 		
-		model.addAttribute("customerDetails", newCustomerDetailsDTO);
-		
-		return "completeregister/customerDetailsForm";
-	
-	}
-	
-	@RequestMapping(value="/edit",method=RequestMethod.POST)
-	public String edit(@Valid @ModelAttribute CustomerDetailsDTO customerDetailsDTO,BindingResult result,Model model)
-	{
-		if(result.hasErrors())
+		try{
+			CustomerDetailsDTO customerDetailsDTO=customerDetailsService.getCustomerDetailsById(customerIdDTO.getEntityId());
+			return new ResponseEntity<CustomerDetailsDTO>(customerDetailsDTO, HttpStatus.OK);
+		}catch(ResourceNotFoundException e)
 		{
-			model.addAttribute("customerDetails", customerDetailsDTO);
-			
-			return "completeregister/customerDetailsForm";
-		}	
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 		
-		customerDetailsDTO=customerDetailsService.InitializeMetaData(customerDetailsDTO);
-		
-		CustomerDetailsDTO newCustomerDetailsDTO=customerDetailsService
-				.merge(customerDetailsDTO);
-		
-		model.addAttribute("customerDetails", newCustomerDetailsDTO);
-		
-		model=customerDetailsService.initialiseShowCustomerDetails(customerDetailsDTO.getCustomerId(), model);
-		
-		return "completeregister/showCustomerDetails";
-	
 	}
+	
 	
 	@RequestMapping(value="/verifyMobileDetails",method=RequestMethod.POST)
-	@ResponseBody
 	public Boolean verifyMobileDetails(@ModelAttribute VerifyMobileDTO verifyMobileDTO,Model model)
 	{
 		Boolean result=customerDetailsService.verifyMobileDetails(verifyMobileDTO );
@@ -136,7 +111,6 @@ public class CustomerDetailsController {
 	}
 	
 	@RequestMapping(value="/sendMobileVerificationDetails",method=RequestMethod.POST)
-	@ResponseBody
 	public Boolean sendMobileVerificationDetails(@ModelAttribute CustomerIdTypeMobileTypeUpdatedByDTO customerIdTypeMobileDTO,Model model)
 	{
 		Boolean result=customerDetailsService.sendMobileVerificationDetails(customerIdTypeMobileDTO);
@@ -173,7 +147,6 @@ public class CustomerDetailsController {
 	}
 	
 	@RequestMapping(value="/sendEmailVerificationDetails",method=RequestMethod.POST)
-	@ResponseBody
 	public Boolean sendEmailVerificationDetails(@ModelAttribute CustomerIdTypeEmailTypeUpdatedByDTO customerIdTypeEmailDTO,Model model)
 	{
 		Boolean result=customerDetailsService.sendEmailVerificationDetails(customerIdTypeEmailDTO);
@@ -184,3 +157,4 @@ public class CustomerDetailsController {
 	
 	
 }
+

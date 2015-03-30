@@ -55,9 +55,11 @@ public class VendorDetailsServiceTest {
 	{
 		customerDetailsService.clearTestData();
 		customerQuickRegisterService.clearTestData();
-		vendorDetailsService.clearTestData();
+		
 		vendorDetailsService.driverClearTestData();
-		vendorDetailsService.vehicleClearTestData();
+		vendorDetailsService.clearTestData();
+		
+		vendorDetailsService.vehicleClearTestData();	
 		
 	}
 	
@@ -332,7 +334,7 @@ public class VendorDetailsServiceTest {
 		
 		DriverDetailsDTO savedEntity=vendorDetailsService.addDriver(standardDriverDetails());
 		
-		DriverDetailsDTO updatedEntity=vendorDetailsService.update(standardDriverDetailsNewMobileAndFirstName(savedEntity.getDriverId()));
+		DriverDetailsDTO updatedEntity=vendorDetailsService.addDriver(standardDriverDetailsNewMobileAndFirstName(savedEntity.getDriverId()));
 		
 		assertNotEquals(updatedEntity.getMobile(),standardDriverDetailsNewMobileAndFirstName(savedEntity.getDriverId()).getMobile());
 		
@@ -352,6 +354,8 @@ public class VendorDetailsServiceTest {
 	@Test
 	public void addVehicle()
 	{
+		
+		
 		
 		assertEquals(0, vendorDetailsService.vehicleCount().intValue());
 		

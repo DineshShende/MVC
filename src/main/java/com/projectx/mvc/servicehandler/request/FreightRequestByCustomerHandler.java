@@ -124,7 +124,7 @@ public class FreightRequestByCustomerHandler implements
 			
 		}catch(RestClientException e)
 		{
-			//throw new ValidationFailedException();
+			throw new ValidationFailedException();
 		}
 		
 				

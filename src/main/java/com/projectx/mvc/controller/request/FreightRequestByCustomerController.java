@@ -5,16 +5,19 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.projectx.mvc.domain.request.FreightRequestByCustomer;
+import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.services.request.FreightRequestByCustomerService;
 import com.projectx.mvc.services.request.FreightRequestByVendorService;
 import com.projectx.rest.domain.completeregister.EntityIdDTO;
@@ -31,24 +34,11 @@ public class FreightRequestByCustomerController {
 	@Autowired
 	FreightRequestByVendorService freightRequestByVendorService;
 	
-	
-	@RequestMapping(value="/requestForm",method=RequestMethod.POST)
-	public String requestForm(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
-	{
-		FreightRequestByCustomer newRequest=new FreightRequestByCustomer();
-		newRequest.setCustomerId(entityIdDTO.getEntityId());
-		
-		model.addAttribute("freightRequestByCustomer", newRequest);
-		
-		return "request/freightRequestByCustomerForm";
-		
-	}
-	
 	@RequestMapping(method=RequestMethod.POST)
-	public String save(@Valid @ModelAttribute FreightRequestByCustomer freightRequestByCustomerDTO,BindingResult bindingResult,Model model)
+	public ResponseEntity<List<FreightRequestByVendorDTO>> save(@Valid @RequestBody FreightRequestByCustomer freightRequestByCustomerDTO,BindingResult bindingResult)
 	{
 		if(bindingResult.hasErrors())
-			return "request/freightRequestByCustomerForm";
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		
 		freightRequestByCustomerDTO.setStatus("New");
 		
@@ -60,15 +50,50 @@ public class FreightRequestByCustomerController {
 			List<FreightRequestByVendorDTO> requestList=freightRequestByVendorService
 					.getMatchingVendorReqForCustReq(savedEntity.toFreightRequestByCustomerDTO());
 		
-			model.addAttribute("requestList", requestList);
+			//model.addAttribute("requestList", requestList);
 		
-			return "response/showMatchingVendorRequests";
+			return new ResponseEntity<List<FreightRequestByVendorDTO>>(requestList, HttpStatus.OK);
 		}
 		else
-			return "FAILURE";
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-	@RequestMapping(value="/updateFrom",method=RequestMethod.POST)
+	@RequestMapping(value="/getById",method=RequestMethod.POST)
+	public ResponseEntity<FreightRequestByCustomer> getById(@RequestBody EntityIdDTO entityIdDTO)
+	{
+		try{
+			FreightRequestByCustomer fetchedEntity=freightRequestByCustomerService.getRequestById(entityIdDTO.getEntityId());
+			return new ResponseEntity<FreightRequestByCustomer>(fetchedEntity, HttpStatus.OK);
+		}catch(ResourceNotFoundException e)
+		{
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		
+		
+		
+	}
+	
+	@RequestMapping(value="/getByCustomerId",method=RequestMethod.POST)
+	public List<FreightRequestByCustomer> showRequestForCustomer(@ModelAttribute EntityIdDTO entityIdDTO ,Model model)
+	{
+		List<FreightRequestByCustomer> requestList=freightRequestByCustomerService.getAllRequestForCustomer(entityIdDTO.getEntityId());
+		
+		//model.addAttribute("requestList", requestList);
+		
+		return requestList;
+	}
+	
+	@RequestMapping(value="/deleteRequestById",method=RequestMethod.POST)
+	public Boolean deleteRequestById(@ModelAttribute EntityIdDTO entityIdDTO)
+	{
+		Boolean status=freightRequestByCustomerService.deleteRequestById(entityIdDTO.getEntityId());
+		
+		return status;
+	}
+}
+/*	
+
+@RequestMapping(value="/updateFrom",method=RequestMethod.POST)
 	public String update(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
 	{
 		FreightRequestByCustomer request=freightRequestByCustomerService.getRequestById(entityIdDTO.getEntityId());
@@ -78,23 +103,16 @@ public class FreightRequestByCustomerController {
 		return "request/freightRequestByCustomerForm";
 		
 	}
+
+@RequestMapping(value="/requestForm",method=RequestMethod.POST)
+public String requestForm(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
+{
+	FreightRequestByCustomer newRequest=new FreightRequestByCustomer();
+	newRequest.setCustomerId(entityIdDTO.getEntityId());
 	
-	@RequestMapping(value="/getByCustomerId",method=RequestMethod.POST)
-	public String showRequestForCustomer(@ModelAttribute EntityIdDTO entityIdDTO ,Model model)
-	{
-		List<FreightRequestByCustomer> requestList=freightRequestByCustomerService.getAllRequestForCustomer(entityIdDTO.getEntityId());
-		
-		model.addAttribute("requestList", requestList);
-		
-		return "request/showFreightRequestFromCustomer";
-	}
+	model.addAttribute("freightRequestByCustomer", newRequest);
 	
-	@RequestMapping(value="/deleteRequestById",method=RequestMethod.POST)
-	@ResponseBody
-	public Boolean deleteRequestById(@ModelAttribute EntityIdDTO entityIdDTO)
-	{
-		Boolean status=freightRequestByCustomerService.deleteRequestById(entityIdDTO.getEntityId());
-		
-		return status;
-	}
+	return "request/freightRequestByCustomerForm";
+	
 }
+*/

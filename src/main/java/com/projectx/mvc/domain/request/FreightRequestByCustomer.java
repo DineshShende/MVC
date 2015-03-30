@@ -57,6 +57,7 @@ public class FreightRequestByCustomer {
 	
 	private String status;
 	
+	private Long allocatedFor;
 	
 	private Date insertTime;
 	
@@ -72,13 +73,16 @@ public class FreightRequestByCustomer {
 
 	
 
+
+
 	public FreightRequestByCustomer(Long requestId, Integer source,
 			Integer destination, Date pickupDate, Integer noOfVehicles,
 			String loadType, Integer capacity, String bodyType,
 			Integer grossWeight, Integer length, Integer width, Integer height,
 			String vehicleBrand, String model, String commodity,
-			String pickupTime, Long customerId, String status, Date insertTime,
-			String updatedBy, Date updateTime) {
+			String pickupTime, Long customerId, String status,
+			Long allocatedFor, Date insertTime, String updatedBy,
+			Date updateTime) {
 		super();
 		this.requestId = requestId;
 		this.source = source;
@@ -98,6 +102,7 @@ public class FreightRequestByCustomer {
 		this.pickupTime = pickupTime;
 		this.customerId = customerId;
 		this.status = status;
+		this.allocatedFor = allocatedFor;
 		this.insertTime = insertTime;
 		this.updatedBy = updatedBy;
 		this.updateTime = updateTime;
@@ -105,16 +110,16 @@ public class FreightRequestByCustomer {
 
 
 
+
+
 	public  FreightRequestByCustomerDTO toFreightRequestByCustomerDTO()
 	{
-		
-		
-		
+				
 		FreightRequestByCustomerDTO newDTO=new FreightRequestByCustomerDTO(this.requestId,
 				this.source, this.destination, this.pickupDate, this.noOfVehicles, 
 				(this.loadType.equals("FullTruckLoad")), (this.loadType.equals("LessThanTruckLoad")), this.capacity, this.bodyType, 
 				this.grossWeight, this.length, this.width, this.height, this.vehicleBrand, 
-				this.model, this.commodity, this.customerId, this.status, this.pickupTime, 
+				this.model, this.commodity,this.pickupTime, this.customerId, this.status,this.allocatedFor,  
 				this.insertTime, this.updateTime, this.updatedBy);
 		
 		return newDTO;
@@ -132,12 +137,31 @@ public class FreightRequestByCustomer {
 						freightRequestByCustomerDTO.getBodyType(), freightRequestByCustomerDTO.getGrossWeight(), 
 						freightRequestByCustomerDTO.getLength(), freightRequestByCustomerDTO.getWidth(),freightRequestByCustomerDTO.getHeight(),
 						freightRequestByCustomerDTO.getVehicleBrand(), freightRequestByCustomerDTO.getModel(),freightRequestByCustomerDTO.getCommodity(),
-						freightRequestByCustomerDTO.getPickupTime(), freightRequestByCustomerDTO.getCustomerId(),freightRequestByCustomerDTO.getStatus(),
+						freightRequestByCustomerDTO.getPickupTime(), freightRequestByCustomerDTO.getCustomerId(),freightRequestByCustomerDTO.getAllocationStatus(),
+						freightRequestByCustomerDTO.getAllocatedFor(),
 						freightRequestByCustomerDTO.getInsertTime(), freightRequestByCustomerDTO.getUpdatedBy(),
 						freightRequestByCustomerDTO.getUpdateTime());
 		
 		return freightRequestByCustomer;
 	}
+
+
+	
+	
+	public Long getAllocatedFor() {
+		return allocatedFor;
+	}
+
+
+
+
+
+	public void setAllocatedFor(Long allocatedFor) {
+		this.allocatedFor = allocatedFor;
+	}
+
+
+
 
 
 	public Long getRequestId() {

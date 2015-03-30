@@ -1,6 +1,20 @@
 package com.projectx.mvc.services.completeregister;
 
-import static org.junit.Assert.*;
+import static com.projectx.mvc.fixtures.completeregister.CustomerDetailsDataFixtures.standardCustomerDetails;
+import static com.projectx.mvc.fixtures.completeregister.CustomerDetailsDataFixtures.standardCustomerDetailsCopiedFromQuickRegisterEntity;
+import static com.projectx.mvc.fixtures.completeregister.CustomerDetailsDataFixtures.standardCustomerDetailsWithMerge;
+import static com.projectx.mvc.fixtures.completeregister.CustomerDetailsDataFixtures.standardCustomerDetailsWithOutMetaData;
+import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.CUST_UPDATED_BY;
+import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.ENTITY_TYPE_CUSTOMER;
+import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.ENTITY_TYPE_PRIMARY;
+import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.ENTITY_TYPE_SECONDARY;
+import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.standardCustomerQuickRegisterEntity;
+import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.standardEmailMobileCustomer;
+import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.standardEmailMobileCustomerDTO;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,18 +27,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.projectx.mvc.config.BasicConfig;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
-
-import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.*;
-import static com.projectx.mvc.fixtures.completeregister.CustomerDetailsDataFixtures.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

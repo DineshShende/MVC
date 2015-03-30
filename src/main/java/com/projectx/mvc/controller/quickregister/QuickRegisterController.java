@@ -1,29 +1,19 @@
 package com.projectx.mvc.controller.quickregister;
 
-import static com.projectx.mvc.fixture.quickregister.QuickRegisterDataConstants.*;
+import static com.projectx.mvc.fixture.quickregister.QuickRegisterDataConstants.CUST_PASSWORD_TYPE_DEFAULT;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,47 +21,37 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.AsyncRestTemplate;
-import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.projectx.mvc.domain.quickregister.CustomerDocumetDTO;
+import com.projectx.mvc.domain.quickregister.LoginDetailsDTO;
 import com.projectx.mvc.domain.quickregister.QuickRegisterEntity;
 import com.projectx.mvc.domain.quickregister.QuickRegisterMVCDTO;
-import com.projectx.mvc.domain.quickregister.LoginDetailsDTO;
 import com.projectx.mvc.domain.quickregister.ResetPasswordRedirectDTO;
 import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
 import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
+import com.projectx.mvc.exception.repository.completeregister.ValidationFailedException;
 import com.projectx.mvc.exception.repository.quickregister.AuthenticationDetailsNotFoundException;
-import com.projectx.mvc.exception.repository.quickregister.QuickRegisterEntityNotFoundException;
+import com.projectx.mvc.exception.repository.quickregister.QuickRegisterDetailsAlreadyPresentException;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.mvc.util.validator.QuickRegisterEntityValidator;
-import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
-import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailOrMobileOptionUpdatedBy;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailTypeDTO;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileTypeDTO;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeUpdatedBy;
 import com.projectx.rest.domain.quickregister.ForgetPasswordEntity;
+import com.projectx.rest.domain.quickregister.LoginVerificationDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
-import com.projectx.rest.domain.quickregister.QuickRegisterStatusDTO;
-import com.projectx.rest.domain.quickregister.LoginVerificationDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailLoginDetails;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
 
 
-@Controller
+@RestController
 @RequestMapping(value = "/quickregister")
 @PropertySource(value="classpath:/application.properties")
 public class QuickRegisterController {
@@ -109,62 +89,33 @@ public class QuickRegisterController {
 	private Integer ENTITY_TYPE_SECONDARY=2;
 	
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public String showEmailForm(Model model) {
-		model.addAttribute("customerQuickRegisterEntity", new QuickRegisterEntity());
-		
-		return "quickregister/quickRegister";
-	}
+	
 	
 	
 	@RequestMapping( method = RequestMethod.POST)
-	public String AddNewCustomer(
-			
-			 @Valid @ModelAttribute("customerQuickRegisterEntity")QuickRegisterEntity customerQuickRegisterEntity,
+	public ResponseEntity<QuickRegisterSavedEntityDTO> AddNewCustomer(			
+			  @RequestBody QuickRegisterEntity customerQuickRegisterEntity,
 				BindingResult result,Model model) throws Exception {
 		
 		if(customerQuickRegisterEntity.getEmail().equals(""))
 			customerQuickRegisterEntity.setEmail(null);
-			
-		
-		if(result.hasErrors())
-		{
-			model.addAttribute("customerQuickRegisterEntity", new QuickRegisterEntity());
-			return "quickregister/quickRegister";
-		}
-
-		QuickRegisterStatusDTO status=customerQuickRegisterService.checkIfAlreadyExist(customerQuickRegisterEntity);
-		
-		if(status.getStatus().equals(REGISTER_NOT_REGISTERED))
-		{
+	
+		try{
 			QuickRegisterSavedEntityDTO cutomerQuickRegisterNewDTO=customerQuickRegisterService.addNewCustomer(customerQuickRegisterEntity);
 			
-			customerQuickRegisterDTO.setQuickRegisterDTO(cutomerQuickRegisterNewDTO.getCustomer());
-			
-			model.addAttribute("customerQuickRegisterDTO", cutomerQuickRegisterNewDTO.getCustomer());
-			
-			return "quickregister/verifyEmailMobile";
-			
-		}
-		else
+			return new ResponseEntity<QuickRegisterSavedEntityDTO>(cutomerQuickRegisterNewDTO, HttpStatus.CREATED);
+		}catch(ValidationFailedException | QuickRegisterDetailsAlreadyPresentException | ResourceNotFoundException e)
 		{
-			customerQuickRegisterDTO.setQuickRegisterDTO(status.getCustomer());
-			
-			model.addAttribute("customerQuickRegisterDTO", status.getCustomer());
-							
-			String message=customerQuickRegisterService.populateMessageForDuplicationField(status.getStatus());
-			model.addAttribute("message", message);
-			
-			return "quickregister/alreadyRegistered";
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT); 
 		}
 		
-		
-			
+	
+	
 	}
 	
-	
+		
 	@RequestMapping(value="/verifyMobilePin",method=RequestMethod.POST)
-	public String verifyMobilePin(@ModelAttribute VerifyMobileDTO verifyMobile,Model model)
+	public ResponseEntity<Boolean> verifyMobilePin(@RequestBody VerifyMobileDTO verifyMobile,Model model)
 	{
 		
 		Boolean result=false;
@@ -175,18 +126,9 @@ public class QuickRegisterController {
 			result=false;
 		}
 		
-		if(result)
-		{
-			model.addAttribute("mobileVerificationStatus", "Mobile Verification Sucess");
-			return "quickregister/loginForm";
-		}	
-		else
-		{	
-			model.addAttribute("mobileVerificationStatus", "Mobile Verification Failed");
-			model.addAttribute("customerQuickRegisterDTO", customerQuickRegisterDTO.getQuickRegisterDTO());
-			return "quickregister/verifyEmailMobile";
-		}
+		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
 		
+			
 	}
 	
 	@RequestMapping(value="/verifyEmailHash/{customerId}/{customerType}/{emailType}/{updatedBy}/{emailHash}",method=RequestMethod.GET)
@@ -214,53 +156,33 @@ public class QuickRegisterController {
 			model.addAttribute("emailVerificationStatus", "Email Verification Failed");
 			model.addAttribute("customerQuickRegisterDTO", customerQuickRegisterDTO.getQuickRegisterDTO());
 			return "quickregister/verifyEmailMobile";
-		}	
+		}
+		
+		//TODO how to return view name for api call
 		
 	}	
 		
 	
 	@RequestMapping(value="/resendMobilePin",method=RequestMethod.POST)
-	@ResponseBody
-	public String resendMobilePin(@ModelAttribute CustomerIdTypeMobileTypeUpdatedByDTO mobileDTO,Model model)
+	public Boolean resendMobilePin(@ModelAttribute CustomerIdTypeMobileTypeUpdatedByDTO mobileDTO,Model model)
 	{
 		Boolean result=customerQuickRegisterService.reSendMobilePin(mobileDTO);
-		String status=null;
 		
-		if(result)
-			status= "Sucess";
-		else
-			status= "Failed";
-		
-		return status;
+		return result;
 	}
 	
 	
 	
 	@RequestMapping(value="/resendEmailHash",method=RequestMethod.POST)
-	@ResponseBody
-	public String resendEmailHash(@ModelAttribute CustomerIdTypeEmailTypeUpdatedByDTO mobileDTO,Model model)
+	public Boolean resendEmailHash(@ModelAttribute CustomerIdTypeEmailTypeUpdatedByDTO mobileDTO,Model model)
 	{
 		Boolean result=customerQuickRegisterService.reSendEmailHash(mobileDTO);
 		
-		String status=null;
-		
-		if(result)
-			status="Sucess";
-		else
-			status="Failed";
-		
-		return status;
-	}
-	
-	
-	@RequestMapping(value="/loginForm")
-	public String loginForm()
-	{
-		return "quickregister/loginForm";
+		return result;
 	}
 	
 	@RequestMapping(value="/verifyLoginDetails",method=RequestMethod.POST)
-	public String verifyLoginDetails(@ModelAttribute LoginDetailsDTO loginDetailsDTO,Model model)
+	public ResponseEntity<AuthenticationDetailsDTO> verifyLoginDetails(@RequestBody LoginDetailsDTO loginDetailsDTO)
 	{
 		LoginVerificationDTO loginVerificationDTO=new LoginVerificationDTO(loginDetailsDTO.getEntity(),loginDetailsDTO.getPassword());
 		
@@ -270,52 +192,17 @@ public class QuickRegisterController {
 			
 			result=customerQuickRegisterService.verifyLoginDetails(loginVerificationDTO);
 			
+			return new ResponseEntity<AuthenticationDetailsDTO>(result, HttpStatus.OK);
+			
 		}catch(AuthenticationDetailsNotFoundException e)
 		{
-			result=new AuthenticationDetailsDTO();
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		
-		
-		if(result.getKey()==null )
-		{
-			return "quickregister/loginForm";
-		}
-		else
-		{
-			if(result.getPasswordType().equals(CUST_PASSWORD_TYPE_DEFAULT))
-			{
-				model.addAttribute("loginDetails", result);
-				return "quickregister/forcePasswordChange";
-			}
-			else
-			{
-				ModelAndView modelAndView=customerQuickRegisterService
-						.populateCompleteRegisterRedirect(result);
-				
-				if(result.getKey().getCustomerType().equals(ENTITY_TYPE_CUSTOMER))
-				{	
-					model.addAttribute("customerDetails", modelAndView.getModel().get("customerDetails"));
-					//TODO cleanup
-					model.addAttribute("mobileVerificationDetailsPrimary", modelAndView.getModel().get("mobileVerificationDetailsPrimary"));
-					model.addAttribute("emailVerificationDetails", modelAndView.getModel().get("emailVerificationDetails"));
-					model.addAttribute("mobileVerificationDetailsSeconadry", modelAndView.getModel().get("mobileVerificationDetailsSeconadry"));
-					
-				}
-				else
-				{
-					model.addAttribute("vendorDetails", modelAndView.getModel().get("vendorDetails"));
-					//TODO cleanup					
-					model.addAttribute("mobileVerificationDetailsPrimary", modelAndView.getModel().get("mobileVerificationDetailsPrimary"));
-					model.addAttribute("emailVerificationDetails", modelAndView.getModel().get("emailVerificationDetails"));
-				}
-				model.addAttribute("documentDetails", modelAndView.getModel().get("documentDetails"));
-				
-				return modelAndView.getViewName();
-			}
-		}
-		
 		
 	}
+	
+	
+	
 	
 	@RequestMapping(value="/emailPasswordVerification/{customerId}/{customerType}/{emailPassword}",method=RequestMethod.GET)
 	public String verifyLoginDetailsWithEmailPassword(@PathVariable Long customerId,@PathVariable Integer customerType,@PathVariable String emailPassword,Model model)
@@ -377,39 +264,29 @@ public class QuickRegisterController {
 	
 	
 	@RequestMapping(value="/updatePassword",method=RequestMethod.POST)
-	public String updatePassword(@ModelAttribute UpdatePasswordDTO updatePasswordDTO)
+	public ResponseEntity<Boolean> updatePassword(@ModelAttribute UpdatePasswordDTO updatePasswordDTO)
 	{
+		
+		//TODO change need to negotiate double forceful password update
 		Boolean result=customerQuickRegisterService.updatePassword(updatePasswordDTO);
 		
-		if(result)
-			return "quickregister/loginForm";
-		else
-			return "quickregister/forcePasswordChange";
-		
+		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
 	}
 	
 	
 	@RequestMapping(value="/resetPassword",method=RequestMethod.POST)
-	@ResponseBody
-	public String resetPassword(@ModelAttribute CustomerIdTypeEmailOrMobileOptionUpdatedBy customerIdDTO)
+	public ResponseEntity<Boolean> resetPassword(@ModelAttribute CustomerIdTypeEmailOrMobileOptionUpdatedBy customerIdDTO)
 	{
 		Boolean result=customerQuickRegisterService.resetPassword(customerIdDTO.getCustomerId(),
 				customerIdDTO.getCustomerType(),customerIdDTO.getEmailOrMobile(),customerIdDTO.getUpdatedBy());
 		
-		if(result)
-			return "sucess";
-		else
-			return "failue";
+		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/forgotPassword")
-	public String forgotPassword()
-	{
-		return "quickregister/forgotPasswordForm";
-	}
+	
 	
 	@RequestMapping(value="/resetPasswordRedirect",method=RequestMethod.POST)
-	public String resetPasswordRedirect(@ModelAttribute ResetPasswordRedirectDTO resetPasswordRedirectDTO,Model model)
+	public ResponseEntity<QuickRegisterDTO> resetPasswordRedirect(@ModelAttribute ResetPasswordRedirectDTO resetPasswordRedirectDTO,Model model)
 	{
 		
 		ForgetPasswordEntity fetchedResult=customerQuickRegisterService
@@ -423,24 +300,12 @@ public class QuickRegisterController {
 		if(fetchedResult.getCustomerId()!=null)
 		{
 			
-			if(fetchedResult.getIsPasswordSent())
-			{
-				return "quickregister/loginForm";
-			}
-			else
-			{
-				model.addAttribute("customerQuickRegisterDTO", quickRegisterDTO);
-			
-				//customerQuickRegisterDTO.setQuickRegisterDTO(quickRegisterDTO);			
-					
-				return "quickregister/alreadyRegistered";
-			}
+			return new ResponseEntity<QuickRegisterDTO>(quickRegisterDTO, HttpStatus.OK);
 			
 		}
 		else
 		{
-			model.addAttribute("message", "No matching Registration Found");
-			return "quickregister/forgotPasswordForm";
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		
 	}
@@ -453,4 +318,6 @@ public class QuickRegisterController {
 		return "showTestData";
 	}
 
+
 }
+

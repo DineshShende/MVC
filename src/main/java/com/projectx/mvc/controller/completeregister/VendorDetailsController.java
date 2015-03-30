@@ -6,6 +6,8 @@ import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,10 +15,13 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.util.validator.DriverDetailsValidator;
 import com.projectx.mvc.util.validator.VendorDetailsValidator;
@@ -33,7 +38,7 @@ import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 
-@Controller
+@RestController
 @RequestMapping(value = "/vendor")
 public class VendorDetailsController {
 
@@ -50,26 +55,13 @@ public class VendorDetailsController {
         binder.setValidator(vendorDetailsValidator);
     }
 	
-	@RequestMapping(value="/createCustomerDetailsFromQuickRegisterEntity",method=RequestMethod.POST)
-	public String createCustomerDetailsFromQuickRegisterEntity(@ModelAttribute QuickRegisterDTO quickRegisterDTO,Model model)
-	{
-		
-		VendorDetailsDTO vendorDetailsDTO=vendorDetailsService
-				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterDTO);
-		
-		model.addAttribute("vendorDetails", vendorDetailsDTO);
-		
-		return "completeregister/vendorDetailsForm";
-	}
 	
 	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public String save(@Valid @ModelAttribute VendorDetailsDTO vendorDetailsDTO,BindingResult result,Model model)
+	public ResponseEntity<VendorDetailsDTO> save(@Valid @RequestBody VendorDetailsDTO vendorDetailsDTO,BindingResult result)
 	{
 		if(result.hasErrors())
 		{
-			model.addAttribute("vendorDetails", vendorDetailsDTO);
-			
-			return "completeregister/vendorDetailsForm";
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		}
 		
 		vendorDetailsDTO=vendorDetailsService.intializeMetaData(vendorDetailsDTO);
@@ -77,10 +69,117 @@ public class VendorDetailsController {
 		VendorDetailsDTO newVendorDetailsDTO=vendorDetailsService
 				.update(vendorDetailsDTO);
 		
-		model.addAttribute("vendorDetails", newVendorDetailsDTO);
 		
-		return "completeregister/documentUploadVendor";
+		return new ResponseEntity<VendorDetailsDTO>(newVendorDetailsDTO, HttpStatus.OK);
 	
+	}
+	
+
+	@RequestMapping(value="/getById",method=RequestMethod.POST)
+	public ResponseEntity<VendorDetailsDTO> getById(@RequestBody EntityIdDTO entityIdDTO)
+	{
+	
+		try{
+			VendorDetailsDTO fetchedEntity=vendorDetailsService.getCustomerDetailsById(entityIdDTO.getEntityId());
+			return new ResponseEntity<VendorDetailsDTO>(fetchedEntity, HttpStatus.OK);
+		}catch(ResourceNotFoundException e)
+		{
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		
+	}
+	
+	@RequestMapping(value="/verifyMobileDetails",method=RequestMethod.POST)
+	public Boolean verifyMobileDetails(@ModelAttribute VerifyMobileDTO verifyMobileDTO,Model model)
+	{
+		Boolean result=vendorDetailsService.verifyMobileDetails(verifyMobileDTO );
+		
+		return result;
+	}
+	
+	@RequestMapping(value="/sendMobileVerificationDetails",method=RequestMethod.POST)
+	public Boolean sendMobileVerificationDetails(@ModelAttribute CustomerIdTypeMobileTypeUpdatedByDTO customerIdTypeMobileDTO,Model model)
+	{
+		Boolean result=vendorDetailsService.sendMobileVerificationDetails(customerIdTypeMobileDTO);
+				
+		return result;
+	}
+	
+	@RequestMapping(value="/verifyEmailDetails/{customerId}/{customerType}/{emailType}/{updatedBy}/{emailHash}",method=RequestMethod.GET)
+	public String verifyEmailDetails(@PathVariable Long customerId,@PathVariable Integer customerType,@PathVariable Integer emailType,
+			@PathVariable String updatedBy ,@PathVariable String emailHash ,Model model)
+	{
+		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId, customerType, emailType, emailHash,updatedBy);
+		
+		Boolean result=vendorDetailsService.verifyEmailDetails(verifyEmailDTO);
+		
+		VendorDetailsDTO updatedVendorDetailsDTO=vendorDetailsService.getCustomerDetailsById(verifyEmailDTO.getCustomerId());
+		
+		model.addAttribute("vendorDetails", updatedVendorDetailsDTO);
+		
+		if(result)
+		{
+			model.addAttribute("emailVrificationStatus", "sucess");
+						
+		}
+		else
+		{
+			model.addAttribute("emailVrificationStatus", "failure");
+		}
+		model=vendorDetailsService.initialiseShowVendorDetails(customerId, model);
+		return "completeregister/showVendorDetails";
+	}
+	
+	@RequestMapping(value="/sendEmailVerificationDetails",method=RequestMethod.POST)
+	public Boolean sendEmailVerificationDetails(@ModelAttribute CustomerIdTypeEmailTypeUpdatedByDTO customerIdTypeEmailDTO,Model model)
+	{
+		Boolean result=vendorDetailsService.sendEmailVerificationDetails(customerIdTypeEmailDTO);
+		
+		return result;
+	}
+	
+	
+		
+		
+}
+/*
+	
+	@RequestMapping(value="/updateVehicleDetails",method=RequestMethod.POST)
+	public String updateVehicleForn(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
+	{
+		VehicleDetailsDTO vehicleDetailsDTO=vendorDetailsService.getVehicleById(entityIdDTO.getEntityId());
+		
+		model.addAttribute("vehicleDetails", vehicleDetailsDTO);
+		
+		return "completeregister/vehicleDetailsForm";
+	}
+	
+	
+	@RequestMapping(value="/updateVehicle",method=RequestMethod.POST)
+	public String  updateVehicle(@ModelAttribute VehicleDetailsDTO vehicleDetailsDTO,Model model)
+	{
+		VehicleDetailsDTO vehicleDetails=vendorDetailsService.update(vendorDetails) 
+		
+		model.addAttribute("vendorDetails", vendorDetailsService.getCustomerDetailsById(driverDetailsDTO.getVendorId()));
+		
+		if(detailsDTO.getDriverId()!=null)
+			model.addAttribute("updateDriverStatus","Driver Updated Sucessfully");
+		
+				
+		model=vendorDetailsService.initialiseShowVendorDetails(driverDetailsDTO.getVendorId(), model);
+		return "showVendorDetails";
+	}
+	
+	@RequestMapping(value="/vehicleDetailsForm",method=RequestMethod.POST)
+	public String vehicleDetailsForn(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
+	{
+		VehicleDetailsDTO vehicleDetailsDTO=new VehicleDetailsDTO();
+		
+		vehicleDetailsDTO.setVendorId(entityIdDTO.getEntityId());
+		
+		model.addAttribute("vehicleDetails", vehicleDetailsDTO);
+		
+		return "completeregister/vehicleDetailsForm";
 	}
 	
 	@RequestMapping(value="/edit",method=RequestMethod.POST)
@@ -118,63 +217,21 @@ public class VendorDetailsController {
 		return "completeregister/vendorDetailsForm";
 	
 	}
-	
-	@RequestMapping(value="/verifyMobileDetails",method=RequestMethod.POST)
-	@ResponseBody
-	public Boolean verifyMobileDetails(@ModelAttribute VerifyMobileDTO verifyMobileDTO,Model model)
-	{
-		Boolean result=vendorDetailsService.verifyMobileDetails(verifyMobileDTO );
-		
-		
-		return result;
-	}
-	
-	@RequestMapping(value="/sendMobileVerificationDetails",method=RequestMethod.POST)
-	@ResponseBody
-	public Boolean sendMobileVerificationDetails(@ModelAttribute CustomerIdTypeMobileTypeUpdatedByDTO customerIdTypeMobileDTO,Model model)
+
+
+	@RequestMapping(value="/createCustomerDetailsFromQuickRegisterEntity",method=RequestMethod.POST)
+	public String createCustomerDetailsFromQuickRegisterEntity(@ModelAttribute QuickRegisterDTO quickRegisterDTO,Model model)
 	{
 		
-		Boolean result=vendorDetailsService.sendMobileVerificationDetails(customerIdTypeMobileDTO);
-				
-		return result;
+		VendorDetailsDTO vendorDetailsDTO=vendorDetailsService
+				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterDTO);
+		
+		model.addAttribute("vendorDetails", vendorDetailsDTO);
+		
+		return "completeregister/vendorDetailsForm";
 	}
 	
-	@RequestMapping(value="/verifyEmailDetails/{customerId}/{customerType}/{emailType}/{updatedBy}/{emailHash}",method=RequestMethod.GET)
-	public String verifyEmailDetails(@PathVariable Long customerId,@PathVariable Integer customerType,@PathVariable Integer emailType,
-			@PathVariable String updatedBy ,@PathVariable String emailHash ,Model model)
-	{
-		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId, customerType, emailType, emailHash,updatedBy);
-		
-		Boolean result=vendorDetailsService.verifyEmailDetails(verifyEmailDTO);
-		
-		VendorDetailsDTO updatedVendorDetailsDTO=vendorDetailsService.getCustomerDetailsById(verifyEmailDTO.getCustomerId());
-		
-		model.addAttribute("vendorDetails", updatedVendorDetailsDTO);
-		
-		if(result)
-		{
-			model.addAttribute("emailVrificationStatus", "sucess");
-						
-		}
-		else
-		{
-			model.addAttribute("emailVrificationStatus", "failure");
-		}
-		model=vendorDetailsService.initialiseShowVendorDetails(customerId, model);
-		return "completeregister/showVendorDetails";
-	}
-	
-	@RequestMapping(value="/sendEmailVerificationDetails",method=RequestMethod.POST)
-	@ResponseBody
-	public Boolean sendEmailVerificationDetails(@ModelAttribute CustomerIdTypeEmailTypeUpdatedByDTO customerIdTypeEmailDTO,Model model)
-	{
-		Boolean result=vendorDetailsService.sendEmailVerificationDetails(customerIdTypeEmailDTO);
-		
-		return result;
-	}
-	
-	/*
-	@RequestMapping(value="/driverDetailsForm",method=RequestMethod.POST)
+		@RequestMapping(value="/driverDetailsForm",method=RequestMethod.POST)
 	public String driverForn(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
 	{
 		DriverDetailsDTO detailsDTO=new  DriverDetailsDTO();
@@ -266,92 +323,3 @@ public class VendorDetailsController {
 	}
 
 */
-	@RequestMapping(value="/vehicleDetailsForm",method=RequestMethod.POST)
-	public String vehicleDetailsForn(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
-	{
-		VehicleDetailsDTO vehicleDetailsDTO=new VehicleDetailsDTO();
-		
-		vehicleDetailsDTO.setVendorId(entityIdDTO.getEntityId());
-		
-		model.addAttribute("vehicleDetails", vehicleDetailsDTO);
-		
-		return "completeregister/vehicleDetailsForm";
-	}
-	
-	@RequestMapping(value="/addVehicle",method=RequestMethod.POST)
-	public String addVehicle(@Valid @ModelAttribute VehicleDetailsDTO vehicleDetailsDTO,BindingResult result,Model model)
-	{
-		if(result.hasErrors())
-		{
-			model.addAttribute("vehicleDetails", vehicleDetailsDTO);
-			
-			return "completeregister/vehicleDetailsForm";
-		}
-		
-		VehicleDetailsDTO detailsDTO=vendorDetailsService.save(vehicleDetailsDTO);
-		
-		if(detailsDTO.getVehicleId()!=null)
-			model.addAttribute("addVehicleStatus","Vehicle Added Sucessfully");
-		
-		
-		VendorDetailsDTO updatedVendorDetailsDTO=vendorDetailsService.getCustomerDetailsById(vehicleDetailsDTO.getVendorId());
-		
-		model.addAttribute("vendorDetails", updatedVendorDetailsDTO);
-		
-		
-		model=vendorDetailsService.initialiseShowVendorDetails(vehicleDetailsDTO.getVendorId(), model);
-		return "completeregister/showVendorDetails";
-	}
-	
-	@RequestMapping(value="/showVehicleDetails",method=RequestMethod.POST)
-	public String showVehicleDetails(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
-	{
-		List<VehicleDetailsDTO> vehicleList=vendorDetailsService.getVehiclesByvendor(entityIdDTO.getEntityId());
-		
-			
-		model.addAttribute("vehicleList", vehicleList);
-		
-		return "completeregister/showVehicleDetails";
-	}
-
-	
-	@RequestMapping(value="/updateVehicleDetails",method=RequestMethod.POST)
-	public String updateVehicleForn(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
-	{
-		VehicleDetailsDTO vehicleDetailsDTO=vendorDetailsService.getVehicleById(entityIdDTO.getEntityId());
-		
-		model.addAttribute("vehicleDetails", vehicleDetailsDTO);
-		
-		return "completeregister/vehicleDetailsForm";
-	}
-	
-	/*
-	@RequestMapping(value="/updateVehicle",method=RequestMethod.POST)
-	public String  updateVehicle(@ModelAttribute VehicleDetailsDTO vehicleDetailsDTO,Model model)
-	{
-		VehicleDetailsDTO vehicleDetails=vendorDetailsService.update(vendorDetails) 
-		
-		model.addAttribute("vendorDetails", vendorDetailsService.getCustomerDetailsById(driverDetailsDTO.getVendorId()));
-		
-		if(detailsDTO.getDriverId()!=null)
-			model.addAttribute("updateDriverStatus","Driver Updated Sucessfully");
-		
-				
-		model=vendorDetailsService.initialiseShowVendorDetails(driverDetailsDTO.getVendorId(), model);
-		return "showVendorDetails";
-	}
-	*/
-	
-	@RequestMapping(value="/deleteVehicle",method=RequestMethod.POST)
-	@ResponseBody
-	public Boolean  deleteVehicle(@ModelAttribute EntityIdDTO entityIdDTO,Model model)
-	{
-		Boolean detailsDTO=vendorDetailsService.deleteVehicleById(entityIdDTO.getEntityId());
-		
-		
-		return detailsDTO;
-	}
-
-	
-	
-}

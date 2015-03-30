@@ -8,6 +8,8 @@ public class UpdatePasswordDTO {
 
 	private String password;
 
+	private Boolean isForcefulChangePassword;
+	
 	private String requestedBy;
 	
 	public UpdatePasswordDTO() {
@@ -16,12 +18,16 @@ public class UpdatePasswordDTO {
 
 
 	public UpdatePasswordDTO(AuthenticationDetailsKey key, String password,
-			String requestedBy) {
+			Boolean isForcefulChangePassword, String requestedBy) {
 		super();
 		this.key = key;
 		this.password = password;
+		this.isForcefulChangePassword = isForcefulChangePassword;
 		this.requestedBy = requestedBy;
 	}
+
+
+
 
 
 	public AuthenticationDetailsKey getKey() {
@@ -56,9 +62,22 @@ public class UpdatePasswordDTO {
 	}
 
 
+	
+	
+	public Boolean getIsForcefulChangePassword() {
+		return isForcefulChangePassword;
+	}
+
+
+	public void setIsForcefulChangePassword(Boolean isForcefulChangePassword) {
+		this.isForcefulChangePassword = isForcefulChangePassword;
+	}
+
+
 	@Override
 	public String toString() {
 		return "UpdatePasswordDTO [key=" + key + ", password=" + password
+				+ ", isForcefulChangePassword=" + isForcefulChangePassword
 				+ ", requestedBy=" + requestedBy + "]";
 	}
 
@@ -67,6 +86,10 @@ public class UpdatePasswordDTO {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime
+				* result
+				+ ((isForcefulChangePassword == null) ? 0
+						: isForcefulChangePassword.hashCode());
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
 		result = prime * result
 				+ ((password == null) ? 0 : password.hashCode());
@@ -85,6 +108,12 @@ public class UpdatePasswordDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		UpdatePasswordDTO other = (UpdatePasswordDTO) obj;
+		if (isForcefulChangePassword == null) {
+			if (other.isForcefulChangePassword != null)
+				return false;
+		} else if (!isForcefulChangePassword
+				.equals(other.isForcefulChangePassword))
+			return false;
 		if (key == null) {
 			if (other.key != null)
 				return false;
@@ -103,6 +132,8 @@ public class UpdatePasswordDTO {
 		return true;
 	}
 
+
+	
 	
 	
 }

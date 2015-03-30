@@ -63,48 +63,48 @@ public class VendorDetailsDataFixture {
 	
 	public static VendorDetailsDTO standardVendor()
 	{
-		return new VendorDetailsDTO(VENDOR_ID, VENDER_FIRSTNAME, VENDER_LASTNAME, VENDOR_DATE, VENDOR_ADDRESS, VENDOR_MOBILE, VENDOR_STATUS_FALSE,
-				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE, VENDOR_DATE, VENDOR_DATE, VENDOR_UPDATEDBY);
+		return new VendorDetailsDTO(VENDOR_ID, VENDER_FIRSTNAME,null, VENDER_LASTNAME, VENDOR_DATE,null, VENDOR_ADDRESS,null, VENDOR_MOBILE,null, VENDOR_STATUS_FALSE,
+				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,null,false, VENDOR_DATE, VENDOR_DATE, VENDOR_UPDATEDBY);
 	}
 	
 	public static VendorDetailsDTO standardVendor(Long vendorId)
 	{
-		return new VendorDetailsDTO(vendorId, VENDER_FIRSTNAME, VENDER_LASTNAME, VENDOR_DATE, VENDOR_ADDRESS, VENDOR_MOBILE, VENDOR_STATUS_FALSE,
-				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE, VENDOR_DATE, VENDOR_DATE, VENDOR_UPDATEDBY);
+		return new VendorDetailsDTO(vendorId, VENDER_FIRSTNAME,null, VENDER_LASTNAME, VENDOR_DATE,null, VENDOR_ADDRESS,null, VENDOR_MOBILE,null, VENDOR_STATUS_FALSE,
+				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,null,false, VENDOR_DATE, VENDOR_DATE, VENDOR_UPDATEDBY);
 	}
 	
 	public static VendorDetailsDTO standardVendorCreatedFromQuickRegister()
 	{
-		return new VendorDetailsDTO(standardEmailMobileCustomerVendor().getCustomerId(), standardEmailMobileCustomerVendor().getFirstName(),
-				standardEmailMobileCustomerVendor().getLastName(), null, null, standardEmailMobileCustomerVendor().getMobile(), 
+		return new VendorDetailsDTO(standardEmailMobileCustomerVendor().getCustomerId(), standardEmailMobileCustomerVendor().getFirstName(),null,
+				standardEmailMobileCustomerVendor().getLastName(), null,null, null,null, standardEmailMobileCustomerVendor().getMobile(),null, 
 				standardEmailMobileCustomerVendor().getIsMobileVerified(),standardEmailMobileCustomerVendor().getEmail(),standardEmailMobileCustomerVendor().getIsEmailVerified(),
-				null, standardEmailMobileCustomerVendor().getInsertTime(), new Date(), standardEmailMobileCustomerVendor().getUpdatedBy());
+				null,null,false, new Date(), new Date(), CUST_UPDATED_BY);
 	}
 	
 	
 	
 	public static VendorDetailsDTO standardVendorCreatedFromQuickRegister(Long vendorId)
 	{
-		return new VendorDetailsDTO(vendorId, standardEmailMobileCustomerVendor().getFirstName(),
-				standardEmailMobileCustomerVendor().getLastName(), null, null, standardEmailMobileCustomerVendor().getMobile(), 
+		return new VendorDetailsDTO(vendorId, standardEmailMobileCustomerVendor().getFirstName(),null,
+				standardEmailMobileCustomerVendor().getLastName(), null,null, null,null, standardEmailMobileCustomerVendor().getMobile(),null, 
 				standardEmailMobileCustomerVendor().getIsMobileVerified(),standardEmailMobileCustomerVendor().getEmail(),standardEmailMobileCustomerVendor().getIsEmailVerified(),
-				null, standardEmailMobileCustomerVendor().getInsertTime(), new Date(), standardEmailMobileCustomerVendor().getUpdatedBy());
+				null,null,null, new Date(), new Date(), CUST_UPDATED_BY);
 	}
 	
 
 	
 	public static VendorDetailsDTO standardVendor(VendorDetailsDTO vendorDetails)
 	{
-		return new VendorDetailsDTO(vendorDetails.getVendorId(), vendorDetails.getFirstName(),vendorDetails.getLastName(),
-				new Date(), standardAddress(), vendorDetails.getMobile(),vendorDetails.getIsMobileVerified(),vendorDetails.getEmail(),
-				vendorDetails.getIsEmailVerified(),VENDOR_LANGUAGE, vendorDetails.getInsertTime(), new Date(), vendorDetails.getUpdatedBy());
+		return new VendorDetailsDTO(vendorDetails.getVendorId(), vendorDetails.getFirstName(),null,vendorDetails.getLastName(),
+				new Date(),null, standardAddress(),null, vendorDetails.getMobile(),null,vendorDetails.getIsMobileVerified(),vendorDetails.getEmail(),
+				vendorDetails.getIsEmailVerified(),VENDOR_LANGUAGE,null,false, vendorDetails.getInsertTime(), new Date(), vendorDetails.getUpdatedBy());
 	}
 	
 	
 	public static VendorDetailsDTO standardVendorUpdatedFirstLastName()
 	{
-		return new VendorDetailsDTO(VENDOR_ID, "Updated", "Updated", VENDOR_DATE, VENDOR_ADDRESS, VENDOR_MOBILE, VENDOR_STATUS_FALSE,
-				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE, VENDOR_DATE, VENDOR_DATE, VENDOR_UPDATEDBY);
+		return new VendorDetailsDTO(VENDOR_ID, "Updated",null, "Updated", VENDOR_DATE,null, VENDOR_ADDRESS,null, VENDOR_MOBILE,null, VENDOR_STATUS_FALSE,
+				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,null,false, VENDOR_DATE, VENDOR_DATE, VENDOR_UPDATEDBY);
 	}
 	
 	public static AuthenticationDetailsKey standardAuthenticationDetailsKeyVendor()
@@ -115,7 +115,7 @@ public class VendorDetailsDataFixture {
 	public static AuthenticationDetailsDTO standardCustomerEmailMobileAuthenticationDetailsVendor()
 	{
 		
-		return new AuthenticationDetailsDTO(standardAuthenticationDetailsKeyVendor(), VENDOR_EMAIL, VENDOR_MOBILE, CUST_PASSWORD_DEFAULT, CUST_PASSWORD_TYPE_DEFAULT, CUST_EMAILHASH, 0, 0,new Date(),new Date(),CUST_UPDATED_BY,false);
+		return new  AuthenticationDetailsDTO(standardAuthenticationKey(), "completeName",  CUST_PASSWORD_DEFAULT, false);
 	}
 	
 	public static UpdateMobileVerificationStatusDTO standardMobileUpdateVerificationStatusDTO()

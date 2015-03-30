@@ -156,7 +156,7 @@ public class QuickRegisterHandler implements QuickRegisterService {
 			throw new ValidationFailedException();
 		}
 		
-		if(result.getStatusCode()==HttpStatus.CREATED)
+		if(result.getStatusCode()==HttpStatus.CREATED || result.getStatusCode()==HttpStatus.ALREADY_REPORTED)
 			return result.getBody();
 		else if(result.getStatusCode()==HttpStatus.NOT_ACCEPTABLE)
 			throw new ValidationFailedException();

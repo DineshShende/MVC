@@ -61,11 +61,13 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 	public CustomerDetailsDTO createCustomerDetailsFromQuickRegisterEntity(
 			QuickRegisterDTO quickRegisterEntity) {
 		
+		/*
 		if(quickRegisterEntity.getInsertTime()==null)
 			quickRegisterEntity.setInsertTime(new Date());
 		
 		if(quickRegisterEntity.getUpdateTime()==null)
 			quickRegisterEntity.setUpdateTime(new Date());
+		*/
 		
 		if(quickRegisterEntity.getEmail()!=null && quickRegisterEntity.getIsEmailVerified()==null)
 			quickRegisterEntity.setIsEmailVerified(false);

@@ -44,7 +44,9 @@ public interface VendorDetailsService {
 	
 	DriverDetailsDTO addDriver(DriverDetailsDTO driverDetailsDTO);
 	
-	DriverDetailsDTO update(DriverDetailsDTO driverDetailsDTO);
+	//DriverDetailsDTO update(DriverDetailsDTO driverDetailsDTO);
+	
+	DriverDetailsDTO initializeDriverDetails(DriverDetailsDTO driverDetailsDTO);
 	
 	DriverDetailsDTO getDriverById(Long driverId);
 	
