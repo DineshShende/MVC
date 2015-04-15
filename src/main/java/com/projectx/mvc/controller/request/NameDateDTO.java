@@ -1,21 +1,21 @@
-package com.projectx.mvc.controller.completeregister;
+package com.projectx.mvc.controller.request;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.Date;
 
-public class DocumentContainer {
-	
+public class NameDateDTO {
+
 	private String name;
 	
-	private MultipartFile file;
+	private Date date;
 
-	public DocumentContainer() {
+	public NameDateDTO() {
 		super();
 	}
 
-	public DocumentContainer(String name, MultipartFile file) {
+	public NameDateDTO(String name, Date date) {
 		super();
 		this.name = name;
-		this.file = file;
+		this.date = date;
 	}
 
 	public String getName() {
@@ -26,24 +26,24 @@ public class DocumentContainer {
 		this.name = name;
 	}
 
-	public MultipartFile getFile() {
-		return file;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setFile(MultipartFile file) {
-		this.file = file;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	@Override
 	public String toString() {
-		return "DocumentContainer [name=" + name + ", file=" + file + "]";
+		return "NameDateDTO [name=" + name + ", date=" + date + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((file == null) ? 0 : file.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -56,11 +56,11 @@ public class DocumentContainer {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DocumentContainer other = (DocumentContainer) obj;
-		if (file == null) {
-			if (other.file != null)
+		NameDateDTO other = (NameDateDTO) obj;
+		if (date == null) {
+			if (other.date != null)
 				return false;
-		} else if (!file.equals(other.file))
+		} else if (!date.equals(other.date))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -72,5 +72,4 @@ public class DocumentContainer {
 	
 	
 	
-
 }

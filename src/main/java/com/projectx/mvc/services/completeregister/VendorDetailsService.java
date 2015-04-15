@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeRequestedByDTO;
 import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
 import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
 import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
@@ -20,7 +20,7 @@ import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 @Service
 public interface VendorDetailsService {
 
-	VendorDetailsDTO createCustomerDetailsFromQuickRegisterEntity( QuickRegisterDTO quickRegisterEntity);
+	VendorDetailsDTO createCustomerDetailsFromQuickRegisterEntity(Long entityId);
 	
 	VendorDetailsDTO update(VendorDetailsDTO vendorDetails);
 	
@@ -28,6 +28,7 @@ public interface VendorDetailsService {
 	
 	VendorDetailsDTO intializeMetaData(VendorDetailsDTO vendorDetailsDTO);
 	
+	/*
 	Boolean verifyMobileDetails(VerifyMobileDTO verifyMobileDTO);
 	
 	Boolean verifyEmailDetails( VerifyEmailDTO verifyEmailDTO);
@@ -35,6 +36,7 @@ public interface VendorDetailsService {
 	Boolean sendMobileVerificationDetails(CustomerIdTypeMobileTypeUpdatedByDTO customerIdTypeMobileDTO);
 	
 	Boolean sendEmailVerificationDetails(CustomerIdTypeEmailTypeUpdatedByDTO customerIdTypeEmailDTO);
+	*/
 	
 	Model initialiseShowVendorDetails(Long entityId,Model model);
 	

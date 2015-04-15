@@ -35,9 +35,9 @@ public class QuickRegisterEntityValidator implements Validator{
 		if(entity.getEmail().equals("") && entity.getMobile()==null)
 			errors.rejectValue("email", "Both Can't be Null", "Both email and mobile can't be Null");
 		
-		if(entity.getPin()==null)
+		if(entity.getPincode()==null)
 			errors.rejectValue("pin", "pin can't be null", "pin can't be null");
-		else if(entity.getPin()<100000 || entity.getPin()>999999)
+		else if(entity.getPincode()<100000 || entity.getPincode()>999999)
 			errors.rejectValue("pin", "Pin value out of range", "Pin code values should between 100000 and 999999");
 	}
 

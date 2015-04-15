@@ -80,7 +80,7 @@ public class QuickRegisterStandAloneTest {
 
 		
 	}
-	*/
+
 	
 	@Test
 	public void verifyLoginDetailsEmailAsUserIdProceedToForcefulPasswordChange() throws Exception
@@ -149,7 +149,7 @@ public class QuickRegisterStandAloneTest {
 				.andExpect(view().name("quickregister/loginForm"));
 		
 	}
-	
+	*/	
 
 	/*
 	@Test

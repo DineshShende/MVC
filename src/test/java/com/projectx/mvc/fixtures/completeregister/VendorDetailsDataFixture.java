@@ -32,6 +32,12 @@ public class VendorDetailsDataFixture {
 	
 	public static Long VENDOR_MOBILE=8625867370L;
 	
+	public static Long VENDOR_SEC_MOBILE=8600007370L;
+	
+	public static Long VENDOR_PHONE_NUMBER=2000007370L;
+	
+	public static String VENDOR_FIRM_NAME="ABC";
+	
 	public static String VENDOR_EMAIL="tedmosby@gmail.com";
 	
 	public static Boolean VENDOR_STATUS_TRUE=true;
@@ -71,6 +77,13 @@ public class VendorDetailsDataFixture {
 	{
 		return new VendorDetailsDTO(vendorId, VENDER_FIRSTNAME,null, VENDER_LASTNAME, VENDOR_DATE,null, VENDOR_ADDRESS,null, VENDOR_MOBILE,null, VENDOR_STATUS_FALSE,
 				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,null,false, VENDOR_DATE, VENDOR_DATE, VENDOR_UPDATEDBY);
+	}
+	
+	public static VendorDetailsDTO standardVendorComplete(Long vendorId)
+	{
+		return new VendorDetailsDTO(vendorId, VENDER_FIRSTNAME,"A.", VENDER_LASTNAME, VENDOR_DATE,VENDOR_FIRM_NAME, VENDOR_ADDRESS,
+				VENDOR_ADDRESS, VENDOR_MOBILE,VENDOR_PHONE_NUMBER, VENDOR_STATUS_FALSE,
+				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,VENDOR_SEC_MOBILE,false, VENDOR_DATE, VENDOR_DATE, VENDOR_UPDATEDBY);
 	}
 	
 	public static VendorDetailsDTO standardVendorCreatedFromQuickRegister()

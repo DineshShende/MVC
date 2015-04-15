@@ -1,6 +1,6 @@
 package com.projectx.rest.domain.completeregister;
 
-public class CustomerIdTypeMobileTypeUpdatedByDTO {
+public class CustomerIdTypeMobileTypeRequestedByDTO {
 
 	private Long customerId;
 	
@@ -8,20 +8,24 @@ public class CustomerIdTypeMobileTypeUpdatedByDTO {
 	
 	private Integer mobileType;
 	
-	private String updatedBy;
+	private String requestedBy;
 
-	public CustomerIdTypeMobileTypeUpdatedByDTO() {
+	public CustomerIdTypeMobileTypeRequestedByDTO() {
 
 	}
 
-	public CustomerIdTypeMobileTypeUpdatedByDTO(Long customerId,
-			Integer customerType, Integer mobileType, String updatedBy) {
+	
+
+	public CustomerIdTypeMobileTypeRequestedByDTO(Long customerId,
+			Integer customerType, Integer mobileType, String requestedBy) {
 		super();
 		this.customerId = customerId;
 		this.customerType = customerType;
 		this.mobileType = mobileType;
-		this.updatedBy = updatedBy;
+		this.requestedBy = requestedBy;
 	}
+
+
 
 	public Long getCustomerId() {
 		return customerId;
@@ -47,20 +51,29 @@ public class CustomerIdTypeMobileTypeUpdatedByDTO {
 		this.mobileType = mobileType;
 	}
 
-	public String getUpdatedBy() {
-		return updatedBy;
+	
+	
+	
+	public String getRequestedBy() {
+		return requestedBy;
 	}
 
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
+
+
+	public void setRequestedBy(String requestedBy) {
+		this.requestedBy = requestedBy;
 	}
+
+
 
 	@Override
 	public String toString() {
 		return "CustomerIdTypeMobileTypeUpdatedByDTO [customerId=" + customerId
 				+ ", customerType=" + customerType + ", mobileType="
-				+ mobileType + ", updatedBy=" + updatedBy + "]";
+				+ mobileType + ", requestedBy=" + requestedBy + "]";
 	}
+
+
 
 	@Override
 	public int hashCode() {
@@ -73,9 +86,11 @@ public class CustomerIdTypeMobileTypeUpdatedByDTO {
 		result = prime * result
 				+ ((mobileType == null) ? 0 : mobileType.hashCode());
 		result = prime * result
-				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
+				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
 		return result;
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -85,7 +100,7 @@ public class CustomerIdTypeMobileTypeUpdatedByDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CustomerIdTypeMobileTypeUpdatedByDTO other = (CustomerIdTypeMobileTypeUpdatedByDTO) obj;
+		CustomerIdTypeMobileTypeRequestedByDTO other = (CustomerIdTypeMobileTypeRequestedByDTO) obj;
 		if (customerId == null) {
 			if (other.customerId != null)
 				return false;
@@ -101,14 +116,16 @@ public class CustomerIdTypeMobileTypeUpdatedByDTO {
 				return false;
 		} else if (!mobileType.equals(other.mobileType))
 			return false;
-		if (updatedBy == null) {
-			if (other.updatedBy != null)
+		if (requestedBy == null) {
+			if (other.requestedBy != null)
 				return false;
-		} else if (!updatedBy.equals(other.updatedBy))
+		} else if (!requestedBy.equals(other.requestedBy))
 			return false;
 		return true;
 	}
-	
-	
+
+
+
+		
 	
 }

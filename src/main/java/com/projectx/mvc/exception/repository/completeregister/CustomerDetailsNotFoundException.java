@@ -1,6 +1,6 @@
 package com.projectx.mvc.exception.repository.completeregister;
 
-public class CustomerDetailsNotFoundException extends RuntimeException {
+public class CustomerDetailsNotFoundException extends ResourceNotFoundException {
 
 	public CustomerDetailsNotFoundException(Throwable cause) {
         super(cause);

@@ -150,7 +150,14 @@ public static Long CREQ_REQ_ID=414L;
 				CREQ_DATE, CREQ_DATE, CREQ_UPDATED_BY);
 	}
 	
-	public static String standardJsonFreightRequestByCustomer(FreightRequestByCustomer freightRequestByCustomer)
+	public static FreightRequestByCustomer standardFreightRequestByCustomer()
+	{
+		return new FreightRequestByCustomer(1L, CREQ_SOURCE, CREQ_DEST, CREQ_PICK_UP_TIME, CREQ_NOOFVEHICLE, "FullTruckLoad", CREQ_CAPACITY, 
+				CREQ_BODYTYPE_OPEN, null, null, null, null, CREQ_VEHICLE_BRAND, CREQ_VEHICLE_MODEL, CREQ_COMMITITY,
+				CREQ_PICKUP_TIME, CREQ_CUST_ID, "NEW", null, new Date(), CREQ_UPDATED_BY, new Date());
+	}
+	
+	public static String standardJsonFreightRequestByCustomer(FreightRequestByCustomerDTO freightRequestByCustomer)
 	{
 		System.out.println(gson.toJson(freightRequestByCustomer));
 		

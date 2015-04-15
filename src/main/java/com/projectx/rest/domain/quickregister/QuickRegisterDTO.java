@@ -13,7 +13,7 @@ import com.projectx.mvc.util.serializer.JsonDateSerializer;
 
 public class QuickRegisterDTO {
 
-    private Long customerId;
+private Long customerId;
 	
 	private String firstName;
 	
@@ -31,6 +31,11 @@ public class QuickRegisterDTO {
 
 	private Boolean isMobileVerified;
 		
+	private Date insertTime;
+	
+	private Date updateTime;
+	
+	private String updatedBy;
 	
 	public QuickRegisterDTO() {
 		
@@ -52,6 +57,9 @@ public class QuickRegisterDTO {
 		this.customerType = customerType;
 		this.isEmailVerified = isEmailVerified;
 		this.isMobileVerified = isMobileVerified;
+		this.insertTime = insertTime;
+		this.updateTime = updateTime;
+		this.updatedBy = updatedBy;
 	}
 
 
@@ -120,7 +128,34 @@ public class QuickRegisterDTO {
 		this.isMobileVerified = isMobileVerified;
 	}
 
-		
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getInsertTime() {
+		return insertTime;
+	}
+
+	@JsonDeserialize(using = JsonDateDeSerializer.class)
+	public void setInsertTime(Date insertTime) {
+		this.insertTime = insertTime;
+	}
+
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	@JsonDeserialize(using = JsonDateDeSerializer.class)
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
 	
 
 	public Integer getCustomerType() {
@@ -135,6 +170,8 @@ public class QuickRegisterDTO {
 
 
 
+	
+
 	@Override
 	public String toString() {
 		return "QuickRegisterDTO [customerId=" + customerId + ", firstName="
@@ -142,7 +179,8 @@ public class QuickRegisterDTO {
 				+ ", mobile=" + mobile + ", pincode=" + pincode
 				+ ", customerType=" + customerType + ", isEmailVerified="
 				+ isEmailVerified + ", isMobileVerified=" + isMobileVerified
-				+ "]";
+				+ ", insertTime=" + insertTime + ", updateTime=" + updateTime
+				+ ", updatedBy=" + updatedBy + "]";
 	}
 
 
@@ -159,6 +197,8 @@ public class QuickRegisterDTO {
 		result = prime * result
 				+ ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result
+				+ ((insertTime == null) ? 0 : insertTime.hashCode());
+		result = prime * result
 				+ ((isEmailVerified == null) ? 0 : isEmailVerified.hashCode());
 		result = prime
 				* result
@@ -167,6 +207,10 @@ public class QuickRegisterDTO {
 				+ ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
 		result = prime * result + ((pincode == null) ? 0 : pincode.hashCode());
+		result = prime * result
+				+ ((updateTime == null) ? 0 : updateTime.hashCode());
+		result = prime * result
+				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
 		return result;
 	}
 
@@ -226,14 +270,15 @@ public class QuickRegisterDTO {
 				return false;
 		} else if (!pincode.equals(other.pincode))
 			return false;
+		if (updatedBy == null) {
+			if (other.updatedBy != null)
+				return false;
+		} else if (!updatedBy.equals(other.updatedBy))
+			return false;
 		return true;
 	}
 
 
-
-	
-
-	
 
 		
 	

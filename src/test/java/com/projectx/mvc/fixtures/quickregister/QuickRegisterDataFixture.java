@@ -2,7 +2,14 @@ package com.projectx.mvc.fixtures.quickregister;
 
 import java.util.Date;
 
+import com.google.gson.Gson;
+import com.projectx.mvc.domain.quickregister.LoginDetailsDTO;
 import com.projectx.mvc.domain.quickregister.QuickRegisterEntity;
+import com.projectx.mvc.domain.quickregister.ResetPasswordRedirectDTO;
+import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeRequestedByDTO;
+import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailOrMobileOptionUpdatedBy;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailDTO;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
@@ -10,6 +17,8 @@ import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
 
 public class QuickRegisterDataFixture {
 
+	private static Gson gson=new Gson();
+	
 	public static Long CUST_ID=212L;
 	public static String CUST_FIRSTNAME="dinesh";
 	public static String CUST_LASTNAME="shende";
@@ -156,8 +165,12 @@ public class QuickRegisterDataFixture {
 		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN,ENTITY_TYPE_CUSTOMER,CUST_UPDATED_BY);
 	}
 	
-	
-	
+	/*
+	public static QuickRegisterEntity standardEmailMobileVendorDTO()
+	{
+		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN,ENTITY_TYPE_VENDOR,CUST_UPDATED_BY);
+	}
+	*/
 	
 	public static QuickRegisterEntity standardEmailCustomerDTOWithOutStatus()
 	{
@@ -172,6 +185,11 @@ public class QuickRegisterDataFixture {
 	public static QuickRegisterEntity standardEmailMobileCustomerDTOWithOutStatus()
 	{
 		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN,ENTITY_TYPE_CUSTOMER,CUST_UPDATED_BY);
+	}
+	
+	public static String standardJsonQuickRegisterEntity(QuickRegisterEntity quickRegisterEntity)
+	{
+		return gson.toJson(quickRegisterEntity);
 	}
 	
 
@@ -212,11 +230,53 @@ public class QuickRegisterDataFixture {
 		return new VerifyMobileDTO(CUST_ID,ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY, CUST_MOBILEPIN,CUST_UPDATED_BY);
 	}
 	
+	public static String standardJsonVerifyMobileDTO(VerifyMobileDTO verifyMobileDTO)
+	{
+		return gson.toJson(verifyMobileDTO);
+	}
+	
 	public static VerifyEmailDTO standardVerifyEmailDTO()
 	{
 		return new VerifyEmailDTO(CUST_ID,ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY, CUST_EMAILHASH,CUST_UPDATED_BY);
 	}
 	
+	public  static String standardJsonCustomerIdTypeMobileTypeUpdatedByDTO(CustomerIdTypeMobileTypeRequestedByDTO dto)
+	{
+		
+		System.out.println(gson.toJson(dto));
+		return gson.toJson(dto);
+	}
+	
+	public  static String standardJsonCustomerIdTypeEmailTypeUpdatedByDTO(CustomerIdTypeEmailTypeUpdatedByDTO dto)
+	{
+		
+		System.out.println(gson.toJson(dto));
+		return gson.toJson(dto);
+	}
+	
+	
+	public  static String standardJsonLoginDetailsDTO(LoginDetailsDTO dto)
+	{
+		
+		System.out.println(gson.toJson(dto));
+		return gson.toJson(dto);
+	}
+	
+	public static String standardJsonUpdatePasswordDTO(UpdatePasswordDTO dto)
+	{
+		return gson.toJson(dto);
+	}
+	
+	public static String standardJsonCustomerIdTypeEmailOrMobileOptionUpdatedBy(CustomerIdTypeEmailOrMobileOptionUpdatedBy by)
+	{
+		return gson.toJson(by);
+	}
+	
+	
+	public static String standardJsonResetPasswordRedirectDTO(ResetPasswordRedirectDTO by)
+	{
+		return gson.toJson(by);
+	}
 	
 	public static String standardJsonGetByEmailDTO()
 	{

@@ -9,6 +9,8 @@ public class UpdatePasswordMVCDTO {
 	private Integer customerType;
 
 	private String password;
+	
+	private Boolean isForcefulChangePassword;
 
 	private String requestedBy;
 	
@@ -17,13 +19,16 @@ public class UpdatePasswordMVCDTO {
 	}
 
 	public UpdatePasswordMVCDTO(Long customerId, Integer customerType,
-			String password, String requestedBy) {
-		super();
+			String password, Boolean isForcefulChangePassword,
+			String requestedBy) {
+
 		this.customerId = customerId;
 		this.customerType = customerType;
 		this.password = password;
+		this.isForcefulChangePassword = isForcefulChangePassword;
 		this.requestedBy = requestedBy;
 	}
+
 
 
 
@@ -70,10 +75,21 @@ public class UpdatePasswordMVCDTO {
 		this.requestedBy = requestedBy;
 	}
 
+	
+	
+	public Boolean getIsForcefulChangePassword() {
+		return isForcefulChangePassword;
+	}
+
+	public void setIsForcefulChangePassword(Boolean isForcefulChangePassword) {
+		this.isForcefulChangePassword = isForcefulChangePassword;
+	}
+
 	@Override
 	public String toString() {
 		return "UpdatePasswordMVCDTO [customerId=" + customerId
 				+ ", customerType=" + customerType + ", password=" + password
+				+ ", isForcefulChangePassword=" + isForcefulChangePassword
 				+ ", requestedBy=" + requestedBy + "]";
 	}
 
@@ -85,6 +101,10 @@ public class UpdatePasswordMVCDTO {
 				+ ((customerId == null) ? 0 : customerId.hashCode());
 		result = prime * result
 				+ ((customerType == null) ? 0 : customerType.hashCode());
+		result = prime
+				* result
+				+ ((isForcefulChangePassword == null) ? 0
+						: isForcefulChangePassword.hashCode());
 		result = prime * result
 				+ ((password == null) ? 0 : password.hashCode());
 		result = prime * result
@@ -111,6 +131,12 @@ public class UpdatePasswordMVCDTO {
 				return false;
 		} else if (!customerType.equals(other.customerType))
 			return false;
+		if (isForcefulChangePassword == null) {
+			if (other.isForcefulChangePassword != null)
+				return false;
+		} else if (!isForcefulChangePassword
+				.equals(other.isForcefulChangePassword))
+			return false;
 		if (password == null) {
 			if (other.password != null)
 				return false;
@@ -124,6 +150,7 @@ public class UpdatePasswordMVCDTO {
 		return true;
 	}
 
+	
 
 	
 }

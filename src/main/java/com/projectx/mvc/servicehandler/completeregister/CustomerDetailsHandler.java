@@ -27,7 +27,9 @@ import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeRequestedByDTO;
+import com.projectx.rest.domain.completeregister.EntityIdDTO;
+import com.projectx.rest.domain.completeregister.EntityIdTypeDTO;
 import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
 import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
@@ -59,7 +61,7 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 	
 	@Override
 	public CustomerDetailsDTO createCustomerDetailsFromQuickRegisterEntity(
-			QuickRegisterDTO quickRegisterEntity) {
+			Long entityId) {
 		
 		/*
 		if(quickRegisterEntity.getInsertTime()==null)
@@ -69,13 +71,8 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 			quickRegisterEntity.setUpdateTime(new Date());
 		*/
 		
-		if(quickRegisterEntity.getEmail()!=null && quickRegisterEntity.getIsEmailVerified()==null)
-			quickRegisterEntity.setIsEmailVerified(false);
 		
-		if(quickRegisterEntity.getMobile()==null && quickRegisterEntity.getIsMobileVerified()==null)
-			quickRegisterEntity.setIsMobileVerified(false);
-		
-		HttpEntity<QuickRegisterDTO> entity=new HttpEntity<QuickRegisterDTO>(quickRegisterEntity);
+		HttpEntity<EntityIdDTO> entity=new HttpEntity<EntityIdDTO>(new EntityIdDTO(entityId));
 		
 		ResponseEntity<CustomerDetailsDTO> result=
 				restTemplate.exchange(env.getProperty("rest.host")+"/customer/createFromQuickRegister", HttpMethod.POST, 
@@ -199,6 +196,7 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 		return model;
 	}
 	
+	/*
 	@Override
 	public Boolean verifyMobileDetails(VerifyMobileDTO verifyMobileDTO) {
 	
@@ -290,6 +288,8 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 		throw new ResourceNotFoundException();
 		
 	}
+*/
+
 
 	@Override
 	public Boolean clearTestData() {
@@ -323,5 +323,13 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 		else
 			throw new CustomerDetailsNotFoundException();
 
+	}
+
+	@Override
+	public String awsTest() {
+
+		String result=restTemplate.getForObject(env.getProperty("rest.host")+"/test/aws", String.class);
+		
+		return result;
 	}
 }

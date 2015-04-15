@@ -1,10 +1,15 @@
 package com.projectx.mvc.services.quickregister;
 
-import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.*;
-import static com.projectx.mvc.fixtures.quickregister.AuthenticationDetailsDataFixtures.*;
+import static com.projectx.mvc.fixtures.completeregister.VendorDetailsDataFixture.*;
+import static com.projectx.mvc.fixtures.quickregister.AuthenticationDetailsDataFixtures.standardLoginVerificationWithEmail;
+import static com.projectx.mvc.fixtures.quickregister.AuthenticationDetailsDataFixtures.standardLoginVerificationWithMobile;
 import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.*;
-import static com.projectx.mvc.fixtures.completeregister.DocumentDetailsDataFixture.*;
+import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,31 +21,27 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.projectx.mvc.config.BasicConfig;
-import com.projectx.mvc.domain.quickregister.CustomerDocumetDTO;
-import com.projectx.mvc.domain.quickregister.QuickRegisterEntity;
 import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
+import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.exception.repository.quickregister.AuthenticationDetailsNotFoundException;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.completeregister.DocumentDetailsService;
-import com.projectx.mvc.services.quickregister.QuickRegisterService;
+import com.projectx.mvc.services.completeregister.VendorDetailsService;
+import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
-import com.projectx.rest.domain.completeregister.DocumentDetails;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeRequestedByDTO;
+import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
+import com.projectx.rest.domain.quickregister.AuthenticationDetails;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsKey;
-import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailTypeDTO;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeMobileTypeDTO;
+import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
+import com.projectx.rest.domain.quickregister.LoginVerificationDTO;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
-import com.projectx.rest.domain.quickregister.QuickRegisterStatusDTO;
-import com.projectx.rest.domain.quickregister.LoginVerificationDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailDTO;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
-
-import static com.projectx.mvc.fixtures.completeregister.CustomerDetailsDataFixtures.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BasicConfig.class)
@@ -57,6 +58,9 @@ public class QuickRegisterTest {
 	@Autowired
 	CustomerDetailsService customerDetailsService;
 	
+	@Autowired
+	VendorDetailsService vendorDetailsService;
+	
 	private Integer EMAIL_REQ=1;
 	
 	private Integer MOBILE_REQ=2;
@@ -66,51 +70,59 @@ public class QuickRegisterTest {
 	{
 		customerQuickRegisterService.clearTestData();
 		customerDetailsService.clearTestData();
+		vendorDetailsService.clearTestData();
 	}
 
-	/*
+	
 	@Test
-	public void checkIfExist() throws Exception {
+	public void quickRegisterSucessfull() throws Exception {
 		
-		QuickRegisterStatusDTO status=customerQuickRegisterService.checkIfAlreadyExist(standardEmailMobileCustomerDTO());
+	
 		
-		assertEquals(REGISTER_NOT_REGISTERED, status.getStatus());
+		QuickRegisterSavedEntityDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
+		
+		assertEquals(REGISTER_REGISTERED_SUCESSFULLY ,savedEntityResult.getStatus());
+		
+	
 	}
 	
 	
 	
 	@Test
-	public void checkIfExistWithExistingEmailMobileCustomer()
+	public void quickRegisterWithExistingEmailMobileCustomer()
 	{
 		customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
 		
-		String status=customerQuickRegisterService.checkIfAlreadyExist(standardEmailMobileCustomerDTO()).getStatus();
+		QuickRegisterSavedEntityDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
 		
-		assertEquals(REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED_EMAIL_MOBILE_UNVERIFIED, status);
+		assertEquals(REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED_EMAIL_MOBILE_UNVERIFIED ,savedEntityResult.getStatus());
+		
 	}
 
 	
 	@Test
-	public void checkIfExistWithExistingEmailCustomer()
+	public void quickRegisterWithExistingEmailCustomer()
 	{
 		customerQuickRegisterService.addNewCustomer(standardEmailCustomerDTO());
 		
-		String status=customerQuickRegisterService.checkIfAlreadyExist(standardEmailMobileCustomerDTO()).getStatus();
+		QuickRegisterSavedEntityDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
 		
-		assertEquals(REGISTER_EMAIL_ALREADY_REGISTERED_NOT_VERIFIED, status);
+		assertEquals(REGISTER_EMAIL_ALREADY_REGISTERED_NOT_VERIFIED ,savedEntityResult.getStatus());
+		
 	}
 
 	
 	@Test
-	public void checkIfExistWithExistingMobileCustomer()
+	public void quickRegisterWithExistingMobileCustomer()
 	{
 		customerQuickRegisterService.addNewCustomer(standardMobileCustomerDTO());
 		
-		String status=customerQuickRegisterService.checkIfAlreadyExist(standardEmailMobileCustomerDTO()).getStatus();
+		QuickRegisterSavedEntityDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
 		
-		assertEquals(REGISTER_MOBILE_ALREADY_REGISTERED_NOT_VERIFIED, status);
+		assertEquals(REGISTER_MOBILE_ALREADY_REGISTERED_NOT_VERIFIED ,savedEntityResult.getStatus());
+		
 	}
-*/
+
 	
 	@Test
 	public void populateStatusForDuplicateFields()
@@ -225,7 +237,7 @@ public class QuickRegisterTest {
 		
 		assertEquals(1, mobileVerificationDetails.getMobileVerificationAttempts().intValue());
 		
-		assertTrue(customerQuickRegisterService.reSendMobilePin(new CustomerIdTypeMobileTypeUpdatedByDTO
+		assertTrue(customerQuickRegisterService.reSendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO
 				(savedEntityResult.getCustomerId(),ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY)));
 		
 		mobileVerificationDetails=customerQuickRegisterService.
@@ -274,7 +286,7 @@ public class QuickRegisterTest {
 		
 		assertEquals(1, mobileVerificationDetails.getMobileVerificationAttempts().intValue());
 		
-		assertTrue(customerQuickRegisterService.reSetMobilePin(new CustomerIdTypeMobileTypeUpdatedByDTO(savedEntityResult.getCustomerId(),
+		assertTrue(customerQuickRegisterService.reSetMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(savedEntityResult.getCustomerId(),
 				ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY)));
 		
 		mobileVerificationDetails=customerQuickRegisterService.
@@ -333,15 +345,16 @@ public class QuickRegisterTest {
 		
 		assertTrue(customerQuickRegisterService.verifyEmail(new VerifyEmailDTO(savedEntityResult.getCustomerId(),ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY,emailVerificationDetails.getEmailHash(),CUST_UPDATED_BY)));
 		
-		AuthenticationDetailsDTO authenticationDetailsDTO=customerQuickRegisterService
+		AuthenticationDetails authenticationDetailsDTO=customerQuickRegisterService
 				.getAuthenticationDetailsByCustomerIdType(savedEntityResult.getCustomerId(),ENTITY_TYPE_CUSTOMER);
 		
+
+		AuthenticationDetailsDTO verifyLoginDetails=customerQuickRegisterService
+				.verifyLoginDetails(new LoginVerificationDTO(authenticationDetailsDTO.getEmail(), authenticationDetailsDTO.getPassword()));
 		
-		//TODO uncomment in future
+		assertEquals("Default", verifyLoginDetails.getPasswordType());
+		assertFalse(verifyLoginDetails.getIsCompleteRegisterCompleted());
 		
-		//assertNotNull(customerQuickRegisterService.verifyLoginDetails(new LoginVerificationDTO(savedEntityResult.getEmail(),authenticationDetailsDTO.getPassword())).getKey().getCustomerId());
-		
-		//assertNotNull(customerQuickRegisterService.verifyLoginDetails(new LoginVerificationDTO(Long.toString(savedEntityResult.getMobile()), authenticationDetailsDTO.getPassword())).getKey().getCustomerId());
 		
 	}
 
@@ -377,7 +390,7 @@ public class QuickRegisterTest {
 		assertNotNull(customerQuickRegisterService.verifyLoginDetails(new LoginVerificationDTO(savedEntityResult.getEmail(),
 				CUST_PASSWORD_CHANGED)).getKey().getCustomerId());
 		
-		assertTrue(customerQuickRegisterService.resetPassword(savedEntityResult.getCustomerId(),MOBILE_REQ,ENTITY_TYPE_CUSTOMER,CUST_UPDATED_BY));
+		assertTrue(customerQuickRegisterService.resetPassword(savedEntityResult.getCustomerId(),ENTITY_TYPE_CUSTOMER,MOBILE_REQ,CUST_UPDATED_BY));
 		
 		AuthenticationDetailsDTO authenticationDetailsDTO=null;
 		
@@ -405,47 +418,119 @@ public class QuickRegisterTest {
 	
 
 	@Test
-	public void populateCompleteRegisterRedirect()
+	public void createCustomerDetailsAfterLoginVerification()
 	{
 		QuickRegisterSavedEntityDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
 		
-		AuthenticationDetailsDTO result=customerQuickRegisterService
+		MobileVerificationDetailsDTO mobileVerificationDetails=customerQuickRegisterService
+				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(savedEntityResult.getCustomer().getCustomerId(),
+						ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY);
+		
+		
+		assertTrue(customerQuickRegisterService.verifyMobile(new VerifyMobileDTO(savedEntityResult.getCustomer().getCustomerId(),
+				ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY,mobileVerificationDetails.getMobilePin(),CUST_UPDATED_BY)));
+		
+		
+		AuthenticationDetails result=customerQuickRegisterService
 				.getAuthenticationDetailsByCustomerIdType(savedEntityResult.getCustomer().getCustomerId(), savedEntityResult.getCustomer().getCustomerType());
 		
-		documentDetailsService.saveDocument(standardDocumentDetails(savedEntityResult.getCustomer().getCustomerId()));
+		AuthenticationDetailsDTO verifyLoginDetails=customerQuickRegisterService
+				.verifyLoginDetails(new LoginVerificationDTO(result.getMobile().toString(),result.getPassword() ));
 		
-		assertNotNull(result.getKey());
 		
-		ModelAndView resultModelAndView=customerQuickRegisterService.populateCompleteRegisterRedirect(result);
+		assertEquals("Default", verifyLoginDetails.getPasswordType());
+		assertFalse(verifyLoginDetails.getIsCompleteRegisterCompleted());
 		
-		//System.out.println(resultModelAndView.getModel().get("customerDetails"));
 		
-		assertEquals(standardCustomerDetailsCopiedFromQuickRegisterEntity(), resultModelAndView.getModel().get("customerDetails"));
+		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(new AuthenticationDetailsKey(savedEntityResult.getCustomer().getCustomerId(),
+				ENTITY_TYPE_CUSTOMER),"654321",true,CUST_UPDATED_BY)));
 		
-		assertEquals("completeregister/customerDetailsForm",resultModelAndView.getViewName());
+
+		try{
+			
+			customerDetailsService.getCustomerDetailsById(savedEntityResult.getCustomer().getCustomerId());
+			assertEquals(0, 1);
+			
+		}catch(ResourceNotFoundException e)
+		{
+			assertEquals(1, 1);
+		}
 		
-		///standCu
+		verifyLoginDetails=customerQuickRegisterService
+				.verifyLoginDetails(new LoginVerificationDTO(result.getMobile().toString(), "654321"));
 		
-		resultModelAndView=customerQuickRegisterService.populateCompleteRegisterRedirect(result);
+		assertEquals("Changed", verifyLoginDetails.getPasswordType());
+		assertFalse(verifyLoginDetails.getIsCompleteRegisterCompleted());
 		
-		assertEquals(standardCustomerDetailsCopiedFromQuickRegisterEntity(), resultModelAndView.getModel().get("customerDetails"));
+		CustomerDetailsDTO customerDetailsDTO=customerDetailsService.getCustomerDetailsById(savedEntityResult.getCustomer().getCustomerId());
 		
-		assertEquals("completeregister/showCustomerDetails",resultModelAndView.getViewName());
+		assertEquals(savedEntityResult.getCustomer().getCustomerId(), customerDetailsDTO.getCustomerId());
 		
+		verifyLoginDetails=customerQuickRegisterService
+				.verifyLoginDetails(new LoginVerificationDTO(result.getMobile().toString(), "654321"));
+		
+		assertEquals("Changed", verifyLoginDetails.getPasswordType());
+		assertTrue(verifyLoginDetails.getIsCompleteRegisterCompleted());
+			
 	}
 	
-	
-	/*
 	@Test
-	public void saveCustomerDocumentI()
+	public void createVendorDetailsAfterLoginVerification()
 	{
-	
-		CustomerDocumetDTO customerDocumetDTO=new CustomerDocumetDTO(3L, "dsjgfjegufgjvdfjv".getBytes());
+		QuickRegisterSavedEntityDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardEmailMobileVendorDTO());
 		
-		assertEquals(customerDocumetDTO,customerQuickRegisterService.saveCustomerDocumet(customerDocumetDTO));
+		MobileVerificationDetailsDTO mobileVerificationDetails=customerQuickRegisterService
+				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(savedEntityResult.getCustomer().getCustomerId(),
+						ENTITY_TYPE_VENDOR,ENTITY_TYPE_PRIMARY);
 		
-		assertEquals(customerDocumetDTO,customerQuickRegisterService.getCustomerDocumetById(customerDocumetDTO.getCustomerId()));
+		
+		assertTrue(customerQuickRegisterService.verifyMobile(new VerifyMobileDTO(savedEntityResult.getCustomer().getCustomerId(),
+				ENTITY_TYPE_VENDOR,ENTITY_TYPE_PRIMARY,mobileVerificationDetails.getMobilePin(),CUST_UPDATED_BY)));
+		
+		
+		AuthenticationDetails result=customerQuickRegisterService
+				.getAuthenticationDetailsByCustomerIdType(savedEntityResult.getCustomer().getCustomerId(), savedEntityResult.getCustomer().getCustomerType());
+		
+		AuthenticationDetailsDTO verifyLoginDetails=customerQuickRegisterService
+				.verifyLoginDetails(new LoginVerificationDTO(result.getMobile().toString(),result.getPassword() ));
+		
+		
+		assertEquals("Default", verifyLoginDetails.getPasswordType());
+		assertFalse(verifyLoginDetails.getIsCompleteRegisterCompleted());
+		
+		
+		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(new AuthenticationDetailsKey(savedEntityResult.getCustomer().getCustomerId(),
+				ENTITY_TYPE_VENDOR),"654321",true,CUST_UPDATED_BY)));
+		
+
+		try{
+			
+			vendorDetailsService.getCustomerDetailsById(savedEntityResult.getCustomer().getCustomerId());
+			assertEquals(0, 1);
+			
+		}catch(ResourceNotFoundException e)
+		{
+			assertEquals(1, 1);
+		}
+		
+		verifyLoginDetails=customerQuickRegisterService
+				.verifyLoginDetails(new LoginVerificationDTO(result.getMobile().toString(), "654321"));
+		
+		assertEquals("Changed", verifyLoginDetails.getPasswordType());
+		assertFalse(verifyLoginDetails.getIsCompleteRegisterCompleted());
+		
+		VendorDetailsDTO vendorDetailsDTO=vendorDetailsService.getCustomerDetailsById(savedEntityResult.getCustomer().getCustomerId());
+		
+		assertEquals(savedEntityResult.getCustomer().getCustomerId(), vendorDetailsDTO.getVendorId());
+		
+		verifyLoginDetails=customerQuickRegisterService
+				.verifyLoginDetails(new LoginVerificationDTO(result.getMobile().toString(), "654321"));
+		
+		assertEquals("Changed", verifyLoginDetails.getPasswordType());
+		assertTrue(verifyLoginDetails.getIsCompleteRegisterCompleted());
+		
 		
 	}
-	*/
+	
+	
 }

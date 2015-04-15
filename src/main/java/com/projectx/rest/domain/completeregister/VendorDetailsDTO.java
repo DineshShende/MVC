@@ -49,6 +49,8 @@ public class VendorDetailsDTO {
 	private Date updateTime;
 	
 	private String updatedBy;
+	
+	
 
 	public VendorDetailsDTO() {
 

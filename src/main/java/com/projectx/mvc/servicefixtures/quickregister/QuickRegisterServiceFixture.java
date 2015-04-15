@@ -20,7 +20,8 @@ import com.projectx.mvc.exception.repository.quickregister.QuickRegisterDetailsA
 import com.projectx.mvc.exception.repository.quickregister.QuickRegisterEntityNotFoundException;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeRequestedByDTO;
+import com.projectx.rest.domain.quickregister.AuthenticationDetails;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
 import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
@@ -40,13 +41,6 @@ import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
 @Profile("Test")
 public class QuickRegisterServiceFixture implements
 		QuickRegisterService {
-
-	@Override
-	public QuickRegisterStatusDTO checkIfAlreadyExist(
-			QuickRegisterEntity customerQuickRegisterEntity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String populateMessageForDuplicationField(String duplicationStatus) {
@@ -82,8 +76,21 @@ public class QuickRegisterServiceFixture implements
 	}
 
 	@Override
+	public Boolean sendMobilePin(
+			CustomerIdTypeMobileTypeRequestedByDTO customerDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public Boolean reSendMobilePin(
-			CustomerIdTypeMobileTypeUpdatedByDTO customerDTO) {
+			CustomerIdTypeMobileTypeRequestedByDTO customerDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean sendEmailHash(CustomerIdTypeEmailTypeUpdatedByDTO customerDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -97,7 +104,7 @@ public class QuickRegisterServiceFixture implements
 
 	@Override
 	public Boolean reSetMobilePin(
-			CustomerIdTypeMobileTypeUpdatedByDTO customerDTO) {
+			CustomerIdTypeMobileTypeRequestedByDTO customerDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -111,20 +118,6 @@ public class QuickRegisterServiceFixture implements
 
 	@Override
 	public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ModelAndView populateCompleteRegisterRedirect(
-			AuthenticationDetailsDTO authenticationDetailsDTO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ModelAndView initialiseShowDetails(Long entityId,
-			Integer entityType, ModelAndView map) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -183,7 +176,7 @@ public class QuickRegisterServiceFixture implements
 	}
 
 	@Override
-	public AuthenticationDetailsDTO getAuthenticationDetailsByCustomerIdType(
+	public AuthenticationDetails getAuthenticationDetailsByCustomerIdType(
 			Long customerId, Integer customerType)
 			throws AuthenticationDetailsNotFoundException {
 		// TODO Auto-generated method stub
@@ -196,6 +189,6 @@ public class QuickRegisterServiceFixture implements
 		return null;
 	}
 
-			
+				
 
 }

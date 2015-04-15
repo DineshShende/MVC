@@ -70,7 +70,7 @@ public class DocumentDetailsWACTest {
 		MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
 		
 		CustomerDetailsDTO customerDetailsDTO=customerDetailsService.
-				createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer());
+				createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId());
 		
 		customerDetailsService.merge(standardCustomerDetails(customerDetailsDTO));
 		

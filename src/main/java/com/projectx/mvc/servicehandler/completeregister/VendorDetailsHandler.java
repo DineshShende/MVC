@@ -32,9 +32,11 @@ import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeUpdatedByDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeRequestedByDTO;
 import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
 import com.projectx.rest.domain.completeregister.DriverList;
+import com.projectx.rest.domain.completeregister.EntityIdDTO;
+import com.projectx.rest.domain.completeregister.EntityIdTypeDTO;
 import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
 import com.projectx.rest.domain.completeregister.VehicleList;
 import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
@@ -61,21 +63,24 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	
 	private Integer ENTITY_TYPE_VENDOR=2;
 	
+	private Integer ENTITY_TYPE_DRIVER=3;
+	
 	private Integer ENTITY_TYPE_PRIMARY=1;
 	
 	
 	@Override
 	public VendorDetailsDTO createCustomerDetailsFromQuickRegisterEntity(
-			QuickRegisterDTO quickRegisterEntity) {
+			Long entityId) {
 		
-		
+		/*
 		if(quickRegisterEntity.getEmail()!=null && quickRegisterEntity.getIsEmailVerified()==null)
 			quickRegisterEntity.setIsEmailVerified(false);
 		
 		if(quickRegisterEntity.getMobile()!=null && quickRegisterEntity.getIsMobileVerified()==null)
 			quickRegisterEntity.setIsMobileVerified(false);
+	*/
 	
-		HttpEntity<QuickRegisterDTO> entity=new HttpEntity<QuickRegisterDTO>(quickRegisterEntity);
+		HttpEntity<EntityIdDTO> entity=new HttpEntity<EntityIdDTO>(new EntityIdDTO(entityId));
 		
 		ResponseEntity<VendorDetailsDTO> result=null;
 		
@@ -138,6 +143,7 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		
 	}
 
+	/*
 	@Override
 	public Boolean verifyMobileDetails(VerifyMobileDTO verifyMobileDTO) {
 
@@ -239,6 +245,7 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	
 		
 	}
+*/
 
 	@Override
 	public Integer count() {
@@ -284,6 +291,19 @@ public class VendorDetailsHandler implements VendorDetailsService {
 			
 			if(vendorDetails.getFirmAddress().getInsertTime()==null)
 				vendorDetails.getFirmAddress().setInsertTime(new Date());
+			
+			
+		}
+		
+		if(vendorDetails.getHomeAddress()!=null)
+		{
+			if(vendorDetails.getHomeAddress().getUpdatedBy()==null)
+				vendorDetails.getHomeAddress().setUpdatedBy("CUST_ONLINE");
+			
+			vendorDetails.getHomeAddress().setUpdateTime(new Date());
+			
+			if(vendorDetails.getHomeAddress().getInsertTime()==null)
+				vendorDetails.getHomeAddress().setInsertTime(new Date());
 			
 			
 		}
@@ -342,6 +362,8 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		
 		if(driverDetailsDTO.getHomeAddress().getInsertTime()==null)
 			driverDetailsDTO.getHomeAddress().setInsertTime(new Date());
+	
+		driverDetailsDTO.getHomeAddress().setCustomerType(ENTITY_TYPE_DRIVER);
 		
 		driverDetailsDTO.getHomeAddress().setUpdateTime(new Date());
 		

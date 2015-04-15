@@ -1,6 +1,6 @@
 package com.projectx.mvc.exception.repository.completeregister;
 
-public class VendorDetailsNotFoundException extends RuntimeException {
+public class VendorDetailsNotFoundException extends ResourceNotFoundException {
 
 	public VendorDetailsNotFoundException(Throwable cause) {
         super(cause);

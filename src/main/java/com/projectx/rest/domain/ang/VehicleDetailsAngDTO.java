@@ -1,57 +1,38 @@
-package com.projectx.rest.domain.completeregister;
+package com.projectx.rest.domain.ang;
 
 import java.util.Date;
-
-
-
-
-
-
-
-
-
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import com.projectx.rest.domain.completeregister.VehicleBrandDetails;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.projectx.mvc.util.serializer.JsonDateDeSerializer;
-import com.projectx.mvc.util.serializer.JsonDateSerializer;
-
-
-
-
-public class VehicleDetailsDTO {
-
+public class VehicleDetailsAngDTO {
+	
 	private Long vehicleId;
 	
-	@NotEmpty
+	@NotNull
 	private String ownerFirstName;
 	
-	@NotEmpty
+	@NotNull
 	private String ownerMiddleName;
 	
-	@NotEmpty
+	@NotNull
 	private String ownerLastName;
 	
 	
-	//private VehicleTypeDetails vehicleTypeId;
-	
 	private VehicleBrandDetails vehicleBrandId;
 	
-	@NotEmpty
+	@NotNull
 	private String vehicleBodyType;
 	
 	@NotNull
 	private Boolean isBodyTypeFlexible;
 	
-	@NotEmpty
+	@NotNull
 	private String registrationNumber;
 	
-	@NotEmpty
+	@NotNull
 	private String chassisNumber;
 	
 	@NotNull
@@ -70,16 +51,16 @@ public class VehicleDetailsDTO {
 	private Integer numberOfWheels;
 	
 	
-	@NotEmpty
+	@NotNull
 	private String permitType;
 	
 	@NotNull
 	private Boolean insuranceStatus;
 	
-	@NotEmpty
+	@NotNull
 	private String insuranceNumber;
 	
-	@NotEmpty
+	@NotNull
 	private String insuranceCompany;
 	
 	@NotNull
@@ -93,12 +74,12 @@ public class VehicleDetailsDTO {
 	
 	private String updatedBy;
 
-	public VehicleDetailsDTO() {
+	public VehicleDetailsAngDTO() {
 
 	}
 
 
-	public VehicleDetailsDTO(Long vehicleId, String ownerFirstName,
+	public VehicleDetailsAngDTO(Long vehicleId, String ownerFirstName,
 			String ownerMiddleName, String ownerLastName,
 			VehicleBrandDetails vehicleBrandId, String vehicleBodyType,
 			Boolean isBodyTypeFlexible, String registrationNumber,
@@ -330,25 +311,25 @@ public class VehicleDetailsDTO {
 	}
 
 
-	@JsonSerialize(using=JsonDateSerializer.class)
+	//@JsonSerialize(using=JsonDateSerializer.class)
 	public Date getInsertTime() {
 		return insertTime;
 	}
 
 
-	@JsonDeserialize(using = JsonDateDeSerializer.class)
+	//@JsonDeserialize(using = JsonDateDeSerializer.class)
 	public void setInsertTime(Date insertTime) {
 		this.insertTime = insertTime;
 	}
 
 
-	@JsonSerialize(using=JsonDateSerializer.class)
+	//@JsonSerialize(using=JsonDateSerializer.class)
 	public Date getUpdateTime() {
 		return updateTime;
 	}
 
 
-	@JsonDeserialize(using = JsonDateDeSerializer.class)
+	//@JsonDeserialize(using = JsonDateDeSerializer.class)
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
@@ -404,7 +385,7 @@ public class VehicleDetailsDTO {
 
 	@Override
 	public String toString() {
-		return "VehicleDetailsDTO [vehicleId=" + vehicleId
+		return "VehicleDetailsAngDTO [vehicleId=" + vehicleId
 				+ ", ownerFirstName=" + ownerFirstName + ", ownerMiddleName="
 				+ ownerMiddleName + ", ownerLastName=" + ownerLastName
 				+ ", vehicleBrandId=" + vehicleBrandId + ", vehicleBodyType="
@@ -432,6 +413,8 @@ public class VehicleDetailsDTO {
 		result = prime * result
 				+ ((commodityList == null) ? 0 : commodityList.hashCode());
 		result = prime * result + ((height == null) ? 0 : height.hashCode());
+		result = prime * result
+				+ ((insertTime == null) ? 0 : insertTime.hashCode());
 		result = prime
 				* result
 				+ ((insuranceCompany == null) ? 0 : insuranceCompany.hashCode());
@@ -463,6 +446,8 @@ public class VehicleDetailsDTO {
 				+ ((registrationNumber == null) ? 0 : registrationNumber
 						.hashCode());
 		result = prime * result
+				+ ((updateTime == null) ? 0 : updateTime.hashCode());
+		result = prime * result
 				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
 		result = prime * result
 				+ ((vehicleBodyType == null) ? 0 : vehicleBodyType.hashCode());
@@ -485,7 +470,7 @@ public class VehicleDetailsDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		VehicleDetailsDTO other = (VehicleDetailsDTO) obj;
+		VehicleDetailsAngDTO other = (VehicleDetailsAngDTO) obj;
 		if (chassisNumber == null) {
 			if (other.chassisNumber != null)
 				return false;
@@ -500,6 +485,11 @@ public class VehicleDetailsDTO {
 			if (other.height != null)
 				return false;
 		} else if (!height.equals(other.height))
+			return false;
+		if (insertTime == null) {
+			if (other.insertTime != null)
+				return false;
+		} else if (!insertTime.equals(other.insertTime))
 			return false;
 		if (insuranceCompany == null) {
 			if (other.insuranceCompany != null)
@@ -561,6 +551,11 @@ public class VehicleDetailsDTO {
 				return false;
 		} else if (!registrationNumber.equals(other.registrationNumber))
 			return false;
+		if (updateTime == null) {
+			if (other.updateTime != null)
+				return false;
+		} else if (!updateTime.equals(other.updateTime))
+			return false;
 		if (updatedBy == null) {
 			if (other.updatedBy != null)
 				return false;
@@ -596,6 +591,5 @@ public class VehicleDetailsDTO {
 
 
 	
-	
-	
+
 }

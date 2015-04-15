@@ -27,8 +27,7 @@ public class QuickRegisterEntity {
 	
 	private Long mobile;
 
-	
-	private Integer pin;
+	private Integer pincode;
 	
 	private Integer customerType;
 	
@@ -45,7 +44,7 @@ public class QuickRegisterEntity {
 		this.lastName = lastName;
 		this.email = email;
 		this.mobile = mobile;
-		this.pin = pin;
+		this.pincode = pin;
 		this.customerType = customerType;
 		this.requestBy = requestBy;
 	}
@@ -98,16 +97,12 @@ public class QuickRegisterEntity {
 		this.mobile = mobile;
 	}
 
-
-
-	public Integer getPin() {
-		return pin;
+		public Integer getPincode() {
+		return pincode;
 	}
 
-
-
-	public void setPin(Integer pin) {
-		this.pin = pin;
+	public void setPincode(Integer pincode) {
+		this.pincode = pincode;
 	}
 
 		public Integer getCustomerType() {
@@ -131,7 +126,7 @@ public class QuickRegisterEntity {
 	public String toString() {
 		return "QuickRegisterEntity [firstName=" + firstName + ", lastName="
 				+ lastName + ", email=" + email + ", mobile=" + mobile
-				+ ", pin=" + pin + ", customerType=" + customerType
+				+ ", pincode=" + pincode + ", customerType=" + customerType
 				+ ", requestBy=" + requestBy + "]";
 	}
 
@@ -147,7 +142,7 @@ public class QuickRegisterEntity {
 		result = prime * result
 				+ ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
-		result = prime * result + ((pin == null) ? 0 : pin.hashCode());
+		result = prime * result + ((pincode == null) ? 0 : pincode.hashCode());
 		result = prime * result
 				+ ((requestBy == null) ? 0 : requestBy.hashCode());
 		return result;
@@ -187,10 +182,10 @@ public class QuickRegisterEntity {
 				return false;
 		} else if (!mobile.equals(other.mobile))
 			return false;
-		if (pin == null) {
-			if (other.pin != null)
+		if (pincode == null) {
+			if (other.pincode != null)
 				return false;
-		} else if (!pin.equals(other.pin))
+		} else if (!pincode.equals(other.pincode))
 			return false;
 		if (requestBy == null) {
 			if (other.requestBy != null)

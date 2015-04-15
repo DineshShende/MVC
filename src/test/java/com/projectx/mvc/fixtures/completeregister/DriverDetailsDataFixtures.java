@@ -7,6 +7,8 @@ import java.util.Date;
 
 import com.google.gson.Gson;
 import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
+import com.projectx.rest.domain.completeregister.EntityIdDTO;
+import com.projectx.rest.domain.completeregister.EntityIdTypeDTO;
 import com.projectx.rest.domain.completeregister.UpdateMobileVerificationStatusDTO;
 
 
@@ -106,5 +108,15 @@ public static String DRIVER_FIRST_NAME_OTHER="John";
 		
 		return gson.toJson(dto);
 	}
+	
+	public static String standardEntityIdDTO(EntityIdDTO entityIdDTO)
+	{
+		return gson.toJson(entityIdDTO);
+	}
 
+	public static String standardEntityIdTypeDTO(EntityIdTypeDTO entityIdDTO)
+	{
+		return gson.toJson(entityIdDTO);
+	}
+	
 }

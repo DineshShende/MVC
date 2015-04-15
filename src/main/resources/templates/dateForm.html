@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+<script type="text/javascript">
+
+$("#dateForm").submit(function(event) {
+
+    /* stop form from submitting normally */
+    event.preventDefault();
+
+    /* get some values from elements on the page: */
+    var $form = $(this),
+    name_par = $form.find('input[name="name"]').val(),
+    date_par = $form.find('input[name="date"]').val(),
+            url = $form.attr('action');
+
+    /* Send the data using post */
+    var posting = $.post(url, {
+    	name: name_par,
+    	dateType : date_par
+    	
+    });
+
+    /* Put the results in a div */
+    posting.done(function(data) {
+        	var content = $(data).find('#content');
+
+        $("#dateFormStatus").empty().append("Status:"+data);
+    });
+});
+
+
+
+
+</script>
+<form id="dateForm" action="/datesubmit" method="post">
+
+Name:<input type="text" name="name" id="name"/>
+Date:<input type="date" name="date" id="date"/>
+<input type="submit"/>
+
+</form>
+
+<div id="dateFormStatus"></div>
+</body>
+</html>

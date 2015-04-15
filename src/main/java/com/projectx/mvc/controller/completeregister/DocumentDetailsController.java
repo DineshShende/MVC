@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.projectx.mvc.domain.completeregister.CustomerDetailsAngDTO;
+import com.projectx.mvc.domain.completeregister.ResponseDTO;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.completeregister.DocumentDetailsService;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
@@ -78,25 +81,54 @@ public class DocumentDetailsController {
 	
 	@RequestMapping(value="/save",method=RequestMethod.POST)//,consumes = {"multipart/form-data"}
 	@ResponseBody
-	public String save(MultipartHttpServletRequest request,HttpServletResponse response)
+	public ResponseDTO save(MultipartHttpServletRequest request,HttpServletResponse response)
 	{
 		
 		MultipartHttpServletRequest mRequest;
         try {
             mRequest = (MultipartHttpServletRequest) request;
-            mRequest.getParameterMap();
+           Map<String, String[]> objectMap= mRequest.getParameterMap();
+           
+           Map<String, MultipartFile> fileMap =mRequest.getFileMap();
+           
+           for(Object key: fileMap.keySet())
+           {
+        	   System.out.println(key);
+        	   System.out.println(fileMap.get(key));
+        	   System.out.println(fileMap.get(key).getName());
+        	   System.out.println(fileMap.get(key).getContentType());
+        	   System.out.println(fileMap.get(key).getBytes());
+           }
+           
+           
+           for(Object keyObj:objectMap.keySet())
+           {
+        	   
+        	   System.out.println("ParamKey"+keyObj);
+        	   System.out.println("ParamKeyVal"+objectMap.get(keyObj)[0]);
+           }
+           
+         //  CustomerDetailsAngDTO angDTO=(CustomerDetailsAngDTO)objectMap.get("user");
+           
+           //
+           
+           //System.out.println(objectMap.get("user"));
 
+           /*
             Iterator<String> itr = mRequest.getFileNames();
             while (itr.hasNext()) {
                 MultipartFile mFile = mRequest.getFile(itr.next());
                 String fileName = mFile.getOriginalFilename();
                 System.out.println(fileName);
             }
+            */
+           
+           return new ResponseDTO("failure", "SOmething went wrong");
         } catch (Exception e) {
             e.printStackTrace();
         }
 		
-		return "abc";
+		return new ResponseDTO("sucee", "");
 	}
 	
 	

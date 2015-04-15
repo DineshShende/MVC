@@ -4,7 +4,12 @@ package com.projectx.mvc.fixtures.completeregister;
 
 import java.util.Date;
 
+import com.google.gson.Gson;
+import com.projectx.rest.domain.ang.CustomerDetailsDTOAng;
+import com.projectx.rest.domain.completeregister.CustomerDetailsAngDTO;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
+import com.projectx.rest.domain.completeregister.EntityIdTypeDTO;
+
 import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.*;
 import static com.projectx.mvc.fixtures.completeregister.AddressDataFixture.*;
 
@@ -29,7 +34,7 @@ public class CustomerDetailsDataFixtures {
 	
 	public static Boolean CUST_VERIFICATION_FLAG=false;
 	
-	//static Gson gson=new Gson();
+	public static Gson gson=new Gson();
 	
 	
 	/*
@@ -58,6 +63,26 @@ public class CustomerDetailsDataFixtures {
 				standardEmailMobileCustomer().getIsEmailVerified(),standardEmailMobileCustomer().getEmail(),
 				standardEmailMobileCustomer().getIsEmailVerified(), null, null, null, null, null, false,
 				null, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
+	}
+	
+	public static CustomerDetailsDTO standardCustomerDetails(Long customerId)
+	{
+		return new CustomerDetailsDTO(customerId, standardEmailMobileCustomer().getFirstName(),null,
+				standardEmailMobileCustomer().getLastName(), CUST_DOB,standardAddress() , standardEmailMobileCustomer().getMobile(),CUST_PHONE_NUMBER, 
+				standardEmailMobileCustomer().getIsEmailVerified(),standardEmailMobileCustomer().getEmail(),
+				standardEmailMobileCustomer().getIsEmailVerified(), CUST_LANG, CUST_BUSINESS_DOMAIN, CUST_NAME_OF_FIRM, 
+				standardAddress(), CUST_SEC_MOBILE, false,
+				CUST_EMAIL_NEW, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
+	}
+	
+	public static CustomerDetailsDTOAng standardCustomerDetailsAng(Long customerId)
+	{
+		return new CustomerDetailsDTOAng(customerId, standardEmailMobileCustomer().getFirstName(),null,
+				standardEmailMobileCustomer().getLastName(), CUST_DOB,standardAddress() , standardEmailMobileCustomer().getMobile(),CUST_PHONE_NUMBER, 
+				standardEmailMobileCustomer().getIsEmailVerified(),standardEmailMobileCustomer().getEmail(),
+				standardEmailMobileCustomer().getIsEmailVerified(), CUST_LANG, CUST_BUSINESS_DOMAIN, CUST_NAME_OF_FIRM, 
+				standardAddress(), CUST_SEC_MOBILE, false,
+				CUST_EMAIL_NEW,ENTITY_TYPE_CUSTOMER, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
 	}
 	
 	public static CustomerDetailsDTO standardCustomerDetailsFirstPart()
@@ -148,18 +173,32 @@ public class CustomerDetailsDataFixtures {
 	}
 	
 	
-	/*
-	public static String standardJsonCustomerDetails(CustomerDetails customerDetails)
+	
+	public static String standardJsonCustomerDetails(CustomerDetailsDTO customerDetails)
 	{
-		
-		
-		
-		
 		System.out.println(gson.toJson(customerDetails));
 		
 		return gson.toJson(customerDetails);
 	}
 	
+	public static String standardJsonCustomerDetailsAng(CustomerDetailsDTOAng customerDetails)
+	{
+		System.out.println(gson.toJson(customerDetails));
+		
+		return gson.toJson(customerDetails);
+	}
+	
+	public static EntityIdTypeDTO standardEntityIdDTO(Long entityId,Integer entityType)
+	{
+		return new EntityIdTypeDTO(entityId,entityType);
+	}
+	
+	public static String standardJsonEntityIdDTO(EntityIdTypeDTO entityIdDTO)
+	{
+		return gson.toJson(entityIdDTO);
+	}
+	
+	/*
 	public static String standardJsonUpdateAddress()
 	{
 		System.out.println(gson.toJson(standardUpdateAddressDTO()));
