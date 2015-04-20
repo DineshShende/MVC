@@ -10,7 +10,9 @@ public class UpdatePasswordDTO {
 
 	private Boolean isForcefulChangePassword;
 	
-	private String requestedBy;
+	private Integer requestedBy;
+	
+	private Long requestedById;
 	
 	public UpdatePasswordDTO() {
 
@@ -18,12 +20,13 @@ public class UpdatePasswordDTO {
 
 
 	public UpdatePasswordDTO(AuthenticationDetailsKey key, String password,
-			Boolean isForcefulChangePassword, String requestedBy) {
+			Boolean isForcefulChangePassword, Integer requestedBy,Long requestedById) {
 		super();
 		this.key = key;
 		this.password = password;
 		this.isForcefulChangePassword = isForcefulChangePassword;
 		this.requestedBy = requestedBy;
+		this.requestedById=requestedById;
 	}
 
 
@@ -52,18 +55,7 @@ public class UpdatePasswordDTO {
 		this.password = password;
 	}
 
-	public String getRequestedBy() {
-		return requestedBy;
-	}
 
-
-	public void setRequestedBy(String requestedBy) {
-		this.requestedBy = requestedBy;
-	}
-
-
-	
-	
 	public Boolean getIsForcefulChangePassword() {
 		return isForcefulChangePassword;
 	}
@@ -72,13 +64,36 @@ public class UpdatePasswordDTO {
 	public void setIsForcefulChangePassword(Boolean isForcefulChangePassword) {
 		this.isForcefulChangePassword = isForcefulChangePassword;
 	}
+	
+	
+
+
+	public Integer getRequestedBy() {
+		return requestedBy;
+	}
+
+
+	public void setRequestedBy(Integer requestedBy) {
+		this.requestedBy = requestedBy;
+	}
+
+
+	public Long getRequestedById() {
+		return requestedById;
+	}
+
+
+	public void setRequestedById(Long requestedById) {
+		this.requestedById = requestedById;
+	}
 
 
 	@Override
 	public String toString() {
 		return "UpdatePasswordDTO [key=" + key + ", password=" + password
 				+ ", isForcefulChangePassword=" + isForcefulChangePassword
-				+ ", requestedBy=" + requestedBy + "]";
+				+ ", requestedBy=" + requestedBy + ", requestedById="
+				+ requestedById + "]";
 	}
 
 
@@ -95,6 +110,8 @@ public class UpdatePasswordDTO {
 				+ ((password == null) ? 0 : password.hashCode());
 		result = prime * result
 				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
+		result = prime * result
+				+ ((requestedById == null) ? 0 : requestedById.hashCode());
 		return result;
 	}
 
@@ -129,11 +146,16 @@ public class UpdatePasswordDTO {
 				return false;
 		} else if (!requestedBy.equals(other.requestedBy))
 			return false;
+		if (requestedById == null) {
+			if (other.requestedById != null)
+				return false;
+		} else if (!requestedById.equals(other.requestedById))
+			return false;
 		return true;
 	}
 
 
-	
+		
 	
 	
 }

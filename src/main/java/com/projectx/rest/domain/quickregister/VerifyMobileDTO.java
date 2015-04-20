@@ -10,22 +10,23 @@ public class VerifyMobileDTO {
 	
 	private Integer mobilePin;
 	
-	private String requestBy;
+	private Integer requestBy;
 	
-	
+	private Long requestById;
 
 	public VerifyMobileDTO() {
 	
 	}
 
 	public VerifyMobileDTO(Long customerId, Integer customerType,
-			Integer mobileType, Integer mobilePin, String requestBy) {
+			Integer mobileType, Integer mobilePin, Integer requestBy,Long requestById) {
 		super();
 		this.customerId = customerId;
 		this.customerType = customerType;
 		this.mobileType = mobileType;
 		this.mobilePin = mobilePin;
 		this.requestBy = requestBy;
+		this.requestById=requestById;
 	}
 
 	public Long getCustomerId() {
@@ -60,19 +61,30 @@ public class VerifyMobileDTO {
 		this.mobilePin = mobilePin;
 	}
 
-	public String getRequestBy() {
+
+
+	public Integer getRequestBy() {
 		return requestBy;
 	}
 
-	public void setRequestBy(String requestBy) {
+	public void setRequestBy(Integer requestBy) {
 		this.requestBy = requestBy;
+	}
+
+	public Long getRequestById() {
+		return requestById;
+	}
+
+	public void setRequestById(Long requestById) {
+		this.requestById = requestById;
 	}
 
 	@Override
 	public String toString() {
 		return "VerifyMobileDTO [customerId=" + customerId + ", customerType="
 				+ customerType + ", mobileType=" + mobileType + ", mobilePin="
-				+ mobilePin + ", requestBy=" + requestBy + "]";
+				+ mobilePin + ", requestBy=" + requestBy + ", requestById="
+				+ requestById + "]";
 	}
 
 	@Override
@@ -89,6 +101,8 @@ public class VerifyMobileDTO {
 				+ ((mobileType == null) ? 0 : mobileType.hashCode());
 		result = prime * result
 				+ ((requestBy == null) ? 0 : requestBy.hashCode());
+		result = prime * result
+				+ ((requestById == null) ? 0 : requestById.hashCode());
 		return result;
 	}
 
@@ -126,10 +140,14 @@ public class VerifyMobileDTO {
 				return false;
 		} else if (!requestBy.equals(other.requestBy))
 			return false;
+		if (requestById == null) {
+			if (other.requestById != null)
+				return false;
+		} else if (!requestById.equals(other.requestById))
+			return false;
 		return true;
 	}
-	
-	
+
 		
 
 }

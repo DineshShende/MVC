@@ -12,7 +12,9 @@ public class UpdatePasswordMVCDTO {
 	
 	private Boolean isForcefulChangePassword;
 
-	private String requestedBy;
+	private Integer requestedBy;
+	
+	private Long requestedById;
 	
 	public UpdatePasswordMVCDTO() {
 
@@ -20,13 +22,14 @@ public class UpdatePasswordMVCDTO {
 
 	public UpdatePasswordMVCDTO(Long customerId, Integer customerType,
 			String password, Boolean isForcefulChangePassword,
-			String requestedBy) {
+			Integer requestedBy,Long requestedById) {
 
 		this.customerId = customerId;
 		this.customerType = customerType;
 		this.password = password;
 		this.isForcefulChangePassword = isForcefulChangePassword;
 		this.requestedBy = requestedBy;
+		this.requestedById=requestedById;
 	}
 
 
@@ -67,16 +70,6 @@ public class UpdatePasswordMVCDTO {
 		this.password = password;
 	}
 
-	public String getRequestedBy() {
-		return requestedBy;
-	}
-
-	public void setRequestedBy(String requestedBy) {
-		this.requestedBy = requestedBy;
-	}
-
-	
-	
 	public Boolean getIsForcefulChangePassword() {
 		return isForcefulChangePassword;
 	}
@@ -84,13 +77,32 @@ public class UpdatePasswordMVCDTO {
 	public void setIsForcefulChangePassword(Boolean isForcefulChangePassword) {
 		this.isForcefulChangePassword = isForcefulChangePassword;
 	}
+	
+	
+
+	public Integer getRequestedBy() {
+		return requestedBy;
+	}
+
+	public void setRequestedBy(Integer requestedBy) {
+		this.requestedBy = requestedBy;
+	}
+
+	public Long getRequestedById() {
+		return requestedById;
+	}
+
+	public void setRequestedById(Long requestedById) {
+		this.requestedById = requestedById;
+	}
 
 	@Override
 	public String toString() {
 		return "UpdatePasswordMVCDTO [customerId=" + customerId
 				+ ", customerType=" + customerType + ", password=" + password
 				+ ", isForcefulChangePassword=" + isForcefulChangePassword
-				+ ", requestedBy=" + requestedBy + "]";
+				+ ", requestedBy=" + requestedBy + ", requestedById="
+				+ requestedById + "]";
 	}
 
 	@Override
@@ -109,6 +121,8 @@ public class UpdatePasswordMVCDTO {
 				+ ((password == null) ? 0 : password.hashCode());
 		result = prime * result
 				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
+		result = prime * result
+				+ ((requestedById == null) ? 0 : requestedById.hashCode());
 		return result;
 	}
 
@@ -147,10 +161,15 @@ public class UpdatePasswordMVCDTO {
 				return false;
 		} else if (!requestedBy.equals(other.requestedBy))
 			return false;
+		if (requestedById == null) {
+			if (other.requestedById != null)
+				return false;
+		} else if (!requestedById.equals(other.requestedById))
+			return false;
 		return true;
 	}
 
-	
+		
 
 	
 }

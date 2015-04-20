@@ -35,7 +35,13 @@ private Long customerId;
 	
 	private Date updateTime;
 	
-	private String updatedBy;
+	private Integer updatedBy;
+	
+	private Integer insertedBy;
+	
+	private Long updatedById;
+	
+	private Long insertedById;
 	
 	public QuickRegisterDTO() {
 		
@@ -46,7 +52,7 @@ private Long customerId;
 	public QuickRegisterDTO(Long customerId, String firstName, String lastName,
 			String email, Long mobile, Integer pincode, Integer customerType,
 			Boolean isEmailVerified, Boolean isMobileVerified, Date insertTime,
-			Date updateTime, String updatedBy) {
+			Date updateTime,Integer updatedBy,Integer insertedBy,Long updatedById,Long insertedById) {
 		super();
 		this.customerId = customerId;
 		this.firstName = firstName;
@@ -60,6 +66,9 @@ private Long customerId;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
 		this.updatedBy = updatedBy;
+		this.insertedBy=insertedBy;
+		this.updatedById=updatedById;
+		this.insertedById=insertedById;
 	}
 
 
@@ -148,15 +157,55 @@ private Long customerId;
 		this.updateTime = updateTime;
 	}
 
-	public String getUpdatedBy() {
+
+
+	public Integer getUpdatedBy() {
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(String updatedBy) {
+
+
+	public void setUpdatedBy(Integer updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	
-	
+
+
+
+	public Integer getInsertedBy() {
+		return insertedBy;
+	}
+
+
+
+	public void setInsertedBy(Integer insertedBy) {
+		this.insertedBy = insertedBy;
+	}
+
+
+
+	public Long getUpdatedById() {
+		return updatedById;
+	}
+
+
+
+	public void setUpdatedById(Long updatedById) {
+		this.updatedById = updatedById;
+	}
+
+
+
+	public Long getInsertedById() {
+		return insertedById;
+	}
+
+
+
+	public void setInsertedById(Long insertedById) {
+		this.insertedById = insertedById;
+	}
+
+
 
 	public Integer getCustomerType() {
 		return customerType;
@@ -170,8 +219,6 @@ private Long customerId;
 
 
 
-	
-
 	@Override
 	public String toString() {
 		return "QuickRegisterDTO [customerId=" + customerId + ", firstName="
@@ -180,7 +227,9 @@ private Long customerId;
 				+ ", customerType=" + customerType + ", isEmailVerified="
 				+ isEmailVerified + ", isMobileVerified=" + isMobileVerified
 				+ ", insertTime=" + insertTime + ", updateTime=" + updateTime
-				+ ", updatedBy=" + updatedBy + "]";
+				+ ", updatedBy=" + updatedBy + ", insertedBy=" + insertedBy
+				+ ", updatedById=" + updatedById + ", insertedById="
+				+ insertedById + "]";
 	}
 
 
@@ -199,6 +248,10 @@ private Long customerId;
 		result = prime * result
 				+ ((insertTime == null) ? 0 : insertTime.hashCode());
 		result = prime * result
+				+ ((insertedBy == null) ? 0 : insertedBy.hashCode());
+		result = prime * result
+				+ ((insertedById == null) ? 0 : insertedById.hashCode());
+		result = prime * result
 				+ ((isEmailVerified == null) ? 0 : isEmailVerified.hashCode());
 		result = prime
 				* result
@@ -211,6 +264,8 @@ private Long customerId;
 				+ ((updateTime == null) ? 0 : updateTime.hashCode());
 		result = prime * result
 				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
+		result = prime * result
+				+ ((updatedById == null) ? 0 : updatedById.hashCode());
 		return result;
 	}
 
@@ -228,8 +283,7 @@ private Long customerId;
 		if (customerId == null) {
 			if (other.customerId != null)
 				return false;
-		} else if (!customerId.equals(other.customerId))
-			return false;
+		}
 		if (customerType == null) {
 			if (other.customerType != null)
 				return false;
@@ -244,6 +298,20 @@ private Long customerId;
 			if (other.firstName != null)
 				return false;
 		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (insertTime == null) {
+			if (other.insertTime != null)
+				return false;
+		}
+		if (insertedBy == null) {
+			if (other.insertedBy != null)
+				return false;
+		} else if (!insertedBy.equals(other.insertedBy))
+			return false;
+		if (insertedById == null) {
+			if (other.insertedById != null)
+				return false;
+		} else if (!insertedById.equals(other.insertedById))
 			return false;
 		if (isEmailVerified == null) {
 			if (other.isEmailVerified != null)
@@ -270,15 +338,26 @@ private Long customerId;
 				return false;
 		} else if (!pincode.equals(other.pincode))
 			return false;
+		if (updateTime == null) {
+			if (other.updateTime != null)
+				return false;
+		}
 		if (updatedBy == null) {
 			if (other.updatedBy != null)
 				return false;
 		} else if (!updatedBy.equals(other.updatedBy))
 			return false;
+		if (updatedById == null) {
+			if (other.updatedById != null)
+				return false;
+		} else if (!updatedById.equals(other.updatedById))
+			return false;
 		return true;
 	}
 
 
+
+	
 
 		
 	

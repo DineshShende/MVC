@@ -60,7 +60,7 @@ public class VehicleDetailsControllerWACTest {
 
 		this.mockMvc.perform(
 				post("/vehicle/save")
-				.content("{\"ownerFirstName\":\"Abraham\",\"ownerMiddleName\":\"Benjamin\",\"ownerLastName\":\"Deviliers\",\"vehicleBrandId\":{\"vehicleTypeId\":{\"vehicleTypeName\":\"VehcileTypeName\"},\"vehicleBrandName\":\"Tata tempo\",\"modelNumber\":\"407\"},\"vehicleBodyType\":\"OPEN\",\"isBodyTypeFlexible\":true,\"registrationNumber\":\"MH12HG4563\",\"chassisNumber\":\"MH12HG4563JDFR634\",\"loadCapacityInTons\":100,\"length\":100,\"width\":40,\"height\":10,\"numberOfWheels\":8,\"permitType\":\"NATIONAL\",\"insuranceStatus\":true,\"insuranceNumber\":\"ADRF3442537JD\",\"insuranceCompany\":\"LIC\",\"vendorId\":213,\"commodityList\":[\"Wheat\",\"Grain\",\"Cement\"],\"updatedBy\":\"CUST_ONLINE\"}")
+				.content("{\"ownerFirstName\":\"Abraham\",\"ownerMiddleName\":\"Benjamin\",\"ownerLastName\":\"Deviliers\",\"vehicleBrandId\":{\"vehicleTypeId\":{\"vehicleTypeName\":\"VehcileTypeName\"},\"vehicleBrandName\":\"Tata tempo\",\"modelNumber\":\"407\"},\"vehicleBodyType\":\"OPEN\",\"isBodyTypeFlexible\":true,\"registrationNumber\":\"MH12HG4563\",\"chassisNumber\":\"MH12HG4563JDFR634\",\"loadCapacityInTons\":100,\"length\":100,\"width\":40,\"height\":10,\"numberOfWheels\":8,\"permitType\":\"NATIONAL\",\"insuranceStatus\":true,\"insuranceNumber\":\"ADRF3442537JD\",\"insuranceCompany\":\"LIC\",\"vendorId\":213,\"commodityList\":[\"Wheat\",\"Grain\",\"Cement\"],\"requestedBy\":1,\"requestedById\":1}")
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 	.andDo(print())
@@ -103,7 +103,7 @@ public class VehicleDetailsControllerWACTest {
 	.andExpect(jsonPath("$.insuranceNumber").value(standardVehicleDetails().getInsuranceNumber()))
 	.andExpect(jsonPath("$.insuranceCompany").value(standardVehicleDetails().getInsuranceCompany()))
 	//.andExpect(jsonPath("$.commodityList").value(standardVehicleDetails().getCommodityList()))
-	.andExpect(jsonPath("$.updatedBy").value(standardVehicleDetails().getUpdatedBy()));
+	.andExpect(jsonPath("$.requestedBy").value(standardVehicleDetails().getUpdatedBy()));
 		
 	}
 	
@@ -139,7 +139,7 @@ public class VehicleDetailsControllerWACTest {
 	.andExpect(jsonPath("$.[0].insuranceNumber").value(standardVehicleDetails().getInsuranceNumber()))
 	.andExpect(jsonPath("$.[0].insuranceCompany").value(standardVehicleDetails().getInsuranceCompany()))
 	//.andExpect(jsonPath("$.commodityList").value(standardVehicleDetails().getCommodityList()))
-	.andExpect(jsonPath("$.[0].updatedBy").value(standardVehicleDetails().getUpdatedBy()));	
+	.andExpect(jsonPath("$.[0].requestedBy").value(standardVehicleDetails().getUpdatedBy()));	
 	}
 	
 	@Test

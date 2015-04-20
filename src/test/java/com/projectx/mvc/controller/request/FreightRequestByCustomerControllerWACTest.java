@@ -61,7 +61,7 @@ public class FreightRequestByCustomerControllerWACTest {
 		
 		this.mockMvc.perform(
 	            post("/request/freightrequestByCustomer")
-	                    .content("{\"source\":411045,\"destination\":413102,\"pickupDate\":"+new Date().getTime()+",\"noOfVehicles\":1,\"loadType\":\"FullTruckLoad\",\"capacity\":100,\"length\":100,\"width\":60,\"height\":10,\"bodyType\":\"Open\",\"vehicleBrand\":\"Tata Temp\",\"model\":\"407\",\"commodity\":\"Fertiliser\",\"pickupTime\":\"1:00PM\",\"customerId\":212,\"status\":\"NEW\",\"updatedBy\":\"CUST_ONLINE\"}")
+	                    .content("{\"source\":411045,\"destination\":413102,\"pickupDate\":"+new Date().getTime()+",\"noOfVehicles\":1,\"loadType\":\"FullTruckLoad\",\"capacity\":100,\"length\":100,\"width\":60,\"height\":10,\"bodyType\":\"Open\",\"vehicleBrand\":\"Tata Temp\",\"model\":\"407\",\"commodity\":\"Fertiliser\",\"pickupTime\":\"1:00PM\",\"customerId\":212,\"status\":\"NEW\",\"requestedBy\":1,\"requestedById\":1}")
 	                    .contentType(MediaType.APPLICATION_JSON)
 	                    .accept(MediaType.APPLICATION_JSON))
 	            .andDo(print())

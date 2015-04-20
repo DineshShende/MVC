@@ -66,7 +66,7 @@ public class DriverDetailsControllerWACTest {
 	{
 		this.mockMvc.perform(
 				post("/driver/save")
-				.content("{\"firstName\":\"Abc\",\"middleName\":\"def\",\"lastName\":\"def\",\"dateOfBirth\":"+new Date().getTime()+",\"bloodGroup\":\"A+\", \"homeAddress\":{\"addressLine\":\"AT-GHADGE\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133},\"mobile\":9980907076,\"homeContactNumber\":9090909090,\"licenceNumber\":\"MHGDDSS\",\"drivingSince\":"+new Date().getTime()+",\"employedSince\":"+new Date().getTime()+",\"isFreightRequestPermissionGiven\":false,\"isDealFinalizationPermissionGiven\":false,\"language\":\"Marathi\",\"vendorId\":231,\"updatedBy\":\"cust_onlie\"})")
+				.content("{\"firstName\":\"Abc\",\"middleName\":\"def\",\"lastName\":\"def\",\"dateOfBirth\":"+new Date().getTime()+",\"bloodGroup\":\"A+\", \"homeAddress\":{\"customerType\":3,\"addressLine\":\"AT-GHADGE\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133,\"updatedBy\":1,\"updatedById\":1},\"mobile\":9980907076,\"homeContactNumber\":9090909090,\"licenceNumber\":\"MHGDDSS\",\"drivingSince\":"+new Date().getTime()+",\"employedSince\":"+new Date().getTime()+",\"isFreightRequestPermissionGiven\":false,\"isDealFinalizationPermissionGiven\":false,\"language\":\"Marathi\",\"vendorId\":231,\"requestedBy\":1,\"requestedById\":1})")
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 	.andDo(print())
@@ -102,7 +102,7 @@ public class DriverDetailsControllerWACTest {
     .andExpect(jsonPath("$.isDealFinalizationPermissionGiven").value(standardDriverDetails().getIsDealFinalizationPermissionGiven()))
     .andExpect(jsonPath("$.language").value(standardDriverDetails().getLanguage()))
     .andExpect(jsonPath("$.vendorId").exists())
-    .andExpect(jsonPath("$.updatedBy").value(standardDriverDetails().getUpdatedBy()))
+    .andExpect(jsonPath("$.requestedBy").value(standardDriverDetails().getUpdatedBy()))
     .andExpect(jsonPath("$.dateOfBirth").exists())
     .andExpect(jsonPath("$.drivingSince").exists())
 	.andExpect(jsonPath("$.employedSince").exists());

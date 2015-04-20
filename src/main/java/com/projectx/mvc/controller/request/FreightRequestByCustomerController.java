@@ -52,8 +52,9 @@ public class FreightRequestByCustomerController {
 				freightRequestByCustomerDTO.getBodyType(),freightRequestByCustomerDTO.getGrossWeight(), freightRequestByCustomerDTO.getLength(),
 				freightRequestByCustomerDTO.getWidth(), freightRequestByCustomerDTO.getHeight(), freightRequestByCustomerDTO.getVehicleBrand(), 
 				freightRequestByCustomerDTO.getModel(), freightRequestByCustomerDTO.getCommodity(), freightRequestByCustomerDTO.getPickupTime(),
-				freightRequestByCustomerDTO.getCustomerId(), freightRequestByCustomerDTO.getStatus(),null, new Date(), freightRequestByCustomerDTO.getUpdatedBy(),
-				freightRequestByCustomerDTO.getUpdateTime());
+				freightRequestByCustomerDTO.getCustomerId(), freightRequestByCustomerDTO.getStatus(),null, new Date(),
+				freightRequestByCustomerDTO.getUpdateTime(), freightRequestByCustomerDTO.getRequestedBy(),freightRequestByCustomerDTO.getRequestedBy(),
+				freightRequestByCustomerDTO.getRequestedById(),freightRequestByCustomerDTO.getRequestedById());
 		
 		
 		FreightRequestByCustomer savedEntity=freightRequestByCustomerService.save(freightRequestByCustomer);
@@ -74,7 +75,8 @@ public class FreightRequestByCustomerController {
 						freightRequestByVendorDTO.getSource(), freightRequestByVendorDTO.getDestination(), freightRequestByVendorDTO.getDriverId(),
 						freightRequestByVendorDTO.getAvailableDate(), freightRequestByVendorDTO.getAvailableTime(),freightRequestByVendorDTO.getPickupRangeInKm(),
 						freightRequestByVendorDTO.getVendorId(), freightRequestByVendorDTO.getStatus(), freightRequestByVendorDTO.getReservedBy(),
-						freightRequestByVendorDTO.getInsertTime(), freightRequestByVendorDTO.getUpdateTime(), freightRequestByVendorDTO.getUpdatedBy());
+						freightRequestByVendorDTO.getInsertTime(), freightRequestByVendorDTO.getUpdateTime(), freightRequestByVendorDTO.getUpdatedBy(),
+						freightRequestByVendorDTO.getUpdatedById());
 				
 				angList.add(freightRequestByVendor);
 				
@@ -98,7 +100,8 @@ public class FreightRequestByCustomerController {
 					fetchedEntity.getCapacity(), fetchedEntity.getBodyType(),fetchedEntity.getGrossWeight(), fetchedEntity.getLength(),
 					fetchedEntity.getWidth(),fetchedEntity.getHeight(), fetchedEntity.getVehicleBrand(), fetchedEntity.getModel(),
 					fetchedEntity.getCommodity(), fetchedEntity.getPickupTime(), fetchedEntity.getCustomerId(), fetchedEntity.getStatus(),
-					fetchedEntity.getAllocatedFor(),fetchedEntity.getInsertTime(),fetchedEntity.getUpdatedBy(), fetchedEntity.getPickupDate());
+					fetchedEntity.getAllocatedFor(),fetchedEntity.getInsertTime(), fetchedEntity.getPickupDate(),fetchedEntity.getUpdatedBy(),
+					fetchedEntity.getUpdatedById());
 			
 			return new ResponseEntity<FreightRequestByCustomerAngDTO>(angDTO, HttpStatus.OK);
 		}catch(ResourceNotFoundException e)
@@ -126,7 +129,8 @@ public class FreightRequestByCustomerController {
 					fetchedEntity.getCapacity(), fetchedEntity.getBodyType(),fetchedEntity.getGrossWeight(), fetchedEntity.getLength(),
 					fetchedEntity.getWidth(),fetchedEntity.getHeight(), fetchedEntity.getVehicleBrand(), fetchedEntity.getModel(),
 					fetchedEntity.getCommodity(), fetchedEntity.getPickupTime(), fetchedEntity.getCustomerId(), fetchedEntity.getStatus(),
-					fetchedEntity.getAllocatedFor(),fetchedEntity.getInsertTime(),fetchedEntity.getUpdatedBy(), fetchedEntity.getPickupDate());
+					fetchedEntity.getAllocatedFor(),fetchedEntity.getInsertTime(), fetchedEntity.getPickupDate(),
+					fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
 			
 			angList.add(angDTO);
 		}

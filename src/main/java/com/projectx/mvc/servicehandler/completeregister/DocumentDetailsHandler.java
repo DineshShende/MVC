@@ -53,7 +53,8 @@ public class DocumentDetailsHandler implements DocumentDetailsService {
 		String contentType=file.getContentType();
 		
 		
-		DocumentDetails  documentDetails=new DocumentDetails(key, document, contentType, 1, "NOT VERIFIED", new Date(), new Date(), "CUST_ONLINE");
+		DocumentDetails  documentDetails=null;
+				//new DocumentDetails(key, document, contentType, 1, "NOT VERIFIED", new Date(), new Date(), "CUST_ONLINE");
 
 		return documentDetails;
 	}

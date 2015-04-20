@@ -55,11 +55,13 @@ public class FreightRequestByCustomerAngDTO {
 	
 	private Date insertTime;
 	
-	@NotNull
-	private String updatedBy;
-	
-	
 	private Date updateTime;
+	
+	@NotNull
+	private Integer requestedBy;
+	
+	@NotNull
+	private Long requestedById;
 
 
 	public FreightRequestByCustomerAngDTO() {
@@ -73,8 +75,8 @@ public class FreightRequestByCustomerAngDTO {
 			Integer grossWeight, Integer length, Integer width, Integer height,
 			String vehicleBrand, String model, String commodity,
 			String pickupTime, Long customerId, String status,
-			Long allocatedFor, Date insertTime, String updatedBy,
-			Date updateTime) {
+			Long allocatedFor, Date insertTime,
+			Date updateTime, Integer updatedBy,Long updatedById) {
 		super();
 		this.requestId = requestId;
 		this.source = source;
@@ -96,7 +98,8 @@ public class FreightRequestByCustomerAngDTO {
 		this.status = status;
 		this.allocatedFor = allocatedFor;
 		this.insertTime = insertTime;
-		this.updatedBy = updatedBy;
+		this.requestedBy = updatedBy;
+		this.requestedById=updatedById;
 		this.updateTime = updateTime;
 	}
 
@@ -300,17 +303,6 @@ public class FreightRequestByCustomerAngDTO {
 		this.insertTime = insertTime;
 	}
 
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-
 	public Date getUpdateTime() {
 		return updateTime;
 	}
@@ -318,6 +310,26 @@ public class FreightRequestByCustomerAngDTO {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+	
+
+	public Integer getRequestedBy() {
+		return requestedBy;
+	}
+
+
+	public void setRequestedBy(Integer requestedBy) {
+		this.requestedBy = requestedBy;
+	}
+
+
+	public Long getRequestedById() {
+		return requestedById;
+	}
+
+
+	public void setRequestedById(Long requestedById) {
+		this.requestedById = requestedById;
 	}
 
 
@@ -333,8 +345,9 @@ public class FreightRequestByCustomerAngDTO {
 				+ ", model=" + model + ", commodity=" + commodity
 				+ ", pickupTime=" + pickupTime + ", customerId=" + customerId
 				+ ", status=" + status + ", allocatedFor=" + allocatedFor
-				+ ", insertTime=" + insertTime + ", updatedBy=" + updatedBy
-				+ ", updateTime=" + updateTime + "]";
+				+ ", insertTime=" + insertTime + ", updateTime=" + updateTime
+				+ ", requestedBy=" + requestedBy + ", requestedById=" + requestedById
+				+ "]";
 	}
 
 
@@ -357,6 +370,8 @@ public class FreightRequestByCustomerAngDTO {
 		result = prime * result
 				+ ((grossWeight == null) ? 0 : grossWeight.hashCode());
 		result = prime * result + ((height == null) ? 0 : height.hashCode());
+		result = prime * result
+				+ ((insertTime == null) ? 0 : insertTime.hashCode());
 		result = prime * result + ((length == null) ? 0 : length.hashCode());
 		result = prime * result
 				+ ((loadType == null) ? 0 : loadType.hashCode());
@@ -364,13 +379,19 @@ public class FreightRequestByCustomerAngDTO {
 		result = prime * result
 				+ ((noOfVehicles == null) ? 0 : noOfVehicles.hashCode());
 		result = prime * result
+				+ ((pickupDate == null) ? 0 : pickupDate.hashCode());
+		result = prime * result
 				+ ((pickupTime == null) ? 0 : pickupTime.hashCode());
 		result = prime * result
 				+ ((requestId == null) ? 0 : requestId.hashCode());
 		result = prime * result + ((source == null) ? 0 : source.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result
-				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
+				+ ((updateTime == null) ? 0 : updateTime.hashCode());
+		result = prime * result
+				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
+		result = prime * result
+				+ ((requestedById == null) ? 0 : requestedById.hashCode());
 		result = prime * result
 				+ ((vehicleBrand == null) ? 0 : vehicleBrand.hashCode());
 		result = prime * result + ((width == null) ? 0 : width.hashCode());
@@ -427,6 +448,11 @@ public class FreightRequestByCustomerAngDTO {
 				return false;
 		} else if (!height.equals(other.height))
 			return false;
+		if (insertTime == null) {
+			if (other.insertTime != null)
+				return false;
+		} else if (!insertTime.equals(other.insertTime))
+			return false;
 		if (length == null) {
 			if (other.length != null)
 				return false;
@@ -446,6 +472,11 @@ public class FreightRequestByCustomerAngDTO {
 			if (other.noOfVehicles != null)
 				return false;
 		} else if (!noOfVehicles.equals(other.noOfVehicles))
+			return false;
+		if (pickupDate == null) {
+			if (other.pickupDate != null)
+				return false;
+		} else if (!pickupDate.equals(other.pickupDate))
 			return false;
 		if (pickupTime == null) {
 			if (other.pickupTime != null)
@@ -467,10 +498,20 @@ public class FreightRequestByCustomerAngDTO {
 				return false;
 		} else if (!status.equals(other.status))
 			return false;
-		if (updatedBy == null) {
-			if (other.updatedBy != null)
+		if (updateTime == null) {
+			if (other.updateTime != null)
 				return false;
-		} else if (!updatedBy.equals(other.updatedBy))
+		} else if (!updateTime.equals(other.updateTime))
+			return false;
+		if (requestedBy == null) {
+			if (other.requestedBy != null)
+				return false;
+		} else if (!requestedBy.equals(other.requestedBy))
+			return false;
+		if (requestedById == null) {
+			if (other.requestedById != null)
+				return false;
+		} else if (!requestedById.equals(other.requestedById))
 			return false;
 		if (vehicleBrand == null) {
 			if (other.vehicleBrand != null)
@@ -485,7 +526,8 @@ public class FreightRequestByCustomerAngDTO {
 		return true;
 	}
 
-	
+
+		
 	
 
 }

@@ -26,6 +26,8 @@ public class DocumentDetailsServiceTest {
 	@Autowired
 	DocumentDetailsService documentDetailsService;
 
+	private Integer UPDATED_BY=1;
+	
 	@Before
 	public void setUp()
 	{
@@ -66,7 +68,7 @@ public class DocumentDetailsServiceTest {
 		assertEquals(standardDocumentDetailsWithDummyDocumentNew(),
 				documentDetailsService.updateDocument(new UpdateDocumentDTO(standardDocumentKey(), 
 						standardDocumentDetailsWithDummyDocumentNew().getDocument(), standardDocumentDetailsWithDummyDocumentNew().getContentType(),
-						"CUST_ONLINE")));
+						UPDATED_BY,standardDocumentKey().getCustomerId())));
 		
 		assertEquals(1, documentDetailsService.count().intValue());
 	}
@@ -85,7 +87,7 @@ public class DocumentDetailsServiceTest {
 				.updateDocumentVerificationDetails(new UpdateDocumentVerificationStatusAndRemarkDTO(standardDocumentKey(),
 						standardDocumentDetailsWithDummyDocumentWithNewVerificationStatusAndRemark().getVerificationStatus(), 
 						standardDocumentDetailsWithDummyDocumentWithNewVerificationStatusAndRemark().getVerificationRemark(),
-						"CUST_ONLINE")));
+						UPDATED_BY,standardDocumentKey().getCustomerId())));
 		
 		assertEquals(1, documentDetailsService.count().intValue());
 	}

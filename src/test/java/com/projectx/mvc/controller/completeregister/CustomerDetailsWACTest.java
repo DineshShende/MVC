@@ -107,7 +107,7 @@ public class CustomerDetailsWACTest {
 		
 		this.mockMvc.perform(
 				post("/customer/save")
-				.content("{\"customerId\":"+quickRegisterSavedEntityDTO.getCustomerId()+",\"firstName\":\"dinesh\",\"lastName\":\"shende\",\"dateOfBirth\":"+new Date().getTime()+",\"homeAddressId\":{\"customerType\":1,\"addressLine\":\"AT-GHADGE\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133,\"updatedBy\":\"CUST_ONLINE\"},\"mobile\":9960821869,\"isMobileVerified\":false,\"email\":\"dineshshe@gmail.com\",\"isEmailVerified\":false,\"language\":\"Marathi\",\"businessDomain\":\"TRANSPORT\",\"nameOfFirm\":\"ABC TRANSPORT\",\"firmAddressId\":{\"customerType\":1,\"addressLine\":\"AT-GHADGE\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133,\"updatedBy\":\"CUST_ONLINE\"},\"secondaryMobile\":8598058044,\"isSecondaryMobileVerified\":false,\"secondaryEmail\":\"dineshshende@gmail.com\",\"updatedBy\":\"CUST_ONLINE\",\"entityType\":1}")
+				.content("{\"customerId\":"+quickRegisterSavedEntityDTO.getCustomerId()+",\"firstName\":\"dinesh\",\"lastName\":\"shende\",\"dateOfBirth\":"+new Date().getTime()+",\"homeAddressId\":{\"customerType\":1,\"addressLine\":\"AT-GHADGE\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133,\"updatedBy\":1,\"updatedById\":1},\"mobile\":9960821869,\"isMobileVerified\":false,\"email\":\"dineshshe@gmail.com\",\"isEmailVerified\":false,\"language\":\"Marathi\",\"businessDomain\":\"TRANSPORT\",\"nameOfFirm\":\"ABC TRANSPORT\",\"firmAddressId\":{\"customerType\":1,\"addressLine\":\"AT-GHADGE\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133,\"updatedBy\":1,\"updatedById\":1},\"secondaryMobile\":8598058044,\"isSecondaryMobileVerified\":false,\"secondaryEmail\":\"dineshshende@gmail.com\",\"requestedBy\":1,\"requestedById\":1,\"entityType\":1}")
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 	.andDo(print())
@@ -128,7 +128,7 @@ public class CustomerDetailsWACTest {
 		
 		this.mockMvc.perform(
 				post("/customer/save")
-				.content("{\"customerId\":"+quickRegisterSavedEntityDTO.getCustomerId()+",\"firstName\":\"dinesh\",\"lastName\":\"shende\",\"dateOfBirth\":"+new Date().getTime()+",\"homeAddressId\":{\"customerType\":1,\"addressLine\":\"AT-GHADGE\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133,\"updatedBy\":\"CUST_ONLINE\"},\"mobile\":9960821869,\"isMobileVerified\":false,\"email\":\"dineshshe@gmail.com\",\"isEmailVerified\":false,\"language\":\"Marathi\",\"businessDomain\":\"TRANSPORT\",\"nameOfFirm\":\"ABC TRANSPORT\",\"firmAddressId\":{\"customerType\":1,\"addressLine\":\"AT-GHADGE\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133,\"updatedBy\":\"CUST_ONLINE\"},\"secondaryMobile\":8598058044,\"isSecondaryMobileVerified\":false,\"secondaryEmail\":\"dineshshende@gmail.com\",\"updatedBy\":\"CUST_ONLINE\",\"entityType\":1}")
+				.content("{\"customerId\":"+quickRegisterSavedEntityDTO.getCustomerId()+",\"firstName\":\"dinesh\",\"lastName\":\"shende\",\"dateOfBirth\":"+new Date().getTime()+",\"homeAddressId\":{\"customerType\":1,\"addressLine\":\"AT-GHADGE\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133,\"updatedBy\":1,\"updatedById\":1},\"mobile\":9960821869,\"isMobileVerified\":false,\"email\":\"dineshshe@gmail.com\",\"isEmailVerified\":false,\"language\":\"Marathi\",\"businessDomain\":\"TRANSPORT\",\"nameOfFirm\":\"ABC TRANSPORT\",\"firmAddressId\":{\"customerType\":1,\"addressLine\":\"AT-GHADGE\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133,\"updatedBy\":1,\"updatedById\":1},\"secondaryMobile\":8598058044,\"isSecondaryMobileVerified\":false,\"secondaryEmail\":\"dineshshende@gmail.com\",\"requestedBy\":1,\"requestedById\":1,\"entityType\":1}")
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON));
 		
@@ -154,7 +154,7 @@ public class CustomerDetailsWACTest {
 			    .andExpect(jsonPath("$.dateOfBirth").exists())
 			    .andExpect(jsonPath("$.insertTime").exists())
 				.andExpect(jsonPath("$.updateTime").exists())
-				.andExpect(jsonPath("$.updatedBy").value(standardCustomerDetails(quickRegisterSavedEntityDTO.getCustomerId()).getUpdatedBy()));
+				.andExpect(jsonPath("$.requestedBy").value(standardCustomerDetails(quickRegisterSavedEntityDTO.getCustomerId()).getUpdatedBy()));
 				
 	
 	}

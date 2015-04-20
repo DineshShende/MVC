@@ -61,11 +61,15 @@ public class FreightRequestByCustomer {
 	
 	private Date insertTime;
 	
-	@NotNull
-	private String updatedBy;
-	
-	
 	private Date updateTime;
+	
+	private Integer updatedBy;
+	
+	private Integer insertedBy;
+	
+	private Long updatedById;
+	
+	private Long insertedById;
 	
 	public FreightRequestByCustomer() {
 
@@ -81,8 +85,8 @@ public class FreightRequestByCustomer {
 			Integer grossWeight, Integer length, Integer width, Integer height,
 			String vehicleBrand, String model, String commodity,
 			String pickupTime, Long customerId, String status,
-			Long allocatedFor, Date insertTime, String updatedBy,
-			Date updateTime) {
+			Long allocatedFor, Date insertTime, 
+			Date updateTime,Integer updatedBy,Integer insertedBy,Long updatedById,Long insertedById) {
 		super();
 		this.requestId = requestId;
 		this.source = source;
@@ -106,6 +110,10 @@ public class FreightRequestByCustomer {
 		this.insertTime = insertTime;
 		this.updatedBy = updatedBy;
 		this.updateTime = updateTime;
+		this.updatedBy = updatedBy;
+		this.insertedBy=insertedBy;
+		this.updatedById=updatedById;
+		this.insertedById=insertedById;
 	}
 
 
@@ -120,7 +128,7 @@ public class FreightRequestByCustomer {
 				(this.loadType.equals("FullTruckLoad")), (this.loadType.equals("LessThanTruckLoad")), this.capacity, this.bodyType, 
 				this.grossWeight, this.length, this.width, this.height, this.vehicleBrand, 
 				this.model, this.commodity,this.pickupTime, this.customerId, this.status,this.allocatedFor,  
-				this.insertTime, this.updateTime, this.updatedBy);
+				this.insertTime, this.updateTime, this.updatedBy,this.insertedBy,this.updatedById,this.insertedById);
 		
 		return newDTO;
 	}
@@ -139,8 +147,12 @@ public class FreightRequestByCustomer {
 						freightRequestByCustomerDTO.getVehicleBrand(), freightRequestByCustomerDTO.getModel(),freightRequestByCustomerDTO.getCommodity(),
 						freightRequestByCustomerDTO.getPickupTime(), freightRequestByCustomerDTO.getCustomerId(),freightRequestByCustomerDTO.getAllocationStatus(),
 						freightRequestByCustomerDTO.getAllocatedFor(),
-						freightRequestByCustomerDTO.getInsertTime(), freightRequestByCustomerDTO.getUpdatedBy(),
-						freightRequestByCustomerDTO.getUpdateTime());
+						freightRequestByCustomerDTO.getInsertTime(), 
+						freightRequestByCustomerDTO.getUpdateTime(),
+						freightRequestByCustomerDTO.getUpdatedBy(),
+						freightRequestByCustomerDTO.getInsertedBy(),
+						freightRequestByCustomerDTO.getUpdatedById(),
+						freightRequestByCustomerDTO.getInsertedById());
 		
 		return freightRequestByCustomer;
 	}
@@ -220,15 +232,6 @@ public class FreightRequestByCustomer {
 	@JsonDeserialize(using = JsonDateDeSerializer.class)
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
-	}
-
-	
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
 	}
 
 	public Integer getNoOfVehicles() {
@@ -346,6 +349,70 @@ public class FreightRequestByCustomer {
 	
 
 
+	public Integer getUpdatedBy() {
+		return updatedBy;
+	}
+
+
+
+
+
+	public void setUpdatedBy(Integer updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+
+
+
+
+	public Integer getInsertedBy() {
+		return insertedBy;
+	}
+
+
+
+
+
+	public void setInsertedBy(Integer insertedBy) {
+		this.insertedBy = insertedBy;
+	}
+
+
+
+
+
+	public Long getUpdatedById() {
+		return updatedById;
+	}
+
+
+
+
+
+	public void setUpdatedById(Long updatedById) {
+		this.updatedById = updatedById;
+	}
+
+
+
+
+
+	public Long getInsertedById() {
+		return insertedById;
+	}
+
+
+
+
+
+	public void setInsertedById(Long insertedById) {
+		this.insertedById = insertedById;
+	}
+
+
+
+
+
 	@Override
 	public String toString() {
 		return "FreightRequestByCustomer [requestId=" + requestId + ", source="
@@ -356,13 +423,23 @@ public class FreightRequestByCustomer {
 				+ length + ", width=" + width + ", height=" + height
 				+ ", vehicleBrand=" + vehicleBrand + ", model=" + model
 				+ ", commodity=" + commodity + ", pickupTime=" + pickupTime
-				+ ", customerId=" + customerId + ", status=" + status + "]";
+				+ ", customerId=" + customerId + ", status=" + status
+				+ ", allocatedFor=" + allocatedFor + ", insertTime="
+				+ insertTime + ", updateTime=" + updateTime + ", updatedBy="
+				+ updatedBy + ", insertedBy=" + insertedBy + ", updatedById="
+				+ updatedById + ", insertedById=" + insertedById + "]";
 	}
+
+
+
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((allocatedFor == null) ? 0 : allocatedFor.hashCode());
 		result = prime * result
 				+ ((bodyType == null) ? 0 : bodyType.hashCode());
 		result = prime * result
@@ -378,6 +455,10 @@ public class FreightRequestByCustomer {
 		result = prime * result + ((height == null) ? 0 : height.hashCode());
 		result = prime * result
 				+ ((insertTime == null) ? 0 : insertTime.hashCode());
+		result = prime * result
+				+ ((insertedBy == null) ? 0 : insertedBy.hashCode());
+		result = prime * result
+				+ ((insertedById == null) ? 0 : insertedById.hashCode());
 		result = prime * result + ((length == null) ? 0 : length.hashCode());
 		result = prime * result
 				+ ((loadType == null) ? 0 : loadType.hashCode());
@@ -393,12 +474,20 @@ public class FreightRequestByCustomer {
 		result = prime * result + ((source == null) ? 0 : source.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result
+				+ ((updateTime == null) ? 0 : updateTime.hashCode());
+		result = prime * result
 				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
+		result = prime * result
+				+ ((updatedById == null) ? 0 : updatedById.hashCode());
 		result = prime * result
 				+ ((vehicleBrand == null) ? 0 : vehicleBrand.hashCode());
 		result = prime * result + ((width == null) ? 0 : width.hashCode());
 		return result;
 	}
+
+
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -409,6 +498,11 @@ public class FreightRequestByCustomer {
 		if (getClass() != obj.getClass())
 			return false;
 		FreightRequestByCustomer other = (FreightRequestByCustomer) obj;
+		if (allocatedFor == null) {
+			if (other.allocatedFor != null)
+				return false;
+		} else if (!allocatedFor.equals(other.allocatedFor))
+			return false;
 		if (bodyType == null) {
 			if (other.bodyType != null)
 				return false;
@@ -447,7 +541,16 @@ public class FreightRequestByCustomer {
 		if (insertTime == null) {
 			if (other.insertTime != null)
 				return false;
-		} else if (!insertTime.equals(other.insertTime))
+		}
+		if (insertedBy == null) {
+			if (other.insertedBy != null)
+				return false;
+		} else if (!insertedBy.equals(other.insertedBy))
+			return false;
+		if (insertedById == null) {
+			if (other.insertedById != null)
+				return false;
+		} else if (!insertedById.equals(other.insertedById))
 			return false;
 		if (length == null) {
 			if (other.length != null)
@@ -472,8 +575,7 @@ public class FreightRequestByCustomer {
 		if (pickupDate == null) {
 			if (other.pickupDate != null)
 				return false;
-		} else if (!pickupDate.equals(other.pickupDate))
-			return false;
+		}
 		if (pickupTime == null) {
 			if (other.pickupTime != null)
 				return false;
@@ -494,10 +596,19 @@ public class FreightRequestByCustomer {
 				return false;
 		} else if (!status.equals(other.status))
 			return false;
+		if (updateTime == null) {
+			if (other.updateTime != null)
+				return false;
+		}
 		if (updatedBy == null) {
 			if (other.updatedBy != null)
 				return false;
 		} else if (!updatedBy.equals(other.updatedBy))
+			return false;
+		if (updatedById == null) {
+			if (other.updatedById != null)
+				return false;
+		} else if (!updatedById.equals(other.updatedById))
 			return false;
 		if (vehicleBrand == null) {
 			if (other.vehicleBrand != null)
@@ -511,6 +622,10 @@ public class FreightRequestByCustomer {
 			return false;
 		return true;
 	}
+
+
+
+
 
 	
 	

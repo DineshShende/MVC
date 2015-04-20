@@ -45,7 +45,8 @@ public class VehicleDetailsController {
 				vehicleDTO.getRegistrationNumber(), vehicleDTO.getChassisNumber(), vehicleDTO.getLoadCapacityInTons(), vehicleDTO.getLength(),
 				vehicleDTO.getWidth(), vehicleDTO.getHeight(), vehicleDTO.getNumberOfWheels(), vehicleDTO.getPermitType(), vehicleDTO.getInsuranceStatus(),
 				vehicleDTO.getInsuranceNumber(),vehicleDTO.getInsuranceCompany(), vehicleDTO.getVendorId(), vehicleDTO.getCommodityList(),
-				new Date(), new Date(), vehicleDTO.getUpdatedBy());
+				new Date(), new Date(), vehicleDTO.getRequestedBy(),vehicleDTO.getRequestedBy(),
+				vehicleDTO.getRequestedById(),vehicleDTO.getRequestedById());
 		
 		VehicleDetailsDTO detailsDTO=vendorDetailsService.save(vehicleDetails);
 		
@@ -70,7 +71,7 @@ public class VehicleDetailsController {
 					fetchedEntity.getRegistrationNumber(), fetchedEntity.getChassisNumber(), fetchedEntity.getLoadCapacityInTons(),fetchedEntity.getLength(), 
 					fetchedEntity.getWidth(), fetchedEntity.getHeight(), fetchedEntity.getNumberOfWheels(), fetchedEntity.getPermitType(),fetchedEntity.getInsuranceStatus(),
 					fetchedEntity.getInsuranceNumber(), fetchedEntity.getInsuranceCompany(), fetchedEntity.getVendorId(), fetchedEntity.getCommodityList(),
-					fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy());
+					fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
 			
 			
 			angList.add(angDTO);
@@ -93,7 +94,7 @@ public class VehicleDetailsController {
 					fetchedEntity.getRegistrationNumber(), fetchedEntity.getChassisNumber(), fetchedEntity.getLoadCapacityInTons(),fetchedEntity.getLength(), 
 					fetchedEntity.getWidth(), fetchedEntity.getHeight(), fetchedEntity.getNumberOfWheels(), fetchedEntity.getPermitType(),fetchedEntity.getInsuranceStatus(),
 					fetchedEntity.getInsuranceNumber(), fetchedEntity.getInsuranceCompany(), fetchedEntity.getVendorId(), fetchedEntity.getCommodityList(),
-					fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy());
+					fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
 			
 			return new ResponseEntity<VehicleDetailsAngDTO>(angDTO, HttpStatus.OK);
 		}catch(ResourceNotFoundException e)

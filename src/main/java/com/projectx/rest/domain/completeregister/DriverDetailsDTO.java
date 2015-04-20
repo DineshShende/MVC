@@ -68,19 +68,17 @@ public class DriverDetailsDTO {
 	
 	private Date updateTime;
 	
-	private String updatedBy;
+	private Integer updatedBy;
+	
+	private Integer insertedBy;
+	
+	private Long updatedById;
+	
+	private Long insertedById;
 
 	public DriverDetailsDTO() {
 
 	}
-
-
-
-
-
-
-
-
 
 	public DriverDetailsDTO(Long driverId, String firstName, String middleName,
 			String lastName, Date dateOfBirth, String bloodGroup,
@@ -88,7 +86,8 @@ public class DriverDetailsDTO {
 			Long homeContactNumber, String licenceNumber, Date drivingSince,
 			Date employedSince, Boolean isFreightRequestPermissionGiven,
 			Boolean isDealFinalizationPermissionGiven, String language,
-			Long vendorId, Date insertTime, Date updateTime, String updatedBy) {
+			Long vendorId, Date insertTime, Date updateTime, 
+			Integer updatedBy,Integer insertedBy,Long updatedById,Long insertedById) {
 		super();
 		this.driverId = driverId;
 		this.firstName = firstName;
@@ -110,6 +109,10 @@ public class DriverDetailsDTO {
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
 		this.updatedBy = updatedBy;
+		this.updatedBy = updatedBy;
+		this.insertedBy=insertedBy;
+		this.updatedById=updatedById;
+		this.insertedById=insertedById;
 	}
 
 
@@ -299,26 +302,41 @@ public class DriverDetailsDTO {
 
 
 
-	public String getUpdatedBy() {
+	public Integer getUpdatedBy() {
 		return updatedBy;
 	}
 
-
-
-
-	public void setUpdatedBy(String updatedBy) {
+	public void setUpdatedBy(Integer updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 
+	public Integer getInsertedBy() {
+		return insertedBy;
+	}
 
+	public void setInsertedBy(Integer insertedBy) {
+		this.insertedBy = insertedBy;
+	}
 
+	public Long getUpdatedById() {
+		return updatedById;
+	}
 
+	public void setUpdatedById(Long updatedById) {
+		this.updatedById = updatedById;
+	}
 
+	public Long getInsertedById() {
+		return insertedById;
+	}
 
+	public void setInsertedById(Long insertedById) {
+		this.insertedById = insertedById;
+	}
 
 	@Override
 	public String toString() {
-		return "DriverDetails [driverId=" + driverId + ", firstName="
+		return "DriverDetailsDTO [driverId=" + driverId + ", firstName="
 				+ firstName + ", middleName=" + middleName + ", lastName="
 				+ lastName + ", dateOfBirth=" + dateOfBirth + ", bloodGroup="
 				+ bloodGroup + ", homeAddress=" + homeAddress + ", mobile="
@@ -332,10 +350,9 @@ public class DriverDetailsDTO {
 				+ isDealFinalizationPermissionGiven + ", language=" + language
 				+ ", vendorId=" + vendorId + ", insertTime=" + insertTime
 				+ ", updateTime=" + updateTime + ", updatedBy=" + updatedBy
-				+ "]";
+				+ ", insertedBy=" + insertedBy + ", updatedById=" + updatedById
+				+ ", insertedById=" + insertedById + "]";
 	}
-
-
 
 	@Override
 	public int hashCode() {
@@ -361,6 +378,10 @@ public class DriverDetailsDTO {
 						.hashCode());
 		result = prime * result
 				+ ((insertTime == null) ? 0 : insertTime.hashCode());
+		result = prime * result
+				+ ((insertedBy == null) ? 0 : insertedBy.hashCode());
+		result = prime * result
+				+ ((insertedById == null) ? 0 : insertedById.hashCode());
 		result = prime
 				* result
 				+ ((isDealFinalizationPermissionGiven == null) ? 0
@@ -386,11 +407,11 @@ public class DriverDetailsDTO {
 		result = prime * result
 				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
 		result = prime * result
+				+ ((updatedById == null) ? 0 : updatedById.hashCode());
+		result = prime * result
 				+ ((vendorId == null) ? 0 : vendorId.hashCode());
 		return result;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -406,11 +427,22 @@ public class DriverDetailsDTO {
 				return false;
 		} else if (!bloodGroup.equals(other.bloodGroup))
 			return false;
+		if (dateOfBirth == null) {
+			if (other.dateOfBirth != null)
+				return false;
+		}
 		if (driverId == null) {
 			if (other.driverId != null)
 				return false;
-		} else if (!driverId.equals(other.driverId))
-			return false;
+		}
+		if (drivingSince == null) {
+			if (other.drivingSince != null)
+				return false;
+		}
+		if (employedSince == null) {
+			if (other.employedSince != null)
+				return false;
+		}
 		if (firstName == null) {
 			if (other.firstName != null)
 				return false;
@@ -425,6 +457,20 @@ public class DriverDetailsDTO {
 			if (other.homeContactNumber != null)
 				return false;
 		} else if (!homeContactNumber.equals(other.homeContactNumber))
+			return false;
+		if (insertTime == null) {
+			if (other.insertTime != null)
+				return false;
+		}
+		if (insertedBy == null) {
+			if (other.insertedBy != null)
+				return false;
+		} else if (!insertedBy.equals(other.insertedBy))
+			return false;
+		if (insertedById == null) {
+			if (other.insertedById != null)
+				return false;
+		} else if (!insertedById.equals(other.insertedById))
 			return false;
 		if (isDealFinalizationPermissionGiven == null) {
 			if (other.isDealFinalizationPermissionGiven != null)
@@ -468,10 +514,19 @@ public class DriverDetailsDTO {
 				return false;
 		} else if (!mobile.equals(other.mobile))
 			return false;
+		if (updateTime == null) {
+			if (other.updateTime != null)
+				return false;
+		}
 		if (updatedBy == null) {
 			if (other.updatedBy != null)
 				return false;
 		} else if (!updatedBy.equals(other.updatedBy))
+			return false;
+		if (updatedById == null) {
+			if (other.updatedById != null)
+				return false;
+		} else if (!updatedById.equals(other.updatedById))
 			return false;
 		if (vendorId == null) {
 			if (other.vendorId != null)
@@ -480,10 +535,6 @@ public class DriverDetailsDTO {
 			return false;
 		return true;
 	}
-
-
-
-
 
 	
 	

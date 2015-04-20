@@ -140,7 +140,7 @@ public class QuickRegisterServiceFixture implements
 
 	@Override
 	public Boolean resetPassword(Long customerId, Integer customerType,
-			Integer emailOrMobile, String requestedBy)
+			Integer emailOrMobile, Integer requestedBy, Long requestedById)
 			throws PasswordRestFailedException {
 		// TODO Auto-generated method stub
 		return null;
@@ -148,7 +148,8 @@ public class QuickRegisterServiceFixture implements
 
 	@Override
 	public ForgetPasswordEntity resetPasswordRedirect(String entity,
-			String requestedBy) throws PasswordRestFailedException {
+			Integer requestedBy, Long requestedById)
+			throws PasswordRestFailedException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -189,6 +190,7 @@ public class QuickRegisterServiceFixture implements
 		return null;
 	}
 
+	
 				
 
 }

@@ -43,6 +43,7 @@ import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.completeregister.DocumentDetailsService;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
+import com.projectx.rest.domain.ang.CustomerIdTypeEmailOrMobileOptionUpdatedByAng;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeRequestedByDTO;
 import com.projectx.rest.domain.completeregister.DocumentDetails;
@@ -140,7 +141,8 @@ public class QuickRegisterControllerWACTest {
 		this.mockMvc.perform(
 				post("/quickregister/verifyMobilePin")
 					.content(standardJsonVerifyMobileDTO(new VerifyMobileDTO(entityDTO.getCustomer().getCustomerId(),
-							entityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(), CUST_UPDATED_BY)))
+							entityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(),
+							CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
@@ -162,7 +164,7 @@ public class QuickRegisterControllerWACTest {
 		
 		this.mockMvc.perform(
 				get("/quickregister/verifyEmailHash/"+entityDTO.getCustomer().getCustomerId()+"/"+entityDTO.getCustomer().getCustomerType()+
-						"/"+ENTITY_TYPE_PRIMARY+"/"+CUST_UPDATED_BY+"/"+mobileVerificationDetailsDTO.getEmailHash())
+						"/"+ENTITY_TYPE_PRIMARY+"/"+CUST_UPDATED_BY+"/"+entityDTO.getCustomer().getCustomerId()+"/"+mobileVerificationDetailsDTO.getEmailHash())
 					)
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -181,8 +183,8 @@ public class QuickRegisterControllerWACTest {
 		this.mockMvc.perform(
 				post("/quickregister/sendMobilePin")
 					.content(standardJsonCustomerIdTypeMobileTypeUpdatedByDTO(new CustomerIdTypeMobileTypeRequestedByDTO
-							(entityDTO.getCustomer().getCustomerId(),
-									entityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY)))
+							(entityDTO.getCustomer().getCustomerId(),entityDTO.getCustomer().getCustomerType(),
+									ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
@@ -202,8 +204,8 @@ public class QuickRegisterControllerWACTest {
 		this.mockMvc.perform(
 				post("/quickregister/resendMobilePin")
 					.content(standardJsonCustomerIdTypeMobileTypeUpdatedByDTO(new CustomerIdTypeMobileTypeRequestedByDTO
-							(entityDTO.getCustomer().getCustomerId(),
-									entityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY)))
+							(entityDTO.getCustomer().getCustomerId(),entityDTO.getCustomer().getCustomerType(),
+									ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
@@ -223,8 +225,8 @@ public class QuickRegisterControllerWACTest {
 		this.mockMvc.perform(
 				post("/quickregister/sendEmailHash")
 					.content(standardJsonCustomerIdTypeEmailTypeUpdatedByDTO(new CustomerIdTypeEmailTypeUpdatedByDTO
-							(entityDTO.getCustomer().getCustomerId(),
-									entityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY)))
+							(entityDTO.getCustomer().getCustomerId(),entityDTO.getCustomer().getCustomerType(), 
+									ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
@@ -244,8 +246,8 @@ public class QuickRegisterControllerWACTest {
 		this.mockMvc.perform(
 				post("/quickregister/resendEmailHash")
 					.content(standardJsonCustomerIdTypeEmailTypeUpdatedByDTO(new CustomerIdTypeEmailTypeUpdatedByDTO
-							(entityDTO.getCustomer().getCustomerId(),
-									entityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY)))
+							(entityDTO.getCustomer().getCustomerId(),entityDTO.getCustomer().getCustomerType(), 
+									ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
@@ -267,7 +269,7 @@ public class QuickRegisterControllerWACTest {
 
 		
 		quickRegisterService.verifyMobile(new VerifyMobileDTO(entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType(),
-				ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY));
+				ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId()));
 		
 		
 		AuthenticationDetails authenticationDetails=quickRegisterService
@@ -305,7 +307,7 @@ public class QuickRegisterControllerWACTest {
 
 		
 		quickRegisterService.verifyMobile(new VerifyMobileDTO(entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType(),
-				ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY));
+				ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId()));
 		
 		
 		AuthenticationDetails authenticationDetails=quickRegisterService
@@ -337,14 +339,14 @@ public class QuickRegisterControllerWACTest {
 
 		
 		quickRegisterService.verifyMobile(new VerifyMobileDTO(entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType(),
-				ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY));
+				ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId()));
 		
 		
 		this.mockMvc.perform(
 				post("/quickregister/updatePassword")
 					.content(standardJsonUpdatePasswordDTO(new UpdatePasswordDTO(
 							new AuthenticationDetailsKey(entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType()),
-							"abc", true, CUST_UPDATED_BY)))
+							"abc", true, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
@@ -368,13 +370,14 @@ public class QuickRegisterControllerWACTest {
 
 		
 		quickRegisterService.verifyMobile(new VerifyMobileDTO(entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType(),
-				ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY));
+				ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId()));
 		
 		
 		this.mockMvc.perform(
 				post("/quickregister/resetPassword")
-					.content(standardJsonCustomerIdTypeEmailOrMobileOptionUpdatedBy(new CustomerIdTypeEmailOrMobileOptionUpdatedBy(
-							entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType(), 1, CUST_UPDATED_BY)))
+					.content(standardJsonCustomerIdTypeEmailOrMobileOptionUpdatedByAng(new CustomerIdTypeEmailOrMobileOptionUpdatedByAng(
+							entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType(), 1, CUST_UPDATED_BY,
+							entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
@@ -397,12 +400,13 @@ public class QuickRegisterControllerWACTest {
 
 		
 		quickRegisterService.verifyMobile(new VerifyMobileDTO(entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType(),
-				ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY));
+				ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId()));
 		
 		
 		this.mockMvc.perform(
 				post("/quickregister/resetPasswordRedirect")
-					.content(standardJsonResetPasswordRedirectDTO(new ResetPasswordRedirectDTO(entityDTO.getCustomer().getEmail(), CUST_UPDATED_BY)))
+					.content(standardJsonResetPasswordRedirectDTO(new ResetPasswordRedirectDTO(entityDTO.getCustomer().getEmail(),
+							CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())

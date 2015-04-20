@@ -204,8 +204,8 @@ public class DocumentDetailsController {
                 
                 DocumentDetails documentDetails=documentDetailsService.initializeDocumentDetails(customerId, customerType, documentName, file);
                 
-                UpdateDocumentDTO updateDocumentDTO=
-                		new UpdateDocumentDTO(documentDetails.getKey(), documentDetails.getDocument(), documentDetails.getContentType(),requestedBy);
+                UpdateDocumentDTO updateDocumentDTO=null;
+                		//new UpdateDocumentDTO(documentDetails.getKey(), documentDetails.getDocument(), documentDetails.getContentType(),requestedBy);
                 
                 documentDetails=documentDetailsService.updateDocument(updateDocumentDTO);
                 
@@ -238,14 +238,14 @@ public class DocumentDetailsController {
 	@RequestMapping(value="/updateVerificationStatusRemark",method=RequestMethod.POST)
 	public String updateVerificationStatusRemark(@RequestParam("customerId") Long customerId,@RequestParam("customerType") Integer customerType,
 			@RequestParam("documentName") String documentName,@RequestParam("verificationStatus") Integer verificationStatus,
-			@RequestParam("verificationRemark") String verificationRemark,@RequestParam("requestedBy") String requestedBy,
-            Model model)
+			@RequestParam("verificationRemark") String verificationRemark,@RequestParam("requestedBy") Integer requestedBy,
+			@RequestParam("requestedById") Long requestedById,Model model)
 	{
 		
                 DocumentKey key=new DocumentKey(customerId, customerType, documentName);
                         
                 UpdateDocumentVerificationStatusAndRemarkDTO dto=
-                		new UpdateDocumentVerificationStatusAndRemarkDTO(key, verificationStatus, verificationRemark,requestedBy);
+                		new UpdateDocumentVerificationStatusAndRemarkDTO(key, verificationStatus, verificationRemark,requestedBy,requestedById);
                 
                DocumentDetails documentDetails=documentDetailsService.updateDocumentVerificationDetails(dto);
                 

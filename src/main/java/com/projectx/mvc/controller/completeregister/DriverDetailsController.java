@@ -62,7 +62,8 @@ public class DriverDetailsController {
 				driverDetailsDTO.getMobile(), driverDetailsDTO.getIsMobileVerified(), driverDetailsDTO.getHomeContactNumber(),
 				driverDetailsDTO.getLicenceNumber(), driverDetailsDTO.getDrivingSince(),driverDetailsDTO.getEmployedSince(),
 				driverDetailsDTO.getIsFreightRequestPermissionGiven(), driverDetailsDTO.getIsDealFinalizationPermissionGiven(),
-				driverDetailsDTO.getLanguage(), driverDetailsDTO.getVendorId(), new Date(), new Date(), driverDetailsDTO.getUpdatedBy());
+				driverDetailsDTO.getLanguage(), driverDetailsDTO.getVendorId(), new Date(), new Date(), driverDetailsDTO.getRequestedBy(),
+				driverDetailsDTO.getRequestedBy(),driverDetailsDTO.getRequestedById(),driverDetailsDTO.getRequestedById());
 		
 		DriverDetailsDTO detailsDTOInitialized=vendorDetailsService.initializeDriverDetails(driverDetails);
 		
@@ -83,7 +84,8 @@ public class DriverDetailsController {
 					fetchedEntity.getHomeAddress(), fetchedEntity.getMobile(), fetchedEntity.getIsMobileVerified(),
 					fetchedEntity.getHomeContactNumber(), fetchedEntity.getLicenceNumber(), fetchedEntity.getDrivingSince(),
 					fetchedEntity.getEmployedSince(), fetchedEntity.getIsFreightRequestPermissionGiven(), fetchedEntity.getIsDealFinalizationPermissionGiven(),
-					fetchedEntity.getLanguage(), fetchedEntity.getVendorId(), fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(),fetchedEntity.getUpdatedBy());
+					fetchedEntity.getLanguage(), fetchedEntity.getVendorId(), fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(),
+					fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
 			
 			return new ResponseEntity<DriverDetailsAngDTO>(detailsAngDTO, HttpStatus.OK);
 		}catch(ResourceNotFoundException e)
@@ -109,7 +111,8 @@ public class DriverDetailsController {
 					fetchedEntity.getHomeAddress(), fetchedEntity.getMobile(), fetchedEntity.getIsMobileVerified(),
 					fetchedEntity.getHomeContactNumber(), fetchedEntity.getLicenceNumber(), fetchedEntity.getDrivingSince(),
 					fetchedEntity.getEmployedSince(), fetchedEntity.getIsFreightRequestPermissionGiven(), fetchedEntity.getIsDealFinalizationPermissionGiven(),
-					fetchedEntity.getLanguage(), fetchedEntity.getVendorId(), fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(),fetchedEntity.getUpdatedBy());
+					fetchedEntity.getLanguage(), fetchedEntity.getVendorId(), fetchedEntity.getInsertTime(), 
+					fetchedEntity.getUpdateTime(),fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
 			
 			driverListAng.add(detailsAngDTO);
 			

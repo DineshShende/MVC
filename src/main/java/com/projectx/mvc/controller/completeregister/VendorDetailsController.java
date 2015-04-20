@@ -69,7 +69,9 @@ public class VendorDetailsController {
 				vendorDetailsDTO.getLastName(),vendorDetailsDTO.getDateOfBirth(), vendorDetailsDTO.getNameOfFirm(), 
 				vendorDetailsDTO.getFirmAddressId(), vendorDetailsDTO.getHomeAddressId(), vendorDetailsDTO.getMobile(), vendorDetailsDTO.getPhoneNumber(),
 				vendorDetailsDTO.getIsMobileVerified(), vendorDetailsDTO.getEmail(), vendorDetailsDTO.getIsEmailVerified(), vendorDetailsDTO.getLanguage(),
-				vendorDetailsDTO.getSecondaryMobile(),vendorDetailsDTO.getIsSecondaryMobileVerified(), new Date(),new Date(), vendorDetailsDTO.getUpdatedBy());
+				vendorDetailsDTO.getSecondaryMobile(),vendorDetailsDTO.getIsSecondaryMobileVerified(), new Date(),new Date(), 
+				vendorDetailsDTO.getRequestedBy(),vendorDetailsDTO.getRequestedBy(),vendorDetailsDTO.getRequestedById(),
+				vendorDetailsDTO.getRequestedById());
 		
 		if(result.hasErrors())
 		{
@@ -99,7 +101,7 @@ public class VendorDetailsController {
 					fetchedEntity.getEmail(), fetchedEntity.getIsEmailVerified(), fetchedEntity.getLaguage(), 
 					null, fetchedEntity.getFirmName(), fetchedEntity.getFirmAddress(), 
 					fetchedEntity.getSecondaryMobile(), fetchedEntity.getIsSecondaryMobileVerified(),null,ENTITY_TYPE_VENDOR, 
-					fetchedEntity.getInsertTime(),fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy());
+					fetchedEntity.getInsertTime(),fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
 			
 			return new ResponseEntity<CustomerDetailsDTOAng>(ang, HttpStatus.OK);
 		}catch(ResourceNotFoundException e)

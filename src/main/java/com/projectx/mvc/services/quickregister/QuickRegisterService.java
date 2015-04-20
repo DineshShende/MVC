@@ -76,9 +76,9 @@ public interface QuickRegisterService {
 	public AuthenticationDetailsDTO verifyLoginDetails(LoginVerificationDTO loginVerificationDTO) 
 			throws AuthenticationDetailsNotFoundException;
 	
-	public Boolean resetPassword(Long customerId,Integer customerType,Integer emailOrMobile,String requestedBy) throws PasswordRestFailedException;
+	public Boolean resetPassword(Long customerId,Integer customerType,Integer emailOrMobile,Integer requestedBy,Long requestedById) throws PasswordRestFailedException;
 	
-	public ForgetPasswordEntity resetPasswordRedirect(String entity,String requestedBy) throws PasswordRestFailedException;
+	public ForgetPasswordEntity resetPasswordRedirect(String entity,Integer requestedBy,Long requestedById) throws PasswordRestFailedException;
 	
 	public void clearTestData();
 

@@ -50,7 +50,8 @@ public class FreightRequestByVendorController {
 				freightRequestByVendorDTO.getSource(),freightRequestByVendorDTO.getDestination(),freightRequestByVendorDTO.getDriverId(),
 				freightRequestByVendorDTO.getAvailableDate(), freightRequestByVendorDTO.getAvailableTime(), freightRequestByVendorDTO.getPickupRangeInKm(),
 				freightRequestByVendorDTO.getVendorId(), freightRequestByVendorDTO.getStatus(), freightRequestByVendorDTO.getReservedBy(), 
-				new Date(), new Date(), freightRequestByVendorDTO.getUpdatedBy());
+				new Date(), new Date(), freightRequestByVendorDTO.getRequestedBy(),freightRequestByVendorDTO.getRequestedBy(),
+				freightRequestByVendorDTO.getRequestedById(),freightRequestByVendorDTO.getRequestedById());
 		
 		FreightRequestByVendorDTO savedEntity=freightRequestByVendorService.save(requestByVendorDTO);
 		
@@ -79,7 +80,7 @@ public class FreightRequestByVendorController {
 					fetchedEntity.getVehicleRegistrationNumber(),fetchedEntity.getSource(), fetchedEntity.getDestination(),
 					fetchedEntity.getDriverId(), fetchedEntity.getAvailableDate(),fetchedEntity.getAvailableTime(), fetchedEntity.getPickupRangeInKm(),
 					fetchedEntity.getVendorId(), fetchedEntity.getStatus(),fetchedEntity.getReservedBy(), fetchedEntity.getInsertTime(),
-					fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy());
+					fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
 		}
 		
 		return byVendorAngDTO;
@@ -100,7 +101,7 @@ public class FreightRequestByVendorController {
 					fetchedEntity.getVehicleRegistrationNumber(),fetchedEntity.getSource(), fetchedEntity.getDestination(),
 					fetchedEntity.getDriverId(), fetchedEntity.getAvailableDate(),fetchedEntity.getAvailableTime(), fetchedEntity.getPickupRangeInKm(),
 					fetchedEntity.getVendorId(), fetchedEntity.getStatus(),fetchedEntity.getReservedBy(), fetchedEntity.getInsertTime(),
-					fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy());
+					fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
 			
 			angList.add(byVendorAngDTO);
 			

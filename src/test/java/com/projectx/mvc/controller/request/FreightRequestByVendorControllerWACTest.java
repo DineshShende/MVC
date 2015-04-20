@@ -75,7 +75,7 @@ public class FreightRequestByVendorControllerWACTest {
 		
 		this.mockMvc.perform(
 	            post("/request/freightrequestByVendor")
-	                    .content("{\"vehicleRegistrationNumber\":\""+vehicleDetailsDTO.getRegistrationNumber()+"\",\"source\":411045,\"destination\":413102,\"driverId\":765,\"availableDate\":"+new Date().getTime()+",\"availableTime\":\"9:PM\",\"pickupRangeInKm\":10,\"vendorId\":231,\"updatedBy\":\"CUST_ONLINE\"}")
+	                    .content("{\"vehicleRegistrationNumber\":\""+vehicleDetailsDTO.getRegistrationNumber()+"\",\"source\":411045,\"destination\":413102,\"driverId\":765,\"availableDate\":"+new Date().getTime()+",\"availableTime\":\"9:PM\",\"pickupRangeInKm\":10,\"vendorId\":231,\"requestedBy\":1,\"requestedById\":1}")
 	                    .contentType(MediaType.APPLICATION_JSON)
 	                    .accept(MediaType.APPLICATION_JSON))
 	            .andDo(print())

@@ -23,7 +23,13 @@ public class MobileVerificationDetailsDTO {
 	
 	private Date UpdateTime;
 	
-	private String updatedBy;
+	private Integer updatedBy;
+	
+	private Integer insertedBy;
+	
+	private Long updatedById;
+	
+	private Long insertedById;
 	
 
 	public MobileVerificationDetailsDTO() {
@@ -34,7 +40,8 @@ public class MobileVerificationDetailsDTO {
 	public MobileVerificationDetailsDTO(MobileVerificationDetailsKey key,
 			Long mobile, Integer mobilePin,
 			Integer mobileVerificationAttempts, Integer resendCount,
-			Date insertTime, Date updateTime, String updatedBy) {
+			Date insertTime, Date updateTime,
+			Integer updatedBy,Integer insertedBy,Long updatedById,Long insertedById) {
 
 		this.key = key;
 		this.mobile = mobile;
@@ -42,8 +49,11 @@ public class MobileVerificationDetailsDTO {
 		this.mobileVerificationAttempts = mobileVerificationAttempts;
 		this.resendCount = resendCount;
 		this.insertTime = insertTime;
-		UpdateTime = updateTime;
+		this.UpdateTime = updateTime;
 		this.updatedBy = updatedBy;
+		this.insertedBy=insertedBy;
+		this.updatedById=updatedById;
+		this.insertedById=insertedById;
 	}
 
 
@@ -120,28 +130,57 @@ public class MobileVerificationDetailsDTO {
 
 
 
-	public String getUpdatedBy() {
+
+	public Integer getUpdatedBy() {
 		return updatedBy;
 	}
 
 
-
-	public void setUpdatedBy(String updatedBy) {
+	public void setUpdatedBy(Integer updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 
 
+	public Integer getInsertedBy() {
+		return insertedBy;
+	}
+
+
+	public void setInsertedBy(Integer insertedBy) {
+		this.insertedBy = insertedBy;
+	}
+
+
+	public Long getUpdatedById() {
+		return updatedById;
+	}
+
+
+	public void setUpdatedById(Long updatedById) {
+		this.updatedById = updatedById;
+	}
+
+
+	public Long getInsertedById() {
+		return insertedById;
+	}
+
+
+	public void setInsertedById(Long insertedById) {
+		this.insertedById = insertedById;
+	}
+
 
 	@Override
 	public String toString() {
-		return "MobileVerificationDetails [key=" + key + ", mobileType="
+		return "MobileVerificationDetailsDTO [key=" + key + ", mobile="
 				+ mobile + ", mobilePin=" + mobilePin
 				+ ", mobileVerificationAttempts=" + mobileVerificationAttempts
 				+ ", resendCount=" + resendCount + ", insertTime=" + insertTime
 				+ ", UpdateTime=" + UpdateTime + ", updatedBy=" + updatedBy
-				+ "]";
+				+ ", insertedBy=" + insertedBy + ", updatedById=" + updatedById
+				+ ", insertedById=" + insertedById + "]";
 	}
-
 
 
 	@Override
@@ -152,11 +191,14 @@ public class MobileVerificationDetailsDTO {
 				+ ((UpdateTime == null) ? 0 : UpdateTime.hashCode());
 		result = prime * result
 				+ ((insertTime == null) ? 0 : insertTime.hashCode());
+		result = prime * result
+				+ ((insertedBy == null) ? 0 : insertedBy.hashCode());
+		result = prime * result
+				+ ((insertedById == null) ? 0 : insertedById.hashCode());
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
+		result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
 		result = prime * result
 				+ ((mobilePin == null) ? 0 : mobilePin.hashCode());
-		result = prime * result
-				+ ((mobile == null) ? 0 : mobile.hashCode());
 		result = prime
 				* result
 				+ ((mobileVerificationAttempts == null) ? 0
@@ -165,9 +207,10 @@ public class MobileVerificationDetailsDTO {
 				+ ((resendCount == null) ? 0 : resendCount.hashCode());
 		result = prime * result
 				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
+		result = prime * result
+				+ ((updatedById == null) ? 0 : updatedById.hashCode());
 		return result;
 	}
-
 
 
 	@Override
@@ -179,20 +222,38 @@ public class MobileVerificationDetailsDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		MobileVerificationDetailsDTO other = (MobileVerificationDetailsDTO) obj;
+		if (UpdateTime == null) {
+			if (other.UpdateTime != null)
+				return false;
+		} 
+		if (insertTime == null) {
+			if (other.insertTime != null)
+				return false;
+		} 
+		if (insertedBy == null) {
+			if (other.insertedBy != null)
+				return false;
+		} else if (!insertedBy.equals(other.insertedBy))
+			return false;
+		if (insertedById == null) {
+			if (other.insertedById != null)
+				return false;
+		} else if (!insertedById.equals(other.insertedById))
+			return false;
 		if (key == null) {
 			if (other.key != null)
 				return false;
 		} else if (!key.equals(other.key))
 			return false;
-		if (mobilePin == null) {
-			if (other.mobilePin != null)
-				return false;
-		} else if (!mobilePin.equals(other.mobilePin))
-			return false;
 		if (mobile == null) {
 			if (other.mobile != null)
 				return false;
 		} else if (!mobile.equals(other.mobile))
+			return false;
+		if (mobilePin == null) {
+			if (other.mobilePin != null)
+				return false;
+		} else if (!mobilePin.equals(other.mobilePin))
 			return false;
 		if (mobileVerificationAttempts == null) {
 			if (other.mobileVerificationAttempts != null)
@@ -210,8 +271,14 @@ public class MobileVerificationDetailsDTO {
 				return false;
 		} else if (!updatedBy.equals(other.updatedBy))
 			return false;
+		if (updatedById == null) {
+			if (other.updatedById != null)
+				return false;
+		} else if (!updatedById.equals(other.updatedById))
+			return false;
 		return true;
 	}
+
 
 
 	

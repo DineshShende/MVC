@@ -39,7 +39,10 @@ private Long requestId;
 	private Date updateTime;
 	
 	@NotNull
-	private String updatedBy;
+	private Integer requestedBy;
+	
+	@NotNull
+	private Long requestedById;
 
 	public FreightRequestByVendorAngDTO() {
 		super();
@@ -50,7 +53,7 @@ private Long requestId;
 			Integer destination, Long driverId, Date availableDate,
 			String availableTime, Integer pickupRangeInKm, Long vendorId,
 			String status, Long reservedBy, Date insertTime, Date updateTime,
-			String updatedBy) {
+			Integer updatedBy,Long updatedById) {
 		super();
 		this.requestId = requestId;
 		this.vehicleRegistrationNumber = vehicleRegistrationNumber;
@@ -65,7 +68,8 @@ private Long requestId;
 		this.reservedBy = reservedBy;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
-		this.updatedBy = updatedBy;
+		this.requestedBy = updatedBy;
+		this.requestedById=updatedById;
 	}
 
 	public Long getRequestId() {
@@ -172,12 +176,23 @@ private Long requestId;
 		this.updateTime = updateTime;
 	}
 
-	public String getUpdatedBy() {
-		return updatedBy;
+	
+
+
+	public Integer getRequestedBy() {
+		return requestedBy;
 	}
 
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
+	public void setRequestedBy(Integer requestedBy) {
+		this.requestedBy = requestedBy;
+	}
+
+	public Long getRequestedById() {
+		return requestedById;
+	}
+
+	public void setRequestedById(Long requestedById) {
+		this.requestedById = requestedById;
 	}
 
 	@Override
@@ -189,8 +204,8 @@ private Long requestId;
 				+ ", availableTime=" + availableTime + ", pickupRangeInKm="
 				+ pickupRangeInKm + ", vendorId=" + vendorId + ", status="
 				+ status + ", reservedBy=" + reservedBy + ", insertTime="
-				+ insertTime + ", updateTime=" + updateTime + ", updatedBy="
-				+ updatedBy + "]";
+				+ insertTime + ", updateTime=" + updateTime + ", requestedBy="
+				+ requestedBy + ", requestedById=" + requestedById + "]";
 	}
 
 	@Override
@@ -198,11 +213,15 @@ private Long requestId;
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
+				+ ((availableDate == null) ? 0 : availableDate.hashCode());
+		result = prime * result
 				+ ((availableTime == null) ? 0 : availableTime.hashCode());
 		result = prime * result
 				+ ((destination == null) ? 0 : destination.hashCode());
 		result = prime * result
 				+ ((driverId == null) ? 0 : driverId.hashCode());
+		result = prime * result
+				+ ((insertTime == null) ? 0 : insertTime.hashCode());
 		result = prime * result
 				+ ((pickupRangeInKm == null) ? 0 : pickupRangeInKm.hashCode());
 		result = prime * result
@@ -212,7 +231,11 @@ private Long requestId;
 		result = prime * result + ((source == null) ? 0 : source.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result
-				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
+				+ ((updateTime == null) ? 0 : updateTime.hashCode());
+		result = prime * result
+				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
+		result = prime * result
+				+ ((requestedById == null) ? 0 : requestedById.hashCode());
 		result = prime
 				* result
 				+ ((vehicleRegistrationNumber == null) ? 0
@@ -231,6 +254,10 @@ private Long requestId;
 		if (getClass() != obj.getClass())
 			return false;
 		FreightRequestByVendorAngDTO other = (FreightRequestByVendorAngDTO) obj;
+		if (availableDate == null) {
+			if (other.availableDate != null)
+				return false;
+		}
 		if (availableTime == null) {
 			if (other.availableTime != null)
 				return false;
@@ -246,6 +273,10 @@ private Long requestId;
 				return false;
 		} else if (!driverId.equals(other.driverId))
 			return false;
+		if (insertTime == null) {
+			if (other.insertTime != null)
+				return false;
+		}
 		if (pickupRangeInKm == null) {
 			if (other.pickupRangeInKm != null)
 				return false;
@@ -271,10 +302,19 @@ private Long requestId;
 				return false;
 		} else if (!status.equals(other.status))
 			return false;
-		if (updatedBy == null) {
-			if (other.updatedBy != null)
+		if (updateTime == null) {
+			if (other.updateTime != null)
 				return false;
-		} else if (!updatedBy.equals(other.updatedBy))
+		}
+		if (requestedBy == null) {
+			if (other.requestedBy != null)
+				return false;
+		} else if (!requestedBy.equals(other.requestedBy))
+			return false;
+		if (requestedById == null) {
+			if (other.requestedById != null)
+				return false;
+		} else if (!requestedById.equals(other.requestedById))
 			return false;
 		if (vehicleRegistrationNumber == null) {
 			if (other.vehicleRegistrationNumber != null)

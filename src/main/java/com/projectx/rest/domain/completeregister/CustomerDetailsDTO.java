@@ -51,7 +51,13 @@ public class CustomerDetailsDTO {
 	
 	private Date updateTime;
 	
-	private String updatedBy;
+	private Integer updatedBy;
+	
+	private Integer insertedBy;
+	
+	private Long updatedById;
+	
+	private Long insertedById;
 
 	
 	public CustomerDetailsDTO() {
@@ -68,7 +74,7 @@ public class CustomerDetailsDTO {
 			String businessDomain, String nameOfFirm, Address firmAddressId,
 			Long secondaryMobile, Boolean isSecondaryMobileVerified,
 			String secondaryEmail, Date insertTime, Date updateTime,
-			String updatedBy) {
+			Integer updatedBy,Integer insertedBy,Long updatedById,Long insertedById) {
 		super();
 		this.customerId = customerId;
 		this.firstName = firstName;
@@ -91,6 +97,10 @@ public class CustomerDetailsDTO {
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
 		this.updatedBy = updatedBy;
+		this.updatedBy = updatedBy;
+		this.insertedBy=insertedBy;
+		this.updatedById=updatedById;
+		this.insertedById=insertedById;
 	}
 
 
@@ -275,18 +285,6 @@ public class CustomerDetailsDTO {
 		this.updateTime = updateTime;
 	}
 
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-
-	
 	
 	public String getMiddleName() {
 		return middleName;
@@ -314,6 +312,60 @@ public class CustomerDetailsDTO {
 	}
 
 
+		public Integer getUpdatedBy() {
+		return updatedBy;
+	}
+
+
+
+
+	public void setUpdatedBy(Integer updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+
+
+
+	public Integer getInsertedBy() {
+		return insertedBy;
+	}
+
+
+
+
+	public void setInsertedBy(Integer insertedBy) {
+		this.insertedBy = insertedBy;
+	}
+
+
+
+
+	public Long getUpdatedById() {
+		return updatedById;
+	}
+
+
+
+
+	public void setUpdatedById(Long updatedById) {
+		this.updatedById = updatedById;
+	}
+
+
+
+
+	public Long getInsertedById() {
+		return insertedById;
+	}
+
+
+
+
+	public void setInsertedById(Long insertedById) {
+		this.insertedById = insertedById;
+	}
+
+
 
 
 	@Override
@@ -331,7 +383,8 @@ public class CustomerDetailsDTO {
 				+ ", isSecondaryMobileVerified=" + isSecondaryMobileVerified
 				+ ", secondaryEmail=" + secondaryEmail + ", insertTime="
 				+ insertTime + ", updateTime=" + updateTime + ", updatedBy="
-				+ updatedBy + "]";
+				+ updatedBy + ", insertedBy=" + insertedBy + ", updatedById="
+				+ updatedById + ", insertedById=" + insertedById + "]";
 	}
 
 
@@ -343,6 +396,10 @@ public class CustomerDetailsDTO {
 		int result = 1;
 		result = prime * result
 				+ ((businessDomain == null) ? 0 : businessDomain.hashCode());
+		result = prime * result
+				+ ((customerId == null) ? 0 : customerId.hashCode());
+		result = prime * result
+				+ ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result
 				+ ((firmAddressId == null) ? 0 : firmAddressId.hashCode());
@@ -350,6 +407,12 @@ public class CustomerDetailsDTO {
 				+ ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result
 				+ ((homeAddressId == null) ? 0 : homeAddressId.hashCode());
+		result = prime * result
+				+ ((insertTime == null) ? 0 : insertTime.hashCode());
+		result = prime * result
+				+ ((insertedBy == null) ? 0 : insertedBy.hashCode());
+		result = prime * result
+				+ ((insertedById == null) ? 0 : insertedById.hashCode());
 		result = prime * result
 				+ ((isEmailVerified == null) ? 0 : isEmailVerified.hashCode());
 		result = prime
@@ -375,7 +438,11 @@ public class CustomerDetailsDTO {
 		result = prime * result
 				+ ((secondaryMobile == null) ? 0 : secondaryMobile.hashCode());
 		result = prime * result
+				+ ((updateTime == null) ? 0 : updateTime.hashCode());
+		result = prime * result
 				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
+		result = prime * result
+				+ ((updatedById == null) ? 0 : updatedById.hashCode());
 		return result;
 	}
 
@@ -396,6 +463,14 @@ public class CustomerDetailsDTO {
 				return false;
 		} else if (!businessDomain.equals(other.businessDomain))
 			return false;
+		if (customerId == null) {
+			if (other.customerId != null)
+				return false;
+		}
+		if (dateOfBirth == null) {
+			if (other.dateOfBirth != null)
+				return false;
+		} 
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -416,6 +491,19 @@ public class CustomerDetailsDTO {
 				return false;
 		} else if (!homeAddressId.equals(other.homeAddressId))
 			return false;
+		if (insertTime == null) {
+			if (other.insertTime != null)
+				return false;
+		}
+		if (insertedBy == null) {
+			if (other.insertedBy != null)
+				return false;
+		} else if (!insertedBy.equals(other.insertedBy))
+			return false;
+		if (insertedById == null) {
+			if (other.insertedById != null)
+				return false;
+		}
 		if (isEmailVerified == null) {
 			if (other.isEmailVerified != null)
 				return false;
@@ -472,15 +560,25 @@ public class CustomerDetailsDTO {
 				return false;
 		} else if (!secondaryMobile.equals(other.secondaryMobile))
 			return false;
+		if (updateTime == null) {
+			if (other.updateTime != null)
+				return false;
+		}
 		if (updatedBy == null) {
 			if (other.updatedBy != null)
 				return false;
 		} else if (!updatedBy.equals(other.updatedBy))
 			return false;
+		if (updatedById == null) {
+			if (other.updatedById != null)
+				return false;
+		}
 		return true;
 	}
 
 
-	
+
+
+		
 	
 }

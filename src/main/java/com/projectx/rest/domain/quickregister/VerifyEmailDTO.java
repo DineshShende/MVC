@@ -10,20 +10,23 @@ public class VerifyEmailDTO {
 	
 	private String emailHash;
 	
-	private String updatedBy;
+	private Integer updatedBy;
+	
+	private Long updatedById;
 	
 	public VerifyEmailDTO() {
 		super();
 	}
 
 	public VerifyEmailDTO(Long customerId, Integer customerType,
-			Integer emailType, String emailHash, String updatedBy) {
+			Integer emailType, String emailHash, Integer updatedBy,Long updatedById) {
 		super();
 		this.customerId = customerId;
 		this.customerType = customerType;
 		this.emailType = emailType;
 		this.emailHash = emailHash;
 		this.updatedBy = updatedBy;
+		this.updatedById=updatedById;
 	}
 
 
@@ -66,20 +69,30 @@ public class VerifyEmailDTO {
 	}
 
 
-	
-	public String getUpdatedBy() {
+
+
+	public Integer getUpdatedBy() {
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(String updatedBy) {
+	public void setUpdatedBy(Integer updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public Long getUpdatedById() {
+		return updatedById;
+	}
+
+	public void setUpdatedById(Long updatedById) {
+		this.updatedById = updatedById;
 	}
 
 	@Override
 	public String toString() {
 		return "VerifyEmailDTO [customerId=" + customerId + ", customerType="
 				+ customerType + ", emailType=" + emailType + ", emailHash="
-				+ emailHash + ", updatedBy=" + updatedBy + "]";
+				+ emailHash + ", updatedBy=" + updatedBy + ", updatedById="
+				+ updatedById + "]";
 	}
 
 	@Override
@@ -96,6 +109,8 @@ public class VerifyEmailDTO {
 				+ ((emailType == null) ? 0 : emailType.hashCode());
 		result = prime * result
 				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
+		result = prime * result
+				+ ((updatedById == null) ? 0 : updatedById.hashCode());
 		return result;
 	}
 
@@ -132,6 +147,11 @@ public class VerifyEmailDTO {
 			if (other.updatedBy != null)
 				return false;
 		} else if (!updatedBy.equals(other.updatedBy))
+			return false;
+		if (updatedById == null) {
+			if (other.updatedById != null)
+				return false;
+		} else if (!updatedById.equals(other.updatedById))
 			return false;
 		return true;
 	}

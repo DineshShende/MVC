@@ -19,7 +19,6 @@ public class CustomerDetailsDTOAng {
 	
 	private String lastName;
 	
-	
 	private Date dateOfBirth;
 	
 	private Address homeAddressId;
@@ -54,7 +53,9 @@ public class CustomerDetailsDTOAng {
 	
 	private Date updateTime;
 	
-	private String updatedBy;
+	private Integer requestedBy;
+	
+	private Long requestedById;
 
 	
 	public CustomerDetailsDTOAng() {
@@ -71,7 +72,7 @@ public class CustomerDetailsDTOAng {
 			String businessDomain, String nameOfFirm, Address firmAddressId,
 			Long secondaryMobile, Boolean isSecondaryMobileVerified,
 			String secondaryEmail,Integer entityType, Date insertTime, Date updateTime,
-			String updatedBy) {
+			Integer updatedBy,Long updatedById) {
 		super();
 		this.customerId = customerId;
 		this.firstName = firstName;
@@ -94,7 +95,8 @@ public class CustomerDetailsDTOAng {
 		this.entityType=entityType;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
-		this.updatedBy = updatedBy;
+		this.requestedBy = updatedBy;
+		this.requestedById=updatedById;
 	}
 
 
@@ -279,19 +281,26 @@ public class CustomerDetailsDTOAng {
 		this.updateTime = updateTime;
 	}
 
+	public Integer getRequestedBy() {
+		return requestedBy;
+	}
 
-	public String getUpdatedBy() {
-		return updatedBy;
+	public void setRequestedBy(Integer requestedBy) {
+		this.requestedBy = requestedBy;
 	}
 
 
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
+	public Long getRequestedById() {
+		return requestedById;
+	}
+
+	public void setRequestedById(Long requestedById) {
+		this.requestedById = requestedById;
 	}
 
 
-	
-	
+
+
 	public String getMiddleName() {
 		return middleName;
 	}
@@ -332,10 +341,6 @@ public class CustomerDetailsDTOAng {
 
 
 
-
-
-
-
 	@Override
 	public String toString() {
 		return "CustomerDetailsDTOAng [customerId=" + customerId
@@ -351,7 +356,8 @@ public class CustomerDetailsDTOAng {
 				+ ", isSecondaryMobileVerified=" + isSecondaryMobileVerified
 				+ ", secondaryEmail=" + secondaryEmail + ", entityType="
 				+ entityType + ", insertTime=" + insertTime + ", updateTime="
-				+ updateTime + ", updatedBy=" + updatedBy + "]";
+				+ updateTime + ", updatedBy=" + requestedBy + ", updatedById="
+				+ requestedById + "]";
 	}
 
 
@@ -405,7 +411,9 @@ public class CustomerDetailsDTOAng {
 		result = prime * result
 				+ ((updateTime == null) ? 0 : updateTime.hashCode());
 		result = prime * result
-				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
+				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
+		result = prime * result
+				+ ((requestedById == null) ? 0 : requestedById.hashCode());
 		return result;
 	}
 
@@ -434,8 +442,7 @@ public class CustomerDetailsDTOAng {
 		if (dateOfBirth == null) {
 			if (other.dateOfBirth != null)
 				return false;
-		} else if (!dateOfBirth.equals(other.dateOfBirth))
-			return false;
+		} 
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -464,8 +471,7 @@ public class CustomerDetailsDTOAng {
 		if (insertTime == null) {
 			if (other.insertTime != null)
 				return false;
-		} else if (!insertTime.equals(other.insertTime))
-			return false;
+		}
 		if (isEmailVerified == null) {
 			if (other.isEmailVerified != null)
 				return false;
@@ -525,19 +531,19 @@ public class CustomerDetailsDTOAng {
 		if (updateTime == null) {
 			if (other.updateTime != null)
 				return false;
-		} else if (!updateTime.equals(other.updateTime))
-			return false;
-		if (updatedBy == null) {
-			if (other.updatedBy != null)
+		}
+		if (requestedBy == null) {
+			if (other.requestedBy != null)
 				return false;
-		} else if (!updatedBy.equals(other.updatedBy))
+		} else if (!requestedBy.equals(other.requestedBy))
+			return false;
+		if (requestedById == null) {
+			if (other.requestedById != null)
+				return false;
+		} else if (!requestedById.equals(other.requestedById))
 			return false;
 		return true;
 	}
-
-
-
-
 
 
 	

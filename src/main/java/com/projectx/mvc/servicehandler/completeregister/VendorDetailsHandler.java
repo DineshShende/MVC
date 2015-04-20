@@ -272,7 +272,16 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	public VendorDetailsDTO intializeMetaData(VendorDetailsDTO vendorDetails) {
 		
 		if(vendorDetails.getUpdatedBy()==null)
-			vendorDetails.setUpdatedBy("CUST_ONLINE");
+			vendorDetails.setUpdatedBy(vendorDetails.getUpdatedBy());
+		
+		if(vendorDetails.getInsertedBy()==null)
+			vendorDetails.setInsertedBy(vendorDetails.getUpdatedBy());
+		
+		if(vendorDetails.getUpdatedById()==null)
+			vendorDetails.setUpdatedById(vendorDetails.getUpdatedById());
+		
+		if(vendorDetails.getInsertedById()==null)
+			vendorDetails.setInsertedById(vendorDetails.getUpdatedById());
 		
 		vendorDetails.setUpdateTime(new Date());
 			
@@ -285,7 +294,16 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		if(vendorDetails.getFirmAddress()!=null)
 		{
 			if(vendorDetails.getFirmAddress().getUpdatedBy()==null)
-				vendorDetails.getFirmAddress().setUpdatedBy("CUST_ONLINE");
+				vendorDetails.getFirmAddress().setUpdatedBy(vendorDetails.getUpdatedBy());
+			
+			if(vendorDetails.getFirmAddress().getInsertedBy()==null)
+				vendorDetails.getFirmAddress().setInsertedBy(vendorDetails.getUpdatedBy());
+			
+			if(vendorDetails.getFirmAddress().getUpdatedById()==null)
+				vendorDetails.getFirmAddress().setUpdatedById(vendorDetails.getUpdatedById());
+			
+			if(vendorDetails.getFirmAddress().getInsertedById()==null)
+				vendorDetails.getFirmAddress().setInsertedById(vendorDetails.getUpdatedById());
 			
 			vendorDetails.getFirmAddress().setUpdateTime(new Date());
 			
@@ -298,7 +316,17 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		if(vendorDetails.getHomeAddress()!=null)
 		{
 			if(vendorDetails.getHomeAddress().getUpdatedBy()==null)
-				vendorDetails.getHomeAddress().setUpdatedBy("CUST_ONLINE");
+				vendorDetails.getHomeAddress().setUpdatedBy(vendorDetails.getUpdatedBy());
+			
+			if(vendorDetails.getHomeAddress().getInsertedBy()==null)
+				vendorDetails.getHomeAddress().setInsertedBy(vendorDetails.getUpdatedBy());
+			
+			if(vendorDetails.getHomeAddress().getUpdatedById()==null)
+				vendorDetails.getHomeAddress().setUpdatedById(vendorDetails.getUpdatedById());
+			
+			if(vendorDetails.getHomeAddress().getInsertedById()==null)
+				vendorDetails.getHomeAddress().setInsertedById(vendorDetails.getUpdatedById());
+			
 			
 			vendorDetails.getHomeAddress().setUpdateTime(new Date());
 			
@@ -355,6 +383,18 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	public DriverDetailsDTO initializeDriverDetails(
 			DriverDetailsDTO driverDetailsDTO) {
 	
+		if(driverDetailsDTO.getUpdatedBy()==null)
+			driverDetailsDTO.setUpdatedBy(driverDetailsDTO.getUpdatedBy());
+		
+		if(driverDetailsDTO.getInsertedBy()==null)
+			driverDetailsDTO.setInsertedBy(driverDetailsDTO.getUpdatedBy());
+		
+		if(driverDetailsDTO.getUpdatedById()==null)
+			driverDetailsDTO.setUpdatedById(driverDetailsDTO.getUpdatedById());
+		
+		if(driverDetailsDTO.getInsertedById()==null)
+			driverDetailsDTO.setInsertedById(driverDetailsDTO.getUpdatedById());
+		
 		if(driverDetailsDTO.getInsertTime()==null)
 			driverDetailsDTO.setInsertTime(new Date());
 		
@@ -363,6 +403,18 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		if(driverDetailsDTO.getHomeAddress().getInsertTime()==null)
 			driverDetailsDTO.getHomeAddress().setInsertTime(new Date());
 	
+		if(driverDetailsDTO.getHomeAddress().getUpdatedBy()==null)
+			driverDetailsDTO.getHomeAddress().setUpdatedBy(driverDetailsDTO.getUpdatedBy());
+		
+		if(driverDetailsDTO.getHomeAddress().getInsertedBy()==null)
+			driverDetailsDTO.getHomeAddress().setInsertedBy(driverDetailsDTO.getUpdatedBy());
+	
+		if(driverDetailsDTO.getHomeAddress().getUpdatedById()==null)
+			driverDetailsDTO.getHomeAddress().setUpdatedById(driverDetailsDTO.getUpdatedById());
+		
+		if(driverDetailsDTO.getHomeAddress().getInsertedById()==null)
+			driverDetailsDTO.getHomeAddress().setInsertedById(driverDetailsDTO.getUpdatedById());
+		
 		driverDetailsDTO.getHomeAddress().setCustomerType(ENTITY_TYPE_DRIVER);
 		
 		driverDetailsDTO.getHomeAddress().setUpdateTime(new Date());

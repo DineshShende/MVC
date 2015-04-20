@@ -114,8 +114,17 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 	public CustomerDetailsDTO InitializeMetaData(
 			CustomerDetailsDTO customerDetails) {
 		
+		if(customerDetails.getInsertedBy()==null)
+			customerDetails.setInsertedBy(customerDetails.getUpdatedBy());
+		
 		if(customerDetails.getUpdatedBy()==null)
-			customerDetails.setUpdatedBy("CUST_ONLINE");
+			customerDetails.setUpdatedBy(customerDetails.getUpdatedBy());
+		
+		if(customerDetails.getInsertedById()==null)
+			customerDetails.setInsertedById(customerDetails.getUpdatedById());
+		
+		if(customerDetails.getUpdatedById()==null)
+			customerDetails.setUpdatedById(customerDetails.getUpdatedById());
 		
 		if(customerDetails.getEmail().equals(""))
 			customerDetails.setEmail(null);
@@ -128,7 +137,16 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 		if(customerDetails.getHomeAddressId()!=null)
 		{
 			if(customerDetails.getHomeAddressId().getUpdatedBy()==null)
-				customerDetails.getHomeAddressId().setUpdatedBy("CUST_ONLINE");
+				customerDetails.getHomeAddressId().setUpdatedBy(customerDetails.getUpdatedBy());
+			
+			if(customerDetails.getHomeAddressId().getInsertedBy()==null)
+				customerDetails.getHomeAddressId().setInsertedBy(customerDetails.getUpdatedBy());
+			
+			if(customerDetails.getHomeAddressId().getUpdatedById()==null)
+				customerDetails.getHomeAddressId().setUpdatedById(customerDetails.getUpdatedById());
+			
+			if(customerDetails.getHomeAddressId().getInsertedById()==null)
+				customerDetails.getHomeAddressId().setInsertedById(customerDetails.getUpdatedById());
 			
 			customerDetails.getHomeAddressId().setUpdateTime(new Date());
 			
@@ -140,7 +158,16 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 		if(customerDetails.getFirmAddressId()!=null)
 		{
 			if(customerDetails.getFirmAddressId().getUpdatedBy()==null)
-				customerDetails.getFirmAddressId().setUpdatedBy("CUST_ONLINE");
+				customerDetails.getFirmAddressId().setUpdatedBy(customerDetails.getUpdatedBy());
+			
+			if(customerDetails.getFirmAddressId().getInsertedBy()==null)
+				customerDetails.getFirmAddressId().setInsertedBy(customerDetails.getUpdatedBy());
+			
+			if(customerDetails.getFirmAddressId().getUpdatedById()==null)
+				customerDetails.getFirmAddressId().setUpdatedById(customerDetails.getUpdatedById());
+			
+			if(customerDetails.getFirmAddressId().getInsertedById()==null)
+				customerDetails.getFirmAddressId().setInsertedById(customerDetails.getUpdatedById());
 			
 			customerDetails.getFirmAddressId().setUpdateTime(new Date());
 			
@@ -149,6 +176,14 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 			
 			
 		}
+		
+		/*
+		if(customerDetails.getEmail()!=null && customerDetails.getIsEmailVerified()==null)
+			customerDetails.setIsEmailVerified(false);
+		
+		if(customerDetails.getMobile()!=null && customerDetails.getIsMobileVerified()==null)
+			customerDetails.setIsMobileVerified(false);
+		*/
 		
 		return customerDetails;
 	}

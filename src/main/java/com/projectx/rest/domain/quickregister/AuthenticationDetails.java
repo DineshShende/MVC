@@ -30,7 +30,13 @@ public class AuthenticationDetails {
 	
 	private Date UpdateTime;
 	
-	private String updatedBy;
+	private Integer updatedBy;
+	
+	private Integer insertedBy;
+	
+	private Long updatedById;
+	
+	private Long insertedById;
 
 	public AuthenticationDetails() {
 
@@ -40,7 +46,7 @@ public class AuthenticationDetails {
 			Long mobile, String password, String passwordType,
 			String emailPassword, Integer resendCount,
 			Integer lastUnsucessfullAttempts, Date insertTime, Date updateTime,
-			String updatedBy) {
+			Integer updatedBy,Integer insertedBy,Long updatedById,Long insertedById) {
 		super();
 		this.key = key;
 		this.email = email;
@@ -51,8 +57,12 @@ public class AuthenticationDetails {
 		this.resendCount = resendCount;
 		this.lastUnsucessfullAttempts = lastUnsucessfullAttempts;
 		this.insertTime = insertTime;
-		UpdateTime = updateTime;
+		this.UpdateTime = updateTime;
 		this.updatedBy = updatedBy;
+		this.updatedBy = updatedBy;
+		this.insertedBy=insertedBy;
+		this.updatedById=updatedById;
+		this.insertedById=insertedById;
 	}
 
 	public AuthenticationDetailsKey getKey() {
@@ -139,23 +149,50 @@ public class AuthenticationDetails {
 		UpdateTime = updateTime;
 	}
 
-	public String getUpdatedBy() {
+
+	public Integer getUpdatedBy() {
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(String updatedBy) {
+	public void setUpdatedBy(Integer updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public Integer getInsertedBy() {
+		return insertedBy;
+	}
+
+	public void setInsertedBy(Integer insertedBy) {
+		this.insertedBy = insertedBy;
+	}
+
+	public Long getUpdatedById() {
+		return updatedById;
+	}
+
+	public void setUpdatedById(Long updatedById) {
+		this.updatedById = updatedById;
+	}
+
+	public Long getInsertedById() {
+		return insertedById;
+	}
+
+	public void setInsertedById(Long insertedById) {
+		this.insertedById = insertedById;
 	}
 
 	@Override
 	public String toString() {
-		return "AuthenticationDetailsDT [key=" + key + ", email=" + email
+		return "AuthenticationDetails [key=" + key + ", email=" + email
 				+ ", mobile=" + mobile + ", password=" + password
 				+ ", passwordType=" + passwordType + ", emailPassword="
 				+ emailPassword + ", resendCount=" + resendCount
 				+ ", lastUnsucessfullAttempts=" + lastUnsucessfullAttempts
 				+ ", insertTime=" + insertTime + ", UpdateTime=" + UpdateTime
-				+ ", updatedBy=" + updatedBy + "]";
+				+ ", updatedBy=" + updatedBy + ", insertedBy=" + insertedBy
+				+ ", updatedById=" + updatedById + ", insertedById="
+				+ insertedById + "]";
 	}
 
 	@Override
@@ -169,6 +206,10 @@ public class AuthenticationDetails {
 				+ ((emailPassword == null) ? 0 : emailPassword.hashCode());
 		result = prime * result
 				+ ((insertTime == null) ? 0 : insertTime.hashCode());
+		result = prime * result
+				+ ((insertedBy == null) ? 0 : insertedBy.hashCode());
+		result = prime * result
+				+ ((insertedById == null) ? 0 : insertedById.hashCode());
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
 		result = prime
 				* result
@@ -183,6 +224,8 @@ public class AuthenticationDetails {
 				+ ((resendCount == null) ? 0 : resendCount.hashCode());
 		result = prime * result
 				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
+		result = prime * result
+				+ ((updatedById == null) ? 0 : updatedById.hashCode());
 		return result;
 	}
 
@@ -198,8 +241,7 @@ public class AuthenticationDetails {
 		if (UpdateTime == null) {
 			if (other.UpdateTime != null)
 				return false;
-		} else if (!UpdateTime.equals(other.UpdateTime))
-			return false;
+		} 
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -213,7 +255,16 @@ public class AuthenticationDetails {
 		if (insertTime == null) {
 			if (other.insertTime != null)
 				return false;
-		} else if (!insertTime.equals(other.insertTime))
+		} 
+		if (insertedBy == null) {
+			if (other.insertedBy != null)
+				return false;
+		} else if (!insertedBy.equals(other.insertedBy))
+			return false;
+		if (insertedById == null) {
+			if (other.insertedById != null)
+				return false;
+		} else if (!insertedById.equals(other.insertedById))
 			return false;
 		if (key == null) {
 			if (other.key != null)
@@ -251,9 +302,15 @@ public class AuthenticationDetails {
 				return false;
 		} else if (!updatedBy.equals(other.updatedBy))
 			return false;
+		if (updatedById == null) {
+			if (other.updatedById != null)
+				return false;
+		} else if (!updatedById.equals(other.updatedById))
+			return false;
 		return true;
 	}
-	
+
+		
 	
 
 }

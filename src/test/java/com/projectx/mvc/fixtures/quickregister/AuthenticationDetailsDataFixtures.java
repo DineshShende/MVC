@@ -85,7 +85,7 @@ public class AuthenticationDetailsDataFixtures {
 
 	public static UpdatePasswordDTO standardUpdatePassword()
 	{
-		return new UpdatePasswordDTO(new AuthenticationDetailsKey(CUST_ID,ENTITY_TYPE_CUSTOMER), CUST_PASSWORD_CHANGED,true,CUST_UPDATED_BY);
+		return new UpdatePasswordDTO(new AuthenticationDetailsKey(CUST_ID,ENTITY_TYPE_CUSTOMER), CUST_PASSWORD_CHANGED,true,CUST_UPDATED_BY,CUST_ID);
 	}
 	
 	/*

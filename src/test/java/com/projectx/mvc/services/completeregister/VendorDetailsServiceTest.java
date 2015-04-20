@@ -92,7 +92,7 @@ public class VendorDetailsServiceTest {
 		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO=
 				customerQuickRegisterService.addNewCustomer(standardEmailMobileVendorDTO());
 		
-		assertEquals(standardVendorCreatedFromQuickRegister(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()), vendorDetailsService
+		assertEquals(standardVendorCreatedFromQuickRegisterWithDefaultHomeAdd(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()), vendorDetailsService
 				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()));
 		
 		assertEquals(1,vendorDetailsService.count().intValue());
@@ -122,7 +122,7 @@ public class VendorDetailsServiceTest {
 				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId());
 		
 		
-		assertEquals(standardVendorCreatedFromQuickRegister(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity);
+		assertEquals(standardVendorCreatedFromQuickRegisterWithDefaultHomeAdd(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity);
 	
 		assertEquals(standardVendor(savedEntity), vendorDetailsService.update(standardVendor(savedEntity)));
 		
@@ -155,7 +155,7 @@ public class VendorDetailsServiceTest {
 				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId());
 		
 		
-		assertEquals(standardVendorCreatedFromQuickRegister(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity);
+		assertEquals(standardVendorCreatedFromQuickRegisterWithDefaultHomeAdd(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity);
 	
 		assertEquals(standardVendor(savedEntity), vendorDetailsService.update(standardVendor(savedEntity)));
 		
@@ -188,7 +188,7 @@ public class VendorDetailsServiceTest {
 				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId());
 		
 		
-		assertEquals(standardVendorCreatedFromQuickRegister(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity);
+		assertEquals(standardVendorCreatedFromQuickRegisterWithDefaultHomeAdd(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity);
 	
 		VendorDetailsDTO mergedEntity=vendorDetailsService.update(standardVendor(savedEntity));
 		
@@ -203,7 +203,7 @@ public class VendorDetailsServiceTest {
 				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY);
 		
 		VerifyMobileDTO verifyMobileDTO=new VerifyMobileDTO(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY,
-				MobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY);
+				MobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY,mergedEntity.getVendorId());
 		
 		assertTrue(customerQuickRegisterService.verifyMobile(verifyMobileDTO));
 		
@@ -234,7 +234,7 @@ public class VendorDetailsServiceTest {
 				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId());
 		
 		
-		assertEquals(standardVendorCreatedFromQuickRegister(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity);
+		assertEquals(standardVendorCreatedFromQuickRegisterWithDefaultHomeAdd(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity);
 	
 		VendorDetailsDTO mergedEntity=vendorDetailsService.update(standardVendor(savedEntity));
 		
@@ -249,7 +249,7 @@ public class VendorDetailsServiceTest {
 				.getEmailVerificationDetailsByCustomerIdTypeAndEmail(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY);
 		
 		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR, ENTITY_TYPE_PRIMARY,
-				emailVerificationDetailsDTO.getEmailHash(),CUST_UPDATED_BY);
+				emailVerificationDetailsDTO.getEmailHash(),CUST_UPDATED_BY,mergedEntity.getVendorId());
 		
 		assertTrue(customerQuickRegisterService.verifyEmail(verifyEmailDTO));
 		
@@ -279,7 +279,7 @@ public class VendorDetailsServiceTest {
 				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId());
 		
 		
-		assertEquals(standardVendorCreatedFromQuickRegister(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity);
+		assertEquals(standardVendorCreatedFromQuickRegisterWithDefaultHomeAdd(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity);
 	
 		VendorDetailsDTO mergedEntity=vendorDetailsService.update(standardVendor(savedEntity));
 		
@@ -291,7 +291,7 @@ public class VendorDetailsServiceTest {
 	
 		assertTrue(customerQuickRegisterService
 				.sendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR,
-						ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY)));
+						ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY,mergedEntity.getVendorId())));
 	}
 	
 	
@@ -318,7 +318,7 @@ public class VendorDetailsServiceTest {
 				.createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId());
 		
 		
-		assertEquals(standardVendorCreatedFromQuickRegister(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity);
+		assertEquals(standardVendorCreatedFromQuickRegisterWithDefaultHomeAdd(quickRegisterSavedEntityDTO.getCustomer().getCustomerId()),savedEntity);
 	
 		VendorDetailsDTO mergedEntity=vendorDetailsService.update(standardVendor(savedEntity));
 		
@@ -331,7 +331,7 @@ public class VendorDetailsServiceTest {
 		
 		assertTrue(customerQuickRegisterService
 				.sendEmailHash(new CustomerIdTypeEmailTypeUpdatedByDTO(mergedEntity.getVendorId(), ENTITY_TYPE_VENDOR, 
-						ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY)));
+						ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY,mergedEntity.getVendorId())));
 	}
 
 	
@@ -389,13 +389,15 @@ public class VendorDetailsServiceTest {
 		assertNotEquals(updatedEntity.getMobile(),standardDriverDetailsNewMobileAndFirstName(savedEntity.getDriverId()).getMobile());
 		
 		customerQuickRegisterService
-			.reSendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY));
+			.reSendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, 
+					ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY,savedEntity.getDriverId()));
 		
 		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=
 				customerQuickRegisterService.getMobileVerificationDetailsByCustomerIdTypeAndMobile(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY);
 		
 		customerQuickRegisterService.verifyMobile(new com.projectx.rest.domain.quickregister
-				.VerifyMobileDTO(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY,mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY));
+				.VerifyMobileDTO(savedEntity.getDriverId(), ENTITY_TYPE_DRIVER, ENTITY_TYPE_PRIMARY,
+						mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY,savedEntity.getDriverId()));
 		
 		assertEquals(standardDriverDetailsNewMobileAndFirstName(savedEntity.getDriverId()).getMobile(),vendorDetailsService.getDriverById(savedEntity.getDriverId()).getMobile());
 	}

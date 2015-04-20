@@ -40,6 +40,7 @@ import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.mvc.util.validator.QuickRegisterEntityValidator;
+import com.projectx.rest.domain.ang.CustomerIdTypeEmailOrMobileOptionUpdatedByAng;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeRequestedByDTO;
 import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
@@ -138,11 +139,11 @@ public class QuickRegisterController {
 			
 	}
 	
-	@RequestMapping(value="/verifyEmailHash/{customerId}/{customerType}/{emailType}/{updatedBy}/{emailHash}",method=RequestMethod.GET)
+	@RequestMapping(value="/verifyEmailHash/{customerId}/{customerType}/{emailType}/{updatedBy}/{updatedById}/{emailHash}",method=RequestMethod.GET)
 	public String verifyEmailHash(@PathVariable Long customerId,@PathVariable Integer customerType, @PathVariable Integer emailType,@PathVariable String emailHash
-			,@PathVariable String updatedBy,Model model)
+			,@PathVariable Integer updatedBy,@PathVariable Long updatedById,Model model)
 	{
-		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId,customerType,emailType, emailHash,updatedBy);
+		VerifyEmailDTO verifyEmailDTO=new VerifyEmailDTO(customerId,customerType,emailType, emailHash,updatedBy,updatedById);
 		
 		Boolean result=false;
 		
@@ -308,10 +309,11 @@ public class QuickRegisterController {
 	
 	
 	@RequestMapping(value="/resetPassword",method=RequestMethod.POST)
-	public ResponseEntity<Boolean> resetPassword(@RequestBody CustomerIdTypeEmailOrMobileOptionUpdatedBy customerIdDTO)
+	public ResponseEntity<Boolean> resetPassword(@RequestBody CustomerIdTypeEmailOrMobileOptionUpdatedByAng customerIdDTO)
 	{
 		Boolean result=customerQuickRegisterService.resetPassword(customerIdDTO.getCustomerId(),
-				customerIdDTO.getCustomerType(),customerIdDTO.getEmailOrMobile(),customerIdDTO.getUpdatedBy());
+				customerIdDTO.getCustomerType(),customerIdDTO.getEmailOrMobile(),customerIdDTO.getRequestedBy(),
+				customerIdDTO.getRequestedById());
 		
 		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
 	}
@@ -323,12 +325,13 @@ public class QuickRegisterController {
 	{
 		
 		ForgetPasswordEntity fetchedResult=customerQuickRegisterService
-				.resetPasswordRedirect(resetPasswordRedirectDTO.getEntity(),resetPasswordRedirectDTO.getRequestedBy());
+				.resetPasswordRedirect(resetPasswordRedirectDTO.getEntity(),resetPasswordRedirectDTO.getRequestedBy(),
+						resetPasswordRedirectDTO.getRequestedById());
 		
 		QuickRegisterDTO quickRegisterDTO=new QuickRegisterDTO(fetchedResult.getCustomerId(), null, null, 
 				fetchedResult.getEmail(), fetchedResult.getMobile(), null,
 				fetchedResult.getCustomerType(), fetchedResult.getIsEmailVerified(), fetchedResult.getIsMobileVerified(),
-				null, new Date(), null);
+				null, new Date(), null,null,null,null);
 		
 		if(fetchedResult.getCustomerId()!=null)
 		{

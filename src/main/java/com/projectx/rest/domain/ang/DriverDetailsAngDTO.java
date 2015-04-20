@@ -63,18 +63,13 @@ public class DriverDetailsAngDTO {
 	
 	private Date updateTime;
 	
-	private String updatedBy;
+	private Integer requestedBy;
+	
+	private Long requestedById;
 
 	public DriverDetailsAngDTO() {
 
 	}
-
-
-
-
-
-
-
 
 
 	public DriverDetailsAngDTO(Long driverId, String firstName, String middleName,
@@ -83,7 +78,7 @@ public class DriverDetailsAngDTO {
 			Long homeContactNumber, String licenceNumber, Date drivingSince,
 			Date employedSince, Boolean isFreightRequestPermissionGiven,
 			Boolean isDealFinalizationPermissionGiven, String language,
-			Long vendorId, Date insertTime, Date updateTime, String updatedBy) {
+			Long vendorId, Date insertTime, Date updateTime, Integer updatedBy,Long updatedById) {
 		super();
 		this.driverId = driverId;
 		this.firstName = firstName;
@@ -104,7 +99,8 @@ public class DriverDetailsAngDTO {
 		this.vendorId = vendorId;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
-		this.updatedBy = updatedBy;
+		this.requestedBy = updatedBy;
+		this.requestedById=updatedById;
 	}
 
 
@@ -284,29 +280,29 @@ public class DriverDetailsAngDTO {
 		this.updateTime = updateTime;
 	}
 
-
-
-
-	public String getUpdatedBy() {
-		return updatedBy;
+	public Integer getRequestedBy() {
+		return requestedBy;
 	}
 
 
-
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
+	public void setRequestedBy(Integer requestedBy) {
+		this.requestedBy = requestedBy;
 	}
 
 
+	public Long getRequestedById() {
+		return requestedById;
+	}
 
 
-
+	public void setRequestedById(Long requestedById) {
+		this.requestedById = requestedById;
+	}
 
 
 	@Override
 	public String toString() {
-		return "DriverDetails [driverId=" + driverId + ", firstName="
+		return "DriverDetailsAngDTO [driverId=" + driverId + ", firstName="
 				+ firstName + ", middleName=" + middleName + ", lastName="
 				+ lastName + ", dateOfBirth=" + dateOfBirth + ", bloodGroup="
 				+ bloodGroup + ", homeAddress=" + homeAddress + ", mobile="
@@ -319,16 +315,9 @@ public class DriverDetailsAngDTO {
 				+ ", isDealFinalizationPermissionGiven="
 				+ isDealFinalizationPermissionGiven + ", language=" + language
 				+ ", vendorId=" + vendorId + ", insertTime=" + insertTime
-				+ ", updateTime=" + updateTime + ", updatedBy=" + updatedBy
-				+ "]";
+				+ ", updateTime=" + updateTime + ", requestedBy=" + requestedBy
+				+ ", requestedBy=" + requestedById + "]";
 	}
-
-
-
-
-
-
-
 
 
 	@Override
@@ -378,18 +367,13 @@ public class DriverDetailsAngDTO {
 		result = prime * result
 				+ ((updateTime == null) ? 0 : updateTime.hashCode());
 		result = prime * result
-				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
+				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
+		result = prime * result
+				+ ((requestedById == null) ? 0 : requestedById.hashCode());
 		result = prime * result
 				+ ((vendorId == null) ? 0 : vendorId.hashCode());
 		return result;
 	}
-
-
-
-
-
-
-
 
 
 	@Override
@@ -419,13 +403,11 @@ public class DriverDetailsAngDTO {
 		if (drivingSince == null) {
 			if (other.drivingSince != null)
 				return false;
-		} else if (!drivingSince.equals(other.drivingSince))
-			return false;
+		}
 		if (employedSince == null) {
 			if (other.employedSince != null)
 				return false;
-		} else if (!employedSince.equals(other.employedSince))
-			return false;
+		}
 		if (firstName == null) {
 			if (other.firstName != null)
 				return false;
@@ -444,8 +426,7 @@ public class DriverDetailsAngDTO {
 		if (insertTime == null) {
 			if (other.insertTime != null)
 				return false;
-		} else if (!insertTime.equals(other.insertTime))
-			return false;
+		}
 		if (isDealFinalizationPermissionGiven == null) {
 			if (other.isDealFinalizationPermissionGiven != null)
 				return false;
@@ -491,12 +472,16 @@ public class DriverDetailsAngDTO {
 		if (updateTime == null) {
 			if (other.updateTime != null)
 				return false;
-		} else if (!updateTime.equals(other.updateTime))
-			return false;
-		if (updatedBy == null) {
-			if (other.updatedBy != null)
+		}
+		if (requestedBy == null) {
+			if (other.requestedBy != null)
 				return false;
-		} else if (!updatedBy.equals(other.updatedBy))
+		} else if (!requestedBy.equals(other.requestedBy))
+			return false;
+		if (requestedById == null) {
+			if (other.requestedById != null)
+				return false;
+		} else if (!requestedById.equals(other.requestedById))
 			return false;
 		if (vendorId == null) {
 			if (other.vendorId != null)
@@ -505,6 +490,7 @@ public class DriverDetailsAngDTO {
 			return false;
 		return true;
 	}
+
 
 
 

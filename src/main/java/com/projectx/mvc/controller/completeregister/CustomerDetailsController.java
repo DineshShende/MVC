@@ -105,7 +105,8 @@ public class CustomerDetailsController {
 				customerDetailsDTO.getPhoneNumber(), customerDetailsDTO.getIsMobileVerified(),customerDetailsDTO.getEmail(),
 				customerDetailsDTO.getIsEmailVerified(),customerDetailsDTO.getLanguage(), customerDetailsDTO.getBusinessDomain(),
 				customerDetailsDTO.getNameOfFirm(), customerDetailsDTO.getFirmAddressId(), customerDetailsDTO.getSecondaryMobile(), 
-				false, customerDetailsDTO.getSecondaryEmail(), new Date(), new Date(), customerDetailsDTO.getUpdatedBy());
+				false, customerDetailsDTO.getSecondaryEmail(), new Date(), new Date(), customerDetailsDTO.getRequestedBy(),
+				customerDetailsDTO.getRequestedBy(),customerDetailsDTO.getRequestedById(),customerDetailsDTO.getRequestedById());
 		
 		detailsDTO=customerDetailsService.InitializeMetaData(detailsDTO);
 		
@@ -120,7 +121,9 @@ public class CustomerDetailsController {
 					customerDetailsDTO.getLastName(),customerDetailsDTO.getDateOfBirth(), customerDetailsDTO.getNameOfFirm(), 
 					customerDetailsDTO.getFirmAddressId(), customerDetailsDTO.getHomeAddressId(), customerDetailsDTO.getMobile(), customerDetailsDTO.getPhoneNumber(),
 					customerDetailsDTO.getIsMobileVerified(), customerDetailsDTO.getEmail(), customerDetailsDTO.getIsEmailVerified(), customerDetailsDTO.getLanguage(),
-					customerDetailsDTO.getSecondaryMobile(),customerDetailsDTO.getIsSecondaryMobileVerified(), new Date(),new Date(), customerDetailsDTO.getUpdatedBy());
+					customerDetailsDTO.getSecondaryMobile(),customerDetailsDTO.getIsSecondaryMobileVerified(), new Date(),new Date(), 
+					customerDetailsDTO.getRequestedBy(),customerDetailsDTO.getRequestedBy(),customerDetailsDTO.getRequestedById(),
+					customerDetailsDTO.getRequestedById());
 			
 			if(result.hasErrors())
 			{
@@ -164,7 +167,7 @@ public class CustomerDetailsController {
 								customerDetailsDTO.getBusinessDomain(), customerDetailsDTO.getNameOfFirm(), customerDetailsDTO.getFirmAddressId(),
 								customerDetailsDTO.getSecondaryMobile(), customerDetailsDTO.getIsSecondaryMobileVerified(), 
 								customerDetailsDTO.getSecondaryEmail(),ENTITY_TYPE_CUSTOMER, customerDetailsDTO.getInsertTime(), customerDetailsDTO.getUpdateTime(), 
-								customerDetailsDTO.getUpdatedBy());
+								customerDetailsDTO.getUpdatedBy(),customerDetailsDTO.getUpdatedById());
 				
 				return new ResponseEntity<CustomerDetailsDTOAng>(customerDetailsDTOAng, HttpStatus.OK);
 			}catch(ResourceNotFoundException e)
@@ -183,7 +186,7 @@ public class CustomerDetailsController {
 						fetchedEntity.getEmail(), fetchedEntity.getIsEmailVerified(), fetchedEntity.getLaguage(), 
 						null, fetchedEntity.getFirmName(), fetchedEntity.getFirmAddress(), 
 						fetchedEntity.getSecondaryMobile(), fetchedEntity.getIsSecondaryMobileVerified(),null,ENTITY_TYPE_VENDOR, 
-						fetchedEntity.getInsertTime(),fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy());
+						fetchedEntity.getInsertTime(),fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
 				
 				return new ResponseEntity<CustomerDetailsDTOAng>(ang, HttpStatus.OK);
 			}catch(ResourceNotFoundException e)

@@ -82,26 +82,6 @@ public class QuickRegisterDataConstants {
 	
 	//private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
-	public static QuickRegisterDTO standardEmailMobileCustomer()
-	{
-		return new QuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, CUST_MOBILE, CUST_PIN,CUST_TYPE,
-				CUST_ISEMAIL_VERIFIED, CUST_ISMOBILE_VERIFIED, CUST_INSERT_TIME, CUST_UPDATE_TIME, CUST_UPDATED_BY);
-		
-	}
-	
-	public static QuickRegisterDTO standardMobileCustomer()
-	{
-		return new QuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, null, CUST_PIN,CUST_TYPE,
-				CUST_ISEMAIL_VERIFIED, null, CUST_INSERT_TIME, CUST_UPDATE_TIME, CUST_UPDATED_BY);
-		
-	}
-	
-	public static QuickRegisterDTO standardEmailCustomer()
-	{
-		return new QuickRegisterDTO(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, null, CUST_PIN,CUST_TYPE,
-				CUST_ISEMAIL_VERIFIED, null, CUST_INSERT_TIME, CUST_UPDATE_TIME, CUST_UPDATED_BY);
-		
-	}
 
 //	
 //	public static QuickRegisterEntity standardEmailCustomerDTO()

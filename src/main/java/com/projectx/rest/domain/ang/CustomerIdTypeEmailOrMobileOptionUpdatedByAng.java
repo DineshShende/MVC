@@ -1,32 +1,35 @@
-package com.projectx.rest.domain.completeregister;
+package com.projectx.rest.domain.ang;
 
-public class CustomerIdTypeMobileTypeRequestedByDTO {
-
+public class CustomerIdTypeEmailOrMobileOptionUpdatedByAng {
+	
 	private Long customerId;
 	
 	private Integer customerType;
 	
-	private Integer mobileType;
+	private Integer emailOrMobile;
+	
 	
 	private Integer requestedBy;
 	
 	private Long requestedById;
 
-	public CustomerIdTypeMobileTypeRequestedByDTO() {
-
+	
+	
+	public CustomerIdTypeEmailOrMobileOptionUpdatedByAng() {
+		super();
 	}
 
-	
 
-	public CustomerIdTypeMobileTypeRequestedByDTO(Long customerId,
-			Integer customerType, Integer mobileType,
-			Integer requestedBy,Long requestedById) {
+
+	public CustomerIdTypeEmailOrMobileOptionUpdatedByAng(Long customerId,
+			Integer customerType, Integer emailOrMobile, Integer requestedBy,
+			Long requestedById) {
 		super();
 		this.customerId = customerId;
 		this.customerType = customerType;
-		this.mobileType = mobileType;
+		this.emailOrMobile = emailOrMobile;
 		this.requestedBy = requestedBy;
-		this.requestedById=requestedById;
+		this.requestedById = requestedById;
 	}
 
 
@@ -35,24 +38,34 @@ public class CustomerIdTypeMobileTypeRequestedByDTO {
 		return customerId;
 	}
 
+
+
 	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
+
+
 
 	public Integer getCustomerType() {
 		return customerType;
 	}
 
+
+
 	public void setCustomerType(Integer customerType) {
 		this.customerType = customerType;
 	}
 
-	public Integer getMobileType() {
-		return mobileType;
+
+
+	public Integer getEmailOrMobile() {
+		return emailOrMobile;
 	}
 
-	public void setMobileType(Integer mobileType) {
-		this.mobileType = mobileType;
+
+
+	public void setEmailOrMobile(Integer emailOrMobile) {
+		this.emailOrMobile = emailOrMobile;
 	}
 
 
@@ -83,10 +96,10 @@ public class CustomerIdTypeMobileTypeRequestedByDTO {
 
 	@Override
 	public String toString() {
-		return "CustomerIdTypeMobileTypeRequestedByDTO [customerId="
+		return "CustomerIdTypeEmailOrMobileOptionUpdatedByAng [customerId="
 				+ customerId + ", customerType=" + customerType
-				+ ", mobileType=" + mobileType + ", requestedBy=" + requestedBy
-				+ ", requestedById=" + requestedById + "]";
+				+ ", emailOrMobile=" + emailOrMobile + ", requestedBy="
+				+ requestedBy + ", requestedById=" + requestedById + "]";
 	}
 
 
@@ -100,7 +113,7 @@ public class CustomerIdTypeMobileTypeRequestedByDTO {
 		result = prime * result
 				+ ((customerType == null) ? 0 : customerType.hashCode());
 		result = prime * result
-				+ ((mobileType == null) ? 0 : mobileType.hashCode());
+				+ ((emailOrMobile == null) ? 0 : emailOrMobile.hashCode());
 		result = prime * result
 				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
 		result = prime * result
@@ -118,7 +131,7 @@ public class CustomerIdTypeMobileTypeRequestedByDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CustomerIdTypeMobileTypeRequestedByDTO other = (CustomerIdTypeMobileTypeRequestedByDTO) obj;
+		CustomerIdTypeEmailOrMobileOptionUpdatedByAng other = (CustomerIdTypeEmailOrMobileOptionUpdatedByAng) obj;
 		if (customerId == null) {
 			if (other.customerId != null)
 				return false;
@@ -129,10 +142,10 @@ public class CustomerIdTypeMobileTypeRequestedByDTO {
 				return false;
 		} else if (!customerType.equals(other.customerType))
 			return false;
-		if (mobileType == null) {
-			if (other.mobileType != null)
+		if (emailOrMobile == null) {
+			if (other.emailOrMobile != null)
 				return false;
-		} else if (!mobileType.equals(other.mobileType))
+		} else if (!emailOrMobile.equals(other.emailOrMobile))
 			return false;
 		if (requestedBy == null) {
 			if (other.requestedBy != null)
@@ -146,9 +159,8 @@ public class CustomerIdTypeMobileTypeRequestedByDTO {
 			return false;
 		return true;
 	}
-
-
-
-		
 	
+
+	
+
 }

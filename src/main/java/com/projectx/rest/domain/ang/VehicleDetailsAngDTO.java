@@ -72,7 +72,9 @@ public class VehicleDetailsAngDTO {
 	
 	private Date updateTime;
 	
-	private String updatedBy;
+	private Integer requestedBy;
+	
+	private Long requestedById;
 
 	public VehicleDetailsAngDTO() {
 
@@ -87,7 +89,7 @@ public class VehicleDetailsAngDTO {
 			Integer width, Integer height, Integer numberOfWheels,
 			String permitType, Boolean insuranceStatus, String insuranceNumber,
 			String insuranceCompany, Long vendorId, List<String> commodityList,
-			Date insertTime, Date updateTime, String updatedBy) {
+			Date insertTime, Date updateTime, Integer updatedBy,Long updatedById) {
 		super();
 		this.vehicleId = vehicleId;
 		this.ownerFirstName = ownerFirstName;
@@ -111,7 +113,8 @@ public class VehicleDetailsAngDTO {
 		this.commodityList = commodityList;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
-		this.updatedBy = updatedBy;
+		this.requestedBy = updatedBy;
+		this.requestedById=updatedById;
 	}
 
 
@@ -334,19 +337,6 @@ public class VehicleDetailsAngDTO {
 		this.updateTime = updateTime;
 	}
 
-
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-
 	public Integer getLength() {
 		return length;
 	}
@@ -383,6 +373,27 @@ public class VehicleDetailsAngDTO {
 	}
 
 
+
+	public Integer getRequestedBy() {
+		return requestedBy;
+	}
+
+
+	public void setRequestedBy(Integer requestedBy) {
+		this.requestedBy = requestedBy;
+	}
+
+
+	public Long getRequestedById() {
+		return requestedById;
+	}
+
+
+	public void setRequestedById(Long requestedById) {
+		this.requestedById = requestedById;
+	}
+
+
 	@Override
 	public String toString() {
 		return "VehicleDetailsAngDTO [vehicleId=" + vehicleId
@@ -400,7 +411,8 @@ public class VehicleDetailsAngDTO {
 				+ ", insuranceCompany=" + insuranceCompany + ", vendorId="
 				+ vendorId + ", commodityList=" + commodityList
 				+ ", insertTime=" + insertTime + ", updateTime=" + updateTime
-				+ ", updatedBy=" + updatedBy + "]";
+				+ ", updatedBy=" + requestedBy + ", updatedById=" + requestedById
+				+ "]";
 	}
 
 
@@ -448,7 +460,9 @@ public class VehicleDetailsAngDTO {
 		result = prime * result
 				+ ((updateTime == null) ? 0 : updateTime.hashCode());
 		result = prime * result
-				+ ((updatedBy == null) ? 0 : updatedBy.hashCode());
+				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
+		result = prime * result
+				+ ((requestedById == null) ? 0 : requestedById.hashCode());
 		result = prime * result
 				+ ((vehicleBodyType == null) ? 0 : vehicleBodyType.hashCode());
 		result = prime * result
@@ -489,8 +503,7 @@ public class VehicleDetailsAngDTO {
 		if (insertTime == null) {
 			if (other.insertTime != null)
 				return false;
-		} else if (!insertTime.equals(other.insertTime))
-			return false;
+		}
 		if (insuranceCompany == null) {
 			if (other.insuranceCompany != null)
 				return false;
@@ -554,12 +567,16 @@ public class VehicleDetailsAngDTO {
 		if (updateTime == null) {
 			if (other.updateTime != null)
 				return false;
-		} else if (!updateTime.equals(other.updateTime))
-			return false;
-		if (updatedBy == null) {
-			if (other.updatedBy != null)
+		}
+		if (requestedBy == null) {
+			if (other.requestedBy != null)
 				return false;
-		} else if (!updatedBy.equals(other.updatedBy))
+		} else if (!requestedBy.equals(other.requestedBy))
+			return false;
+		if (requestedById == null) {
+			if (other.requestedById != null)
+				return false;
+		} else if (!requestedById.equals(other.requestedById))
 			return false;
 		if (vehicleBodyType == null) {
 			if (other.vehicleBodyType != null)
@@ -590,6 +607,7 @@ public class VehicleDetailsAngDTO {
 	}
 
 
+	
 	
 
 }

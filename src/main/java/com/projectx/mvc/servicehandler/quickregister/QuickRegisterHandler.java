@@ -389,7 +389,7 @@ public class QuickRegisterHandler implements QuickRegisterService {
 		
 		UpdatePasswordMVCDTO mvcdto=new UpdatePasswordMVCDTO(updatePasswordDTO.getKey().getCustomerId(), 
 				updatePasswordDTO.getKey().getCustomerType(), updatePasswordDTO.getPassword(),updatePasswordDTO.getIsForcefulChangePassword(),
-				updatePasswordDTO.getRequestedBy());
+				updatePasswordDTO.getRequestedBy(),updatePasswordDTO.getRequestedById());
 		
 		HttpEntity<UpdatePasswordMVCDTO> entity=new HttpEntity<UpdatePasswordMVCDTO>(mvcdto);
 		
@@ -553,10 +553,11 @@ public class QuickRegisterHandler implements QuickRegisterService {
 	}
 
 	@Override
-	public Boolean resetPassword(Long customerId,Integer customerType,Integer emailOrMobile,String requestedBy) throws PasswordRestFailedException{
+	public Boolean resetPassword(Long customerId,Integer customerType,Integer emailOrMobile,
+			Integer requestedBy,Long requestedById) throws PasswordRestFailedException{
 	
 		CustomerIdTypeEmailOrMobileOptionUpdatedBy customerIdDTO=new 
-				CustomerIdTypeEmailOrMobileOptionUpdatedBy(customerId,customerType,emailOrMobile,requestedBy);
+				CustomerIdTypeEmailOrMobileOptionUpdatedBy(customerId,customerType,emailOrMobile,requestedBy,requestedById);
 		
 		HttpEntity<CustomerIdTypeEmailOrMobileOptionUpdatedBy> entity=new HttpEntity<CustomerIdTypeEmailOrMobileOptionUpdatedBy>(customerIdDTO);
 		
@@ -579,9 +580,9 @@ public class QuickRegisterHandler implements QuickRegisterService {
 	}
 
 	@Override
-	public ForgetPasswordEntity resetPasswordRedirect(String entityInp,String requestedBy) throws PasswordRestFailedException{
+	public ForgetPasswordEntity resetPasswordRedirect(String entityInp,Integer requestedBy,Long requestedById) throws PasswordRestFailedException{
 		
-		ResetPasswordRedirectDTO resetPasswordRedirectDTO=new ResetPasswordRedirectDTO(entityInp,requestedBy);
+		ResetPasswordRedirectDTO resetPasswordRedirectDTO=new ResetPasswordRedirectDTO(entityInp,requestedBy,requestedById);
 		
 		HttpEntity<ResetPasswordRedirectDTO> entity=new HttpEntity<ResetPasswordRedirectDTO>(resetPasswordRedirectDTO);
 		

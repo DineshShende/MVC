@@ -152,7 +152,7 @@ public class VendorDetailsWACTest {
     .andExpect(jsonPath("$.dateOfBirth").exists())
     .andExpect(jsonPath("$.insertTime").exists())
 	.andExpect(jsonPath("$.updateTime").exists())
-	.andExpect(jsonPath("$.updatedBy").value(standardVendorComplete(quickRegisterSavedEntityDTO.getCustomerId()).getUpdatedBy()));
+	.andExpect(jsonPath("$.requestedBy").value(standardVendorComplete(quickRegisterSavedEntityDTO.getCustomerId()).getUpdatedBy()));
 	
 	
 	}
