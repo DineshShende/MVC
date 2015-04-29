@@ -6,6 +6,7 @@ import static com.projectx.mvc.fixtures.request.FreightRequestByVendorDataFixtur
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Date;
@@ -62,6 +63,22 @@ public class FreightRequestByCustomerControllerWACTest {
 		this.mockMvc.perform(
 	            post("/request/freightrequestByCustomer")
 	                    .content("{\"source\":411045,\"destination\":413102,\"pickupDate\":"+new Date().getTime()+",\"noOfVehicles\":1,\"loadType\":\"FullTruckLoad\",\"capacity\":100,\"length\":100,\"width\":60,\"height\":10,\"bodyType\":\"Open\",\"vehicleBrand\":\"Tata Temp\",\"model\":\"407\",\"commodity\":\"Fertiliser\",\"pickupTime\":\"1:00PM\",\"customerId\":212,\"status\":\"NEW\",\"requestedBy\":1,\"requestedById\":1}")
+	                    .contentType(MediaType.APPLICATION_JSON)
+	                    .accept(MediaType.APPLICATION_JSON))
+	            .andDo(print())
+	            .andExpect(jsonPath("$.entityId").exists())
+	            .andExpect(status().isOk());
+	    
+	}
+	
+	@Test
+	public void getMatchingVendorRequestsByCustomerRequestId() throws Exception
+	{
+		FreightRequestByCustomer request= freightRequestByCustomerService.save(standardFreightRequestByCustomer());
+		
+		this.mockMvc.perform(
+	            post("/request/freightrequestByCustomer/getMatchingVendorRequestsByCustomerRequestId")
+	                    .content(standardEntityIdDTO(new EntityIdDTO(request.getRequestId())))
 	                    .contentType(MediaType.APPLICATION_JSON)
 	                    .accept(MediaType.APPLICATION_JSON))
 	            .andDo(print())

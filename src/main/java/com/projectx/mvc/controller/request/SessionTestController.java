@@ -18,19 +18,19 @@ public class SessionTestController {
 	@Autowired
 	SessionTest sessionTest;
 	
-	
-	@RequestMapping(value="/dateForm",method=RequestMethod.GET)
-	public String dateForm()
-	{
-		return "dateForm";
-		
-	}
-	
-	@RequestMapping(value="/datesubmit",method=RequestMethod.POST)
-	public NameDateDTO nameDateDTO(@RequestBody NameDateDTO nameDateDTO)
-	{
-		return nameDateDTO;
-	}
+//	
+//	@RequestMapping(value="/dateForm",method=RequestMethod.GET)
+//	public String dateForm()
+//	{
+//		return "dateForm";
+//		
+//	}
+//	
+//	@RequestMapping(value="/datesubmit",method=RequestMethod.POST)
+//	public NameDateDTO nameDateDTO(@RequestBody NameDateDTO nameDateDTO)
+//	{
+//		return nameDateDTO;
+//	}
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String sessionForm()

@@ -37,16 +37,6 @@ public class CustomerDetailsDataFixtures {
 	public static Gson gson=new Gson();
 	
 	
-	/*
-	public static CustomerDetails standardCustomerDetails()
-	{
-		return new CustomerDetails(CUST_ID, CUST_FIRSTNAME, CUST_LASTNAME, CUST_DOB, standardAddress(), CUST_MOBILE, CUST_ISMOBILE_VERIFIED,
-				CUST_EMAIL, CUST_ISEMAIL_VERIFIED, CUST_LANG, CUST_BUSINESS_DOMAIN, CUST_NAME_OF_FIRM, standardAddress(),CUST_SEC_MOBILE , 
-				CUST_ISMOBILE_VERIFIED, 
-				CUST_SEC_EMAIL, CUST_DATE, CUST_DATE, CUST_UPDATED_BY);
-	}
-*/
-	
 	public static CustomerDetailsDTO standardCustomerDetailsCopiedFromQuickRegisterEntity()
 	{
 		return new CustomerDetailsDTO(standardEmailMobileCustomer().getCustomerId(), standardEmailMobileCustomer().getFirstName(),null,
@@ -70,6 +60,15 @@ public class CustomerDetailsDataFixtures {
 		return new CustomerDetailsDTO(customerId, standardEmailMobileCustomer().getFirstName(),null,
 				standardEmailMobileCustomer().getLastName(), null, standardAddressDefault(ENTITY_TYPE_CUSTOMER), standardEmailMobileCustomer().getMobile(),CUST_PHONE_NUMBER, 
 				standardEmailMobileCustomer().getIsEmailVerified(),standardEmailMobileCustomer().getEmail(),
+				standardEmailMobileCustomer().getIsEmailVerified(), null, null, null, null, null, false,
+				null, CUST_DATE, CUST_DATE, CUST_UPDATED_BY,CUST_UPDATED_BY,customerId,customerId);
+	}
+	
+	public static CustomerDetailsDTO standardCustomerDetailsCopiedFromQuickRegisterEntityWithDefaultAddMobVerified(Long customerId)
+	{
+		return new CustomerDetailsDTO(customerId, standardEmailMobileCustomer().getFirstName(),null,
+				standardEmailMobileCustomer().getLastName(), null, standardAddressDefault(ENTITY_TYPE_CUSTOMER), standardEmailMobileCustomer().getMobile(),CUST_PHONE_NUMBER, 
+				true,standardEmailMobileCustomer().getEmail(),
 				standardEmailMobileCustomer().getIsEmailVerified(), null, null, null, null, null, false,
 				null, CUST_DATE, CUST_DATE, CUST_UPDATED_BY,CUST_UPDATED_BY,customerId,customerId);
 	}
@@ -214,48 +213,5 @@ public class CustomerDetailsDataFixtures {
 		return gson.toJson(entityIdDTO);
 	}
 	
-	/*
-	public static String standardJsonUpdateAddress()
-	{
-		System.out.println(gson.toJson(standardUpdateAddressDTO()));
-		
-		return gson.toJson(standardUpdateAddressDTO());
-	}
 	
-	public static String standardJsonUpdateMobileVerificationStatus()
-	{
-		System.out.println(gson.toJson(standardMobileVerificationStatusDTO()));
-		
-		return gson.toJson(standardMobileVerificationStatusDTO());
-	}
-	
-	
-	public static String standardJsonVerifyMobileDetails(VerifyMobileDTO verifyMobileDTO)
-	{
-		System.out.println(gson.toJson(verifyMobileDTO));
-		
-		return gson.toJson(verifyMobileDTO);
-	}
-	
-	public static String standardJsonVerifyEmailDetails(VerifyEmailDTO verifyEmailDTO)
-	{
-		System.out.println(gson.toJson(verifyEmailDTO));
-		
-		return gson.toJson(verifyEmailDTO);
-	}
-	
-	public static String standardJsonCustomerIdTypeMobileDTO(CustomerIdTypeMobileDTO idTypeMobileDTO)
-	{
-		System.out.println(gson.toJson(idTypeMobileDTO));
-		
-		return gson.toJson(idTypeMobileDTO);
-	}
-	
-	public static String standardJsonCustomerIdTypeEmailDTO(CustomerIdTypeEmailDTO idTypeEmailDTO)
-	{
-		System.out.println(gson.toJson(idTypeEmailDTO));
-		
-		return gson.toJson(idTypeEmailDTO);
-	}
-	*/
 }

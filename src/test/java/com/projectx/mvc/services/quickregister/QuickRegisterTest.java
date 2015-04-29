@@ -61,6 +61,8 @@ public class QuickRegisterTest {
 	@Autowired
 	VendorDetailsService vendorDetailsService;
 	
+
+	
 	private Integer EMAIL_REQ=1;
 	
 	private Integer MOBILE_REQ=2;
@@ -364,10 +366,21 @@ public class QuickRegisterTest {
 	@Test
 	public void updatePassword()
 	{
-		QuickRegisterSavedEntityDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
+		QuickRegisterDTO savedEntityResult=customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO()).getCustomer();
 		
-		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(new AuthenticationDetailsKey(savedEntityResult.getCustomer().getCustomerId(),ENTITY_TYPE_CUSTOMER),
-										"654321",true,CUST_UPDATED_BY,savedEntityResult.getCustomer().getCustomerId())));
+		MobileVerificationDetailsDTO mobileVerificationDetails=customerQuickRegisterService
+				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(savedEntityResult.getCustomerId(),ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY);
+		
+		
+		assertTrue(customerQuickRegisterService.verifyMobile(new VerifyMobileDTO(savedEntityResult.getCustomerId(),ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY,
+				mobileVerificationDetails.getMobilePin(),CUST_UPDATED_BY,savedEntityResult.getCustomerId())));
+		
+		AuthenticationDetails authenticationDetails=customerQuickRegisterService
+				.getAuthenticationDetailsByCustomerIdType(savedEntityResult.getCustomerId(),
+						savedEntityResult.getCustomerType());
+		
+		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(new AuthenticationDetailsKey(savedEntityResult.getCustomerId(),ENTITY_TYPE_CUSTOMER),
+										"654321",authenticationDetails.getPassword(),true,CUST_UPDATED_BY,savedEntityResult.getCustomerId())));
 	}
 
 
@@ -385,8 +398,12 @@ public class QuickRegisterTest {
 		assertTrue(customerQuickRegisterService.verifyMobile(new VerifyMobileDTO(savedEntityResult.getCustomerId(),ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY,
 				mobileVerificationDetails.getMobilePin(),CUST_UPDATED_BY,savedEntityResult.getCustomerId())));
 		
+		AuthenticationDetails authenticationDetails=customerQuickRegisterService
+				.getAuthenticationDetailsByCustomerIdType(savedEntityResult.getCustomerId(),
+						savedEntityResult.getCustomerType());
+		
 		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(new AuthenticationDetailsKey(savedEntityResult.getCustomerId(),ENTITY_TYPE_CUSTOMER),
-				CUST_PASSWORD_CHANGED,true,CUST_UPDATED_BY,savedEntityResult.getCustomerId())));
+				CUST_PASSWORD_CHANGED,authenticationDetails.getPassword(),true,CUST_UPDATED_BY,savedEntityResult.getCustomerId())));
 		
 		assertNotNull(customerQuickRegisterService.verifyLoginDetails(new LoginVerificationDTO(savedEntityResult.getEmail(),
 				CUST_PASSWORD_CHANGED)).getKey().getCustomerId());
@@ -446,7 +463,7 @@ public class QuickRegisterTest {
 		
 		
 		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(new AuthenticationDetailsKey(savedEntityResult.getCustomer().getCustomerId(),
-				ENTITY_TYPE_CUSTOMER),"654321",true,CUST_UPDATED_BY,savedEntityResult.getCustomer().getCustomerId())));
+				ENTITY_TYPE_CUSTOMER),"654321",result.getPassword(),true,CUST_UPDATED_BY,savedEntityResult.getCustomer().getCustomerId())));
 		
 
 		try{
@@ -504,7 +521,7 @@ public class QuickRegisterTest {
 		
 		
 		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(new AuthenticationDetailsKey(savedEntityResult.getCustomer().getCustomerId(),
-				ENTITY_TYPE_VENDOR),"654321",true,CUST_UPDATED_BY,savedEntityResult.getCustomer().getCustomerId())));
+				ENTITY_TYPE_VENDOR),"654321",result.getPassword(),true,CUST_UPDATED_BY,savedEntityResult.getCustomer().getCustomerId())));
 		
 
 		try{

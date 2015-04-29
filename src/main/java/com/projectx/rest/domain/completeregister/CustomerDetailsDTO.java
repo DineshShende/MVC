@@ -498,8 +498,7 @@ public class CustomerDetailsDTO {
 		if (insertedBy == null) {
 			if (other.insertedBy != null)
 				return false;
-		} else if (!insertedBy.equals(other.insertedBy))
-			return false;
+		} 
 		if (insertedById == null) {
 			if (other.insertedById != null)
 				return false;
@@ -567,8 +566,7 @@ public class CustomerDetailsDTO {
 		if (updatedBy == null) {
 			if (other.updatedBy != null)
 				return false;
-		} else if (!updatedBy.equals(other.updatedBy))
-			return false;
+		} 
 		if (updatedById == null) {
 			if (other.updatedById != null)
 				return false;

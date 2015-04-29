@@ -28,15 +28,6 @@ public interface VendorDetailsService {
 	
 	VendorDetailsDTO intializeMetaData(VendorDetailsDTO vendorDetailsDTO);
 	
-	/*
-	Boolean verifyMobileDetails(VerifyMobileDTO verifyMobileDTO);
-	
-	Boolean verifyEmailDetails( VerifyEmailDTO verifyEmailDTO);
-	
-	Boolean sendMobileVerificationDetails(CustomerIdTypeMobileTypeUpdatedByDTO customerIdTypeMobileDTO);
-	
-	Boolean sendEmailVerificationDetails(CustomerIdTypeEmailTypeUpdatedByDTO customerIdTypeEmailDTO);
-	*/
 	
 	Model initialiseShowVendorDetails(Long entityId,Model model);
 	
@@ -45,8 +36,6 @@ public interface VendorDetailsService {
 	Boolean clearTestData();
 	
 	DriverDetailsDTO addDriver(DriverDetailsDTO driverDetailsDTO);
-	
-	//DriverDetailsDTO update(DriverDetailsDTO driverDetailsDTO);
 	
 	DriverDetailsDTO initializeDriverDetails(DriverDetailsDTO driverDetailsDTO);
 	

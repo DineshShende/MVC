@@ -90,25 +90,6 @@ public class QuickRegisterDataFixture {
 	public static String MSG_REGISTER_EMAIL_MOBILE_ALREADY_REGISTERED_EMAIL_VERIFIED="Provided Email And Mobile Already Registered.Click here to verify to email";
 	
 	
-	
-	/*
-	public static CustomerQuickRegisterKey standardEmailMobileCustomerKey()
-	{
-		return new CustomerQuickRegisterKey(CUST_EMAIL, CUST_MOBILE);
-	}
-	
-	public static CustomerQuickRegisterKey standardEmailCustomerKey()
-	{
-		return new CustomerQuickRegisterKey(CUST_EMAIL, 0L);
-	}
-	
-	
-	public static CustomerQuickRegisterKey standardMobileCustomerKey()
-	{
-		return new CustomerQuickRegisterKey("", CUST_MOBILE);
-	}
-	*/
-	
 	public static QuickRegisterEntity standardCustomerQuickRegisterEntity()
 	{
 		return new QuickRegisterEntity(CUST_FIRSTNAME, CUST_LASTNAME, CUST_EMAIL, CUST_MOBILE, CUST_PIN,ENTITY_TYPE_CUSTOMER,CUST_UPDATED_BY,CUST_ID);
@@ -170,13 +151,6 @@ public class QuickRegisterDataFixture {
 		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN,ENTITY_TYPE_CUSTOMER,CUST_UPDATED_BY,CUST_ID);
 	}
 	
-	/*
-	public static QuickRegisterEntity standardEmailMobileVendorDTO()
-	{
-		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,CUST_MOBILE,CUST_PIN,ENTITY_TYPE_VENDOR,CUST_UPDATED_BY);
-	}
-	*/
-	
 	public static QuickRegisterEntity standardEmailCustomerDTOWithOutStatus()
 	{
 		return new QuickRegisterEntity(CUST_FIRSTNAME,CUST_LASTNAME,CUST_EMAIL,null,CUST_PIN,ENTITY_TYPE_CUSTOMER,CUST_UPDATED_BY,CUST_ID);
@@ -219,17 +193,7 @@ public class QuickRegisterDataFixture {
 	{
 		return "{\"firstName\":\"dinesh\",\"lastName\":\"shende\",\"mobile\":9960821869,\"pin\":413133}";
 	}
-	/*
-	public static GetByEmailDTO standardGetByEmailDTO()
-	{
-		return new GetByEmailDTO(CUST_EMAIL);
-	}
-	
-	public static GetByMobileDTO standardGetByMobile()
-	{
-		return new GetByMobileDTO(CUST_MOBILE);
-	}
-	*/
+
 	public static VerifyMobileDTO standardVerifyMobileDTO()
 	{
 		return new VerifyMobileDTO(CUST_ID,ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY, CUST_MOBILEPIN,CUST_UPDATED_BY,CUST_ID);

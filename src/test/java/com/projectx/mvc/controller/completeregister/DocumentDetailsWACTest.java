@@ -26,10 +26,18 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.projectx.mvc.config.Application;
+import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
+import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeRequestedByDTO;
+import com.projectx.rest.domain.quickregister.AuthenticationDetails;
+import com.projectx.rest.domain.quickregister.AuthenticationDetailsDTO;
+import com.projectx.rest.domain.quickregister.AuthenticationDetailsKey;
+import com.projectx.rest.domain.quickregister.LoginVerificationDTO;
+import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
+import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
 
 import static com.projectx.mvc.fixtures.completeregister.DocumentDetailsDataFixture.*;
 
@@ -47,13 +55,13 @@ public class DocumentDetailsWACTest {
 	CustomerDetailsService customerDetailsService;
 	
 	@Autowired
-	QuickRegisterService quickRegisterService;
+	QuickRegisterService customerQuickRegisterService;
 	
 	@Before
 	public void setUp() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		customerDetailsService.clearTestData();
-		quickRegisterService.clearTestData();
+		customerQuickRegisterService.clearTestData();
 	}
 	
 	@Test
@@ -65,14 +73,49 @@ public class DocumentDetailsWACTest {
 	public void save() throws Exception
 	{
 		
-		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO= quickRegisterService.addNewCustomer(standardCustomerQuickRegisterEntity());
+		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO= customerQuickRegisterService.addNewCustomer(standardCustomerQuickRegisterEntity());
 		
 		MockMultipartFile file = new MockMultipartFile("file", "filename.txt", "text/plain", "some xml".getBytes());
 		
-		CustomerDetailsDTO customerDetailsDTO=customerDetailsService.
-				createCustomerDetailsFromQuickRegisterEntity(quickRegisterSavedEntityDTO.getCustomer().getCustomerId());
 		
-		customerDetailsService.merge(standardCustomerDetails(customerDetailsDTO));
+		
+		customerQuickRegisterService.sendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
+				quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY, quickRegisterSavedEntityDTO.getCustomer().getCustomerId()));
+		
+		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=customerQuickRegisterService
+				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
+						quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY);
+		
+		customerQuickRegisterService.verifyMobile(new VerifyMobileDTO(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
+				quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY,
+				mobileVerificationDetailsDTO.getMobilePin(), CUST_UPDATED_BY, quickRegisterSavedEntityDTO.getCustomer().getCustomerId()));
+		
+		
+		AuthenticationDetails authenticationDetails=
+				customerQuickRegisterService.getAuthenticationDetailsByCustomerIdType(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
+						quickRegisterSavedEntityDTO.getCustomer().getCustomerType());
+		
+		assertTrue(customerQuickRegisterService.updatePassword(new UpdatePasswordDTO(new AuthenticationDetailsKey(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
+						quickRegisterSavedEntityDTO.getCustomer().getCustomerType()), "password", authenticationDetails.getPassword(),
+						true, CUST_UPDATED_BY, quickRegisterSavedEntityDTO.getCustomer().getCustomerId())));
+		
+		
+		AuthenticationDetailsDTO authenticationDetailsDTO=customerQuickRegisterService.verifyLoginDetails(new LoginVerificationDTO(quickRegisterSavedEntityDTO.getCustomer().getEmail(),
+				"password"));
+		
+		assertFalse(authenticationDetailsDTO.getIsCompleteRegisterCompleted());
+		
+		authenticationDetailsDTO=customerQuickRegisterService.verifyLoginDetails(new LoginVerificationDTO(quickRegisterSavedEntityDTO.getCustomer().getEmail(),
+				"password"));
+	
+		assertTrue(authenticationDetailsDTO.getIsCompleteRegisterCompleted());
+		
+		CustomerDetailsDTO savedEntity=customerDetailsService
+				.getCustomerDetailsById(quickRegisterSavedEntityDTO.getCustomer().getCustomerId());
+		
+	
+		
+		customerDetailsService.merge(standardCustomerDetails(savedEntity));
 		
 		this.mockMvc.perform(
 				fileUpload("/document/save")

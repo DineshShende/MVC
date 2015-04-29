@@ -283,8 +283,7 @@ public class Address {
 		if (insertedBy == null) {
 			if (other.insertedBy != null)
 				return false;
-		} else if (!insertedBy.equals(other.insertedBy))
-			return false;
+		}
 		if (insertedById == null) {
 			if (other.insertedById != null)
 				return false;

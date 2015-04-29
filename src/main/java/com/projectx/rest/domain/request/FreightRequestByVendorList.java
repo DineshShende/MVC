@@ -7,23 +7,23 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class FreightRequestByVendorList {
 
-	List<FreightRequestByVendorDTO> requestList;
+	List<FreightRequestByVendor> requestList;
 
 	public FreightRequestByVendorList() {
 		super();
 	}
 
 	@JsonCreator
-	public FreightRequestByVendorList(List<FreightRequestByVendorDTO> requestList) {
+	public FreightRequestByVendorList(List<FreightRequestByVendor> requestList) {
 		super();
 		this.requestList = requestList;
 	}
 
-	public List<FreightRequestByVendorDTO> getRequestList() {
+	public List<FreightRequestByVendor> getRequestList() {
 		return requestList;
 	}
 
-	public void setRequestList(List<FreightRequestByVendorDTO> requestList) {
+	public void setRequestList(List<FreightRequestByVendor> requestList) {
 		this.requestList = requestList;
 	}
 

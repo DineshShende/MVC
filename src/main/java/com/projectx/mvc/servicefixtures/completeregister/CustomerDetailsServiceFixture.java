@@ -14,12 +14,14 @@ import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 
 public class CustomerDetailsServiceFixture implements CustomerDetailsService {
 
+	/*
 	@Override
 	public CustomerDetailsDTO createCustomerDetailsFromQuickRegisterEntity(
 			Long entityId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	*/
 
 	@Override
 	public CustomerDetailsDTO merge(CustomerDetailsDTO customerDetails) {

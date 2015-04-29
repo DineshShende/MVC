@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,6 +35,9 @@ public class FreightRequestByCustomerHandler implements
 
 	@Autowired
 	RestTemplate restTemplate;
+	
+	
+	AsyncRestTemplate asyncRestTemplate=new AsyncRestTemplate();
 	
 	@Autowired
 	Environment env;
@@ -119,8 +123,8 @@ public class FreightRequestByCustomerHandler implements
 		HttpEntity<FreightRequestByVendorDTO > entity=new HttpEntity<FreightRequestByVendorDTO>(freightRequestByVendorDTO);
 		
 		try{
-			restTemplate.exchange(env.getProperty("rest.host")+"/request/freightRequestByCustomer/getMatchingCustomerReqForVendorReq",
-					HttpMethod.POST,entity, Void.class);
+			asyncRestTemplate.exchange(env.getProperty("rest.host")+"/request/freightRequestByCustomer/getMatchingCustomerReqForVendorReq",
+					HttpMethod.POST,entity, Boolean.class);
 			
 		}catch(RestClientException e)
 		{

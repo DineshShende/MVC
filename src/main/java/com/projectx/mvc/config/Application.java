@@ -10,6 +10,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -39,6 +40,14 @@ public class Application extends SpringBootServletInitializer {
        	RestTemplate restTemplate=new RestTemplate();
     
     	return restTemplate;
+    }
+    
+    @Bean
+    public AsyncRestTemplate asyncRestTemplate() throws IOException
+    {
+    	AsyncRestTemplate asyncRestTemplate=new AsyncRestTemplate();
+    
+    	return asyncRestTemplate;
     }
     
     

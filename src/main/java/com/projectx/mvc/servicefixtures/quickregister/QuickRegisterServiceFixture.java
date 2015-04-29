@@ -185,10 +185,14 @@ public class QuickRegisterServiceFixture implements
 	}
 
 	@Override
-	public List<MobilePinPasswordDTO> getTestData() {
+	public Boolean resendPassword(Long customerId, Integer customerType,
+			Integer emailOrMobile, Integer requestedBy, Long requestedById)
+			throws PasswordRestFailedException {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 
 	
 				

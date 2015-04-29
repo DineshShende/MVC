@@ -22,6 +22,7 @@ import com.projectx.mvc.services.request.FreightRequestByVendorService;
 import com.projectx.rest.domain.quickregister.QuickRegisterStatusDTO;
 import com.projectx.rest.domain.request.FreightRequestByCustomerDTO;
 import com.projectx.rest.domain.request.FreightRequestByCustomerList;
+import com.projectx.rest.domain.request.FreightRequestByVendor;
 import com.projectx.rest.domain.request.FreightRequestByVendorDTO;
 import com.projectx.rest.domain.request.FreightRequestByVendorList;
 
@@ -68,10 +69,10 @@ public class FreightRequestByVendorHandler implements
 	}
 
 	@Override
-	public FreightRequestByVendorDTO getRequestById(Long requestId) throws ValidationFailedException{
+	public FreightRequestByVendor getRequestById(Long requestId) throws ValidationFailedException{
 
-		ResponseEntity<FreightRequestByVendorDTO> status=restTemplate
-				.exchange(env.getProperty("rest.host")+"/request/freightRequestByVendor/getById/"+requestId,HttpMethod.GET,null,FreightRequestByVendorDTO.class);
+		ResponseEntity<FreightRequestByVendor> status=restTemplate
+				.exchange(env.getProperty("rest.host")+"/request/freightRequestByVendor/getById/"+requestId,HttpMethod.GET,null,FreightRequestByVendor.class);
 		
 		if(status.getStatusCode()==HttpStatus.FOUND)
 			return status.getBody();
@@ -81,7 +82,7 @@ public class FreightRequestByVendorHandler implements
 	}
 
 	@Override
-	public List<FreightRequestByVendorDTO> getAllRequestForVendor(Long vendorId) {
+	public List<FreightRequestByVendor> getAllRequestForVendor(Long vendorId) {
 
 		FreightRequestByVendorList status=restTemplate
 				.getForObject(env.getProperty("rest.host")+"/request/freightRequestByVendor/findByVendorId/"+vendorId, FreightRequestByVendorList.class);
@@ -93,7 +94,7 @@ public class FreightRequestByVendorHandler implements
 	}
 	
 	@Override
-	public List<FreightRequestByVendorDTO> getMatchingVendorReqForCustReq(
+	public List<FreightRequestByVendor> getMatchingVendorReqForCustReq(
 			FreightRequestByCustomerDTO freightRequestByCustomer) {
 	
 		FreightRequestByVendorList status=null;

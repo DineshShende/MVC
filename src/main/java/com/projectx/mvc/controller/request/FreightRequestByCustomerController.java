@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -19,12 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projectx.mvc.domain.completeregister.ResponseDTO;
 import com.projectx.mvc.domain.request.FreightRequestByCustomer;
 import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
+import com.projectx.mvc.services.completeregister.VendorDetailsService;
+import com.projectx.mvc.services.handshake.DealService;
 import com.projectx.mvc.services.request.FreightRequestByCustomerService;
 import com.projectx.mvc.services.request.FreightRequestByVendorService;
 import com.projectx.rest.domain.ang.FreightRequestByCustomerAngDTO;
 import com.projectx.rest.domain.ang.FreightRequestByVendorAngDTO;
+import com.projectx.rest.domain.ang.FreightRequestByVendorCustomAngDTO;
+import com.projectx.rest.domain.ang.VehicleDetailsCustomAngDTO;
 import com.projectx.rest.domain.completeregister.EntityIdDTO;
 import com.projectx.rest.domain.completeregister.EntityIdTypeDTO;
+import com.projectx.rest.domain.handshake.DealInfoAndVendorContactDetailsDTO;
+import com.projectx.rest.domain.handshake.TriggerDealDTO;
+import com.projectx.rest.domain.request.FreightRequestByVendor;
 import com.projectx.rest.domain.request.FreightRequestByVendorDTO;
 
 
@@ -38,13 +46,22 @@ public class FreightRequestByCustomerController {
 	@Autowired
 	FreightRequestByVendorService freightRequestByVendorService;
 	
+	@Autowired
+	VendorDetailsService vendorDetailsService;
+	
+	@Autowired
+	DealService dealService;
+	
+	@Value("${FREIGHTALLOCATIONSTATUS_NEW}")
+	private String FREIGHTALLOCATIONSTATUS_NEW;
+	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<List<FreightRequestByVendorAngDTO>> save(@Valid @RequestBody FreightRequestByCustomerAngDTO freightRequestByCustomerDTO,BindingResult bindingResult)
+	public ResponseEntity<EntityIdDTO> save(@Valid @RequestBody FreightRequestByCustomerAngDTO freightRequestByCustomerDTO,BindingResult bindingResult)
 	{
 		if(bindingResult.hasErrors())
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		
-		freightRequestByCustomerDTO.setStatus("New");
+		freightRequestByCustomerDTO.setStatus(FREIGHTALLOCATIONSTATUS_NEW);
 		
 		FreightRequestByCustomer freightRequestByCustomer=new FreightRequestByCustomer(freightRequestByCustomerDTO.getRequestId(),
 				freightRequestByCustomerDTO.getSource(),freightRequestByCustomerDTO.getDestination(), freightRequestByCustomerDTO.getPickupDate(),
@@ -62,32 +79,50 @@ public class FreightRequestByCustomerController {
 		if(savedEntity.getRequestId()!=null)
 		{	
 		
-			List<FreightRequestByVendorDTO> requestList=freightRequestByVendorService
-					.getMatchingVendorReqForCustReq(savedEntity.toFreightRequestByCustomerDTO());
-			
-			List<FreightRequestByVendorAngDTO> angList=new ArrayList<FreightRequestByVendorAngDTO>();
-			
-			for(int i=0;i<angList.size();i++)
-			{
-				FreightRequestByVendorDTO freightRequestByVendorDTO=requestList.get(i);
-				
-				FreightRequestByVendorAngDTO freightRequestByVendor=new FreightRequestByVendorAngDTO(freightRequestByVendorDTO.getRequestId(),freightRequestByVendorDTO.getVehicleRegistrationNumber(),
-						freightRequestByVendorDTO.getSource(), freightRequestByVendorDTO.getDestination(), freightRequestByVendorDTO.getDriverId(),
-						freightRequestByVendorDTO.getAvailableDate(), freightRequestByVendorDTO.getAvailableTime(),freightRequestByVendorDTO.getPickupRangeInKm(),
-						freightRequestByVendorDTO.getVendorId(), freightRequestByVendorDTO.getStatus(), freightRequestByVendorDTO.getReservedBy(),
-						freightRequestByVendorDTO.getInsertTime(), freightRequestByVendorDTO.getUpdateTime(), freightRequestByVendorDTO.getUpdatedBy(),
-						freightRequestByVendorDTO.getUpdatedById());
-				
-				angList.add(freightRequestByVendor);
-				
-			}
-			
-		
-			return new ResponseEntity<List<FreightRequestByVendorAngDTO>>(angList, HttpStatus.OK);
+			return new ResponseEntity<EntityIdDTO>(new EntityIdDTO(savedEntity.getRequestId()), HttpStatus.OK);	
 		}
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		
 	}
+	
+	
+	@RequestMapping(value="/getMatchingVendorRequestsByCustomerRequestId",method=RequestMethod.POST)
+	public ResponseEntity<List<FreightRequestByVendorCustomAngDTO>> getMatchingVendorRequestsByCustomerRequestId(@Valid @RequestBody EntityIdDTO entityIdDTO,BindingResult bindingResult)
+	{
+		FreightRequestByCustomer freightRequestByCustomer=freightRequestByCustomerService.getRequestById(entityIdDTO.getEntityId());
+		
+		List<FreightRequestByVendor> requestList=freightRequestByVendorService
+				.getMatchingVendorReqForCustReq(freightRequestByCustomer.toFreightRequestByCustomerDTO());
+		
+		List<FreightRequestByVendorCustomAngDTO> angList=new ArrayList<FreightRequestByVendorCustomAngDTO>();
+		
+		
+		
+		for(int i=0;i<requestList.size();i++)
+		{
+			FreightRequestByVendor freightRequestByVendorDTO=requestList.get(i);
+			
+			FreightRequestByVendorCustomAngDTO freightRequestByVendor=new FreightRequestByVendorCustomAngDTO(freightRequestByVendorDTO.getSource(),
+					freightRequestByVendorDTO.getAvailableDate(), freightRequestByVendorDTO.getAvailableTime(),
+					new VehicleDetailsCustomAngDTO(freightRequestByVendorDTO.getVehicleDetailsId().getVehicleBrandId(),
+							freightRequestByVendorDTO.getVehicleDetailsId().getVehicleBodyType(),
+							freightRequestByVendorDTO.getVehicleDetailsId().getLoadCapacityInTons(),
+							freightRequestByVendorDTO.getVehicleDetailsId().getLength(),
+							freightRequestByVendorDTO.getVehicleDetailsId().getWidth(),
+							freightRequestByVendorDTO.getVehicleDetailsId().getHeight(),
+							freightRequestByVendorDTO.getVehicleDetailsId().getNumberOfWheels(),
+							freightRequestByVendorDTO.getVehicleDetailsId().getPermitType(),
+							freightRequestByVendorDTO.getVehicleDetailsId().getInsuranceStatus()));
+			
+			angList.add(freightRequestByVendor);
+		}
+		
+		return new ResponseEntity<List<FreightRequestByVendorCustomAngDTO>>(angList, HttpStatus.OK);
+		
+		
+	}
+	
 	
 	@RequestMapping(value="/getById",method=RequestMethod.POST)
 	public ResponseEntity<FreightRequestByCustomerAngDTO> getById(@RequestBody EntityIdDTO entityIdDTO)
@@ -136,6 +171,14 @@ public class FreightRequestByCustomerController {
 		}
 		
 		return angList;
+	}
+	
+	@RequestMapping(value="/triggerdeal",method=RequestMethod.POST)
+	public DealInfoAndVendorContactDetailsDTO triggerDeal(@RequestBody TriggerDealDTO triggerDealDTO)
+	{
+		DealInfoAndVendorContactDetailsDTO contactDetailsDTO=dealService.triggerDeal(triggerDealDTO);
+		
+		return contactDetailsDTO;
 	}
 	
 	@RequestMapping(value="/deleteRequestById",method=RequestMethod.POST)

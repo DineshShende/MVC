@@ -4,12 +4,14 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
+
 public class FreightRequestByVendorAngDTO {
 
-private Long requestId;
+	private Long requestId;
 	
 	@NotNull
-	private String vehicleRegistrationNumber;
+	private VehicleDetailsDTO vehicleDetailsId;
 	
 	@NotNull
 	private Integer source;
@@ -49,14 +51,14 @@ private Long requestId;
 	}
 
 	public FreightRequestByVendorAngDTO(Long requestId,
-			String vehicleRegistrationNumber, Integer source,
+			VehicleDetailsDTO vehicleRegistrationNumber, Integer source,
 			Integer destination, Long driverId, Date availableDate,
 			String availableTime, Integer pickupRangeInKm, Long vendorId,
 			String status, Long reservedBy, Date insertTime, Date updateTime,
 			Integer updatedBy,Long updatedById) {
 		super();
 		this.requestId = requestId;
-		this.vehicleRegistrationNumber = vehicleRegistrationNumber;
+		this.vehicleDetailsId = vehicleRegistrationNumber;
 		this.source = source;
 		this.destination = destination;
 		this.driverId = driverId;
@@ -80,12 +82,14 @@ private Long requestId;
 		this.requestId = requestId;
 	}
 
-	public String getVehicleRegistrationNumber() {
-		return vehicleRegistrationNumber;
+
+
+	public VehicleDetailsDTO getVehicleDetailsId() {
+		return vehicleDetailsId;
 	}
 
-	public void setVehicleRegistrationNumber(String vehicleRegistrationNumber) {
-		this.vehicleRegistrationNumber = vehicleRegistrationNumber;
+	public void setVehicleDetailsId(VehicleDetailsDTO vehicleDetailsId) {
+		this.vehicleDetailsId = vehicleDetailsId;
 	}
 
 	public Integer getSource() {
@@ -198,7 +202,7 @@ private Long requestId;
 	@Override
 	public String toString() {
 		return "FreightRequestByVendorAngDTO [requestId=" + requestId
-				+ ", vehicleRegistrationNumber=" + vehicleRegistrationNumber
+				+ ", vehicleDetailsId=" + vehicleDetailsId
 				+ ", source=" + source + ", destination=" + destination
 				+ ", driverId=" + driverId + ", availableDate=" + availableDate
 				+ ", availableTime=" + availableTime + ", pickupRangeInKm="
@@ -238,8 +242,8 @@ private Long requestId;
 				+ ((requestedById == null) ? 0 : requestedById.hashCode());
 		result = prime
 				* result
-				+ ((vehicleRegistrationNumber == null) ? 0
-						: vehicleRegistrationNumber.hashCode());
+				+ ((vehicleDetailsId == null) ? 0
+						: vehicleDetailsId.hashCode());
 		result = prime * result
 				+ ((vendorId == null) ? 0 : vendorId.hashCode());
 		return result;
@@ -316,11 +320,11 @@ private Long requestId;
 				return false;
 		} else if (!requestedById.equals(other.requestedById))
 			return false;
-		if (vehicleRegistrationNumber == null) {
-			if (other.vehicleRegistrationNumber != null)
+		if (vehicleDetailsId == null) {
+			if (other.vehicleDetailsId != null)
 				return false;
-		} else if (!vehicleRegistrationNumber
-				.equals(other.vehicleRegistrationNumber))
+		} else if (!vehicleDetailsId
+				.equals(other.vehicleDetailsId))
 			return false;
 		if (vendorId == null) {
 			if (other.vendorId != null)

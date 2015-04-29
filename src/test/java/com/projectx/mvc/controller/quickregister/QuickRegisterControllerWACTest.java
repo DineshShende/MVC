@@ -341,12 +341,15 @@ public class QuickRegisterControllerWACTest {
 		quickRegisterService.verifyMobile(new VerifyMobileDTO(entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType(),
 				ENTITY_TYPE_PRIMARY, mobileVerificationDetailsDTO.getMobilePin(),CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId()));
 		
+		AuthenticationDetails authenticationDetails=quickRegisterService
+				.getAuthenticationDetailsByCustomerIdType(entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType());
+		
 		
 		this.mockMvc.perform(
 				post("/quickregister/updatePassword")
 					.content(standardJsonUpdatePasswordDTO(new UpdatePasswordDTO(
 							new AuthenticationDetailsKey(entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType()),
-							"abc", true, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
+							authenticationDetails.getPassword(),"abc", true, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())

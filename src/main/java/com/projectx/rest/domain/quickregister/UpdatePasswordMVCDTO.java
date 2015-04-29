@@ -10,6 +10,8 @@ public class UpdatePasswordMVCDTO {
 
 	private String password;
 	
+	private String oldPassword;
+	
 	private Boolean isForcefulChangePassword;
 
 	private Integer requestedBy;
@@ -21,15 +23,17 @@ public class UpdatePasswordMVCDTO {
 	}
 
 	public UpdatePasswordMVCDTO(Long customerId, Integer customerType,
-			String password, Boolean isForcefulChangePassword,
-			Integer requestedBy,Long requestedById) {
-
+			String password, String oldPassword,
+			Boolean isForcefulChangePassword, Integer requestedBy,
+			Long requestedById) {
+		super();
 		this.customerId = customerId;
 		this.customerType = customerType;
 		this.password = password;
+		this.oldPassword = oldPassword;
 		this.isForcefulChangePassword = isForcefulChangePassword;
 		this.requestedBy = requestedBy;
-		this.requestedById=requestedById;
+		this.requestedById = requestedById;
 	}
 
 
@@ -96,10 +100,23 @@ public class UpdatePasswordMVCDTO {
 		this.requestedById = requestedById;
 	}
 
+	
+	
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
+	
+
 	@Override
 	public String toString() {
 		return "UpdatePasswordMVCDTO [customerId=" + customerId
 				+ ", customerType=" + customerType + ", password=" + password
+				+ ", oldPassword=" + oldPassword
 				+ ", isForcefulChangePassword=" + isForcefulChangePassword
 				+ ", requestedBy=" + requestedBy + ", requestedById="
 				+ requestedById + "]";

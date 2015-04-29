@@ -8,21 +8,14 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projectx.mvc.controller.request.NameDateDTO;
-import com.projectx.mvc.controller.request.NameDateSerDTO;
 import com.projectx.mvc.domain.completeregister.ResponseDTO;
 import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.services.completeregister.CustomerDetailsService;
@@ -31,19 +24,8 @@ import com.projectx.mvc.services.quickregister.QuickRegisterService;
 import com.projectx.mvc.util.validator.CustomerDetailsValidator;
 import com.projectx.rest.domain.ang.CustomerDetailsDTOAng;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeRequestedByDTO;
 import com.projectx.rest.domain.completeregister.EntityIdTypeDTO;
 import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
-import com.projectx.rest.domain.completeregister.VerifyEmailDTO;
-import com.projectx.rest.domain.completeregister.VerifyMobileDTO;
-import com.projectx.rest.domain.quickregister.CustomerIdTypeDTO;
-import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
-import com.projectx.rest.domain.quickregister.EmailVerificationDetailsKey;
-import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
-import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 
 @RestController
 @RequestMapping(value = "/customer")
@@ -72,16 +54,6 @@ public class CustomerDetailsController {
 	private Integer ENTITY_TYPE_PRIMARY=1;
 	private Integer ENTITY_TYPE_SECONDARY=2;
 	
-	
-	@RequestMapping(value="/datesubmit",method=RequestMethod.POST)
-	public NameDateSerDTO name(@RequestBody NameDateDTO dateDTO)
-	{
-		
-		NameDateSerDTO dto=new NameDateSerDTO(dateDTO.getName(), dateDTO.getDate());
-		
-		return dto;
-		
-	}
 	
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	public ResponseEntity<ResponseDTO> save( @Valid @RequestBody CustomerDetailsDTOAng customerDetailsDTO,BindingResult result)

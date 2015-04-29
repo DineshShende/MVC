@@ -39,8 +39,6 @@ import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
 @Component
 public interface QuickRegisterService {
 	
-	//public QuickRegisterStatusDTO checkIfAlreadyExist(QuickRegisterEntity customerQuickRegisterEntity);
-	
 	public String populateMessageForDuplicationField(String duplicationStatus);
 	
 	public QuickRegisterSavedEntityDTO addNewCustomer(QuickRegisterEntity customerQuickRegisterEntity)
@@ -66,10 +64,6 @@ public interface QuickRegisterService {
 	
 	public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO);
 	
-	//public ModelAndView populateCompleteRegisterRedirect(AuthenticationDetailsDTO authenticationDetailsDTO);
-	
-	//public ModelAndView initialiseShowDetails(Long entityId,Integer entityType,ModelAndView map);
-	
 	public AuthenticationDetailsDTO verifyEmailLoginDetails(VerifyEmailLoginDetails emailLoginDetails) 
 			throws AuthenticationDetailsNotFoundException;
 	
@@ -77,6 +71,8 @@ public interface QuickRegisterService {
 			throws AuthenticationDetailsNotFoundException;
 	
 	public Boolean resetPassword(Long customerId,Integer customerType,Integer emailOrMobile,Integer requestedBy,Long requestedById) throws PasswordRestFailedException;
+	
+	public Boolean resendPassword(Long customerId,Integer customerType,Integer emailOrMobile,Integer requestedBy,Long requestedById) throws PasswordRestFailedException;
 	
 	public ForgetPasswordEntity resetPasswordRedirect(String entity,Integer requestedBy,Long requestedById) throws PasswordRestFailedException;
 	
@@ -93,8 +89,5 @@ public interface QuickRegisterService {
 	public AuthenticationDetails getAuthenticationDetailsByCustomerIdType(Long customerId,Integer customerType)
 		throws AuthenticationDetailsNotFoundException;
 	
-	
-	public List<MobilePinPasswordDTO> getTestData();
-	
-	
+		
 }

@@ -58,18 +58,11 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 	
 	private Integer ENTITY_TYPE_PRIMARY=1;
 	private Integer ENTITY_TYPE_SECONDARY=2;
-	
+
+	/*
 	@Override
 	public CustomerDetailsDTO createCustomerDetailsFromQuickRegisterEntity(
 			Long entityId) {
-		
-		/*
-		if(quickRegisterEntity.getInsertTime()==null)
-			quickRegisterEntity.setInsertTime(new Date());
-		
-		if(quickRegisterEntity.getUpdateTime()==null)
-			quickRegisterEntity.setUpdateTime(new Date());
-		*/
 		
 		
 		HttpEntity<EntityIdDTO> entity=new HttpEntity<EntityIdDTO>(new EntityIdDTO(entityId));
@@ -85,6 +78,7 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 		
 		
 	}
+	*/
 
 	@Override
 	public CustomerDetailsDTO merge(CustomerDetailsDTO customerDetails) {
@@ -231,99 +225,7 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 		return model;
 	}
 	
-	/*
-	@Override
-	public Boolean verifyMobileDetails(VerifyMobileDTO verifyMobileDTO) {
-	
-		HttpEntity<VerifyMobileDTO> entity=new HttpEntity<VerifyMobileDTO>(verifyMobileDTO);
-		
-		ResponseEntity<Boolean> result=null;
-		
-		try{
-			result=restTemplate
-					.exchange(env.getProperty("rest.host")+"/customer/verifyMobileDetails",HttpMethod.POST,entity, Boolean.class);
-			
-		}catch(RestClientException e)
-		{
-			throw new ValidationFailedException();
-		}
-		
-		if(result.getStatusCode()==HttpStatus.OK)
-			return result.getBody();
-		
-		throw new ResourceNotFoundException();
-		
-	}
 
-	@Override
-	public Boolean verifyEmailDetails(VerifyEmailDTO verifyEmailDTO) {
-		
-		HttpEntity<VerifyEmailDTO> entity=new HttpEntity<VerifyEmailDTO>(verifyEmailDTO);
-		
-		ResponseEntity<Boolean> result=null;
-		
-		try{
-			result=restTemplate
-					.exchange(env.getProperty("rest.host")+"/customer/verifyEmailDetails",HttpMethod.POST, entity, Boolean.class);
-			
-		}catch(RestClientException e)
-		{
-			throw new ValidationFailedException();
-		}
-		
-		if(result.getStatusCode()==HttpStatus.OK)
-			return result.getBody();
-		
-		throw new ResourceNotFoundException();
-		
-	}
-
-	@Override
-	public Boolean sendMobileVerificationDetails(
-			CustomerIdTypeMobileTypeUpdatedByDTO customerIdTypeMobileDTO) {
-		
-		HttpEntity<CustomerIdTypeMobileTypeUpdatedByDTO> entity=new HttpEntity<CustomerIdTypeMobileTypeUpdatedByDTO>(customerIdTypeMobileDTO);
-		
-		ResponseEntity<Boolean> result=null;
-		
-		try{
-			result=restTemplate
-					.exchange(env.getProperty("rest.host")+"/customer/sendMobileVerificationDetails",HttpMethod.POST, entity, Boolean.class);
-		}catch(RestClientException e)
-		{
-			throw new ValidationFailedException();
-		}
-		
-		if(result.getStatusCode()==HttpStatus.OK)
-			return result.getBody();
-		
-		throw new ResourceNotFoundException();
-	}
-
-	@Override
-	public Boolean sendEmailVerificationDetails(
-			CustomerIdTypeEmailTypeUpdatedByDTO customerIdTypeEmailDTO) {
-
-		HttpEntity<CustomerIdTypeEmailTypeUpdatedByDTO> entity=new HttpEntity<CustomerIdTypeEmailTypeUpdatedByDTO>(customerIdTypeEmailDTO);
-		
-		ResponseEntity<Boolean> result=null;
-		
-		
-		try{
-			result=restTemplate
-					.exchange(env.getProperty("rest.host")+"/customer/sendEmailVerificationDetails",HttpMethod.POST, entity, Boolean.class);
-		}catch(RestClientException e)
-		{
-			throw new ValidationException();
-		}
-		
-		if(result.getStatusCode()==HttpStatus.OK)
-			return result.getBody();
-		
-		throw new ResourceNotFoundException();
-		
-	}
-*/
 
 
 	@Override

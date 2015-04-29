@@ -15,22 +15,14 @@ import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 @Service
 public interface CustomerDetailsService {
 	
-	CustomerDetailsDTO createCustomerDetailsFromQuickRegisterEntity(Long entityId);
+	//CustomerDetailsDTO createCustomerDetailsFromQuickRegisterEntity(Long entityId);
 	
 	CustomerDetailsDTO merge(CustomerDetailsDTO customerDetails);
 	
 	CustomerDetailsDTO getCustomerDetailsById(Long customerId);
 	
 	CustomerDetailsDTO InitializeMetaData(CustomerDetailsDTO customerDetails);
-	/*
-	Boolean verifyMobileDetails(VerifyMobileDTO verifyMobileDTO);
-	
-	Boolean verifyEmailDetails(VerifyEmailDTO verifyEmailDTO);
-	
-	Boolean sendMobileVerificationDetails(CustomerIdTypeMobileTypeUpdatedByDTO customerIdTypeMobileDTO);
-	
-	Boolean sendEmailVerificationDetails(CustomerIdTypeEmailTypeUpdatedByDTO customerIdTypeEmailDTO);
-	*/
+
 	public Model initialiseShowCustomerDetails(Long customerId,Model model);
 	
 	Integer count();

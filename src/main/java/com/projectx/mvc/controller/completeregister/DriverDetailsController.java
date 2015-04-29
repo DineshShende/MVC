@@ -37,15 +37,6 @@ public class DriverDetailsController {
 	VendorDetailsService vendorDetailsService;
 
 
-	/*
-	@Autowired
-	DriverDetailsValidator driverDetailsValidator;
-
-	@InitBinder("driverDetailsDTO")
-    private void initBinder(WebDataBinder binder) {
-        binder.setValidator(driverDetailsValidator);
-    }
-*/
 	
 	
 	@RequestMapping(value="/save",method=RequestMethod.POST)

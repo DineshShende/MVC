@@ -57,8 +57,8 @@ import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
 @RestController
 @RequestMapping(value = "/quickregister")
 @PropertySource(value="classpath:/application.properties")
-public class QuickRegisterController {
 
+public class QuickRegisterController {
 	@Autowired
 	Environment env;
 
@@ -346,13 +346,6 @@ public class QuickRegisterController {
 		
 	}
 
-	@RequestMapping(value="/getTestData",method=RequestMethod.GET)
-	public String getTestData(Model model)
-	{
-		model.addAttribute("list", customerQuickRegisterService.getTestData());
-		
-		return "showTestData";
-	}
 
 
 }
