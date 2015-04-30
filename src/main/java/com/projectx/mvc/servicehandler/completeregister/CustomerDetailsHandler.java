@@ -7,6 +7,7 @@ import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.projectx.mvc.domain.commn.ResponseDTO;
 import com.projectx.mvc.exception.repository.completeregister.CustomerDetailsNotFoundException;
 import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.exception.repository.completeregister.ValidationFailedException;
@@ -91,13 +93,20 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 		if(customerDetails.getMobile()==null && customerDetails.getIsMobileVerified()==null)
 			customerDetails.setIsMobileVerified(false);
 		
-		ResponseEntity<CustomerDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/customer",
-				HttpMethod.POST, entity, CustomerDetailsDTO.class);
+		ResponseEntity<ResponseDTO<CustomerDetailsDTO>> result=null;
 		
-		if(result.getStatusCode()==HttpStatus.OK)
-			return result.getBody();
+		try{
+		result=restTemplate.exchange(env.getProperty("rest.host")+"/customer",
+				HttpMethod.POST, entity, new ParameterizedTypeReference<ResponseDTO<CustomerDetailsDTO>>() {});
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.OK && result.getBody().getErrorMessage().equals(""))
+			return result.getBody().getResult();
 		else
-			throw new CustomerDetailsNotFoundException();
+			throw new CustomerDetailsNotFoundException(result.getBody().getErrorMessage());
 		
 		
 	}

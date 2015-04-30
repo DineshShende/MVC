@@ -20,7 +20,7 @@ import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 @Service
 public interface VendorDetailsService {
 
-	VendorDetailsDTO createCustomerDetailsFromQuickRegisterEntity(Long entityId);
+	//VendorDetailsDTO createCustomerDetailsFromQuickRegisterEntity(Long entityId);
 	
 	VendorDetailsDTO update(VendorDetailsDTO vendorDetails);
 	
@@ -40,6 +40,8 @@ public interface VendorDetailsService {
 	DriverDetailsDTO initializeDriverDetails(DriverDetailsDTO driverDetailsDTO);
 	
 	DriverDetailsDTO getDriverById(Long driverId);
+	
+	DriverDetailsDTO getDriverByLicenceNumber(String licenceNumber);
 	
 	Boolean deleteDriverById(Long driverId);
 	

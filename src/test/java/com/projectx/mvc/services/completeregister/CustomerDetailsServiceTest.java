@@ -554,10 +554,6 @@ public class CustomerDetailsServiceTest {
 		
 	}
 
-	@Test
-	public void awsTest()
-	{
-		assertEquals("aws", customerDetailsService.awsTest());
-	}
+	
 	
 }

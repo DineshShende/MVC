@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.projectx.mvc.domain.commn.ResponseDTO;
 import com.projectx.mvc.exception.repository.completeregister.DriverDetailsAlreadyPresentException;
 import com.projectx.mvc.exception.repository.completeregister.DriverDetailsNotFoundException;
 import com.projectx.mvc.exception.repository.completeregister.DriverDetailsUpdateFailedException;
@@ -69,38 +71,6 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	
 	
 	@Override
-	public VendorDetailsDTO createCustomerDetailsFromQuickRegisterEntity(
-			Long entityId) {
-		
-		/*
-		if(quickRegisterEntity.getEmail()!=null && quickRegisterEntity.getIsEmailVerified()==null)
-			quickRegisterEntity.setIsEmailVerified(false);
-		
-		if(quickRegisterEntity.getMobile()!=null && quickRegisterEntity.getIsMobileVerified()==null)
-			quickRegisterEntity.setIsMobileVerified(false);
-	*/
-	
-		HttpEntity<EntityIdDTO> entity=new HttpEntity<EntityIdDTO>(new EntityIdDTO(entityId));
-		
-		ResponseEntity<VendorDetailsDTO> result=null;
-		
-		try{
-			result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/createFromQuickRegister",
-					HttpMethod.POST, entity, VendorDetailsDTO.class);
-		}catch(RestClientException e)
-		{
-			throw new ValidationFailedException();
-		}
-		
-		
-		if(result.getStatusCode()==HttpStatus.OK)
-			return result.getBody();
-		else
-			throw new DeleteQuickCreateDetailsEntityFailedException();
-		
-	}
-
-	@Override
 	public VendorDetailsDTO update(VendorDetailsDTO vendorDetails) {
 		
 		if(vendorDetails.getEmail()!=null && vendorDetails.getIsEmailVerified()==null)
@@ -111,20 +81,20 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		
 		HttpEntity<VendorDetailsDTO> entity=new HttpEntity<VendorDetailsDTO>(vendorDetails);
 		
-		ResponseEntity<VendorDetailsDTO> result=null;
+		ResponseEntity<ResponseDTO<VendorDetailsDTO>> result=null;
 		
 		try{
 			result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/update",
-					HttpMethod.POST, entity, VendorDetailsDTO.class);
+					HttpMethod.POST, entity, new ParameterizedTypeReference<ResponseDTO<VendorDetailsDTO>>() {});
 		}catch(RestClientException e)
 		{
 			throw new ValidationFailedException();
 		}
 				
-		if(result.getStatusCode()==HttpStatus.OK)		
-			return result.getBody();
+		if(result.getStatusCode()==HttpStatus.OK && result.getBody().getErrorMessage().equals(""))		
+			return result.getBody().getResult();
 		else
-			throw new VendorDetailsTransactionalUpdateFailedException();
+			throw new VendorDetailsTransactionalUpdateFailedException(result.getBody().getErrorMessage());
 		
 		
 	}
@@ -331,11 +301,11 @@ public class VendorDetailsHandler implements VendorDetailsService {
 			
 		HttpEntity<DriverDetailsDTO> entity=new HttpEntity<DriverDetailsDTO>(driverDetailsDTO);
 		
-		ResponseEntity<DriverDetailsDTO> result=null;
+		ResponseEntity<ResponseDTO<DriverDetailsDTO>> result=null;
 		
 		try{
 			result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/driver", HttpMethod.POST,
-					entity, DriverDetailsDTO.class);
+					entity, new ParameterizedTypeReference<ResponseDTO<DriverDetailsDTO>>() {});
 		}catch(RestClientException e)
 		{
 			throw new ValidationFailedException();
@@ -343,9 +313,9 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		
 		
 		if(result.getStatusCode()==HttpStatus.CREATED)		
-			return result.getBody();
+			return result.getBody().getResult();
 		else
-			throw new DriverDetailsAlreadyPresentException();
+			throw new DriverDetailsAlreadyPresentException(result.getBody().getErrorMessage());
 		
 	}
 
@@ -354,6 +324,20 @@ public class VendorDetailsHandler implements VendorDetailsService {
 	public DriverDetailsDTO getDriverById(Long driverId) {
 		
 		ResponseEntity<DriverDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/driver/getByDriverId/"+driverId, 
+				HttpMethod.GET, null, DriverDetailsDTO.class);
+		
+		if(result.getStatusCode()==HttpStatus.FOUND)
+			return result.getBody();
+		else
+			throw new DriverDetailsNotFoundException();
+		
+		
+	}
+	
+	@Override
+	public DriverDetailsDTO getDriverByLicenceNumber(String licenceNumber) {
+		
+		ResponseEntity<DriverDetailsDTO> result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/driver/getByLicenceNumber/"+licenceNumber, 
 				HttpMethod.GET, null, DriverDetailsDTO.class);
 		
 		if(result.getStatusCode()==HttpStatus.FOUND)
@@ -416,11 +400,12 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		
 		HttpEntity<VehicleDetailsDTO> entity=new HttpEntity<VehicleDetailsDTO>(vehicleDetailsDTO);
 		
-		ResponseEntity<VehicleDetailsDTO> result=null;
+		ResponseEntity<ResponseDTO<VehicleDetailsDTO>> result=null;
 		
 		try{
 			result=restTemplate
-					.exchange(env.getProperty("rest.host")+"/vendor/vehicle",HttpMethod.POST, entity, VehicleDetailsDTO.class);
+					.exchange(env.getProperty("rest.host")+"/vendor/vehicle",HttpMethod.POST, entity,
+							new ParameterizedTypeReference<ResponseDTO<VehicleDetailsDTO>>() {});
 			
 		}catch(RestClientException e)
 		{
@@ -428,9 +413,9 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		}
 		
 		if(result.getStatusCode()==HttpStatus.CREATED)
-			return result.getBody();
+			return result.getBody().getResult();
 		
-		throw new ResourceAlreadyPresentException(); 
+		throw new ResourceAlreadyPresentException(result.getBody().getErrorMessage()); 
 
 	}
 

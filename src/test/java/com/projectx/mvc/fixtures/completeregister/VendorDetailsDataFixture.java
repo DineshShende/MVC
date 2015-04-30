@@ -123,6 +123,23 @@ public class VendorDetailsDataFixture {
 				VENDOR_UPDATEDBY,VENDOR_UPDATEDBY,VENDOR_ID,VENDOR_ID);
 	}
 	
+	public static VendorDetailsDTO standardVendorCreatedFromQuickRegisterWithDefaultHomeAddEmailVerified(Long vendorId)
+	{
+		return new VendorDetailsDTO(vendorId, standardEmailMobileCustomerVendor().getFirstName(),null,
+				standardEmailMobileCustomerVendor().getLastName(), null,null, null,standardAddressDefault(ENTITY_TYPE_VENDOR), standardEmailMobileCustomerVendor().getMobile(),null, 
+				standardEmailMobileCustomerVendor().getIsMobileVerified(),standardEmailMobileCustomerVendor().getEmail(),true,
+				null,null,null, new Date(), new Date(),
+				VENDOR_UPDATEDBY,VENDOR_UPDATEDBY,VENDOR_ID,VENDOR_ID);
+	}
+	
+	public static VendorDetailsDTO standardVendorCreatedFromQuickRegisterWithDefaultHomeAddMobileVerified(Long vendorId)
+	{
+		return new VendorDetailsDTO(vendorId, standardEmailMobileCustomerVendor().getFirstName(),null,
+				standardEmailMobileCustomerVendor().getLastName(), null,null, null,standardAddressDefault(ENTITY_TYPE_VENDOR), standardEmailMobileCustomerVendor().getMobile(),null, 
+				true,standardEmailMobileCustomerVendor().getEmail(),standardEmailMobileCustomerVendor().getIsEmailVerified(),
+				null,null,null, new Date(), new Date(),
+				VENDOR_UPDATEDBY,VENDOR_UPDATEDBY,VENDOR_ID,VENDOR_ID);
+	}
 
 	
 	public static VendorDetailsDTO standardVendor(VendorDetailsDTO vendorDetails)
