@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import com.projectx.rest.domain.completeregister.VehicleBrandDetails;
+import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
 
 public class VehicleDetailsAngDTO {
 	
@@ -117,9 +118,31 @@ public class VehicleDetailsAngDTO {
 		this.requestedById=updatedById;
 	}
 
+	public VehicleDetailsDTO toVehicleDetailsDTO()
+	{
+		VehicleDetailsDTO vehicleDetails=new VehicleDetailsDTO(this.getVehicleId(), this.getOwnerFirstName(),this.getOwnerMiddleName(),
+				this.getOwnerLastName(), this.getVehicleBrandId(), this.getVehicleBodyType(), this.getIsBodyTypeFlexible(),
+				this.getRegistrationNumber(), this.getChassisNumber(), this.getLoadCapacityInTons(), this.getLength(),
+				this.getWidth(), this.getHeight(), this.getNumberOfWheels(), this.getPermitType(), this.getInsuranceStatus(),
+				this.getInsuranceNumber(),this.getInsuranceCompany(), this.getVendorId(), this.getCommodityList(),
+				new Date(), new Date(), this.getRequestedBy(),this.getRequestedBy(),
+				this.getRequestedById(),this.getRequestedById());
+		
+		return vehicleDetails;
+	}
 
-
-
+	public static VehicleDetailsAngDTO fromVehicleDetailsDTO(VehicleDetailsDTO fetchedEntity)
+	{
+		VehicleDetailsAngDTO detailsAngDTO=new VehicleDetailsAngDTO(fetchedEntity.getVehicleId(), fetchedEntity.getOwnerFirstName(),fetchedEntity.getOwnerMiddleName(),
+				fetchedEntity.getOwnerLastName(), fetchedEntity.getVehicleBrandId(), fetchedEntity.getVehicleBodyType(), fetchedEntity.getIsBodyTypeFlexible(),
+				fetchedEntity.getRegistrationNumber(), fetchedEntity.getChassisNumber(), fetchedEntity.getLoadCapacityInTons(),fetchedEntity.getLength(), 
+				fetchedEntity.getWidth(), fetchedEntity.getHeight(), fetchedEntity.getNumberOfWheels(), fetchedEntity.getPermitType(),fetchedEntity.getInsuranceStatus(),
+				fetchedEntity.getInsuranceNumber(), fetchedEntity.getInsuranceCompany(), fetchedEntity.getVendorId(), fetchedEntity.getCommodityList(),
+				fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
+		
+		return detailsAngDTO;
+		
+	}
 
 
 

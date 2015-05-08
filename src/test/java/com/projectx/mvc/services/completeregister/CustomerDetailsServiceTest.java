@@ -9,14 +9,12 @@ import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.s
 import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.standardEmailMobileCustomer;
 import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.standardEmailMobileCustomerDTO;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -35,6 +33,8 @@ import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.LoginVerificationDTO;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
+import com.projectx.rest.domain.quickregister.SendResendResetEmailHashDTO;
+import com.projectx.rest.domain.quickregister.SendResendResetMobilePinDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailDTO;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
 
@@ -50,6 +50,8 @@ public class CustomerDetailsServiceTest {
 	@Autowired
 	QuickRegisterService customerQuickRegisterService;
 	
+	@Value("${SEND_REQUEST}")
+	private Integer SEND_REQUEST;
 	
 	@Before
 	public void setUp()
@@ -101,8 +103,7 @@ public class CustomerDetailsServiceTest {
 		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO=
 				customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
 		
-		customerQuickRegisterService.sendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
-				quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY, quickRegisterSavedEntityDTO.getCustomer().getCustomerId()));
+		
 		
 		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=customerQuickRegisterService
 				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
@@ -158,9 +159,6 @@ public class CustomerDetailsServiceTest {
 				
 		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO=
 				customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
-		
-		customerQuickRegisterService.sendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
-				quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY, quickRegisterSavedEntityDTO.getCustomer().getCustomerId()));
 		
 		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=customerQuickRegisterService
 				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
@@ -219,8 +217,6 @@ public class CustomerDetailsServiceTest {
 		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO=
 				customerQuickRegisterService.addNewCustomer(standardEmailMobileCustomerDTO());
 		
-		customerQuickRegisterService.sendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
-				quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY, quickRegisterSavedEntityDTO.getCustomer().getCustomerId()));
 		
 		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=customerQuickRegisterService
 				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
@@ -264,8 +260,9 @@ public class CustomerDetailsServiceTest {
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 		
-		assertTrue(customerQuickRegisterService.sendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(savedEntity.getCustomerId(), 
-				ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_SECONDARY,CUST_UPDATED_BY,savedEntity.getCustomerId())));
+		assertTrue(customerQuickRegisterService.sendOrResendOrResetMobilePin(new SendResendResetMobilePinDTO
+				(savedEntity.getCustomerId(),ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_SECONDARY,SEND_REQUEST,CUST_UPDATED_BY,savedEntity.getCustomerId())));
+		
 		
 		MobileVerificationDetailsDTO MobileVerificationDetailsDTO=
 				customerQuickRegisterService
@@ -291,8 +288,6 @@ public class CustomerDetailsServiceTest {
 		
 		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO= customerQuickRegisterService.addNewCustomer(standardCustomerQuickRegisterEntity());
 		
-		customerQuickRegisterService.sendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
-				quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY, quickRegisterSavedEntityDTO.getCustomer().getCustomerId()));
 		
 		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=customerQuickRegisterService
 				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
@@ -339,8 +334,9 @@ public class CustomerDetailsServiceTest {
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 		
-		assertTrue(customerQuickRegisterService.sendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(
-				mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY,mergedEntity.getCustomerId())));
+		
+		assertTrue(customerQuickRegisterService.sendOrResendOrResetMobilePin(new SendResendResetMobilePinDTO
+				(mergedEntity.getCustomerId(),ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY,SEND_REQUEST,CUST_UPDATED_BY,mergedEntity.getCustomerId())));
 		
 		MobileVerificationDetailsDTO MobileVerificationDetailsDTO=
 				customerQuickRegisterService
@@ -363,9 +359,7 @@ public class CustomerDetailsServiceTest {
 		
 		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO= customerQuickRegisterService.addNewCustomer(standardCustomerQuickRegisterEntity());
 		
-		customerQuickRegisterService.sendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
-				quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY, quickRegisterSavedEntityDTO.getCustomer().getCustomerId()));
-		
+			
 		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=customerQuickRegisterService
 				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
 						quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY);
@@ -408,8 +402,9 @@ public class CustomerDetailsServiceTest {
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 		
-		assertTrue(customerQuickRegisterService.sendEmailHash(new CustomerIdTypeEmailTypeUpdatedByDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER,
-				ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY,mergedEntity.getCustomerId())));
+				
+		assertTrue(customerQuickRegisterService.sendOrResendOrResetEmailHash(new SendResendResetEmailHashDTO(mergedEntity.getCustomerId(),
+				ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY,SEND_REQUEST,CUST_UPDATED_BY,mergedEntity.getCustomerId())));
 		
 		EmailVerificationDetailsDTO emailVerificationDetailsDTO=
 				customerQuickRegisterService
@@ -432,9 +427,6 @@ public class CustomerDetailsServiceTest {
 		
 		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO= customerQuickRegisterService.addNewCustomer(standardCustomerQuickRegisterEntity());
 		
-		customerQuickRegisterService.sendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
-				quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY, quickRegisterSavedEntityDTO.getCustomer().getCustomerId()));
-		
 		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=customerQuickRegisterService
 				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
 						quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY);
@@ -476,9 +468,10 @@ public class CustomerDetailsServiceTest {
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 		
-		assertTrue(customerQuickRegisterService
-				.sendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, 
-						ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY,mergedEntity.getCustomerId())));
+		assertTrue(customerQuickRegisterService.sendOrResendOrResetMobilePin(new SendResendResetMobilePinDTO
+				(mergedEntity.getCustomerId(),ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY,SEND_REQUEST,CUST_UPDATED_BY,mergedEntity.getCustomerId())));
+		
+		
 	}
 	
 	@Test
@@ -488,9 +481,6 @@ public class CustomerDetailsServiceTest {
 		
 		QuickRegisterSavedEntityDTO quickRegisterSavedEntityDTO= customerQuickRegisterService.addNewCustomer(standardCustomerQuickRegisterEntity());
 		
-		customerQuickRegisterService.sendMobilePin(new CustomerIdTypeMobileTypeRequestedByDTO(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
-				quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY, quickRegisterSavedEntityDTO.getCustomer().getCustomerId()));
-		
 		MobileVerificationDetailsDTO mobileVerificationDetailsDTO=customerQuickRegisterService
 				.getMobileVerificationDetailsByCustomerIdTypeAndMobile(quickRegisterSavedEntityDTO.getCustomer().getCustomerId(),
 						quickRegisterSavedEntityDTO.getCustomer().getCustomerType(), ENTITY_TYPE_PRIMARY);
@@ -532,9 +522,9 @@ public class CustomerDetailsServiceTest {
 		
 		assertEquals(1,customerDetailsService.count().intValue());
 		
-		assertTrue(customerQuickRegisterService
-				.sendEmailHash(new CustomerIdTypeEmailTypeUpdatedByDTO(mergedEntity.getCustomerId(), ENTITY_TYPE_CUSTOMER, 
-						ENTITY_TYPE_PRIMARY,CUST_UPDATED_BY,mergedEntity.getCustomerId())));
+		assertTrue(customerQuickRegisterService.sendOrResendOrResetEmailHash(new SendResendResetEmailHashDTO(mergedEntity.getCustomerId(),
+				ENTITY_TYPE_CUSTOMER,ENTITY_TYPE_PRIMARY,SEND_REQUEST,CUST_UPDATED_BY,mergedEntity.getCustomerId())));
+		
 	}
 
 	

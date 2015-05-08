@@ -8,6 +8,7 @@ import javax.validation.constraints.Past;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.projectx.rest.domain.completeregister.Address;
+import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
 
 
 public class DriverDetailsAngDTO {
@@ -104,6 +105,35 @@ public class DriverDetailsAngDTO {
 	}
 
 
+	public DriverDetailsDTO toDriverDetailsDTO()
+	{
+		DriverDetailsDTO driverDetails=new DriverDetailsDTO(this.getDriverId(), this.getFirstName(), this.getMiddleName(),
+				this.getLastName(), this.getDateOfBirth(), this.getBloodGroup(), this.getHomeAddress(),
+				this.getMobile(), this.getIsMobileVerified(), this.getHomeContactNumber(),
+				this.getLicenceNumber(), this.getDrivingSince(),this.getEmployedSince(),
+				this.getIsFreightRequestPermissionGiven(), this.getIsDealFinalizationPermissionGiven(),
+				this.getLanguage(), this.getVendorId(), new Date(), new Date(), this.getRequestedBy(),
+				this.getRequestedBy(),this.getRequestedById(),this.getRequestedById());
+		
+		return driverDetails;
+	}
+	
+	public static DriverDetailsAngDTO fromDriverDetailsDTO(DriverDetailsDTO fetchedEntity)
+	{
+		DriverDetailsAngDTO detailsAngDTO=new DriverDetailsAngDTO(fetchedEntity.getDriverId(), fetchedEntity.getFirstName(), fetchedEntity.getMiddleName(),
+				fetchedEntity.getLastName(), fetchedEntity.getDateOfBirth(), fetchedEntity.getBloodGroup(), 
+				fetchedEntity.getHomeAddress(), fetchedEntity.getMobile(), fetchedEntity.getIsMobileVerified(),
+				fetchedEntity.getHomeContactNumber(), fetchedEntity.getLicenceNumber(), fetchedEntity.getDrivingSince(),
+				fetchedEntity.getEmployedSince(), fetchedEntity.getIsFreightRequestPermissionGiven(), fetchedEntity.getIsDealFinalizationPermissionGiven(),
+				fetchedEntity.getLanguage(), fetchedEntity.getVendorId(), fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(),
+				fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
+		
+		return detailsAngDTO;
+		
+	}
+	
+	
+	
 	public Long getDriverId() {
 		return driverId;
 	}

@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,7 @@ import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.projectx.mvc.domain.commn.ResponseDTO;
 import com.projectx.mvc.domain.request.FreightRequestByCustomer;
 import com.projectx.mvc.exception.repository.completeregister.ResourceAlreadyPresentException;
 import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
@@ -142,10 +144,14 @@ public class FreightRequestByCustomerHandler implements
 	@Override
 	public Boolean deleteRequestById(Long requestId) {
 
-		Boolean status=restTemplate
-				.getForObject(env.getProperty("rest.host")+"/request/freightRequestByCustomer/deleteById/"+requestId, Boolean.class);
+		ResponseEntity<ResponseDTO<Boolean>> status=restTemplate
+				.exchange(env.getProperty("rest.host")+"/request/freightRequestByCustomer/deleteById/"+requestId, HttpMethod.GET,
+						null, new ParameterizedTypeReference<ResponseDTO<Boolean>>() {});
 		
-		return status;
+		if(status.getStatusCode()==HttpStatus.OK && status.getBody().getErrorMessage().equals(""))
+			return status.getBody().getResult();
+		else
+			throw new ResourceNotFoundException(status.getBody().getErrorMessage());
 	}
 
 	@Override

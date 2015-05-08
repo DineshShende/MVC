@@ -71,7 +71,7 @@ public class DriverDetailsControllerWACTest {
 				.accept(MediaType.APPLICATION_JSON))
 	.andDo(print())
 	.andExpect(status().isOk())
-	.andExpect(jsonPath("$.status").value("sucess"))
+	.andExpect(jsonPath("$.result").value("sucess"))
     .andExpect(jsonPath("$.errorMessage").value(""));
 
     
@@ -89,23 +89,23 @@ public class DriverDetailsControllerWACTest {
 				.accept(MediaType.APPLICATION_JSON))
 	.andDo(print())
 	.andExpect(status().isOk())
-	.andExpect(jsonPath("$.firstName").value(standardDriverDetails().getFirstName()))
-    .andExpect(jsonPath("$.middleName").value(standardDriverDetails().getMiddleName()))
-    .andExpect(jsonPath("$.lastName").value(standardDriverDetails().getLastName()))
-    .andExpect(jsonPath("$.bloodGroup").value(standardDriverDetails().getBloodGroup()))
-    .andExpect(jsonPath("$.mobile").value(standardDriverDetails().getMobile()))
-    .andExpect(jsonPath("$.homeAddress").exists())
-    .andExpect(jsonPath("$.isMobileVerified").value(standardDriverDetails().getIsMobileVerified()))
-    .andExpect(jsonPath("$.homeContactNumber").value(standardDriverDetails().getHomeContactNumber()))
-    .andExpect(jsonPath("$.licenceNumber").value(standardDriverDetails().getLicenceNumber()))
-    .andExpect(jsonPath("$.isFreightRequestPermissionGiven").value(standardDriverDetails().getIsFreightRequestPermissionGiven()))
-    .andExpect(jsonPath("$.isDealFinalizationPermissionGiven").value(standardDriverDetails().getIsDealFinalizationPermissionGiven()))
-    .andExpect(jsonPath("$.language").value(standardDriverDetails().getLanguage()))
-    .andExpect(jsonPath("$.vendorId").exists())
-    .andExpect(jsonPath("$.requestedBy").value(standardDriverDetails().getUpdatedBy()))
-    .andExpect(jsonPath("$.dateOfBirth").exists())
-    .andExpect(jsonPath("$.drivingSince").exists())
-	.andExpect(jsonPath("$.employedSince").exists());
+	.andExpect(jsonPath("$.result.firstName").value(standardDriverDetails().getFirstName()))
+    .andExpect(jsonPath("$.result.middleName").value(standardDriverDetails().getMiddleName()))
+    .andExpect(jsonPath("$.result.lastName").value(standardDriverDetails().getLastName()))
+    .andExpect(jsonPath("$.result.bloodGroup").value(standardDriverDetails().getBloodGroup()))
+    .andExpect(jsonPath("$.result.mobile").value(standardDriverDetails().getMobile()))
+    .andExpect(jsonPath("$.result.homeAddress").exists())
+    .andExpect(jsonPath("$.result.isMobileVerified").value(standardDriverDetails().getIsMobileVerified()))
+    .andExpect(jsonPath("$.result.homeContactNumber").value(standardDriverDetails().getHomeContactNumber()))
+    .andExpect(jsonPath("$.result.licenceNumber").value(standardDriverDetails().getLicenceNumber()))
+    .andExpect(jsonPath("$.result.isFreightRequestPermissionGiven").value(standardDriverDetails().getIsFreightRequestPermissionGiven()))
+    .andExpect(jsonPath("$.result.isDealFinalizationPermissionGiven").value(standardDriverDetails().getIsDealFinalizationPermissionGiven()))
+    .andExpect(jsonPath("$.result.language").value(standardDriverDetails().getLanguage()))
+    .andExpect(jsonPath("$.result.vendorId").exists())
+    .andExpect(jsonPath("$.result.requestedBy").value(standardDriverDetails().getUpdatedBy()))
+    .andExpect(jsonPath("$.result.dateOfBirth").exists())
+    .andExpect(jsonPath("$.result.drivingSince").exists())
+	.andExpect(jsonPath("$.result.employedSince").exists());
 		
 	}
 	
@@ -154,7 +154,7 @@ public class DriverDetailsControllerWACTest {
 				.accept(MediaType.APPLICATION_JSON))
 	.andDo(print())
 	.andExpect(status().isOk())
-	.andExpect(jsonPath("$.status").value("sucess"))
+	.andExpect(jsonPath("$.result").value("sucess"))
 	.andExpect(jsonPath("$.errorMessage").value(""));
 		
 	}

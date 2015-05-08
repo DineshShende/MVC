@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -20,7 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projectx.mvc.domain.completeregister.ResponseDTO;
+import com.projectx.mvc.domain.commn.ResponseDTO;
+import com.projectx.mvc.exception.repository.completeregister.DriverDetailsAlreadyPresentException;
 import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.util.validator.DriverDetailsValidator;
@@ -36,11 +38,12 @@ public class DriverDetailsController {
 	@Autowired
 	VendorDetailsService vendorDetailsService;
 
-
+	@Value("${DRIVER_DETAILS_NOT_FOUND_BY_ID}")
+	private String DRIVER_DETAILS_NOT_FOUND_BY_ID;
 	
 	
 	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public ResponseEntity<ResponseDTO> addDriver(@Valid @RequestBody DriverDetailsAngDTO driverDetailsDTO,BindingResult result)
+	public ResponseEntity<ResponseDTO<String>> addDriver(@Valid @RequestBody DriverDetailsAngDTO driverDetailsDTO,BindingResult result)
 	{
 		
 		if(result.hasErrors())
@@ -48,40 +51,34 @@ public class DriverDetailsController {
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		}
 		
-		DriverDetailsDTO driverDetails=new DriverDetailsDTO(driverDetailsDTO.getDriverId(), driverDetailsDTO.getFirstName(), driverDetailsDTO.getMiddleName(),
-				driverDetailsDTO.getLastName(), driverDetailsDTO.getDateOfBirth(), driverDetailsDTO.getBloodGroup(), driverDetailsDTO.getHomeAddress(),
-				driverDetailsDTO.getMobile(), driverDetailsDTO.getIsMobileVerified(), driverDetailsDTO.getHomeContactNumber(),
-				driverDetailsDTO.getLicenceNumber(), driverDetailsDTO.getDrivingSince(),driverDetailsDTO.getEmployedSince(),
-				driverDetailsDTO.getIsFreightRequestPermissionGiven(), driverDetailsDTO.getIsDealFinalizationPermissionGiven(),
-				driverDetailsDTO.getLanguage(), driverDetailsDTO.getVendorId(), new Date(), new Date(), driverDetailsDTO.getRequestedBy(),
-				driverDetailsDTO.getRequestedBy(),driverDetailsDTO.getRequestedById(),driverDetailsDTO.getRequestedById());
+		DriverDetailsDTO driverDetails=driverDetailsDTO.toDriverDetailsDTO();
 		
 		DriverDetailsDTO detailsDTOInitialized=vendorDetailsService.initializeDriverDetails(driverDetails);
 		
-		DriverDetailsDTO detailsDTO=vendorDetailsService.addDriver(detailsDTOInitialized);
-		
-		return new ResponseEntity<ResponseDTO>(new ResponseDTO("sucess", ""), HttpStatus.OK);
+		try{
+			DriverDetailsDTO detailsDTO=vendorDetailsService.addDriver(detailsDTOInitialized);
+			
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("sucess", ""), HttpStatus.OK);
+		}catch(DriverDetailsAlreadyPresentException e)
+		{
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("failure", e.getMessage()), HttpStatus.OK);
+		}
 	
 	}
 	
 	@RequestMapping(value="/getById",method=RequestMethod.POST)
-	public ResponseEntity<DriverDetailsAngDTO> getById(@RequestBody EntityIdDTO entityIdDTO)
+	public ResponseEntity<ResponseDTO<DriverDetailsAngDTO>> getById(@RequestBody EntityIdDTO entityIdDTO)
 	{
 		try{
 			DriverDetailsDTO fetchedEntity=vendorDetailsService.getDriverById(entityIdDTO.getEntityId());
 			
-			DriverDetailsAngDTO detailsAngDTO=new DriverDetailsAngDTO(fetchedEntity.getDriverId(), fetchedEntity.getFirstName(), fetchedEntity.getMiddleName(),
-					fetchedEntity.getLastName(), fetchedEntity.getDateOfBirth(), fetchedEntity.getBloodGroup(), 
-					fetchedEntity.getHomeAddress(), fetchedEntity.getMobile(), fetchedEntity.getIsMobileVerified(),
-					fetchedEntity.getHomeContactNumber(), fetchedEntity.getLicenceNumber(), fetchedEntity.getDrivingSince(),
-					fetchedEntity.getEmployedSince(), fetchedEntity.getIsFreightRequestPermissionGiven(), fetchedEntity.getIsDealFinalizationPermissionGiven(),
-					fetchedEntity.getLanguage(), fetchedEntity.getVendorId(), fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(),
-					fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
+			DriverDetailsAngDTO detailsAngDTO=DriverDetailsAngDTO.fromDriverDetailsDTO(fetchedEntity);
+					
+			return new ResponseEntity<ResponseDTO<DriverDetailsAngDTO>>(new ResponseDTO<DriverDetailsAngDTO>(detailsAngDTO,""), HttpStatus.OK);
 			
-			return new ResponseEntity<DriverDetailsAngDTO>(detailsAngDTO, HttpStatus.OK);
 		}catch(ResourceNotFoundException e)
 		{
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<ResponseDTO<DriverDetailsAngDTO>>(new ResponseDTO<DriverDetailsAngDTO>(null,DRIVER_DETAILS_NOT_FOUND_BY_ID), HttpStatus.OK);
 		}
 		
 	}
@@ -97,14 +94,8 @@ public class DriverDetailsController {
 		{
 			DriverDetailsDTO fetchedEntity=driverList.get(i);
 			
-			DriverDetailsAngDTO detailsAngDTO=new DriverDetailsAngDTO(fetchedEntity.getDriverId(), fetchedEntity.getFirstName(), fetchedEntity.getMiddleName(),
-					fetchedEntity.getLastName(), fetchedEntity.getDateOfBirth(), fetchedEntity.getBloodGroup(), 
-					fetchedEntity.getHomeAddress(), fetchedEntity.getMobile(), fetchedEntity.getIsMobileVerified(),
-					fetchedEntity.getHomeContactNumber(), fetchedEntity.getLicenceNumber(), fetchedEntity.getDrivingSince(),
-					fetchedEntity.getEmployedSince(), fetchedEntity.getIsFreightRequestPermissionGiven(), fetchedEntity.getIsDealFinalizationPermissionGiven(),
-					fetchedEntity.getLanguage(), fetchedEntity.getVendorId(), fetchedEntity.getInsertTime(), 
-					fetchedEntity.getUpdateTime(),fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
-			
+			DriverDetailsAngDTO detailsAngDTO=DriverDetailsAngDTO.fromDriverDetailsDTO(fetchedEntity);
+					
 			driverListAng.add(detailsAngDTO);
 			
 		}
@@ -116,14 +107,14 @@ public class DriverDetailsController {
 	
 	
 	@RequestMapping(value="/deleteById",method=RequestMethod.POST)
-	public ResponseDTO  deleteDriver(@RequestBody EntityIdDTO entityIdDTO,Model model)
+	public ResponseEntity<ResponseDTO<String>>  deleteDriver(@RequestBody EntityIdDTO entityIdDTO,Model model)
 	{
 		Boolean detailsDTO=vendorDetailsService.deleteDriverById(entityIdDTO.getEntityId());
 		
 		if(detailsDTO)
-			return new ResponseDTO("sucess", "");
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("sucess", ""), HttpStatus.OK);
 		else		
-			return new ResponseDTO("failure", "Error");
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("failure", DRIVER_DETAILS_NOT_FOUND_BY_ID), HttpStatus.OK);
 	}
 
 	

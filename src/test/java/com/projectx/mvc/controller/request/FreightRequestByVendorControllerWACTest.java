@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Date;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,13 +50,19 @@ public class FreightRequestByVendorControllerWACTest {
 	
 	@Before
 	public void setUp() {
+	
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-		
+
+	}
+	
+	@Before
+	@After
+	public void clearTestData()
+	{
 		freightRequestByVendorService.clearTestData();
 		vendorDetailsService.clearTestData();
 		vendorDetailsService.vehicleClearTestData();
 
-				
 	}
 	
 	

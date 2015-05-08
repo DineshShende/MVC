@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -15,8 +16,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.projectx.mvc.domain.commn.ResponseDTO;
 import com.projectx.mvc.domain.request.FreightRequestByCustomer;
 import com.projectx.mvc.exception.repository.completeregister.ResourceAlreadyPresentException;
+import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.exception.repository.completeregister.ValidationFailedException;
 import com.projectx.mvc.services.request.FreightRequestByVendorService;
 import com.projectx.rest.domain.quickregister.QuickRegisterStatusDTO;
@@ -50,20 +53,20 @@ public class FreightRequestByVendorHandler implements
 		
 		HttpEntity<FreightRequestByVendorDTO> entity=new HttpEntity<FreightRequestByVendorDTO>(freightRequestByCustomer);
 		
-		ResponseEntity<FreightRequestByVendorDTO> result=null;
+		ResponseEntity<ResponseDTO<FreightRequestByVendorDTO>> result=null;
 		
 		try{
 			result=restTemplate.exchange(env.getProperty("rest.host")+"/request/freightRequestByVendor",
-					HttpMethod.POST,entity, FreightRequestByVendorDTO.class);
+					HttpMethod.POST,entity, new ParameterizedTypeReference<ResponseDTO<FreightRequestByVendorDTO>>() {});
 		}catch(RestClientException e)
 		{
 			throw new ValidationFailedException();
 		}
 		
 		if(result.getStatusCode()==HttpStatus.CREATED)
-			return result.getBody();
+			return result.getBody().getResult();
 		
-		throw new ResourceAlreadyPresentException();
+		throw new ResourceNotFoundException(result.getBody().getErrorMessage());
 		
 		
 	}
@@ -77,7 +80,7 @@ public class FreightRequestByVendorHandler implements
 		if(status.getStatusCode()==HttpStatus.FOUND)
 			return status.getBody();
 		else
-			throw new ValidationFailedException();
+			throw new ResourceNotFoundException();
 		
 	}
 
@@ -118,10 +121,15 @@ public class FreightRequestByVendorHandler implements
 	@Override
 	public Boolean deleteRequestById(Long requestId) {
 		
-		Boolean status=restTemplate
-				.getForObject(env.getProperty("rest.host")+"/request/freightRequestByVendor/deleteById/"+requestId, Boolean.class);
+				
+		ResponseEntity<ResponseDTO<Boolean>> status=restTemplate
+				.exchange(env.getProperty("rest.host")+"/request/freightRequestByVendor/deleteById/"+requestId, HttpMethod.GET,
+						null, new ParameterizedTypeReference<ResponseDTO<Boolean>>() {});
 		
-		return status;
+		if(status.getStatusCode()==HttpStatus.OK && status.getBody().getErrorMessage().equals(""))
+			return status.getBody().getResult();
+		else
+			throw new ResourceNotFoundException(status.getBody().getErrorMessage());
 
 	}
 

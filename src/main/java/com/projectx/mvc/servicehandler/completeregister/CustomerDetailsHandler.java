@@ -61,27 +61,7 @@ public class CustomerDetailsHandler implements CustomerDetailsService {
 	private Integer ENTITY_TYPE_PRIMARY=1;
 	private Integer ENTITY_TYPE_SECONDARY=2;
 
-	/*
-	@Override
-	public CustomerDetailsDTO createCustomerDetailsFromQuickRegisterEntity(
-			Long entityId) {
-		
-		
-		HttpEntity<EntityIdDTO> entity=new HttpEntity<EntityIdDTO>(new EntityIdDTO(entityId));
-		
-		ResponseEntity<CustomerDetailsDTO> result=
-				restTemplate.exchange(env.getProperty("rest.host")+"/customer/createFromQuickRegister", HttpMethod.POST, 
-						entity, CustomerDetailsDTO.class);
-				
-		if(result.getStatusCode()==HttpStatus.OK)
-				return result.getBody();
-		else
-			throw new DeleteQuickCreateDetailsEntityFailedException();
-		
-		
-	}
-	*/
-
+	
 	@Override
 	public CustomerDetailsDTO merge(CustomerDetailsDTO customerDetails) {
 		

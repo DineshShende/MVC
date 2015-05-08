@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projectx.mvc.domain.completeregister.ResponseDTO;
+import com.projectx.mvc.domain.commn.ResponseDTO;
 import com.projectx.mvc.domain.request.FreightRequestByCustomer;
+import com.projectx.mvc.exception.repository.completeregister.ResourceAlreadyPresentException;
 import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.services.handshake.DealService;
@@ -55,93 +56,87 @@ public class FreightRequestByCustomerController {
 	@Value("${FREIGHTALLOCATIONSTATUS_NEW}")
 	private String FREIGHTALLOCATIONSTATUS_NEW;
 	
+	@Value("${FREIGHT_REQUEST_BY_CUSTOMER_NOT_FOUND_BY_ID}")
+	private String FREIGHT_REQUEST_BY_CUSTOMER_NOT_FOUND_BY_ID;
+	
+	
+	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<EntityIdDTO> save(@Valid @RequestBody FreightRequestByCustomerAngDTO freightRequestByCustomerDTO,BindingResult bindingResult)
+	public ResponseEntity<ResponseDTO<EntityIdDTO>> save(@Valid @RequestBody FreightRequestByCustomerAngDTO freightRequestByCustomerDTO,BindingResult bindingResult)
 	{
 		if(bindingResult.hasErrors())
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		
 		freightRequestByCustomerDTO.setStatus(FREIGHTALLOCATIONSTATUS_NEW);
 		
-		FreightRequestByCustomer freightRequestByCustomer=new FreightRequestByCustomer(freightRequestByCustomerDTO.getRequestId(),
-				freightRequestByCustomerDTO.getSource(),freightRequestByCustomerDTO.getDestination(), freightRequestByCustomerDTO.getPickupDate(),
-				freightRequestByCustomerDTO.getNoOfVehicles(), freightRequestByCustomerDTO.getLoadType(), freightRequestByCustomerDTO.getCapacity(),
-				freightRequestByCustomerDTO.getBodyType(),freightRequestByCustomerDTO.getGrossWeight(), freightRequestByCustomerDTO.getLength(),
-				freightRequestByCustomerDTO.getWidth(), freightRequestByCustomerDTO.getHeight(), freightRequestByCustomerDTO.getVehicleBrand(), 
-				freightRequestByCustomerDTO.getModel(), freightRequestByCustomerDTO.getCommodity(), freightRequestByCustomerDTO.getPickupTime(),
-				freightRequestByCustomerDTO.getCustomerId(), freightRequestByCustomerDTO.getStatus(),null, new Date(),
-				freightRequestByCustomerDTO.getUpdateTime(), freightRequestByCustomerDTO.getRequestedBy(),freightRequestByCustomerDTO.getRequestedBy(),
-				freightRequestByCustomerDTO.getRequestedById(),freightRequestByCustomerDTO.getRequestedById());
+		FreightRequestByCustomer freightRequestByCustomer=freightRequestByCustomerDTO.toFreightRequestByCustomer();
+			
+		try{
 		
-		
-		FreightRequestByCustomer savedEntity=freightRequestByCustomerService.save(freightRequestByCustomer);
-		
-		if(savedEntity.getRequestId()!=null)
-		{	
-		
-			return new ResponseEntity<EntityIdDTO>(new EntityIdDTO(savedEntity.getRequestId()), HttpStatus.OK);	
+			FreightRequestByCustomer savedEntity=freightRequestByCustomerService.save(freightRequestByCustomer);
+			
+			return new ResponseEntity<ResponseDTO<EntityIdDTO>>(new ResponseDTO<EntityIdDTO>(new EntityIdDTO(savedEntity.getRequestId()),""), HttpStatus.OK);
+		}catch(ResourceAlreadyPresentException e)
+		{
+			return new ResponseEntity<ResponseDTO<EntityIdDTO>>(new ResponseDTO<EntityIdDTO>(new EntityIdDTO(null),e.getMessage()), HttpStatus.OK);
 		}
-		else
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		
 		
 	}
 	
 	
 	@RequestMapping(value="/getMatchingVendorRequestsByCustomerRequestId",method=RequestMethod.POST)
-	public ResponseEntity<List<FreightRequestByVendorCustomAngDTO>> getMatchingVendorRequestsByCustomerRequestId(@Valid @RequestBody EntityIdDTO entityIdDTO,BindingResult bindingResult)
+	public ResponseEntity<ResponseDTO<List<FreightRequestByVendorCustomAngDTO>>> getMatchingVendorRequestsByCustomerRequestId(@Valid @RequestBody EntityIdDTO entityIdDTO,BindingResult bindingResult)
 	{
-		FreightRequestByCustomer freightRequestByCustomer=freightRequestByCustomerService.getRequestById(entityIdDTO.getEntityId());
+		List<FreightRequestByVendorCustomAngDTO> angList=new ArrayList<FreightRequestByVendorCustomAngDTO>();
+		
+		FreightRequestByCustomer freightRequestByCustomer=null;
+		
+		try{
+			freightRequestByCustomer=freightRequestByCustomerService.getRequestById(entityIdDTO.getEntityId());
+		}catch(ResourceNotFoundException e)
+		{
+			return new ResponseEntity<ResponseDTO<List<FreightRequestByVendorCustomAngDTO>>>(
+					new ResponseDTO<List<FreightRequestByVendorCustomAngDTO>>(null,FREIGHT_REQUEST_BY_CUSTOMER_NOT_FOUND_BY_ID), HttpStatus.OK);
+			
+		}
+		
 		
 		List<FreightRequestByVendor> requestList=freightRequestByVendorService
 				.getMatchingVendorReqForCustReq(freightRequestByCustomer.toFreightRequestByCustomerDTO());
-		
-		List<FreightRequestByVendorCustomAngDTO> angList=new ArrayList<FreightRequestByVendorCustomAngDTO>();
-		
 		
 		
 		for(int i=0;i<requestList.size();i++)
 		{
 			FreightRequestByVendor freightRequestByVendorDTO=requestList.get(i);
 			
-			FreightRequestByVendorCustomAngDTO freightRequestByVendor=new FreightRequestByVendorCustomAngDTO(freightRequestByVendorDTO.getSource(),
-					freightRequestByVendorDTO.getAvailableDate(), freightRequestByVendorDTO.getAvailableTime(),
-					new VehicleDetailsCustomAngDTO(freightRequestByVendorDTO.getVehicleDetailsId().getVehicleBrandId(),
-							freightRequestByVendorDTO.getVehicleDetailsId().getVehicleBodyType(),
-							freightRequestByVendorDTO.getVehicleDetailsId().getLoadCapacityInTons(),
-							freightRequestByVendorDTO.getVehicleDetailsId().getLength(),
-							freightRequestByVendorDTO.getVehicleDetailsId().getWidth(),
-							freightRequestByVendorDTO.getVehicleDetailsId().getHeight(),
-							freightRequestByVendorDTO.getVehicleDetailsId().getNumberOfWheels(),
-							freightRequestByVendorDTO.getVehicleDetailsId().getPermitType(),
-							freightRequestByVendorDTO.getVehicleDetailsId().getInsuranceStatus()));
+			FreightRequestByVendorCustomAngDTO freightRequestByVendor=
+					FreightRequestByVendorCustomAngDTO.fromFreightRequestByVendor(freightRequestByVendorDTO);
 			
 			angList.add(freightRequestByVendor);
 		}
 		
-		return new ResponseEntity<List<FreightRequestByVendorCustomAngDTO>>(angList, HttpStatus.OK);
+		return new ResponseEntity<ResponseDTO<List<FreightRequestByVendorCustomAngDTO>>>(
+				new ResponseDTO<List<FreightRequestByVendorCustomAngDTO>>(angList,""), HttpStatus.OK);
 		
 		
 	}
 	
 	
 	@RequestMapping(value="/getById",method=RequestMethod.POST)
-	public ResponseEntity<FreightRequestByCustomerAngDTO> getById(@RequestBody EntityIdDTO entityIdDTO)
+	public ResponseEntity<ResponseDTO<FreightRequestByCustomerAngDTO>> getById(@RequestBody EntityIdDTO entityIdDTO)
 	{
 		try{
 			FreightRequestByCustomer fetchedEntity=freightRequestByCustomerService.getRequestById(entityIdDTO.getEntityId());
 			
-			FreightRequestByCustomerAngDTO angDTO=new FreightRequestByCustomerAngDTO(fetchedEntity.getRequestId(), fetchedEntity.getSource(),
-					fetchedEntity.getDestination(),fetchedEntity.getPickupDate(), fetchedEntity.getNoOfVehicles(), fetchedEntity.getLoadType(),
-					fetchedEntity.getCapacity(), fetchedEntity.getBodyType(),fetchedEntity.getGrossWeight(), fetchedEntity.getLength(),
-					fetchedEntity.getWidth(),fetchedEntity.getHeight(), fetchedEntity.getVehicleBrand(), fetchedEntity.getModel(),
-					fetchedEntity.getCommodity(), fetchedEntity.getPickupTime(), fetchedEntity.getCustomerId(), fetchedEntity.getStatus(),
-					fetchedEntity.getAllocatedFor(),fetchedEntity.getInsertTime(), fetchedEntity.getPickupDate(),fetchedEntity.getUpdatedBy(),
-					fetchedEntity.getUpdatedById());
-			
-			return new ResponseEntity<FreightRequestByCustomerAngDTO>(angDTO, HttpStatus.OK);
+			FreightRequestByCustomerAngDTO angDTO=FreightRequestByCustomerAngDTO.fromFreightRequestByCustomer(fetchedEntity);
+					
+			return new ResponseEntity<ResponseDTO<FreightRequestByCustomerAngDTO>>
+					(new ResponseDTO<FreightRequestByCustomerAngDTO>(angDTO,""), HttpStatus.OK);
 		}catch(ResourceNotFoundException e)
 		{
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<ResponseDTO<FreightRequestByCustomerAngDTO>>
+			(new ResponseDTO<FreightRequestByCustomerAngDTO>(null,FREIGHT_REQUEST_BY_CUSTOMER_NOT_FOUND_BY_ID), HttpStatus.OK);
 		}
 		
 		
@@ -155,18 +150,12 @@ public class FreightRequestByCustomerController {
 		
 		List<FreightRequestByCustomerAngDTO> angList=new ArrayList<FreightRequestByCustomerAngDTO>();
 		
-		for(int i=0;i<angList.size();i++)
+		for(int i=0;i<requestList.size();i++)
 		{
 			FreightRequestByCustomer fetchedEntity=requestList.get(i);
 			
-			FreightRequestByCustomerAngDTO angDTO=new FreightRequestByCustomerAngDTO(fetchedEntity.getRequestId(), fetchedEntity.getSource(),
-					fetchedEntity.getDestination(),fetchedEntity.getPickupDate(), fetchedEntity.getNoOfVehicles(), fetchedEntity.getLoadType(),
-					fetchedEntity.getCapacity(), fetchedEntity.getBodyType(),fetchedEntity.getGrossWeight(), fetchedEntity.getLength(),
-					fetchedEntity.getWidth(),fetchedEntity.getHeight(), fetchedEntity.getVehicleBrand(), fetchedEntity.getModel(),
-					fetchedEntity.getCommodity(), fetchedEntity.getPickupTime(), fetchedEntity.getCustomerId(), fetchedEntity.getStatus(),
-					fetchedEntity.getAllocatedFor(),fetchedEntity.getInsertTime(), fetchedEntity.getPickupDate(),
-					fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
-			
+			FreightRequestByCustomerAngDTO angDTO=FreightRequestByCustomerAngDTO.fromFreightRequestByCustomer(fetchedEntity);
+					
 			angList.add(angDTO);
 		}
 		
@@ -174,21 +163,26 @@ public class FreightRequestByCustomerController {
 	}
 	
 	@RequestMapping(value="/triggerdeal",method=RequestMethod.POST)
-	public DealInfoAndVendorContactDetailsDTO triggerDeal(@RequestBody TriggerDealDTO triggerDealDTO)
+	public ResponseEntity<ResponseDTO<DealInfoAndVendorContactDetailsDTO>> triggerDeal(@RequestBody TriggerDealDTO triggerDealDTO)
 	{
 		DealInfoAndVendorContactDetailsDTO contactDetailsDTO=dealService.triggerDeal(triggerDealDTO);
 		
-		return contactDetailsDTO;
+		return new ResponseEntity<ResponseDTO<DealInfoAndVendorContactDetailsDTO>>
+		(new ResponseDTO<DealInfoAndVendorContactDetailsDTO>(contactDetailsDTO,""),HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/deleteRequestById",method=RequestMethod.POST)
-	public ResponseDTO deleteRequestById(@RequestBody EntityIdTypeDTO entityIdDTO)
+	public ResponseEntity<ResponseDTO<String>> deleteRequestById(@RequestBody EntityIdTypeDTO entityIdDTO)
 	{
-		Boolean status=freightRequestByCustomerService.deleteRequestById(entityIdDTO.getEntityId());
+		try{
+			Boolean status=freightRequestByCustomerService.deleteRequestById(entityIdDTO.getEntityId());
 		
-		if(status)
-			return new ResponseDTO("sucess", "");
-		else
-			return new ResponseDTO("failure", "Error");
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("sucess", ""),HttpStatus.OK);
+		}catch(ResourceNotFoundException e)
+		{
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("failure", e.getMessage()),HttpStatus.OK);
+		}
+		
+			
 	}
 }

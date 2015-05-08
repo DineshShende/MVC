@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import com.projectx.mvc.domain.request.FreightRequestByCustomer;
+
 public class FreightRequestByCustomerAngDTO {
 	
 	private Long requestId;
@@ -103,7 +105,36 @@ public class FreightRequestByCustomerAngDTO {
 		this.updateTime = updateTime;
 	}
 
+	
+	public FreightRequestByCustomer toFreightRequestByCustomer()
+	{
+		FreightRequestByCustomer freightRequestByCustomer=new FreightRequestByCustomer(this.getRequestId(),
+				this.getSource(),this.getDestination(), this.getPickupDate(),
+				this.getNoOfVehicles(), this.getLoadType(), this.getCapacity(),
+				this.getBodyType(),this.getGrossWeight(), this.getLength(),
+				this.getWidth(), this.getHeight(), this.getVehicleBrand(), 
+				this.getModel(), this.getCommodity(), this.getPickupTime(),
+				this.getCustomerId(), this.getStatus(),null, new Date(),
+				this.getUpdateTime(), this.getRequestedBy(),this.getRequestedBy(),
+				this.getRequestedById(),this.getRequestedById());
+		
+		return freightRequestByCustomer;
+	}
 
+	public static FreightRequestByCustomerAngDTO fromFreightRequestByCustomer(FreightRequestByCustomer fetchedEntity)
+	{
+		FreightRequestByCustomerAngDTO angDTO=new FreightRequestByCustomerAngDTO(fetchedEntity.getRequestId(), fetchedEntity.getSource(),
+				fetchedEntity.getDestination(),fetchedEntity.getPickupDate(), fetchedEntity.getNoOfVehicles(), fetchedEntity.getLoadType(),
+				fetchedEntity.getCapacity(), fetchedEntity.getBodyType(),fetchedEntity.getGrossWeight(), fetchedEntity.getLength(),
+				fetchedEntity.getWidth(),fetchedEntity.getHeight(), fetchedEntity.getVehicleBrand(), fetchedEntity.getModel(),
+				fetchedEntity.getCommodity(), fetchedEntity.getPickupTime(), fetchedEntity.getCustomerId(), fetchedEntity.getStatus(),
+				fetchedEntity.getAllocatedFor(),fetchedEntity.getInsertTime(), fetchedEntity.getPickupDate(),fetchedEntity.getUpdatedBy(),
+				fetchedEntity.getUpdatedById());
+		
+		return angDTO;
+		
+	}
+	
 	public Long getRequestId() {
 		return requestId;
 	}

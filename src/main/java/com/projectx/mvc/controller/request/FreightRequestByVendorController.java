@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projectx.mvc.domain.completeregister.ResponseDTO;
+import com.projectx.mvc.domain.commn.ResponseDTO;
+import com.projectx.mvc.exception.repository.completeregister.ResourceAlreadyPresentException;
+import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.services.request.FreightRequestByCustomerService;
 import com.projectx.mvc.services.request.FreightRequestByVendorService;
 import com.projectx.rest.domain.ang.FreightRequestByVendorAngDTO;
@@ -43,54 +45,58 @@ public class FreightRequestByVendorController {
 	@Value("${FREIGHTALLOCATIONSTATUS_NEW}")
 	private String FREIGHTALLOCATIONSTATUS_NEW;
 	
+	@Value("${FREIGHT_REQUEST_BY_VENDOR_NOT_FOUND_BY_ID}")
+	private String FREIGHT_REQUEST_BY_VENDOR_NOT_FOUND_BY_ID;
+	
+	
+	
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<ResponseDTO> save(@Valid @RequestBody FreightRequestByVendorAngReqDTO freightRequestByVendorDTO,BindingResult bindingResult)
+	public ResponseEntity<ResponseDTO<String>> save(@Valid @RequestBody FreightRequestByVendorAngReqDTO freightRequestByVendorDTO,BindingResult bindingResult)
 	{
 		if(bindingResult.hasErrors())
-			return new ResponseEntity<ResponseDTO>(new ResponseDTO("failure", "Error"),HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("failure", "Error"),HttpStatus.NOT_ACCEPTABLE);
 		
 		freightRequestByVendorDTO.setStatus(FREIGHTALLOCATIONSTATUS_NEW);
 		
-		FreightRequestByVendorDTO requestByVendorDTO=new FreightRequestByVendorDTO(freightRequestByVendorDTO.getVehicleRegistrationNumber(),
-				freightRequestByVendorDTO.getSource(),freightRequestByVendorDTO.getDestination(),freightRequestByVendorDTO.getDriverId(),
-				freightRequestByVendorDTO.getAvailableDate(), freightRequestByVendorDTO.getAvailableTime(), freightRequestByVendorDTO.getPickupRangeInKm(),
-				freightRequestByVendorDTO.getVendorId(), freightRequestByVendorDTO.getStatus(), freightRequestByVendorDTO.getReservedBy(), 
-				new Date(), new Date(), freightRequestByVendorDTO.getRequestedBy(),freightRequestByVendorDTO.getRequestedBy(),
-				freightRequestByVendorDTO.getRequestedById(),freightRequestByVendorDTO.getRequestedById());
+		FreightRequestByVendorDTO requestByVendorDTO=freightRequestByVendorDTO.toFreightRequestByVendorDTO();
 		
-		FreightRequestByVendorDTO savedEntity=freightRequestByVendorService.save(requestByVendorDTO);
-		
-		if(savedEntity.getRequestId()!=null)
-		{
+		try{
+			FreightRequestByVendorDTO savedEntity=freightRequestByVendorService.save(requestByVendorDTO);
+
 			freightRequestByCustomerService.getCustmerReqForVendorReq(savedEntity);
 			
-			return new ResponseEntity<ResponseDTO>(new ResponseDTO("sucess", ""), HttpStatus.OK);
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("sucess", ""),HttpStatus.OK);
 			
+		}catch(ResourceNotFoundException e)
+		{
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("failure", e.getMessage()),HttpStatus.NOT_ACCEPTABLE);
 		}
-		else
-			return new ResponseEntity<ResponseDTO>(new ResponseDTO("failure", "Error"),HttpStatus.NOT_ACCEPTABLE);
+		
+		
 	}
 	
 	@RequestMapping(value="/getById",method=RequestMethod.POST)
-	public FreightRequestByVendorAngDTO getById(@RequestBody EntityIdTypeDTO entityIdDTO)
+	public ResponseEntity<ResponseDTO<FreightRequestByVendorAngDTO>> getById(@RequestBody EntityIdDTO entityIdDTO)
 	{
-		
+		try{
 		
 		FreightRequestByVendor fetchedEntity=freightRequestByVendorService.getRequestById(entityIdDTO.getEntityId());
 		
-		FreightRequestByVendorAngDTO byVendorAngDTO=null;
+		FreightRequestByVendorAngDTO byVendorAngDTO=FreightRequestByVendorAngDTO.fromFreightRequestByVendor(fetchedEntity);
 		
-		if(fetchedEntity.getRequestId()!=null)
+		return new ResponseEntity<ResponseDTO<FreightRequestByVendorAngDTO>>
+			(new ResponseDTO<FreightRequestByVendorAngDTO>(byVendorAngDTO,""),HttpStatus.OK);
+		
+		}catch(ResourceNotFoundException e)
 		{
-			byVendorAngDTO=new FreightRequestByVendorAngDTO(fetchedEntity.getRequestId(),
-					fetchedEntity.getVehicleDetailsId(),fetchedEntity.getSource(), fetchedEntity.getDestination(),
-					fetchedEntity.getDriverId(), fetchedEntity.getAvailableDate(),fetchedEntity.getAvailableTime(), fetchedEntity.getPickupRangeInKm(),
-					fetchedEntity.getVendorId(), fetchedEntity.getStatus(),fetchedEntity.getReservedBy(), fetchedEntity.getInsertTime(),
-					fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
+			return new ResponseEntity<ResponseDTO<FreightRequestByVendorAngDTO>>
+			(new ResponseDTO<FreightRequestByVendorAngDTO>(null,FREIGHT_REQUEST_BY_VENDOR_NOT_FOUND_BY_ID),HttpStatus.OK);
 		}
 		
-		return byVendorAngDTO;
+		
+		
+		
 	}
 	
 	@RequestMapping(value="/getByVendorId",method=RequestMethod.POST)
@@ -104,11 +110,7 @@ public class FreightRequestByVendorController {
 		{
 			FreightRequestByVendor fetchedEntity=requestList.get(i);
 			
-			FreightRequestByVendorAngDTO byVendorAngDTO=new FreightRequestByVendorAngDTO(fetchedEntity.getRequestId(),
-					fetchedEntity.getVehicleDetailsId(),fetchedEntity.getSource(), fetchedEntity.getDestination(),
-					fetchedEntity.getDriverId(), fetchedEntity.getAvailableDate(),fetchedEntity.getAvailableTime(), fetchedEntity.getPickupRangeInKm(),
-					fetchedEntity.getVendorId(), fetchedEntity.getStatus(),fetchedEntity.getReservedBy(), fetchedEntity.getInsertTime(),
-					fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
+			FreightRequestByVendorAngDTO byVendorAngDTO=FreightRequestByVendorAngDTO.fromFreightRequestByVendor(fetchedEntity);
 			
 			angList.add(byVendorAngDTO);
 			
@@ -118,16 +120,23 @@ public class FreightRequestByVendorController {
 		return angList;
 	}
 	
-	@RequestMapping(value="/deleteRequestById",method=RequestMethod.POST)
-	public ResponseDTO deleteRequestById(@RequestBody EntityIdDTO entityIdDTO)
+	@RequestMapping(value="/deleteById",method=RequestMethod.POST)
+	public ResponseEntity<ResponseDTO<String>> deleteRequestById(@RequestBody EntityIdDTO entityIdDTO)
 	{
-		Boolean status=freightRequestByVendorService.deleteRequestById(entityIdDTO.getEntityId());
+		try{
+			Boolean status=freightRequestByVendorService.deleteRequestById(entityIdDTO.getEntityId());
 		
-		if(status)
-			return new ResponseDTO("sucess", "");
-		else
-			return new ResponseDTO("failure", "error");
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("sucess", ""), HttpStatus.OK);
+		}catch(ResourceNotFoundException e)
+		{
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("failure", e.getMessage()), HttpStatus.OK);
+		}
 		
+//		if(status)
+//			return new ResponseDTO("sucess", "");
+//		else
+//			return new ResponseDTO("failure", "error");
+//		
 		
 	}
 	

@@ -1,6 +1,6 @@
 package com.projectx.mvc.exception.repository.completeregister;
 
-public class VehicleDetailsNotFoundException extends RuntimeException {
+public class VehicleDetailsNotFoundException extends ResourceNotFoundException {
 	
 	public VehicleDetailsNotFoundException(Throwable cause) {
         super(cause);

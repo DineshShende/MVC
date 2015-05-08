@@ -34,6 +34,8 @@ import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterStatusDTO;
 import com.projectx.rest.domain.quickregister.LoginVerificationDTO;
+import com.projectx.rest.domain.quickregister.SendResendResetEmailHashDTO;
+import com.projectx.rest.domain.quickregister.SendResendResetMobilePinDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailLoginDetails;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
@@ -76,42 +78,15 @@ public class QuickRegisterServiceFixture implements
 	}
 
 	@Override
-	public Boolean sendMobilePin(
-			CustomerIdTypeMobileTypeRequestedByDTO customerDTO) {
+	public Boolean sendOrResendOrResetMobilePin(
+			SendResendResetMobilePinDTO sendResendResetMobilePinDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Boolean reSendMobilePin(
-			CustomerIdTypeMobileTypeRequestedByDTO customerDTO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean sendEmailHash(CustomerIdTypeEmailTypeUpdatedByDTO customerDTO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean reSendEmailHash(
-			CustomerIdTypeEmailTypeUpdatedByDTO customerDTO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean reSetMobilePin(
-			CustomerIdTypeMobileTypeRequestedByDTO customerDTO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean reSetEmailHash(
-			CustomerIdTypeEmailTypeUpdatedByDTO customerDTO) {
+	public Boolean sendOrResendOrResetEmailHash(
+			SendResendResetEmailHashDTO sendResendResetEmailHashDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -139,9 +114,10 @@ public class QuickRegisterServiceFixture implements
 	}
 
 	@Override
-	public Boolean resetPassword(Long customerId, Integer customerType,
-			Integer emailOrMobile, Integer requestedBy, Long requestedById)
-			throws PasswordRestFailedException {
+	public Boolean sendOrResendOrResetPassword(Long customerId,
+			Integer customerType, Integer emailOrMobile,
+			Integer sendOrResendOrResetFlag, Integer requestedBy,
+			Long requestedById) throws PasswordRestFailedException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -184,17 +160,7 @@ public class QuickRegisterServiceFixture implements
 		return null;
 	}
 
-	@Override
-	public Boolean resendPassword(Long customerId, Integer customerType,
-			Integer emailOrMobile, Integer requestedBy, Long requestedById)
-			throws PasswordRestFailedException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-
-	
+			
 				
 
 }

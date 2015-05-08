@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 
 import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
+import com.projectx.rest.domain.request.FreightRequestByVendor;
+import com.projectx.rest.domain.request.FreightRequestByVendorDTO;
 
 public class FreightRequestByVendorAngReqDTO {
 
@@ -72,6 +74,32 @@ public class FreightRequestByVendorAngReqDTO {
 		this.updateTime = updateTime;
 		this.requestedBy = updatedBy;
 		this.requestedById=updatedById;
+	}
+	
+	
+	public FreightRequestByVendorDTO toFreightRequestByVendorDTO()
+	{
+		FreightRequestByVendorDTO requestByVendorDTO=new FreightRequestByVendorDTO(this.getVehicleRegistrationNumber(),
+				this.getSource(),this.getDestination(),this.getDriverId(),
+				this.getAvailableDate(), this.getAvailableTime(),this.getPickupRangeInKm(),
+				this.getVendorId(), this.getStatus(), this.getReservedBy(), 
+				new Date(), new Date(), this.getRequestedBy(),this.getRequestedBy(),
+				this.getRequestedById(),this.getRequestedById());
+		
+		return requestByVendorDTO;
+	}
+	
+	
+	public static FreightRequestByVendorAngDTO fromFreightRequestByVendor(FreightRequestByVendor fetchedEntity)
+	{
+		
+		FreightRequestByVendorAngDTO angReqDTO=new FreightRequestByVendorAngDTO(fetchedEntity.getRequestId(),
+				fetchedEntity.getVehicleDetailsId(),fetchedEntity.getSource(), fetchedEntity.getDestination(),
+				fetchedEntity.getDriverId(), fetchedEntity.getAvailableDate(),fetchedEntity.getAvailableTime(), fetchedEntity.getPickupRangeInKm(),
+				fetchedEntity.getVendorId(), fetchedEntity.getStatus(),fetchedEntity.getReservedBy(), fetchedEntity.getInsertTime(),
+				fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
+		
+		return angReqDTO;
 	}
 
 	public Long getRequestId() {

@@ -6,17 +6,11 @@ public class DealInfoAndVendorContactDetailsDTO {
 	
 	private Long dealId;
 	
-	//private Integer amount;
-	
 	private String firstName;
-	
-	//private String middleName;
 	
 	private String lastName;
 	
 	private Long mobile;
-	
-	//private String email;
 	
 	private String city;
 	
@@ -25,11 +19,6 @@ public class DealInfoAndVendorContactDetailsDTO {
 	private Integer pincode;
 	
 	
-	
-	//private Address homeAddress;
-	
-	//private Address firmAddress;
-
 	public DealInfoAndVendorContactDetailsDTO() {
 		super();
 	}

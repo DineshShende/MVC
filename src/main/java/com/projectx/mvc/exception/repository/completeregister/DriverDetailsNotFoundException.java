@@ -1,6 +1,6 @@
 package com.projectx.mvc.exception.repository.completeregister;
 
-public class DriverDetailsNotFoundException extends RuntimeException {
+public class DriverDetailsNotFoundException extends ResourceNotFoundException {
 
 	
 	public DriverDetailsNotFoundException(Throwable cause) {

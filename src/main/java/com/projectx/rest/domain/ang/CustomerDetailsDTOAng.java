@@ -8,6 +8,7 @@ import com.projectx.mvc.util.serializer.JsonDateDeSerializer;
 import com.projectx.mvc.util.serializer.JsonDateSerializer;
 import com.projectx.rest.domain.completeregister.Address;
 import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
+import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
 
 public class CustomerDetailsDTOAng {
 
@@ -99,8 +100,65 @@ public class CustomerDetailsDTOAng {
 		this.requestedById=updatedById;
 	}
 
+	public CustomerDetailsDTO toCustomerDetailsDTO()
+	{
+		CustomerDetailsDTO detailsDTO=new CustomerDetailsDTO(this.getCustomerId(),
+				this.getFirstName(),this.getMiddleName(), this.getLastName(),
+				this.getDateOfBirth(), this.getHomeAddressId(),this.getMobile(),
+				this.getPhoneNumber(), this.getIsMobileVerified(),this.getEmail(),
+				this.getIsEmailVerified(),this.getLanguage(), this.getBusinessDomain(),
+				this.getNameOfFirm(), this.getFirmAddressId(), this.getSecondaryMobile(), 
+				false, this.getSecondaryEmail(), new Date(), new Date(), this.getRequestedBy(),
+				this.getRequestedBy(),this.getRequestedById(),this.getRequestedById());
+		
+		return detailsDTO;
+		
+	}
+	
+	
+	public VendorDetailsDTO toVendorDetailsDTO()
+	{
+		VendorDetailsDTO vendorDetails=new VendorDetailsDTO(this.getCustomerId(), this.getFirstName(), this.getMiddleName(),
+				this.getLastName(),this.getDateOfBirth(), this.getNameOfFirm(), 
+				this.getFirmAddressId(), this.getHomeAddressId(), this.getMobile(), this.getPhoneNumber(),
+				this.getIsMobileVerified(), this.getEmail(), this.getIsEmailVerified(), this.getLanguage(),
+				this.getSecondaryMobile(),this.getIsSecondaryMobileVerified(), new Date(),new Date(), 
+				this.getRequestedBy(),this.getRequestedBy(),this.getRequestedById(),
+				this.getRequestedById());
+		
+		return vendorDetails;
+	}
 
-
+	
+	public static CustomerDetailsDTOAng fromCustomerDetailsDTO(CustomerDetailsDTO customerDetailsDTO)
+	{
+		CustomerDetailsDTOAng customerDetailsDTOAng=new CustomerDetailsDTOAng
+				(customerDetailsDTO.getCustomerId(), customerDetailsDTO.getFirstName(), customerDetailsDTO.getMiddleName(),
+						customerDetailsDTO.getLastName(), customerDetailsDTO.getDateOfBirth(),customerDetailsDTO.getHomeAddressId(),
+						customerDetailsDTO.getMobile(), customerDetailsDTO.getPhoneNumber(),customerDetailsDTO.getIsMobileVerified(),
+						customerDetailsDTO.getEmail(), customerDetailsDTO.getIsEmailVerified(), customerDetailsDTO.getLanguage(), 
+						customerDetailsDTO.getBusinessDomain(), customerDetailsDTO.getNameOfFirm(), customerDetailsDTO.getFirmAddressId(),
+						customerDetailsDTO.getSecondaryMobile(), customerDetailsDTO.getIsSecondaryMobileVerified(), 
+						customerDetailsDTO.getSecondaryEmail(),1, customerDetailsDTO.getInsertTime(), customerDetailsDTO.getUpdateTime(), 
+						customerDetailsDTO.getUpdatedBy(),customerDetailsDTO.getUpdatedById());
+		
+		return customerDetailsDTOAng;
+		
+	}
+	
+	public static CustomerDetailsDTOAng fromVendorDetailsDTO(VendorDetailsDTO fetchedEntity)
+	{
+		CustomerDetailsDTOAng ang=new CustomerDetailsDTOAng(fetchedEntity.getVendorId(), fetchedEntity.getFirstName(), fetchedEntity.getMiddleName(),
+				fetchedEntity.getLastName(), fetchedEntity.getDateOfBirth(), fetchedEntity.getHomeAddress(), 
+				fetchedEntity.getMobile(), fetchedEntity.getPhoneNumber(), fetchedEntity.getIsMobileVerified(), 
+				fetchedEntity.getEmail(), fetchedEntity.getIsEmailVerified(), fetchedEntity.getLaguage(), 
+				null, fetchedEntity.getFirmName(), fetchedEntity.getFirmAddress(), 
+				fetchedEntity.getSecondaryMobile(), fetchedEntity.getIsSecondaryMobileVerified(),null,2, 
+				fetchedEntity.getInsertTime(),fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
+		
+		return ang;
+		
+	}
 
 	public Long getCustomerId() {
 		return customerId;

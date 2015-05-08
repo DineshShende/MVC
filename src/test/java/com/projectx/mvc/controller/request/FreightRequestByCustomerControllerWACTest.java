@@ -66,8 +66,9 @@ public class FreightRequestByCustomerControllerWACTest {
 	                    .contentType(MediaType.APPLICATION_JSON)
 	                    .accept(MediaType.APPLICATION_JSON))
 	            .andDo(print())
-	            .andExpect(jsonPath("$.entityId").exists())
-	            .andExpect(status().isOk());
+	            .andExpect(status().isOk())
+	            .andExpect(jsonPath("$.result.entityId").exists())
+	            .andExpect(jsonPath("$.errorMessage").value(""));
 	    
 	}
 	

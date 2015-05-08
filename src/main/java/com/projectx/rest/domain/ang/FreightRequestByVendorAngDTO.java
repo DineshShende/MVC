@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 
 import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
+import com.projectx.rest.domain.request.FreightRequestByVendor;
 
 public class FreightRequestByVendorAngDTO {
 
@@ -72,6 +73,18 @@ public class FreightRequestByVendorAngDTO {
 		this.updateTime = updateTime;
 		this.requestedBy = updatedBy;
 		this.requestedById=updatedById;
+	}
+	
+	public static FreightRequestByVendorAngDTO fromFreightRequestByVendor(FreightRequestByVendor fetchedEntity)
+	{
+		FreightRequestByVendorAngDTO angDTO=new FreightRequestByVendorAngDTO(fetchedEntity.getRequestId(),
+				fetchedEntity.getVehicleDetailsId(),fetchedEntity.getSource(), fetchedEntity.getDestination(),
+				fetchedEntity.getDriverId(), fetchedEntity.getAvailableDate(),fetchedEntity.getAvailableTime(), fetchedEntity.getPickupRangeInKm(),
+				fetchedEntity.getVendorId(), fetchedEntity.getStatus(),fetchedEntity.getReservedBy(), fetchedEntity.getInsertTime(),
+				fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
+		
+		return angDTO;
+		
 	}
 
 	public Long getRequestId() {

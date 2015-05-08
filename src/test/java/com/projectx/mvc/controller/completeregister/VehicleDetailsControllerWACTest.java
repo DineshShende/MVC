@@ -65,7 +65,7 @@ public class VehicleDetailsControllerWACTest {
 				.accept(MediaType.APPLICATION_JSON))
 	.andDo(print())
 	.andExpect(status().isOk())
-	.andExpect(jsonPath("$.status").value("sucess"))
+	.andExpect(jsonPath("$.result").value("sucess"))
     .andExpect(jsonPath("$.errorMessage").value(""));
 
     
@@ -83,27 +83,27 @@ public class VehicleDetailsControllerWACTest {
 				.accept(MediaType.APPLICATION_JSON))
 	.andDo(print())
 	.andExpect(status().isOk())
-	.andExpect(jsonPath("$.ownerFirstName").value(standardVehicleDetails().getOwnerFirstName()))
-    .andExpect(jsonPath("$.ownerMiddleName").value(standardVehicleDetails().getOwnerMiddleName()))
-    .andExpect(jsonPath("$.ownerLastName").value(standardVehicleDetails().getOwnerLastName()))
-    .andExpect(jsonPath("$.vehicleBrandId.vehicleTypeId.vehicleTypeName").value(standardVehicleDetails().getVehicleBrandId().getVehicleTypeId().getVehicleTypeName()))
-    .andExpect(jsonPath("$.vehicleBrandId.vehicleBrandName").value(standardVehicleDetails().getVehicleBrandId().getVehicleBrandName()))
-    .andExpect(jsonPath("$.vehicleBrandId.modelNumber").value(standardVehicleDetails().getVehicleBrandId().getModelNumber()))
-    .andExpect(jsonPath("$.vehicleBodyType").value(standardVehicleDetails().getVehicleBodyType()))
-    .andExpect(jsonPath("$.isBodyTypeFlexible").value(standardVehicleDetails().getIsBodyTypeFlexible()))
-    .andExpect(jsonPath("$.registrationNumber").value(standardVehicleDetails().getRegistrationNumber()))
-    .andExpect(jsonPath("$.chassisNumber").value(standardVehicleDetails().getChassisNumber()))
-    .andExpect(jsonPath("$.loadCapacityInTons").value(standardVehicleDetails().getLoadCapacityInTons()))
-    .andExpect(jsonPath("$.length").value(standardVehicleDetails().getLength()))
-    .andExpect(jsonPath("$.width").value(standardVehicleDetails().getWidth()))
-    .andExpect(jsonPath("$.height").value(standardVehicleDetails().getHeight()))
-    .andExpect(jsonPath("$.numberOfWheels").value(standardVehicleDetails().getNumberOfWheels()))
-    .andExpect(jsonPath("$.permitType").value(standardVehicleDetails().getPermitType()))
-	.andExpect(jsonPath("$.insuranceStatus").value(standardVehicleDetails().getInsuranceStatus()))
-	.andExpect(jsonPath("$.insuranceNumber").value(standardVehicleDetails().getInsuranceNumber()))
-	.andExpect(jsonPath("$.insuranceCompany").value(standardVehicleDetails().getInsuranceCompany()))
+	.andExpect(jsonPath("$.result.ownerFirstName").value(standardVehicleDetails().getOwnerFirstName()))
+    .andExpect(jsonPath("$.result.ownerMiddleName").value(standardVehicleDetails().getOwnerMiddleName()))
+    .andExpect(jsonPath("$.result.ownerLastName").value(standardVehicleDetails().getOwnerLastName()))
+    .andExpect(jsonPath("$.result.vehicleBrandId.vehicleTypeId.vehicleTypeName").value(standardVehicleDetails().getVehicleBrandId().getVehicleTypeId().getVehicleTypeName()))
+    .andExpect(jsonPath("$.result.vehicleBrandId.vehicleBrandName").value(standardVehicleDetails().getVehicleBrandId().getVehicleBrandName()))
+    .andExpect(jsonPath("$.result.vehicleBrandId.modelNumber").value(standardVehicleDetails().getVehicleBrandId().getModelNumber()))
+    .andExpect(jsonPath("$.result.vehicleBodyType").value(standardVehicleDetails().getVehicleBodyType()))
+    .andExpect(jsonPath("$.result.isBodyTypeFlexible").value(standardVehicleDetails().getIsBodyTypeFlexible()))
+    .andExpect(jsonPath("$.result.registrationNumber").value(standardVehicleDetails().getRegistrationNumber()))
+    .andExpect(jsonPath("$.result.chassisNumber").value(standardVehicleDetails().getChassisNumber()))
+    .andExpect(jsonPath("$.result.loadCapacityInTons").value(standardVehicleDetails().getLoadCapacityInTons()))
+    .andExpect(jsonPath("$.result.length").value(standardVehicleDetails().getLength()))
+    .andExpect(jsonPath("$.result.width").value(standardVehicleDetails().getWidth()))
+    .andExpect(jsonPath("$.result.height").value(standardVehicleDetails().getHeight()))
+    .andExpect(jsonPath("$.result.numberOfWheels").value(standardVehicleDetails().getNumberOfWheels()))
+    .andExpect(jsonPath("$.result.permitType").value(standardVehicleDetails().getPermitType()))
+	.andExpect(jsonPath("$.result.insuranceStatus").value(standardVehicleDetails().getInsuranceStatus()))
+	.andExpect(jsonPath("$.result.insuranceNumber").value(standardVehicleDetails().getInsuranceNumber()))
+	.andExpect(jsonPath("$.result.insuranceCompany").value(standardVehicleDetails().getInsuranceCompany()))
 	//.andExpect(jsonPath("$.commodityList").value(standardVehicleDetails().getCommodityList()))
-	.andExpect(jsonPath("$.requestedBy").value(standardVehicleDetails().getUpdatedBy()));
+	.andExpect(jsonPath("$.result.requestedBy").value(standardVehicleDetails().getUpdatedBy()));
 		
 	}
 	
@@ -154,7 +154,7 @@ public class VehicleDetailsControllerWACTest {
 				.accept(MediaType.APPLICATION_JSON))
 	.andDo(print())
 	.andExpect(status().isOk())
-	.andExpect(jsonPath("$.status").value("sucess"))
+	.andExpect(jsonPath("$.result").value("sucess"))
 	.andExpect(jsonPath("$.errorMessage").value(""));
 		
 	}

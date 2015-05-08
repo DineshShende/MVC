@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
@@ -57,6 +58,9 @@ import com.projectx.rest.domain.quickregister.EmailVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.MobileVerificationDetailsDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
 import com.projectx.rest.domain.quickregister.QuickRegisterSavedEntityDTO;
+import com.projectx.rest.domain.quickregister.SendResendResetEmailHashDTO;
+import com.projectx.rest.domain.quickregister.SendResendResetMobilePinDTO;
+import com.projectx.rest.domain.quickregister.SendResendResetPasswordDTO;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
 
 import static com.projectx.mvc.fixtures.completeregister.CustomerDetailsDataFixtures.*;
@@ -86,6 +90,18 @@ public class QuickRegisterControllerWACTest {
 	
 	@Autowired
 	VendorDetailsService vendorDetailsService;
+	
+	@Value("${SEND_REQUEST}")
+	private Integer SEND_REQUEST;
+	
+	@Value("${RESEND_REQUEST}")
+	private Integer RESEND_REQUEST;
+	
+	@Value("${RESET_REQUEST}")
+	private Integer RESET_REQUEST;
+
+	
+	
 	
 	@Before
 	public void setUp() {
@@ -147,7 +163,8 @@ public class QuickRegisterControllerWACTest {
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().string("true"));
+				.andExpect(jsonPath("$.result").value(true))
+				.andExpect(jsonPath("$.errorMessage").value(""));
 		
 		
 	}
@@ -181,15 +198,16 @@ public class QuickRegisterControllerWACTest {
 		
 		
 		this.mockMvc.perform(
-				post("/quickregister/sendMobilePin")
-					.content(standardJsonCustomerIdTypeMobileTypeUpdatedByDTO(new CustomerIdTypeMobileTypeRequestedByDTO
+				post("/quickregister/sendOrResendOrResetMobilePin")
+					.content(standardJsonSendResendResetMobilePinDTO(new SendResendResetMobilePinDTO
 							(entityDTO.getCustomer().getCustomerId(),entityDTO.getCustomer().getCustomerType(),
-									ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
+									ENTITY_TYPE_PRIMARY,SEND_REQUEST, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().string("true"));
+				.andExpect(jsonPath("$.result").value(true))
+				.andExpect(jsonPath("$.errorMessage").value(""));
 		
 		
 	}
@@ -202,15 +220,17 @@ public class QuickRegisterControllerWACTest {
 		
 		
 		this.mockMvc.perform(
-				post("/quickregister/resendMobilePin")
-					.content(standardJsonCustomerIdTypeMobileTypeUpdatedByDTO(new CustomerIdTypeMobileTypeRequestedByDTO
+				post("/quickregister/sendOrResendOrResetMobilePin")
+					.content(standardJsonSendResendResetMobilePinDTO(new SendResendResetMobilePinDTO
 							(entityDTO.getCustomer().getCustomerId(),entityDTO.getCustomer().getCustomerType(),
-									ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
+									ENTITY_TYPE_PRIMARY,RESEND_REQUEST, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().string("true"));
+				.andExpect(jsonPath("$.result").value(true))
+				.andExpect(jsonPath("$.errorMessage").value(""));
+		
 		
 		
 	}
@@ -223,15 +243,16 @@ public class QuickRegisterControllerWACTest {
 		
 		
 		this.mockMvc.perform(
-				post("/quickregister/sendEmailHash")
-					.content(standardJsonCustomerIdTypeEmailTypeUpdatedByDTO(new CustomerIdTypeEmailTypeUpdatedByDTO
+				post("/quickregister/sendOrResendOrResetEmailHash")
+					.content(standardJsonSendResendResetEmailHashDTO(new SendResendResetEmailHashDTO
 							(entityDTO.getCustomer().getCustomerId(),entityDTO.getCustomer().getCustomerType(), 
-									ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
+									ENTITY_TYPE_PRIMARY,SEND_REQUEST, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().string("true"));
+				.andExpect(jsonPath("$.result").value(true))
+				.andExpect(jsonPath("$.errorMessage").value(""));
 		
 		
 	}
@@ -244,15 +265,16 @@ public class QuickRegisterControllerWACTest {
 		
 		
 		this.mockMvc.perform(
-				post("/quickregister/resendEmailHash")
-					.content(standardJsonCustomerIdTypeEmailTypeUpdatedByDTO(new CustomerIdTypeEmailTypeUpdatedByDTO
+				post("/quickregister/sendOrResendOrResetEmailHash")
+					.content(standardJsonSendResendResetEmailHashDTO(new SendResendResetEmailHashDTO
 							(entityDTO.getCustomer().getCustomerId(),entityDTO.getCustomer().getCustomerType(), 
-									ENTITY_TYPE_PRIMARY, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
+									ENTITY_TYPE_PRIMARY,RESEND_REQUEST, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().string("true"));
+				.andExpect(jsonPath("$.result").value(true))
+				.andExpect(jsonPath("$.errorMessage").value(""));
 		
 		
 	}
@@ -284,10 +306,11 @@ public class QuickRegisterControllerWACTest {
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.key.customerId").exists())
-				.andExpect(jsonPath("$.key.customerType").exists())
-				.andExpect(jsonPath("$.passwordType").value("Default"))
-				.andExpect(jsonPath("$.isCompleteRegisterCompleted").value(false));
+				.andExpect(jsonPath("$.result.key.customerId").exists())
+				.andExpect(jsonPath("$.result.key.customerType").exists())
+				.andExpect(jsonPath("$.result.passwordType").value("Default"))
+				.andExpect(jsonPath("$.result.isCompleteRegisterCompleted").value(false))
+				.andExpect(jsonPath("$.errorMessage").value(""));
 				
 				
 				//.andExpect(content().string("true"));
@@ -321,7 +344,9 @@ public class QuickRegisterControllerWACTest {
 					)
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().string("sucess"));
+				.andExpect(jsonPath("$.result").value("sucess"))
+				.andExpect(jsonPath("$.errorMessage").value(""));
+		
 		
 		
 	}
@@ -349,12 +374,13 @@ public class QuickRegisterControllerWACTest {
 				post("/quickregister/updatePassword")
 					.content(standardJsonUpdatePasswordDTO(new UpdatePasswordDTO(
 							new AuthenticationDetailsKey(entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType()),
-							authenticationDetails.getPassword(),"abc", true, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
+							"abc",authenticationDetails.getPassword(), true, CUST_UPDATED_BY,entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().string("true"));
+				.andExpect(jsonPath("$.result").value(true))
+				.andExpect(jsonPath("$.errorMessage").value(""));
 		
 		
 		
@@ -377,15 +403,16 @@ public class QuickRegisterControllerWACTest {
 		
 		
 		this.mockMvc.perform(
-				post("/quickregister/resetPassword")
-					.content(standardJsonCustomerIdTypeEmailOrMobileOptionUpdatedByAng(new CustomerIdTypeEmailOrMobileOptionUpdatedByAng(
-							entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType(), 1, CUST_UPDATED_BY,
+				post("/quickregister/sendOrResendOrResetPassword")
+					.content(standardJsonSendResendResetPasswordDTO(new SendResendResetPasswordDTO(
+							entityDTO.getCustomer().getCustomerId(), entityDTO.getCustomer().getCustomerType(),RESET_REQUEST ,1, CUST_UPDATED_BY,
 							entityDTO.getCustomer().getCustomerId())))
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(content().string("true"));
+				.andExpect(jsonPath("$.result").value(true))
+				.andExpect(jsonPath("$.errorMessage").value(""));
 		
 		
 		
@@ -414,10 +441,11 @@ public class QuickRegisterControllerWACTest {
 					.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.email").value(standardEmailMobileCustomerDTO().getEmail()))
-				.andExpect(jsonPath("$.mobile").value(standardEmailMobileCustomerDTO().getMobile()))
-				.andExpect(jsonPath("$.isEmailVerified").value(false))
-				.andExpect(jsonPath("$.isMobileVerified").value(true));
+				//.andExpect(jsonPath("$.result.email").value(standardEmailMobileCustomerDTO().getEmail()))
+				//.andExpect(jsonPath("$.result.mobile").value(standardEmailMobileCustomerDTO().getMobile()))
+				.andExpect(jsonPath("$.result.isEmailVerified").value(false))
+				.andExpect(jsonPath("$.result.isMobileVerified").value(true))
+				.andExpect(jsonPath("$.errorMessage").value(""));
 
 		
 		

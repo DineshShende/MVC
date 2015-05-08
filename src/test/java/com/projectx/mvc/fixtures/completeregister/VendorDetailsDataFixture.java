@@ -56,6 +56,8 @@ public class VendorDetailsDataFixture {
 				CUST_UPDATED_BY,VENDOR_ID);
 	}
 	
+	
+	
 	public static QuickRegisterDTO standardEmailMobileVendorQuick()
 	{
 		return new QuickRegisterDTO(VENDOR_ID, VENDER_FIRSTNAME, VENDER_LASTNAME, VENDOR_EMAIL, VENDOR_MOBILE, ADDRESS_PINCODE, 

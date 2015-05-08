@@ -12,6 +12,9 @@ import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedB
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeRequestedByDTO;
 import com.projectx.rest.domain.quickregister.CustomerIdTypeEmailOrMobileOptionUpdatedBy;
 import com.projectx.rest.domain.quickregister.QuickRegisterDTO;
+import com.projectx.rest.domain.quickregister.SendResendResetEmailHashDTO;
+import com.projectx.rest.domain.quickregister.SendResendResetMobilePinDTO;
+import com.projectx.rest.domain.quickregister.SendResendResetPasswordDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailDTO;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
 
@@ -252,6 +255,11 @@ public class QuickRegisterDataFixture {
 		return gson.toJson(by);
 	}
 	
+	public static String standardJsonSendResendResetPasswordDTO(SendResendResetPasswordDTO by)
+	{
+		return gson.toJson(by);
+	}
+	
 	public static String standardJsonGetByEmailDTO()
 	{
 		return "{\"email\":\"dineshshe@gmail.com\"}";
@@ -271,6 +279,28 @@ public class QuickRegisterDataFixture {
 	{
 		return "{\"mobile\":9960821869,\"mobilePin\":101010}";
 		       
+	}
+
+	public static SendResendResetEmailHashDTO standardSendResendResetEmailHashDTO(Long customerId,Integer customerType,Integer emailType,
+				Integer sendOrResendOrResetFlag,Integer requestedBy,Long requestedById)
+	{
+		return new SendResendResetEmailHashDTO(customerId, customerType, emailType, sendOrResendOrResetFlag, requestedBy, requestedById);
+	}
+	
+	public static SendResendResetMobilePinDTO standardSendResendResetMobilePinDTO(Long customerId,Integer customerType,Integer mobileType,
+			Integer sendOrResendOrResetFlag,Integer requestedBy,Long requestedById)
+	{
+		return new SendResendResetMobilePinDTO(customerId, customerType, mobileType, sendOrResendOrResetFlag, requestedBy, requestedById);
+	}
+	
+	public static String standardJsonSendResendResetEmailHashDTO(SendResendResetEmailHashDTO emailHashDTO)
+	{
+		return gson.toJson(emailHashDTO);
+	}
+	
+	public static String standardJsonSendResendResetMobilePinDTO(SendResendResetMobilePinDTO sendResendResetMobilePinDTO)
+	{
+		return gson.toJson(sendResendResetMobilePinDTO);
 	}
 	
 }
