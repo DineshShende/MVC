@@ -1,10 +1,14 @@
 package com.projectx.mvc.services.completeregister;
 
-import static com.projectx.mvc.fixtures.completeregister.CustomerDetailsDataFixtures.*;
-import static com.projectx.mvc.fixtures.completeregister.VehicleDetailsDataFixtures.*;
 import static com.projectx.mvc.fixtures.completeregister.DriverDetailsDataFixtures.*;
+import static com.projectx.mvc.fixtures.completeregister.VehicleDetailsDataFixtures.*;
+import static com.projectx.mvc.fixtures.completeregister.VendorDetailsDataFixture.*;
 import static com.projectx.mvc.fixtures.quickregister.QuickRegisterDataFixture.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
@@ -19,13 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.projectx.mvc.config.BasicConfig;
 import com.projectx.mvc.domain.quickregister.UpdatePasswordDTO;
 import com.projectx.mvc.exception.repository.completeregister.ValidationFailedException;
-import com.projectx.mvc.exception.repository.quickregister.DeleteQuickCreateDetailsEntityFailedException;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
-import com.projectx.rest.domain.completeregister.CustomerDetailsDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
-import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeRequestedByDTO;
 import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
 import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
 import com.projectx.rest.domain.completeregister.VendorDetailsDTO;
@@ -40,10 +38,6 @@ import com.projectx.rest.domain.quickregister.SendResendResetEmailHashDTO;
 import com.projectx.rest.domain.quickregister.SendResendResetMobilePinDTO;
 import com.projectx.rest.domain.quickregister.VerifyEmailDTO;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
-
-import static com.projectx.mvc.fixtures.completeregister.VendorDetailsDataFixture.*;
-import static com.projectx.mvc.fixtures.completeregister.DriverDetailsDataFixtures.*;
-import static com.projectx.mvc.fixtures.completeregister.VehicleDetailsDataFixtures.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BasicConfig.class)

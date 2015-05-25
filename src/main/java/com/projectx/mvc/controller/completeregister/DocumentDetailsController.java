@@ -48,48 +48,26 @@ public class DocumentDetailsController {
 	private Integer ENTITY_TYPE_CUSTOMER=1;
 	private Integer ENTITY_TYPE_VENDOR=2;
 	
-	/*
-	@RequestMapping(value="/",method=RequestMethod.POST)
-	public DocumentContainer documentContainer(@RequestBody DocumentContainer documentContainer)
-	{
-		
-	}
-	*/
-	
-	/*
-	@RequestMapping(value="/save",method=RequestMethod.POST)//,consumes = {"multipart/form-data"}
-	@ResponseBody
-	public String save(
-	        @RequestParam(value = "file") MultipartFile file)
-	{
-		
-		System.out.println(file.getContentType());
-		
-		
-		//System.out.println(dto.getFile().getContentType());
-		//try {
-			//System.out.println(dto.getFile().getBytes());
-		//} catch (IOException e) {
-			// TODO Auto-generated catch block
-		//	e.printStackTrace();
-		//}
-		
-		return "abc";
-	}
-	*/
-	
 	
 	@RequestMapping(value="/save",method=RequestMethod.POST)//,consumes = {"multipart/form-data"}
 	@ResponseBody
 	public ResponseDTO save(MultipartHttpServletRequest request,HttpServletResponse response)
 	{
-		
+		//TODO Shri: Add your document compression and conversion to PDF code here
 		MultipartHttpServletRequest mRequest;
         try {
             mRequest = (MultipartHttpServletRequest) request;
            Map<String, String[]> objectMap= mRequest.getParameterMap();
            
            Map<String, MultipartFile> fileMap =mRequest.getFileMap();
+           
+           for(Object keyObj:objectMap.keySet())
+           {
+        	   
+        	   System.out.println("ParamKey"+keyObj);
+        	   System.out.println("ParamKeyVal"+objectMap.get(keyObj)[0]);
+           }
+           
            
            for(Object key: fileMap.keySet())
            {
@@ -101,27 +79,8 @@ public class DocumentDetailsController {
            }
            
            
-           for(Object keyObj:objectMap.keySet())
-           {
-        	   
-        	   System.out.println("ParamKey"+keyObj);
-        	   System.out.println("ParamKeyVal"+objectMap.get(keyObj)[0]);
-           }
            
-         //  CustomerDetailsAngDTO angDTO=(CustomerDetailsAngDTO)objectMap.get("user");
            
-           //
-           
-           //System.out.println(objectMap.get("user"));
-
-           /*
-            Iterator<String> itr = mRequest.getFileNames();
-            while (itr.hasNext()) {
-                MultipartFile mFile = mRequest.getFile(itr.next());
-                String fileName = mFile.getOriginalFilename();
-                System.out.println(fileName);
-            }
-            */
            
            return new ResponseDTO("failure", "SOmething went wrong");
         } catch (Exception e) {
@@ -137,62 +96,6 @@ public class DocumentDetailsController {
 	{
 		return "completeregister/documentUpload";
 	}
-	/*
-	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public String save(@RequestParam("customerId") Long customerId,@RequestParam("customerType") Integer customerType,
-			@RequestParam("documentName") String documentName,
-            @RequestParam("file") MultipartFile file,Model model)
-	{
-		
-		if (!file.isEmpty()) {
-            try {
-                
-                DocumentDetails documentDetails=documentDetailsService.initializeDocumentDetails(customerId, customerType, documentName, file);
-                
-                documentDetails=documentDetailsService.saveDocument(documentDetails);
-                
-                if(customerType.equals(ENTITY_TYPE_CUSTOMER))
-                {
-                	
-	                CustomerDetailsDTO customerDetails=customerDetailsService.getCustomerDetailsById(customerId);
-	                
-	                model.addAttribute("documentDetails", documentDetails);
-	                model.addAttribute("customerDetails", customerDetails);
-	                
-	                model.addAttribute("uploadStatus", "You successfully uploaded file");
-	                model=customerDetailsService.initialiseShowCustomerDetails(customerId, model);
-	                return "completeregister/showCustomerDetails";
-                
-                }
-                else if(customerType.equals(ENTITY_TYPE_VENDOR))
-                {
-                	VendorDetailsDTO vendorDetails=vendorDetailsService.getCustomerDetailsById(customerId);
-                	
-   	                model.addAttribute("documentDetails", documentDetails);
-   	                model.addAttribute("vendorDetails", vendorDetails);
-        	                
-  	                model.addAttribute("uploadStatus", "You successfully uploaded file");
-  	                model=vendorDetailsService.initialiseShowVendorDetails(customerId, model);
-   	                return "completeregister/showVendorDetails";
-
-                	
-                }
-                
-            } catch (Exception e) {
-
-            	model.addAttribute("uploadStatus", "You failed to upload ");
-                return "failure";
-            }
-        } else {
-
-        	model.addAttribute("uploadStatus", "You failed to upload because the file was empty");
-            return "failure";
-        }
-
-		return "failure";
-	}
-	
-	*/
 	@RequestMapping(value="/updateDocument",method=RequestMethod.POST)
 	public String updateDocument(@RequestParam("customerId") Long customerId,@RequestParam("customerType") Integer customerType,
 			@RequestParam("documentName") String documentName,@RequestParam("documentVersion") Integer documentVersion,@RequestParam("requestedBy") String requestedBy,
@@ -264,170 +167,5 @@ public class DocumentDetailsController {
 
 		
 	}
-	/*
-	@RequestMapping(value="/{customerId}/{customerType}/{documentName}")
-	public void getDocument(@PathVariable Long customerId,@PathVariable Integer customerType,@PathVariable String documentName,
-			HttpServletResponse response) throws IOException
-	{
-		System.out.println("CustomerId:"+customerId+",CustomerType:"+customerType+",Document Name:"+documentName);
-	
-		if (customerId == null || customerType==null ||documentName==null ) {
-        
-        	response.sendError(HttpServletResponse.SC_NOT_FOUND); 
-            return;
-        }
-
-        DocumentDetails image = documentDetailsService.getDocumentById(new DocumentKey(customerId, customerType, documentName));
-
-        System.out.println(image);
-        
-        byte[] bytes=image.getDocument();
-        
-        
-        BufferedOutputStream stream = new BufferedOutputStream(
-                new FileOutputStream("/home/dinesh/Upload/upload.pdf"));
-        stream.write(bytes);
-        stream.close();
-
-//        if (image == null) {
-//            response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404.
-//            return;
-//        }
-
-        response.reset();
-        response.setContentType(image.getContentType());
-       
-        response.getOutputStream().write(image.getDocument());
-
-	}
-	
-	@RequestMapping(value="/viewDocument",method=RequestMethod.GET)
-	public String showDocument()
-	{
-		return "completeregister/showDocument";
-	}
-
-	/*
-	
-	@RequestMapping(value="/testCallable")
-	@ResponseBody
-	public Callable<String> testCallable()
-	{
-		System.out.println(Thread.currentThread().getName());
-		
-		return new Callable<String>() {
-			
-			@Override
-			public String call() throws Exception {
-
-				Thread.sleep(10000);
-				System.out.println("After completion");
-				System.out.println(Thread.currentThread().getName());
-				return "showDocument";
-			}
-		};
-		
-	}
-	
-	@RequestMapping(value="/test")
-	@ResponseBody
-	public String test() 
-	{
-		System.out.println(Thread.currentThread().getName());
-		
-		try {
-			Thread.sleep(10000);
-			System.out.println(Thread.currentThread().getName());
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return "showDocument";
-	}
-	
-	@RequestMapping(value="/testDeferredResult")
-	public DeferredResult<String> testDeferredResult()
-	{
-		DeferredResult<String> deferredResult=new DeferredResult<String>();
-		
-		
-		
-		return deferredResult;
-	}
-	
-	@RequestMapping("/custom-timeout-handling")
-	public @ResponseBody WebAsyncTask<String> callableWithCustomTimeoutHandling() {
-
-		Callable<String> callable = new Callable<String>() {
-			@Override
-			public String call() throws Exception {
-				Thread.sleep(4000);
-				return "Callable result";
-			}
-		};
-
-		WebAsyncTask<String> webAsyncTask=new WebAsyncTask<String>(6000, callable);
-		
-		webAsyncTask.onCompletion(new Runnable() {
-			
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				System.out.println("Completed Execution!!");
-			}
-		});
-		
-		return webAsyncTask;
-	}
-	
-	@RequestMapping(value="/async/{email}",method=RequestMethod.GET)
-	@ResponseBody
-	public String asyncCall(@PathVariable("email") String email)
-	{
-		RestTemplate restTemplate=new RestTemplate();
-		
-		EmailDTO emailDTO=new EmailDTO(212L, email, "Hi There");
-		
-		String response=restTemplate.postForObject("http://localhost:9060/sendVerificationDetails/sendEmail", emailDTO, String.class);
-		
-		return response;
-	}
-	*/
-	
 
 }
-/*
-System.out.println(file.getContentType());
-
-customerDocumetDTO.setCustomerId(212L);
-customerDocumetDTO.setImage(bytes);
-
-customerQuickRegisterService.saveCustomerDocumet(customerDocumetDTO);
-*/
-
-/*
-System.out.println(bytes);
-
-// Creating the directory to store file
-String rootPath = System.getProperty("catalina.home");
-System.out.println(rootPath);
-
-File dir = new File(rootPath + File.separator + "tmpFiles");
-if (!dir.exists())
-    dir.mkdirs();
-
-// Create the file on server
-File serverFile = new File(dir.getAbsolutePath()
-        + File.separator + name);
-BufferedOutputStream stream = new BufferedOutputStream(
-        new FileOutputStream(serverFile));
-stream.write(bytes);
-stream.close();
-
-System.out.println("You successfully uploaded file=" + name);*/
