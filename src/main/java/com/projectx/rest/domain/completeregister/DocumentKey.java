@@ -10,17 +10,23 @@ public class DocumentKey   {
 	private Integer customerType;
 	
 	private String documentName;
+	
+	private Integer documentVersion;
 
 	public DocumentKey() {
 
 	}
 
 	public DocumentKey(Long customerId, Integer customerType,
-			String documentName) {
+			String documentName, Integer documentVersion) {
+		super();
 		this.customerId = customerId;
 		this.customerType = customerType;
 		this.documentName = documentName;
+		this.documentVersion = documentVersion;
 	}
+
+
 
 	public Long getCustomerId() {
 		return customerId;
@@ -45,11 +51,22 @@ public class DocumentKey   {
 	public void setDocumentName(String documentName) {
 		this.documentName = documentName;
 	}
+	
+	
+
+	public Integer getDocumentVersion() {
+		return documentVersion;
+	}
+
+	public void setDocumentVersion(Integer documentVersion) {
+		this.documentVersion = documentVersion;
+	}
 
 	@Override
 	public String toString() {
 		return "DocumentKey [customerId=" + customerId + ", customerType="
-				+ customerType + ", documentName=" + documentName + "]";
+				+ customerType + ", documentName=" + documentName
+				+ ", documentVersion=" + documentVersion + "]";
 	}
 
 	@Override
@@ -62,6 +79,8 @@ public class DocumentKey   {
 				+ ((customerType == null) ? 0 : customerType.hashCode());
 		result = prime * result
 				+ ((documentName == null) ? 0 : documentName.hashCode());
+		result = prime * result
+				+ ((documentVersion == null) ? 0 : documentVersion.hashCode());
 		return result;
 	}
 
@@ -89,10 +108,15 @@ public class DocumentKey   {
 				return false;
 		} else if (!documentName.equals(other.documentName))
 			return false;
+		if (documentVersion == null) {
+			if (other.documentVersion != null)
+				return false;
+		} else if (!documentVersion.equals(other.documentVersion))
+			return false;
 		return true;
 	}
-	
-	
+
+		
 	
 	
 }

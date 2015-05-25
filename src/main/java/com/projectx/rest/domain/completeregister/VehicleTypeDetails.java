@@ -63,8 +63,7 @@ public class VehicleTypeDetails {
 		if (vehicleTypeId == null) {
 			if (other.vehicleTypeId != null)
 				return false;
-		} else if (!vehicleTypeId.equals(other.vehicleTypeId))
-			return false;
+		} 
 		if (vehicleTypeName == null) {
 			if (other.vehicleTypeName != null)
 				return false;

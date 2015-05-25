@@ -44,6 +44,14 @@ public class VendorDetailsDTO {
 	
 	private Boolean isSecondaryMobileVerified;
 	
+	private Boolean isVerified;
+	
+	private Boolean isVendorAsDriver;
+	
+	private Long driverId;
+	
+	private String bloodGroup;
+	
 	private Date insertTime;
 	
 	private Date updateTime;
@@ -62,36 +70,46 @@ public class VendorDetailsDTO {
 
 	}
 
-	public VendorDetailsDTO(Long vendorId, String firstName,String middleName, String lastName,
-			Date dateOfBirth,String firmName, Address firmAddress,Address homeAddress, Long mobile,Long phoneNumber,
-			Boolean isMobileVerified, String email, Boolean isEmailVerified,
-			String laguage,Long secondaryMobile,Boolean isSecondaryMobileVerified, Date insertTime, Date updateTime, 
-			Integer updatedBy,Integer insertedBy,Long updatedById,Long insertedById) {
 
+	public VendorDetailsDTO(Long vendorId, String firstName, String middleName,
+			String lastName, Date dateOfBirth, String firmName,
+			Address firmAddress, Address homeAddress, Long mobile,
+			Long phoneNumber, Boolean isMobileVerified, String email,
+			Boolean isEmailVerified, String laguage, Long secondaryMobile,
+			Boolean isSecondaryMobileVerified, Boolean isVerified,
+			Boolean isVendorAsDriver, Long driverId,String bloodGroup, Date insertTime,
+			Date updateTime, Integer updatedBy, Integer insertedBy,
+			Long updatedById, Long insertedById) {
+		super();
 		this.vendorId = vendorId;
 		this.firstName = firstName;
-		this.middleName=middleName;
+		this.middleName = middleName;
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;
-		this.firmName=firmName;
+		this.firmName = firmName;
 		this.firmAddress = firmAddress;
-		this.homeAddress=homeAddress;
+		this.homeAddress = homeAddress;
 		this.mobile = mobile;
-		this.phoneNumber=phoneNumber;
+		this.phoneNumber = phoneNumber;
 		this.isMobileVerified = isMobileVerified;
 		this.email = email;
 		this.isEmailVerified = isEmailVerified;
 		this.laguage = laguage;
-		this.secondaryMobile=secondaryMobile;
-		this.isSecondaryMobileVerified=isSecondaryMobileVerified;
+		this.secondaryMobile = secondaryMobile;
+		this.isSecondaryMobileVerified = isSecondaryMobileVerified;
+		this.isVerified = isVerified;
+		this.isVendorAsDriver = isVendorAsDriver;
+		this.driverId = driverId;
+		this.bloodGroup=bloodGroup;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
 		this.updatedBy = updatedBy;
-		this.updatedBy = updatedBy;
-		this.insertedBy=insertedBy;
-		this.updatedById=updatedById;
-		this.insertedById=insertedById;
+		this.insertedBy = insertedBy;
+		this.updatedById = updatedById;
+		this.insertedById = insertedById;
 	}
+
+
 
 
 
@@ -286,6 +304,51 @@ public class VendorDetailsDTO {
 		this.insertedById = insertedById;
 	}
 
+	
+	
+	public Boolean getIsVerified() {
+		return isVerified;
+	}
+
+
+
+
+	public void setIsVerified(Boolean isVerified) {
+		this.isVerified = isVerified;
+	}
+
+	
+	public Boolean getIsVendorAsDriver() {
+		return isVendorAsDriver;
+	}
+
+
+	public void setIsVendorAsDriver(Boolean isVendorAsDriver) {
+		this.isVendorAsDriver = isVendorAsDriver;
+	}
+
+
+	public Long getDriverId() {
+		return driverId;
+	}
+
+
+	public void setDriverId(Long driverId) {
+		this.driverId = driverId;
+	}
+
+
+	public String getBloodGroup() {
+		return bloodGroup;
+	}
+
+
+	public void setBloodGroup(String bloodGroup) {
+		this.bloodGroup = bloodGroup;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "VendorDetailsDTO [vendorId=" + vendorId + ", firstName="
@@ -297,11 +360,14 @@ public class VendorDetailsDTO {
 				+ ", email=" + email + ", isEmailVerified=" + isEmailVerified
 				+ ", laguage=" + laguage + ", secondaryMobile="
 				+ secondaryMobile + ", isSecondaryMobileVerified="
-				+ isSecondaryMobileVerified + ", insertTime=" + insertTime
-				+ ", updateTime=" + updateTime + ", updatedBy=" + updatedBy
-				+ ", insertedBy=" + insertedBy + ", updatedById=" + updatedById
-				+ ", insertedById=" + insertedById + "]";
+				+ isSecondaryMobileVerified + ", isVerified=" + isVerified
+				+ ", isVendorAsDriver=" + isVendorAsDriver + ", driverId="
+				+ driverId + ", bloodGroup=" + bloodGroup + ", insertTime="
+				+ insertTime + ", updateTime=" + updateTime + ", updatedBy="
+				+ updatedBy + ", insertedBy=" + insertedBy + ", updatedById="
+				+ updatedById + ", insertedById=" + insertedById + "]";
 	}
+
 
 	@Override
 	public int hashCode() {
@@ -471,6 +537,27 @@ public class VendorDetailsDTO {
 				return false;
 		} else if (!vendorId.equals(other.vendorId))
 			return false;
+		if (isVerified == null) {
+			if (other.isVerified != null)
+				return false;
+		} else if (!isVerified.equals(other.isVerified))
+			return false;
+		if (isVendorAsDriver == null) {
+			if (other.isVendorAsDriver != null)
+				return false;
+		} else if (!isVendorAsDriver.equals(other.isVendorAsDriver))
+			return false;
+		if (driverId == null) {
+			if (other.driverId != null)
+				return false;
+		} else if (!driverId.equals(other.driverId))
+			return false;
+		if (bloodGroup == null) {
+			if (other.bloodGroup != null)
+				return false;
+		} else if (!bloodGroup.equals(other.bloodGroup))
+			return false;
+		
 		return true;
 	}
 

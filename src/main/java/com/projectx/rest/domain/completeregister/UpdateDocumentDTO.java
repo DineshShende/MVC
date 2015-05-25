@@ -1,6 +1,7 @@
 package com.projectx.rest.domain.completeregister;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -10,10 +11,8 @@ public class UpdateDocumentDTO {
 
 	private DocumentKey key;
 	
-	private byte [] document;
+	private List<Document> document;
 
-	private String contentType;
-	
 	private Integer requestedBy;
 	
 	private Long requestedById;
@@ -22,15 +21,16 @@ public class UpdateDocumentDTO {
 
 	}
 
-	public UpdateDocumentDTO(DocumentKey key, byte[] document,
-			String contentType, Integer requestedBy,Long requestedById) {
+	
+	public UpdateDocumentDTO(DocumentKey key, List<Document> document,
+			Integer requestedBy, Long requestedById) {
 		super();
 		this.key = key;
 		this.document = document;
-		this.contentType = contentType;
 		this.requestedBy = requestedBy;
-		this.requestedById=requestedById;
+		this.requestedById = requestedById;
 	}
+
 
 	public DocumentKey getKey() {
 		return key;
@@ -40,22 +40,15 @@ public class UpdateDocumentDTO {
 		this.key = key;
 	}
 
-	public byte[] getDocument() {
+	
+	public List<Document> getDocument() {
 		return document;
 	}
 
-	public void setDocument(byte[] document) {
+
+	public void setDocument(List<Document> document) {
 		this.document = document;
 	}
-
-	public String getContentType() {
-		return contentType;
-	}
-
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
-
 
 
 	public Integer getRequestedBy() {
@@ -77,19 +70,18 @@ public class UpdateDocumentDTO {
 
 	@Override
 	public String toString() {
-		return "UpdateDocumentDTO [key=" + key + ", document="
-				+ Arrays.toString(document) + ", contentType=" + contentType
+		return "UpdateDocumentDTO [key=" + key + ", document=" + document
 				+ ", requestedBy=" + requestedBy + ", requestedById="
 				+ requestedById + "]";
 	}
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((contentType == null) ? 0 : contentType.hashCode());
-		result = prime * result + Arrays.hashCode(document);
+				+ ((document == null) ? 0 : document.hashCode());
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
 		result = prime * result
 				+ ((requestedBy == null) ? 0 : requestedBy.hashCode());
@@ -97,6 +89,7 @@ public class UpdateDocumentDTO {
 				+ ((requestedById == null) ? 0 : requestedById.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -107,12 +100,10 @@ public class UpdateDocumentDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		UpdateDocumentDTO other = (UpdateDocumentDTO) obj;
-		if (contentType == null) {
-			if (other.contentType != null)
+		if (document == null) {
+			if (other.document != null)
 				return false;
-		} else if (!contentType.equals(other.contentType))
-			return false;
-		if (!Arrays.equals(document, other.document))
+		} else if (!document.equals(other.document))
 			return false;
 		if (key == null) {
 			if (other.key != null)
@@ -122,16 +113,15 @@ public class UpdateDocumentDTO {
 		if (requestedBy == null) {
 			if (other.requestedBy != null)
 				return false;
-		} else if (!requestedBy.equals(other.requestedBy))
-			return false;
+		}
 		if (requestedById == null) {
 			if (other.requestedById != null)
 				return false;
-		} else if (!requestedById.equals(other.requestedById))
-			return false;
+		}
 		return true;
 	}
 
-		
+
+			
 	
 }

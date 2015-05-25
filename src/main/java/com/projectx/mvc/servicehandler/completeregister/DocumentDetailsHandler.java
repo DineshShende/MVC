@@ -40,11 +40,11 @@ public class DocumentDetailsHandler implements DocumentDetailsService {
 	
 	@Override
 	public DocumentDetails initializeDocumentDetails(Long customerId,
-			Integer customerType, String documentName, MultipartFile file)
+			Integer customerType, String documentName,Integer documentVersion, MultipartFile file)
 			throws IOException {
 
 
-		DocumentKey key=new DocumentKey(customerId, customerType, documentName);
+		DocumentKey key=new DocumentKey(customerId, customerType, documentName,documentVersion);
 		
 		byte[] document = null;
 		

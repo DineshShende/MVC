@@ -85,7 +85,15 @@ public class VehicleDetailsDTO {
 	@NotNull
 	private Long vendorId;
 
+	@NotNull
+	private Boolean isSimplifiedRegistration;
+	
+	@NotNull
+	private Boolean isDetailRegistrationCompleted;
+	
 	private List<String> commodityList;
+	
+	private Boolean isVerified;
 	
 	private Date insertTime;
 	
@@ -104,6 +112,8 @@ public class VehicleDetailsDTO {
 	}
 
 
+	
+
 	public VehicleDetailsDTO(Long vehicleId, String ownerFirstName,
 			String ownerMiddleName, String ownerLastName,
 			VehicleBrandDetails vehicleBrandId, String vehicleBodyType,
@@ -111,9 +121,11 @@ public class VehicleDetailsDTO {
 			String chassisNumber, Integer loadCapacityInTons, Integer length,
 			Integer width, Integer height, Integer numberOfWheels,
 			String permitType, Boolean insuranceStatus, String insuranceNumber,
-			String insuranceCompany, Long vendorId, List<String> commodityList,
-			Date insertTime, Date updateTime, 
-			Integer updatedBy,Integer insertedBy,Long updatedById,Long insertedById) {
+			String insuranceCompany, Long vendorId,
+			Boolean isSimplifiedRegistration,
+			Boolean isDetailRegistrationCompleted, List<String> commodityList,Boolean isVerified,
+			Date insertTime, Date updateTime, Integer updatedBy,
+			Integer insertedBy, Long updatedById, Long insertedById) {
 		super();
 		this.vehicleId = vehicleId;
 		this.ownerFirstName = ownerFirstName;
@@ -134,20 +146,43 @@ public class VehicleDetailsDTO {
 		this.insuranceNumber = insuranceNumber;
 		this.insuranceCompany = insuranceCompany;
 		this.vendorId = vendorId;
+		this.isSimplifiedRegistration = isSimplifiedRegistration;
+		this.isDetailRegistrationCompleted = isDetailRegistrationCompleted;
 		this.commodityList = commodityList;
+		this.isVerified=isVerified;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
 		this.updatedBy = updatedBy;
-		this.updatedBy = updatedBy;
-		this.insertedBy=insertedBy;
-		this.updatedById=updatedById;
-		this.insertedById=insertedById;
+		this.insertedBy = insertedBy;
+		this.updatedById = updatedById;
+		this.insertedById = insertedById;
 	}
 
 
 
 
+	public Boolean getIsSimplifiedRegistration() {
+		return isSimplifiedRegistration;
+	}
 
+
+
+	public void setIsSimplifiedRegistration(Boolean isSimplifiedRegistration) {
+		this.isSimplifiedRegistration = isSimplifiedRegistration;
+	}
+
+
+
+	public Boolean getIsDetailRegistrationCompleted() {
+		return isDetailRegistrationCompleted;
+	}
+
+
+
+	public void setIsDetailRegistrationCompleted(
+			Boolean isDetailRegistrationCompleted) {
+		this.isDetailRegistrationCompleted = isDetailRegistrationCompleted;
+	}
 
 
 
@@ -441,6 +476,18 @@ public class VehicleDetailsDTO {
 		this.insertedById = insertedById;
 	}
 
+	public Boolean getIsVerified() {
+		return isVerified;
+	}
+
+	public void setIsVerified(Boolean isVerified) {
+		this.isVerified = isVerified;
+	}
+
+
+
+
+
 
 	@Override
 	public String toString() {
@@ -457,12 +504,17 @@ public class VehicleDetailsDTO {
 				+ permitType + ", insuranceStatus=" + insuranceStatus
 				+ ", insuranceNumber=" + insuranceNumber
 				+ ", insuranceCompany=" + insuranceCompany + ", vendorId="
-				+ vendorId + ", commodityList=" + commodityList
+				+ vendorId + ", isSimplifiedRegistration="
+				+ isSimplifiedRegistration + ", isDetailRegistrationCompleted="
+				+ isDetailRegistrationCompleted + ", commodityList="
+				+ commodityList + ", isVerified=" + isVerified
 				+ ", insertTime=" + insertTime + ", updateTime=" + updateTime
 				+ ", updatedBy=" + updatedBy + ", insertedBy=" + insertedBy
 				+ ", updatedById=" + updatedById + ", insertedById="
 				+ insertedById + "]";
 	}
+
+
 
 
 	@Override
@@ -565,8 +617,7 @@ public class VehicleDetailsDTO {
 		if (insertedById == null) {
 			if (other.insertedById != null)
 				return false;
-		} else if (!insertedById.equals(other.insertedById))
-			return false;
+		} 
 		if (insuranceCompany == null) {
 			if (other.insuranceCompany != null)
 				return false;
@@ -639,8 +690,7 @@ public class VehicleDetailsDTO {
 		if (updatedById == null) {
 			if (other.updatedById != null)
 				return false;
-		} else if (!updatedById.equals(other.updatedById))
-			return false;
+		} 
 		if (vehicleBodyType == null) {
 			if (other.vehicleBodyType != null)
 				return false;
@@ -665,6 +715,11 @@ public class VehicleDetailsDTO {
 			if (other.width != null)
 				return false;
 		} else if (!width.equals(other.width))
+			return false;
+		if (isVerified == null) {
+			if (other.isVerified != null)
+				return false;
+		} else if (!isVerified.equals(other.isVerified))
 			return false;
 		return true;
 	}

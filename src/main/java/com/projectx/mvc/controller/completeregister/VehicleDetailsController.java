@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projectx.mvc.domain.commn.ResponseDTO;
+import com.projectx.mvc.domain.completeregister.L1VehicleCompleteRegistration;
+import com.projectx.mvc.domain.completeregister.VehicleSimplified;
 import com.projectx.mvc.exception.repository.completeregister.ResourceAlreadyPresentException;
 import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
@@ -57,6 +59,41 @@ public class VehicleDetailsController {
 		}
 	}
 	
+	@RequestMapping(value="/save/simplified",method=RequestMethod.POST)
+	public ResponseEntity<ResponseDTO<String>> addVehicleSimplified(@Valid @RequestBody VehicleSimplified vehicleSimplified,BindingResult result,Model model)
+	{
+		if(result.hasErrors())
+		{
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		try{
+			VehicleDetailsDTO detailsDTO=vendorDetailsService.saveSimplified(vehicleSimplified);
+		
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("sucess", ""), HttpStatus.OK);
+		}catch(ResourceAlreadyPresentException e)
+		{
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("failure", e.getMessage()), HttpStatus.OK);
+		}
+	}
+	
+	@RequestMapping(value="/save/l1dataentry",method=RequestMethod.POST)
+	public ResponseEntity<ResponseDTO<String>> l1DataEntry(@Valid @RequestBody L1VehicleCompleteRegistration l1VehicleCompleteRegistration,BindingResult result,Model model)
+	{
+		if(result.hasErrors())
+		{
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		try{
+			VehicleDetailsDTO detailsDTO=vendorDetailsService.l1VehicleDataEntry(l1VehicleCompleteRegistration);
+		
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("sucess", ""), HttpStatus.OK);
+		}catch(ResourceAlreadyPresentException e)
+		{
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("failure", e.getMessage()), HttpStatus.OK);
+		}
+	}
 	
 	
 	@RequestMapping(value="/getByVendorId",method=RequestMethod.POST)

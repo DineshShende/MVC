@@ -1,6 +1,7 @@
 package com.projectx.rest.domain.ang;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -58,6 +59,19 @@ public class DriverDetailsAngDTO {
 	private String language;
 	
 	@NotNull
+	private Date licenceDOI;
+	
+	@NotNull
+	private Date licenceValidTill;
+	
+	private List<String> covList;
+
+	
+	private Boolean isSimplifiedRegistration;
+	
+	private Boolean isDetailRegistrationCompleted;
+	
+	@NotNull
 	private Long vendorId;
 	
 	private Date insertTime;
@@ -73,13 +87,19 @@ public class DriverDetailsAngDTO {
 	}
 
 
-	public DriverDetailsAngDTO(Long driverId, String firstName, String middleName,
-			String lastName, Date dateOfBirth, String bloodGroup,
-			Address homeAddress, Long mobile, Boolean isMobileVerified,
-			Long homeContactNumber, String licenceNumber, Date drivingSince,
-			Date employedSince, Boolean isFreightRequestPermissionGiven,
+
+	public DriverDetailsAngDTO(Long driverId, String firstName,
+			String middleName, String lastName, Date dateOfBirth,
+			String bloodGroup, Address homeAddress, Long mobile,
+			Boolean isMobileVerified, Long homeContactNumber,
+			String licenceNumber, Date drivingSince, Date employedSince,
+			Boolean isFreightRequestPermissionGiven,
 			Boolean isDealFinalizationPermissionGiven, String language,
-			Long vendorId, Date insertTime, Date updateTime, Integer updatedBy,Long updatedById) {
+			Date licenceDOI, Date licenceValidTill, List<String> covList,
+			Boolean isSimplifiedRegistration,
+			Boolean isDetailRegistrationCompleted, Long vendorId,
+			Date insertTime, Date updateTime, Integer requestedBy,
+			Long requestedById) {
 		super();
 		this.driverId = driverId;
 		this.firstName = firstName;
@@ -97,12 +117,18 @@ public class DriverDetailsAngDTO {
 		this.isFreightRequestPermissionGiven = isFreightRequestPermissionGiven;
 		this.isDealFinalizationPermissionGiven = isDealFinalizationPermissionGiven;
 		this.language = language;
+		this.licenceDOI = licenceDOI;
+		this.licenceValidTill = licenceValidTill;
+		this.covList = covList;
+		this.isSimplifiedRegistration = isSimplifiedRegistration;
+		this.isDetailRegistrationCompleted = isDetailRegistrationCompleted;
 		this.vendorId = vendorId;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
-		this.requestedBy = updatedBy;
-		this.requestedById=updatedById;
+		this.requestedBy = requestedBy;
+		this.requestedById = requestedById;
 	}
+
 
 
 	public DriverDetailsDTO toDriverDetailsDTO()
@@ -112,7 +138,8 @@ public class DriverDetailsAngDTO {
 				this.getMobile(), this.getIsMobileVerified(), this.getHomeContactNumber(),
 				this.getLicenceNumber(), this.getDrivingSince(),this.getEmployedSince(),
 				this.getIsFreightRequestPermissionGiven(), this.getIsDealFinalizationPermissionGiven(),
-				this.getLanguage(), this.getVendorId(), new Date(), new Date(), this.getRequestedBy(),
+				this.getLanguage(),this.licenceDOI,this.licenceValidTill,this.covList,false,true,
+				this.getVendorId(),false, new Date(), new Date(), this.getRequestedBy(),
 				this.getRequestedBy(),this.getRequestedById(),this.getRequestedById());
 		
 		return driverDetails;
@@ -125,7 +152,8 @@ public class DriverDetailsAngDTO {
 				fetchedEntity.getHomeAddress(), fetchedEntity.getMobile(), fetchedEntity.getIsMobileVerified(),
 				fetchedEntity.getHomeContactNumber(), fetchedEntity.getLicenceNumber(), fetchedEntity.getDrivingSince(),
 				fetchedEntity.getEmployedSince(), fetchedEntity.getIsFreightRequestPermissionGiven(), fetchedEntity.getIsDealFinalizationPermissionGiven(),
-				fetchedEntity.getLanguage(), fetchedEntity.getVendorId(), fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(),
+				fetchedEntity.getLanguage(),fetchedEntity.getLicenceDOI(),fetchedEntity.getLicenceValidTill(),
+				fetchedEntity.getCovList(),fetchedEntity.getIsSimplifiedRegistration(),fetchedEntity.getIsDetailRegistrationCompleted(),fetchedEntity.getVendorId(), fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(),
 				fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
 		
 		return detailsAngDTO;
@@ -328,6 +356,78 @@ public class DriverDetailsAngDTO {
 	public void setRequestedById(Long requestedById) {
 		this.requestedById = requestedById;
 	}
+
+	
+
+	public Date getLicenceDOI() {
+		return licenceDOI;
+	}
+
+
+
+
+
+	public void setLicenceDOI(Date licenceDOI) {
+		this.licenceDOI = licenceDOI;
+	}
+
+
+
+
+
+	public Date getLicenceValidTill() {
+		return licenceValidTill;
+	}
+
+
+
+
+
+	public void setLicenceValidTill(Date licenceValidTill) {
+		this.licenceValidTill = licenceValidTill;
+	}
+
+
+
+
+
+	public List<String> getCovList() {
+		return covList;
+	}
+
+
+
+
+
+	public void setCovList(List<String> covList) {
+		this.covList = covList;
+	}
+
+
+
+
+
+	public Boolean getIsSimplifiedRegistration() {
+		return isSimplifiedRegistration;
+	}
+
+
+
+
+
+	public void setIsSimplifiedRegistration(Boolean isSimplifiedRegistration) {
+		this.isSimplifiedRegistration = isSimplifiedRegistration;
+	}
+
+	public Boolean getIsDetailRegistrationCompleted() {
+		return isDetailRegistrationCompleted;
+	}
+
+	public void setIsDetailRegistrationCompleted(
+			Boolean isDetailRegistrationCompleted) {
+		this.isDetailRegistrationCompleted = isDetailRegistrationCompleted;
+	}
+
 
 
 	@Override

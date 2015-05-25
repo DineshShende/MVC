@@ -1,6 +1,7 @@
 package com.projectx.rest.domain.completeregister;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -62,7 +63,23 @@ public class DriverDetailsDTO {
 	private String language;
 	
 	@NotNull
+	private Date licenceDOI;
+	
+	@NotNull
+	private Date licenceValidTill;
+	
+	private List<String> covList;
+
+	@NotNull
+	private Boolean isSimplifiedRegistration;
+	
+	@NotNull
+	private Boolean isDetailRegistrationCompleted;
+	
+	@NotNull
 	private Long vendorId;
+	
+	private Boolean isVerified;
 	
 	private Date insertTime;
 	
@@ -80,14 +97,19 @@ public class DriverDetailsDTO {
 
 	}
 
+	
 	public DriverDetailsDTO(Long driverId, String firstName, String middleName,
 			String lastName, Date dateOfBirth, String bloodGroup,
 			Address homeAddress, Long mobile, Boolean isMobileVerified,
 			Long homeContactNumber, String licenceNumber, Date drivingSince,
 			Date employedSince, Boolean isFreightRequestPermissionGiven,
 			Boolean isDealFinalizationPermissionGiven, String language,
-			Long vendorId, Date insertTime, Date updateTime, 
-			Integer updatedBy,Integer insertedBy,Long updatedById,Long insertedById) {
+			Date licenceDOI, Date licenceValidTill, List<String> covList,
+			Boolean isSimplifiedRegistration,
+			Boolean isDetailRegistrationCompleted, Long vendorId,
+			Boolean isVerified, Date insertTime, Date updateTime,
+			Integer updatedBy, Integer insertedBy, Long updatedById,
+			Long insertedById) {
 		super();
 		this.driverId = driverId;
 		this.firstName = firstName;
@@ -105,20 +127,20 @@ public class DriverDetailsDTO {
 		this.isFreightRequestPermissionGiven = isFreightRequestPermissionGiven;
 		this.isDealFinalizationPermissionGiven = isDealFinalizationPermissionGiven;
 		this.language = language;
+		this.licenceDOI = licenceDOI;
+		this.licenceValidTill = licenceValidTill;
+		this.covList = covList;
+		this.isSimplifiedRegistration = isSimplifiedRegistration;
+		this.isDetailRegistrationCompleted = isDetailRegistrationCompleted;
 		this.vendorId = vendorId;
+		this.isVerified = isVerified;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
 		this.updatedBy = updatedBy;
-		this.updatedBy = updatedBy;
-		this.insertedBy=insertedBy;
-		this.updatedById=updatedById;
-		this.insertedById=insertedById;
+		this.insertedBy = insertedBy;
+		this.updatedById = updatedById;
+		this.insertedById = insertedById;
 	}
-
-
-
-
-
 
 
 
@@ -334,6 +356,72 @@ public class DriverDetailsDTO {
 		this.insertedById = insertedById;
 	}
 
+	
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getLicenceDOI() {
+		return licenceDOI;
+	}
+
+	@JsonDeserialize(using = JsonDateDeSerializer.class)
+	public void setLicenceDOI(Date licenceDOI) {
+		this.licenceDOI = licenceDOI;
+	}
+
+	@JsonSerialize(using=JsonDateSerializer.class)
+	public Date getLicenceValidTill() {
+		return licenceValidTill;
+	}
+
+	@JsonDeserialize(using = JsonDateDeSerializer.class)
+	public void setLicenceValidTill(Date licenceValidTill) {
+		this.licenceValidTill = licenceValidTill;
+	}
+
+
+	public List<String> getCovList() {
+		return covList;
+	}
+
+
+	public void setCovList(List<String> covList) {
+		this.covList = covList;
+	}
+
+
+	public Boolean getIsSimplifiedRegistration() {
+		return isSimplifiedRegistration;
+	}
+
+
+	public void setIsSimplifiedRegistration(Boolean isSimplifiedRegistration) {
+		this.isSimplifiedRegistration = isSimplifiedRegistration;
+	}
+
+
+	public Boolean getIsDetailRegistrationCompleted() {
+		return isDetailRegistrationCompleted;
+	}
+
+
+	public void setIsDetailRegistrationCompleted(
+			Boolean isDetailRegistrationCompleted) {
+		this.isDetailRegistrationCompleted = isDetailRegistrationCompleted;
+	}
+
+	
+
+	public Boolean getIsVerified() {
+		return isVerified;
+	}
+
+
+	public void setIsVerified(Boolean isVerified) {
+		this.isVerified = isVerified;
+	}
+
+
+	
+	
 	@Override
 	public String toString() {
 		return "DriverDetailsDTO [driverId=" + driverId + ", firstName="
@@ -348,11 +436,17 @@ public class DriverDetailsDTO {
 				+ isFreightRequestPermissionGiven
 				+ ", isDealFinalizationPermissionGiven="
 				+ isDealFinalizationPermissionGiven + ", language=" + language
-				+ ", vendorId=" + vendorId + ", insertTime=" + insertTime
+				+ ", licenceDOI=" + licenceDOI + ", licenceValidTill="
+				+ licenceValidTill + ", covList=" + covList
+				+ ", isSimplifiedRegistration=" + isSimplifiedRegistration
+				+ ", isDetailRegistrationCompleted="
+				+ isDetailRegistrationCompleted + ", vendorId=" + vendorId
+				+ ", isVerified=" + isVerified + ", insertTime=" + insertTime
 				+ ", updateTime=" + updateTime + ", updatedBy=" + updatedBy
 				+ ", insertedBy=" + insertedBy + ", updatedById=" + updatedById
 				+ ", insertedById=" + insertedById + "]";
 	}
+
 
 	@Override
 	public int hashCode() {
@@ -470,8 +564,7 @@ public class DriverDetailsDTO {
 		if (insertedById == null) {
 			if (other.insertedById != null)
 				return false;
-		} else if (!insertedById.equals(other.insertedById))
-			return false;
+		} 
 		if (isDealFinalizationPermissionGiven == null) {
 			if (other.isDealFinalizationPermissionGiven != null)
 				return false;
@@ -514,6 +607,11 @@ public class DriverDetailsDTO {
 				return false;
 		} else if (!mobile.equals(other.mobile))
 			return false;
+		if (isVerified == null) {
+			if (other.isVerified != null)
+				return false;
+		} else if (!isVerified.equals(other.isVerified))
+			return false;
 		if (updateTime == null) {
 			if (other.updateTime != null)
 				return false;
@@ -521,13 +619,11 @@ public class DriverDetailsDTO {
 		if (updatedBy == null) {
 			if (other.updatedBy != null)
 				return false;
-		} else if (!updatedBy.equals(other.updatedBy))
-			return false;
+		} 
 		if (updatedById == null) {
 			if (other.updatedById != null)
 				return false;
-		} else if (!updatedById.equals(other.updatedById))
-			return false;
+		} 
 		if (vendorId == null) {
 			if (other.vendorId != null)
 				return false;

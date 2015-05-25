@@ -34,6 +34,12 @@ public class AddressDataFixture {
 				ADDRESS_UPDATED_BY,ADDRESS_UPDATED_BY,ADDRESS_ID,ADDRESS_ID);
 	}
 	
+	public static Address standardAddress(Integer entityType)
+	{
+		return new Address(entityType, ADDRESS_LINE, ADDRESS_CITY, ADDRESS_DIST, ADDRESS_STATE, ADDRESS_PINCODE, ADDRESS_DATE, ADDRESS_DATE, 
+				ADDRESS_UPDATED_BY,ADDRESS_UPDATED_BY,ADDRESS_ID,ADDRESS_ID);
+	}
+	
 	public static Address standardAddressDefault(Integer customerType)
 	{
 		return new Address(customerType, "addressLine", "city", "district", "state", ADDRESS_PINCODE, ADDRESS_DATE, ADDRESS_DATE, 

@@ -24,6 +24,7 @@ import java.util.Date;
 
 
 
+
 import com.projectx.mvc.config.Application;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.services.quickregister.QuickRegisterService;
@@ -66,7 +67,7 @@ public class DriverDetailsControllerWACTest {
 	{
 		this.mockMvc.perform(
 				post("/driver/save")
-				.content("{\"firstName\":\"Abc\",\"middleName\":\"def\",\"lastName\":\"def\",\"dateOfBirth\":"+new Date().getTime()+",\"bloodGroup\":\"A+\", \"homeAddress\":{\"customerType\":3,\"addressLine\":\"AT-GHADGE\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133,\"updatedBy\":1,\"updatedById\":1},\"mobile\":9980907076,\"homeContactNumber\":9090909090,\"licenceNumber\":\"MHGDDSS\",\"drivingSince\":"+new Date().getTime()+",\"employedSince\":"+new Date().getTime()+",\"isFreightRequestPermissionGiven\":false,\"isDealFinalizationPermissionGiven\":false,\"language\":\"Marathi\",\"vendorId\":231,\"requestedBy\":1,\"requestedById\":1})")
+				.content("{\"firstName\":\"Abc\",\"middleName\":\"def\",\"lastName\":\"def\",\"dateOfBirth\":"+new Date().getTime()+",\"bloodGroup\":\"A+\", \"homeAddress\":{\"customerType\":3,\"addressLine\":\"AT-GHADGE\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133,\"updatedBy\":1,\"updatedById\":1},\"mobile\":9980907076,\"homeContactNumber\":9090909090,\"licenceNumber\":\"MHGDDSS\",\"drivingSince\":"+new Date().getTime()+",\"employedSince\":"+new Date().getTime()+",\"isFreightRequestPermissionGiven\":false,\"isDealFinalizationPermissionGiven\":false,\"language\":\"Marathi\",\"licenceDOI\":"+new Date().getTime()+",\"licenceValidTill\":"+new Date().getTime()+",\"covList\":[\"MCWG\",\"LMV\"],\"vendorId\":231,\"requestedBy\":1,\"requestedById\":1})")
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 	.andDo(print())
@@ -75,6 +76,38 @@ public class DriverDetailsControllerWACTest {
     .andExpect(jsonPath("$.errorMessage").value(""));
 
     
+	}
+	
+	@Test
+	public void addDriverSimplified() throws Exception
+	{
+		this.mockMvc.perform(
+	            post("/driver/save/simplified")
+	                   // .content(standardDriverSimplifiedJson(standardDriverSimplified()))
+	            		.content("{\"bloodGroup\":\"A+\",\"mobile\":9876542312,\"homeContactNumber\":9896592312,\"drivingSince\":"+new Date().getTime()+",\"employedSince\":"+new Date().getTime()+",\"isFreightRequestPermissionGiven\":false,\"isDealFinalizationPermissionGiven\":false,\"language\":\"TELGU\",\"vendorId\":213,\"requestedBy\":1,\"requestedById\":213}")
+	                    .contentType(MediaType.APPLICATION_JSON)
+	                    .accept(MediaType.APPLICATION_JSON))
+	            .andDo(print())
+	            .andExpect(status().isOk())
+	            .andExpect(jsonPath("$.result").value("sucess"))
+	            .andExpect(jsonPath("$.errorMessage").value(""));
+	}
+	
+	@Test
+	public void l1DataEntry() throws Exception
+	{
+		DriverDetailsDTO driverDetails=vendorDetailsService.addDriverSimplified(standardDriverSimplified());
+		
+		this.mockMvc.perform(
+	            post("/driver/save/l1dataentry")
+	                    //.content(standardL1DriverCompleteRegistrationJson(standardL1DriverCompleteRegistration(driverDetails.getDriverId())))
+	            		.content("{\"driverId\":"+driverDetails.getDriverId()+",\"firstName\":\"ARUN\",\"middleName\":\"M.\",\"lastName\":\"GUPTA\",\"dateOfBirth\":"+new Date().getTime()+",\"addressLine\":\"AT-GHADGE WASTI PO-SAWAL\",\"city\":\"Baramati\",\"district\":\"Pune\",\"state\":\"Maharashtra\",\"pincode\":413133,\"licenceNumber\":\"MH42A6543\",\"licenceDOI\":"+new Date().getTime()+",\"licenceValidTill\":"+new Date().getTime()+",\"covList\":[\"MCWG\",\"LMV\"],\"isDetailRegistrationCompleted\":false}")
+	                    .contentType(MediaType.APPLICATION_JSON)
+	                    .accept(MediaType.APPLICATION_JSON))
+	            .andDo(print())
+	            .andExpect(status().isOk())
+	            .andExpect(jsonPath("$.result").value("sucess"))
+	            .andExpect(jsonPath("$.errorMessage").value(""));
 	}
 	
 	@Test

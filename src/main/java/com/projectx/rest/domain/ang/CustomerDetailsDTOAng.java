@@ -50,6 +50,10 @@ public class CustomerDetailsDTOAng {
 	
 	private Integer entityType;
 	
+	private Boolean isVendorAsDriver;
+	
+	private String bloodGroup;
+	
 	private Date insertTime;
 	
 	private Date updateTime;
@@ -66,14 +70,18 @@ public class CustomerDetailsDTOAng {
 
 	
 
+
+
 	public CustomerDetailsDTOAng(Long customerId, String firstName,
 			String middleName, String lastName, Date dateOfBirth,
-			Address homeAddressId, Long mobile,Long phoneNumber, Boolean isMobileVerified,
-			String email, Boolean isEmailVerified, String language,
-			String businessDomain, String nameOfFirm, Address firmAddressId,
-			Long secondaryMobile, Boolean isSecondaryMobileVerified,
-			String secondaryEmail,Integer entityType, Date insertTime, Date updateTime,
-			Integer updatedBy,Long updatedById) {
+			Address homeAddressId, Long mobile, Long phoneNumber,
+			Boolean isMobileVerified, String email, Boolean isEmailVerified,
+			String language, String businessDomain, String nameOfFirm,
+			Address firmAddressId, Long secondaryMobile,
+			Boolean isSecondaryMobileVerified, String secondaryEmail,
+			Integer entityType, Boolean isVendorAsDriver, String bloodGroup,
+			Date insertTime, Date updateTime, Integer requestedBy,
+			Long requestedById) {
 		super();
 		this.customerId = customerId;
 		this.firstName = firstName;
@@ -82,7 +90,7 @@ public class CustomerDetailsDTOAng {
 		this.dateOfBirth = dateOfBirth;
 		this.homeAddressId = homeAddressId;
 		this.mobile = mobile;
-		this.phoneNumber=phoneNumber;
+		this.phoneNumber = phoneNumber;
 		this.isMobileVerified = isMobileVerified;
 		this.email = email;
 		this.isEmailVerified = isEmailVerified;
@@ -93,12 +101,19 @@ public class CustomerDetailsDTOAng {
 		this.secondaryMobile = secondaryMobile;
 		this.isSecondaryMobileVerified = isSecondaryMobileVerified;
 		this.secondaryEmail = secondaryEmail;
-		this.entityType=entityType;
+		this.entityType = entityType;
+		this.isVendorAsDriver = isVendorAsDriver;
+		this.bloodGroup = bloodGroup;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
-		this.requestedBy = updatedBy;
-		this.requestedById=updatedById;
+		this.requestedBy = requestedBy;
+		this.requestedById = requestedById;
 	}
+
+
+
+
+
 
 	public CustomerDetailsDTO toCustomerDetailsDTO()
 	{
@@ -108,7 +123,7 @@ public class CustomerDetailsDTOAng {
 				this.getPhoneNumber(), this.getIsMobileVerified(),this.getEmail(),
 				this.getIsEmailVerified(),this.getLanguage(), this.getBusinessDomain(),
 				this.getNameOfFirm(), this.getFirmAddressId(), this.getSecondaryMobile(), 
-				false, this.getSecondaryEmail(), new Date(), new Date(), this.getRequestedBy(),
+				false, this.getSecondaryEmail(),false, new Date(), new Date(), this.getRequestedBy(),
 				this.getRequestedBy(),this.getRequestedById(),this.getRequestedById());
 		
 		return detailsDTO;
@@ -122,7 +137,7 @@ public class CustomerDetailsDTOAng {
 				this.getLastName(),this.getDateOfBirth(), this.getNameOfFirm(), 
 				this.getFirmAddressId(), this.getHomeAddressId(), this.getMobile(), this.getPhoneNumber(),
 				this.getIsMobileVerified(), this.getEmail(), this.getIsEmailVerified(), this.getLanguage(),
-				this.getSecondaryMobile(),this.getIsSecondaryMobileVerified(), new Date(),new Date(), 
+				this.getSecondaryMobile(),this.getIsSecondaryMobileVerified(),false,this.isVendorAsDriver,null,this.bloodGroup, new Date(),new Date(), 
 				this.getRequestedBy(),this.getRequestedBy(),this.getRequestedById(),
 				this.getRequestedById());
 		
@@ -139,7 +154,7 @@ public class CustomerDetailsDTOAng {
 						customerDetailsDTO.getEmail(), customerDetailsDTO.getIsEmailVerified(), customerDetailsDTO.getLanguage(), 
 						customerDetailsDTO.getBusinessDomain(), customerDetailsDTO.getNameOfFirm(), customerDetailsDTO.getFirmAddressId(),
 						customerDetailsDTO.getSecondaryMobile(), customerDetailsDTO.getIsSecondaryMobileVerified(), 
-						customerDetailsDTO.getSecondaryEmail(),1, customerDetailsDTO.getInsertTime(), customerDetailsDTO.getUpdateTime(), 
+						customerDetailsDTO.getSecondaryEmail(),1,false,null, customerDetailsDTO.getInsertTime(), customerDetailsDTO.getUpdateTime(), 
 						customerDetailsDTO.getUpdatedBy(),customerDetailsDTO.getUpdatedById());
 		
 		return customerDetailsDTOAng;
@@ -153,7 +168,7 @@ public class CustomerDetailsDTOAng {
 				fetchedEntity.getMobile(), fetchedEntity.getPhoneNumber(), fetchedEntity.getIsMobileVerified(), 
 				fetchedEntity.getEmail(), fetchedEntity.getIsEmailVerified(), fetchedEntity.getLaguage(), 
 				null, fetchedEntity.getFirmName(), fetchedEntity.getFirmAddress(), 
-				fetchedEntity.getSecondaryMobile(), fetchedEntity.getIsSecondaryMobileVerified(),null,2, 
+				fetchedEntity.getSecondaryMobile(), fetchedEntity.getIsSecondaryMobileVerified(),null,2,fetchedEntity.getIsVendorAsDriver(),fetchedEntity.getBloodGroup(), 
 				fetchedEntity.getInsertTime(),fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
 		
 		return ang;

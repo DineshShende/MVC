@@ -48,6 +48,10 @@ public class VendorDetailsDataFixture {
 	
 	public static Integer VENDOR_UPDATEDBY=1;
 	
+	public static String VENDOR_BLOOD_GROUP_NULL=null;
+	
+	public static String VENDOR_BLOOD_GROUP="A+";
+	
 	private static Gson gson=new Gson();
 	
 	public static QuickRegisterEntity standardEmailMobileVendorDTO()
@@ -77,14 +81,14 @@ public class VendorDetailsDataFixture {
 	public static VendorDetailsDTO standardVendor()
 	{
 		return new VendorDetailsDTO(VENDOR_ID, VENDER_FIRSTNAME,null, VENDER_LASTNAME, VENDOR_DATE,null, VENDOR_ADDRESS,null, VENDOR_MOBILE,null, VENDOR_STATUS_FALSE,
-				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,null,false, VENDOR_DATE, VENDOR_DATE,
+				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,null,false,false,false,null,VENDOR_BLOOD_GROUP_NULL, VENDOR_DATE, VENDOR_DATE,
 				VENDOR_UPDATEDBY,VENDOR_UPDATEDBY,VENDOR_ID,VENDOR_ID);
 	}
 	
 	public static VendorDetailsDTO standardVendor(Long vendorId)
 	{
 		return new VendorDetailsDTO(vendorId, VENDER_FIRSTNAME,null, VENDER_LASTNAME, VENDOR_DATE,null, VENDOR_ADDRESS,null, VENDOR_MOBILE,null, VENDOR_STATUS_FALSE,
-				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,null,false, VENDOR_DATE, VENDOR_DATE,
+				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,null,false,false,false,null,VENDOR_BLOOD_GROUP_NULL, VENDOR_DATE, VENDOR_DATE,
 				VENDOR_UPDATEDBY,VENDOR_UPDATEDBY,VENDOR_ID,VENDOR_ID);
 	}
 	
@@ -92,7 +96,7 @@ public class VendorDetailsDataFixture {
 	{
 		return new VendorDetailsDTO(vendorId, VENDER_FIRSTNAME,"A.", VENDER_LASTNAME, VENDOR_DATE,VENDOR_FIRM_NAME, VENDOR_ADDRESS,
 				VENDOR_ADDRESS, VENDOR_MOBILE,VENDOR_PHONE_NUMBER, VENDOR_STATUS_FALSE,
-				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,VENDOR_SEC_MOBILE,false, VENDOR_DATE, VENDOR_DATE,
+				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,VENDOR_SEC_MOBILE,false,false,false,null,VENDOR_BLOOD_GROUP_NULL, VENDOR_DATE, VENDOR_DATE,
 				VENDOR_UPDATEDBY,VENDOR_UPDATEDBY,VENDOR_ID,VENDOR_ID);
 	}
 	
@@ -101,7 +105,7 @@ public class VendorDetailsDataFixture {
 		return new VendorDetailsDTO(standardEmailMobileCustomerVendor().getCustomerId(), standardEmailMobileCustomerVendor().getFirstName(),null,
 				standardEmailMobileCustomerVendor().getLastName(), null,null, null,null, standardEmailMobileCustomerVendor().getMobile(),null, 
 				standardEmailMobileCustomerVendor().getIsMobileVerified(),standardEmailMobileCustomerVendor().getEmail(),standardEmailMobileCustomerVendor().getIsEmailVerified(),
-				null,null,false, new Date(), new Date(),
+				null,null,false,false,false,null,VENDOR_BLOOD_GROUP_NULL, new Date(), new Date(),
 				VENDOR_UPDATEDBY,VENDOR_UPDATEDBY,VENDOR_ID,VENDOR_ID);
 	}
 	
@@ -112,7 +116,7 @@ public class VendorDetailsDataFixture {
 		return new VendorDetailsDTO(vendorId, standardEmailMobileCustomerVendor().getFirstName(),null,
 				standardEmailMobileCustomerVendor().getLastName(), null,null, null,null, standardEmailMobileCustomerVendor().getMobile(),null, 
 				standardEmailMobileCustomerVendor().getIsMobileVerified(),standardEmailMobileCustomerVendor().getEmail(),standardEmailMobileCustomerVendor().getIsEmailVerified(),
-				null,null,null, new Date(), new Date(),
+				null,null,null,false,false,null,VENDOR_BLOOD_GROUP_NULL, new Date(), new Date(),
 				VENDOR_UPDATEDBY,VENDOR_UPDATEDBY,VENDOR_ID,VENDOR_ID);
 	}
 	
@@ -121,7 +125,7 @@ public class VendorDetailsDataFixture {
 		return new VendorDetailsDTO(vendorId, standardEmailMobileCustomerVendor().getFirstName(),null,
 				standardEmailMobileCustomerVendor().getLastName(), null,null, null,standardAddressDefault(ENTITY_TYPE_VENDOR), standardEmailMobileCustomerVendor().getMobile(),null, 
 				standardEmailMobileCustomerVendor().getIsMobileVerified(),standardEmailMobileCustomerVendor().getEmail(),standardEmailMobileCustomerVendor().getIsEmailVerified(),
-				null,null,null, new Date(), new Date(),
+				null,null,null,false,false,null,VENDOR_BLOOD_GROUP_NULL, new Date(), new Date(),
 				VENDOR_UPDATEDBY,VENDOR_UPDATEDBY,VENDOR_ID,VENDOR_ID);
 	}
 	
@@ -130,7 +134,7 @@ public class VendorDetailsDataFixture {
 		return new VendorDetailsDTO(vendorId, standardEmailMobileCustomerVendor().getFirstName(),null,
 				standardEmailMobileCustomerVendor().getLastName(), null,null, null,standardAddressDefault(ENTITY_TYPE_VENDOR), standardEmailMobileCustomerVendor().getMobile(),null, 
 				standardEmailMobileCustomerVendor().getIsMobileVerified(),standardEmailMobileCustomerVendor().getEmail(),true,
-				null,null,null, new Date(), new Date(),
+				null,null,null,false,false,null,VENDOR_BLOOD_GROUP_NULL, new Date(), new Date(),
 				VENDOR_UPDATEDBY,VENDOR_UPDATEDBY,VENDOR_ID,VENDOR_ID);
 	}
 	
@@ -139,7 +143,7 @@ public class VendorDetailsDataFixture {
 		return new VendorDetailsDTO(vendorId, standardEmailMobileCustomerVendor().getFirstName(),null,
 				standardEmailMobileCustomerVendor().getLastName(), null,null, null,standardAddressDefault(ENTITY_TYPE_VENDOR), standardEmailMobileCustomerVendor().getMobile(),null, 
 				true,standardEmailMobileCustomerVendor().getEmail(),standardEmailMobileCustomerVendor().getIsEmailVerified(),
-				null,null,null, new Date(), new Date(),
+				null,null,null,false,false,null,VENDOR_BLOOD_GROUP_NULL, new Date(), new Date(),
 				VENDOR_UPDATEDBY,VENDOR_UPDATEDBY,VENDOR_ID,VENDOR_ID);
 	}
 
@@ -148,7 +152,7 @@ public class VendorDetailsDataFixture {
 	{
 		return new VendorDetailsDTO(vendorDetails.getVendorId(), vendorDetails.getFirstName(),null,vendorDetails.getLastName(),
 				new Date(),null, standardAddress(),null, vendorDetails.getMobile(),null,vendorDetails.getIsMobileVerified(),vendorDetails.getEmail(),
-				vendorDetails.getIsEmailVerified(),VENDOR_LANGUAGE,null,false, vendorDetails.getInsertTime(), new Date(), 
+				vendorDetails.getIsEmailVerified(),VENDOR_LANGUAGE,null,false,false,false,null,VENDOR_BLOOD_GROUP_NULL, vendorDetails.getInsertTime(), new Date(), 
 				vendorDetails.getUpdatedBy(),vendorDetails.getUpdatedBy(),vendorDetails.getUpdatedById(),vendorDetails.getUpdatedById());
 	}
 	
@@ -156,7 +160,7 @@ public class VendorDetailsDataFixture {
 	public static VendorDetailsDTO standardVendorUpdatedFirstLastName()
 	{
 		return new VendorDetailsDTO(VENDOR_ID, "Updated",null, "Updated", VENDOR_DATE,null, VENDOR_ADDRESS,null, VENDOR_MOBILE,null, VENDOR_STATUS_FALSE,
-				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,null,false, VENDOR_DATE, VENDOR_DATE,
+				VENDOR_EMAIL,VENDOR_STATUS_FALSE, VENDOR_LANGUAGE,null,false,false,false,null,VENDOR_BLOOD_GROUP_NULL, VENDOR_DATE, VENDOR_DATE,
 				VENDOR_UPDATEDBY,VENDOR_UPDATEDBY,VENDOR_ID,VENDOR_ID);
 	}
 	

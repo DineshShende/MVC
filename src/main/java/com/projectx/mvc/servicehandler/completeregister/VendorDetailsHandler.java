@@ -19,6 +19,10 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.projectx.mvc.domain.commn.ResponseDTO;
+import com.projectx.mvc.domain.completeregister.DriverSimplified;
+import com.projectx.mvc.domain.completeregister.L1DriverCompleteRegistration;
+import com.projectx.mvc.domain.completeregister.L1VehicleCompleteRegistration;
+import com.projectx.mvc.domain.completeregister.VehicleSimplified;
 import com.projectx.mvc.exception.repository.completeregister.DriverDetailsAlreadyPresentException;
 import com.projectx.mvc.exception.repository.completeregister.DriverDetailsNotFoundException;
 import com.projectx.mvc.exception.repository.completeregister.DriverDetailsUpdateFailedException;
@@ -318,6 +322,54 @@ public class VendorDetailsHandler implements VendorDetailsService {
 			throw new DriverDetailsAlreadyPresentException(result.getBody().getErrorMessage());
 		
 	}
+	
+	@Override
+	public DriverDetailsDTO addDriverSimplified(
+			DriverSimplified driverSimplified) {
+		
+		HttpEntity<DriverSimplified> entity=new HttpEntity<DriverSimplified>(driverSimplified);
+		
+		ResponseEntity<ResponseDTO<DriverDetailsDTO>> result=null;
+		
+		try{
+			result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/driver/simplified", HttpMethod.POST,
+					entity, new ParameterizedTypeReference<ResponseDTO<DriverDetailsDTO>>() {});
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		
+		if(result.getStatusCode()==HttpStatus.CREATED)		
+			return result.getBody().getResult();
+		else
+			throw new DriverDetailsAlreadyPresentException(result.getBody().getErrorMessage());
+	
+		
+	}
+
+	@Override
+	public DriverDetailsDTO l1DriverDataEntry(
+			L1DriverCompleteRegistration l1DriverCompleteRegistration) {
+	
+		HttpEntity<L1DriverCompleteRegistration> entity=new HttpEntity<L1DriverCompleteRegistration>(l1DriverCompleteRegistration);
+		
+		ResponseEntity<ResponseDTO<DriverDetailsDTO>> result=null;
+		
+		try{
+			result=restTemplate.exchange(env.getProperty("rest.host")+"/vendor/driver/l1dataentry", HttpMethod.POST,
+					entity, new ParameterizedTypeReference<ResponseDTO<DriverDetailsDTO>>() {});
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		
+		if(result.getStatusCode()==HttpStatus.CREATED)		
+			return result.getBody().getResult();
+		else
+			throw new DriverDetailsAlreadyPresentException(result.getBody().getErrorMessage());
+	}
 
 
 	@Override
@@ -418,6 +470,58 @@ public class VendorDetailsHandler implements VendorDetailsService {
 		throw new ResourceAlreadyPresentException(result.getBody().getErrorMessage()); 
 
 	}
+	
+
+
+	@Override
+	public VehicleDetailsDTO saveSimplified(VehicleSimplified vehicleSimplified) {
+		
+	HttpEntity<VehicleSimplified> entity=new HttpEntity<VehicleSimplified>(vehicleSimplified);
+		
+		ResponseEntity<ResponseDTO<VehicleDetailsDTO>> result=null;
+		
+		try{
+			result=restTemplate
+					.exchange(env.getProperty("rest.host")+"/vendor/vehicle/simplified",HttpMethod.POST, entity,
+							new ParameterizedTypeReference<ResponseDTO<VehicleDetailsDTO>>() {});
+			
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.CREATED)
+			return result.getBody().getResult();
+		
+		throw new ResourceAlreadyPresentException(result.getBody().getErrorMessage());
+		
+	}
+
+	@Override
+	public VehicleDetailsDTO l1VehicleDataEntry(
+			L1VehicleCompleteRegistration l1VehicleCompleteRegistration) {
+		
+	HttpEntity<L1VehicleCompleteRegistration> entity=new HttpEntity<L1VehicleCompleteRegistration>(l1VehicleCompleteRegistration);
+		
+		ResponseEntity<ResponseDTO<VehicleDetailsDTO>> result=null;
+		
+		try{
+			result=restTemplate
+					.exchange(env.getProperty("rest.host")+"/vendor/vehicle/l1dataentry",HttpMethod.POST, entity,
+							new ParameterizedTypeReference<ResponseDTO<VehicleDetailsDTO>>() {});
+			
+		}catch(RestClientException e)
+		{
+			throw new ValidationFailedException();
+		}
+		
+		if(result.getStatusCode()==HttpStatus.CREATED)
+			return result.getBody().getResult();
+		
+		throw new ResourceAlreadyPresentException(result.getBody().getErrorMessage());
+	}
+
+	
 
 	@Override
 	public VehicleDetailsDTO getVehicleById(Long vehicleId) {
@@ -472,6 +576,6 @@ public class VendorDetailsHandler implements VendorDetailsService {
 
 	}
 
-	
+
 
 }

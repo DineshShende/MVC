@@ -66,6 +66,10 @@ public class VehicleDetailsAngDTO {
 	
 	@NotNull
 	private Long vendorId;
+	
+	private Boolean isSimplifiedRegistration;
+	
+	private Boolean isDetailRegistrationCompleted;
 
 	private List<String> commodityList;
 	
@@ -82,6 +86,8 @@ public class VehicleDetailsAngDTO {
 	}
 
 
+	
+	
 	public VehicleDetailsAngDTO(Long vehicleId, String ownerFirstName,
 			String ownerMiddleName, String ownerLastName,
 			VehicleBrandDetails vehicleBrandId, String vehicleBodyType,
@@ -89,8 +95,11 @@ public class VehicleDetailsAngDTO {
 			String chassisNumber, Integer loadCapacityInTons, Integer length,
 			Integer width, Integer height, Integer numberOfWheels,
 			String permitType, Boolean insuranceStatus, String insuranceNumber,
-			String insuranceCompany, Long vendorId, List<String> commodityList,
-			Date insertTime, Date updateTime, Integer updatedBy,Long updatedById) {
+			String insuranceCompany, Long vendorId,
+			Boolean isSimplifiedRegistration,
+			Boolean isDetailRegistrationCompleted, List<String> commodityList,
+			Date insertTime, Date updateTime, Integer requestedBy,
+			Long requestedById) {
 		super();
 		this.vehicleId = vehicleId;
 		this.ownerFirstName = ownerFirstName;
@@ -111,12 +120,17 @@ public class VehicleDetailsAngDTO {
 		this.insuranceNumber = insuranceNumber;
 		this.insuranceCompany = insuranceCompany;
 		this.vendorId = vendorId;
+		this.isSimplifiedRegistration = isSimplifiedRegistration;
+		this.isDetailRegistrationCompleted = isDetailRegistrationCompleted;
 		this.commodityList = commodityList;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
-		this.requestedBy = updatedBy;
-		this.requestedById=updatedById;
+		this.requestedBy = requestedBy;
+		this.requestedById = requestedById;
 	}
+
+
+
 
 	public VehicleDetailsDTO toVehicleDetailsDTO()
 	{
@@ -124,7 +138,7 @@ public class VehicleDetailsAngDTO {
 				this.getOwnerLastName(), this.getVehicleBrandId(), this.getVehicleBodyType(), this.getIsBodyTypeFlexible(),
 				this.getRegistrationNumber(), this.getChassisNumber(), this.getLoadCapacityInTons(), this.getLength(),
 				this.getWidth(), this.getHeight(), this.getNumberOfWheels(), this.getPermitType(), this.getInsuranceStatus(),
-				this.getInsuranceNumber(),this.getInsuranceCompany(), this.getVendorId(), this.getCommodityList(),
+				this.getInsuranceNumber(),this.getInsuranceCompany(), this.getVendorId(),false,true, this.getCommodityList(),false,
 				new Date(), new Date(), this.getRequestedBy(),this.getRequestedBy(),
 				this.getRequestedById(),this.getRequestedById());
 		
@@ -137,7 +151,8 @@ public class VehicleDetailsAngDTO {
 				fetchedEntity.getOwnerLastName(), fetchedEntity.getVehicleBrandId(), fetchedEntity.getVehicleBodyType(), fetchedEntity.getIsBodyTypeFlexible(),
 				fetchedEntity.getRegistrationNumber(), fetchedEntity.getChassisNumber(), fetchedEntity.getLoadCapacityInTons(),fetchedEntity.getLength(), 
 				fetchedEntity.getWidth(), fetchedEntity.getHeight(), fetchedEntity.getNumberOfWheels(), fetchedEntity.getPermitType(),fetchedEntity.getInsuranceStatus(),
-				fetchedEntity.getInsuranceNumber(), fetchedEntity.getInsuranceCompany(), fetchedEntity.getVendorId(), fetchedEntity.getCommodityList(),
+				fetchedEntity.getInsuranceNumber(), fetchedEntity.getInsuranceCompany(), fetchedEntity.getVendorId(),
+				fetchedEntity.getIsSimplifiedRegistration(),fetchedEntity.getIsDetailRegistrationCompleted(),fetchedEntity.getCommodityList(),
 				fetchedEntity.getInsertTime(), fetchedEntity.getUpdateTime(), fetchedEntity.getUpdatedBy(),fetchedEntity.getUpdatedById());
 		
 		return detailsAngDTO;
@@ -415,6 +430,36 @@ public class VehicleDetailsAngDTO {
 	public void setRequestedById(Long requestedById) {
 		this.requestedById = requestedById;
 	}
+
+	
+
+	public Boolean getIsSimplifiedRegistration() {
+		return isSimplifiedRegistration;
+	}
+
+
+
+
+	public void setIsSimplifiedRegistration(Boolean isSimplifiedRegistration) {
+		this.isSimplifiedRegistration = isSimplifiedRegistration;
+	}
+
+
+
+
+	public Boolean getIsDetailRegistrationCompleted() {
+		return isDetailRegistrationCompleted;
+	}
+
+
+
+
+	public void setIsDetailRegistrationCompleted(
+			Boolean isDetailRegistrationCompleted) {
+		this.isDetailRegistrationCompleted = isDetailRegistrationCompleted;
+	}
+
+
 
 
 	@Override

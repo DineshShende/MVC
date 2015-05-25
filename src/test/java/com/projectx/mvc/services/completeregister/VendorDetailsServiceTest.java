@@ -42,6 +42,8 @@ import com.projectx.rest.domain.quickregister.VerifyEmailDTO;
 import com.projectx.rest.domain.quickregister.VerifyMobileDTO;
 
 import static com.projectx.mvc.fixtures.completeregister.VendorDetailsDataFixture.*;
+import static com.projectx.mvc.fixtures.completeregister.DriverDetailsDataFixtures.*;
+import static com.projectx.mvc.fixtures.completeregister.VehicleDetailsDataFixtures.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BasicConfig.class)
@@ -495,6 +497,42 @@ public class VendorDetailsServiceTest {
 		
 		
 	}
+	
+	@Test
+	public void addDriverSimplified()
+	{
+		assertEquals(0, vendorDetailsService.driverCount().intValue());
+		
+		DriverDetailsDTO driverDetails=vendorDetailsService.addDriverSimplified(standardDriverSimplified());
+		
+		assertEquals(driverDetails, vendorDetailsService.getDriverById(driverDetails.getDriverId()));
+		
+		driverDetails.setBloodGroup(DRIVER_BLOOD_GROUP_OTHER);
+		
+		DriverDetailsDTO driverDetailsNew=vendorDetailsService.addDriverSimplified(standardDriverSimplifiedOther(driverDetails.getDriverId()));
+		
+		assertEquals(driverDetails, driverDetailsNew);
+		
+		assertEquals(1, vendorDetailsService.driverCount().intValue());
+	}
+	
+	
+	@Test
+	public void L1DriverRegistartionProcess()
+	{
+		
+		assertEquals(0, vendorDetailsService.driverCount().intValue());
+		
+		DriverDetailsDTO driverDetails=vendorDetailsService.addDriverSimplified(standardDriverSimplified());
+		
+		assertEquals(driverDetails, vendorDetailsService.getDriverById(driverDetails.getDriverId()));
+		
+		DriverDetailsDTO driverDetails2=vendorDetailsService.l1DriverDataEntry(standardL1DriverCompleteRegistration(driverDetails.getDriverId()));
+		
+		assertEquals(standardDriverDetails(driverDetails.getDriverId(),ENTITY_TYPE_DRIVER), driverDetails2);
+	}
+
+	
 	@Test
 	public void updateAndVerifyMobile()
 	{
@@ -535,6 +573,40 @@ public class VendorDetailsServiceTest {
 		assertEquals(vehicleDetailsDTO, vendorDetailsService.getVehicleById(vehicleDetailsDTO.getVehicleId()));
 		
 		assertEquals(1, vendorDetailsService.vehicleCount().intValue());
+		
+	}
+	
+	@Test
+	public void addNewVehicleSimplified()
+	{
+		assertEquals(0, vendorDetailsService.vehicleCount().intValue());
+		
+		VehicleDetailsDTO vehicleDetails=vendorDetailsService.saveSimplified(standardVehicleSimplified(null));
+		
+		assertEquals(vehicleDetails, vendorDetailsService.getVehicleById(vehicleDetails.getVehicleId()));
+	
+		vehicleDetails.setVehicleBodyType(VEHICLE_BODY_TYPE_CLOSED);
+		
+		vendorDetailsService.saveSimplified(standardVehicleSimplifiedOther(vehicleDetails.getVehicleId()));
+		
+		assertEquals(vehicleDetails, vendorDetailsService.getVehicleById(vehicleDetails.getVehicleId()));
+		
+		assertEquals(1, vendorDetailsService.vehicleCount().intValue());
+		
+	}
+
+	@Test
+	public void L1VehicleRegistartionProcess()
+	{
+		assertEquals(0, vendorDetailsService.vehicleCount().intValue());
+		
+		VehicleDetailsDTO vehicleDetails=vendorDetailsService.saveSimplified(standardVehicleSimplified(null));
+		
+		assertEquals(vehicleDetails, vendorDetailsService.getVehicleById(vehicleDetails.getVehicleId()));
+		
+		VehicleDetailsDTO vehicleDetailsNew=vendorDetailsService.l1VehicleDataEntry(standardL1VehicleCompleteRegistration(vehicleDetails.getVehicleId()));
+		
+		assertEquals(standardVehicleDetails(vehicleDetails.getVehicleId()), vehicleDetailsNew);
 		
 	}
 	

@@ -195,14 +195,15 @@ public class DocumentDetailsController {
 	*/
 	@RequestMapping(value="/updateDocument",method=RequestMethod.POST)
 	public String updateDocument(@RequestParam("customerId") Long customerId,@RequestParam("customerType") Integer customerType,
-			@RequestParam("documentName") String documentName,@RequestParam("requestedBy") String requestedBy,
+			@RequestParam("documentName") String documentName,@RequestParam("documentVersion") Integer documentVersion,@RequestParam("requestedBy") String requestedBy,
             @RequestParam("file") MultipartFile file,Model model)
 	{
 		
 		if (!file.isEmpty()) {
             try {
                 
-                DocumentDetails documentDetails=documentDetailsService.initializeDocumentDetails(customerId, customerType, documentName, file);
+                DocumentDetails documentDetails=documentDetailsService.initializeDocumentDetails(customerId, customerType, 
+                		documentName,documentVersion, file);
                 
                 UpdateDocumentDTO updateDocumentDTO=null;
                 		//new UpdateDocumentDTO(documentDetails.getKey(), documentDetails.getDocument(), documentDetails.getContentType(),requestedBy);
@@ -237,12 +238,13 @@ public class DocumentDetailsController {
 	
 	@RequestMapping(value="/updateVerificationStatusRemark",method=RequestMethod.POST)
 	public String updateVerificationStatusRemark(@RequestParam("customerId") Long customerId,@RequestParam("customerType") Integer customerType,
-			@RequestParam("documentName") String documentName,@RequestParam("verificationStatus") Integer verificationStatus,
+			@RequestParam("documentName") String documentName,@RequestParam("documentVersion") Integer documentVersion,
+			@RequestParam("verificationStatus") Integer verificationStatus,
 			@RequestParam("verificationRemark") String verificationRemark,@RequestParam("requestedBy") Integer requestedBy,
 			@RequestParam("requestedById") Long requestedById,Model model)
 	{
 		
-                DocumentKey key=new DocumentKey(customerId, customerType, documentName);
+                DocumentKey key=new DocumentKey(customerId, customerType, documentName,documentVersion);
                         
                 UpdateDocumentVerificationStatusAndRemarkDTO dto=
                 		new UpdateDocumentVerificationStatusAndRemarkDTO(key, verificationStatus, verificationRemark,requestedBy,requestedById);
@@ -262,7 +264,7 @@ public class DocumentDetailsController {
 
 		
 	}
-	
+	/*
 	@RequestMapping(value="/{customerId}/{customerType}/{documentName}")
 	public void getDocument(@PathVariable Long customerId,@PathVariable Integer customerType,@PathVariable String documentName,
 			HttpServletResponse response) throws IOException

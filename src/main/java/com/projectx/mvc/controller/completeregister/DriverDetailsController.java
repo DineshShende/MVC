@@ -22,11 +22,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projectx.mvc.domain.commn.ResponseDTO;
+import com.projectx.mvc.domain.completeregister.DriverSimplified;
+import com.projectx.mvc.domain.completeregister.L1DriverCompleteRegistration;
 import com.projectx.mvc.exception.repository.completeregister.DriverDetailsAlreadyPresentException;
 import com.projectx.mvc.exception.repository.completeregister.ResourceNotFoundException;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
 import com.projectx.mvc.util.validator.DriverDetailsValidator;
 import com.projectx.rest.domain.ang.DriverDetailsAngDTO;
+import com.projectx.rest.domain.ang.DriverSimplifiedAng;
+import com.projectx.rest.domain.ang.L1DriverCompleteRegistrationAng;
 import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
 import com.projectx.rest.domain.completeregister.EntityIdDTO;
 import com.projectx.rest.domain.completeregister.EntityIdTypeDTO;
@@ -65,6 +69,53 @@ public class DriverDetailsController {
 		}
 	
 	}
+
+	
+	@RequestMapping(value="/save/simplified",method=RequestMethod.POST)
+	public ResponseEntity<ResponseDTO<String>> addDriverSimplified(@Valid @RequestBody DriverSimplifiedAng driverSimplifiedAng,BindingResult result)
+	{
+		
+		if(result.hasErrors())
+		{
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		DriverSimplified driverSimplified=driverSimplifiedAng.toDriverSimplified();
+		
+		try{
+			DriverDetailsDTO detailsDTO=vendorDetailsService.addDriverSimplified(driverSimplified);
+			
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("sucess", ""), HttpStatus.OK);
+		}catch(DriverDetailsAlreadyPresentException e)
+		{
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("failure", e.getMessage()), HttpStatus.OK);
+		}
+	
+	}
+
+	
+	@RequestMapping(value="/save/l1dataentry",method=RequestMethod.POST)
+	public ResponseEntity<ResponseDTO<String>> l1DataEntry(@Valid @RequestBody L1DriverCompleteRegistrationAng l1DriverCompleteRegistrationAng,BindingResult result)
+	{
+		
+		if(result.hasErrors())
+		{
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
+		
+		L1DriverCompleteRegistration l1DriverCompleteRegistration=l1DriverCompleteRegistrationAng.toL1DriverCompleteRegistration();
+		
+		try{
+			DriverDetailsDTO detailsDTO=vendorDetailsService.l1DriverDataEntry(l1DriverCompleteRegistration);
+			
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("sucess", ""), HttpStatus.OK);
+		}catch(DriverDetailsAlreadyPresentException e)
+		{
+			return new ResponseEntity<ResponseDTO<String>>(new ResponseDTO<String>("failure", e.getMessage()), HttpStatus.OK);
+		}
+	
+	}
+	
 	
 	@RequestMapping(value="/getById",method=RequestMethod.POST)
 	public ResponseEntity<ResponseDTO<DriverDetailsAngDTO>> getById(@RequestBody EntityIdDTO entityIdDTO)

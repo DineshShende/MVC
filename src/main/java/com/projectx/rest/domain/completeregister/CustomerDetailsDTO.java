@@ -47,6 +47,8 @@ public class CustomerDetailsDTO {
 	
 	private String secondaryEmail;
 	
+	private Boolean isVerified;
+	
 	private Date insertTime;
 	
 	private Date updateTime;
@@ -73,7 +75,7 @@ public class CustomerDetailsDTO {
 			String email, Boolean isEmailVerified, String language,
 			String businessDomain, String nameOfFirm, Address firmAddressId,
 			Long secondaryMobile, Boolean isSecondaryMobileVerified,
-			String secondaryEmail, Date insertTime, Date updateTime,
+			String secondaryEmail,Boolean isVerified, Date insertTime, Date updateTime,
 			Integer updatedBy,Integer insertedBy,Long updatedById,Long insertedById) {
 		super();
 		this.customerId = customerId;
@@ -94,6 +96,7 @@ public class CustomerDetailsDTO {
 		this.secondaryMobile = secondaryMobile;
 		this.isSecondaryMobileVerified = isSecondaryMobileVerified;
 		this.secondaryEmail = secondaryEmail;
+		this.isVerified=isVerified;
 		this.insertTime = insertTime;
 		this.updateTime = updateTime;
 		this.updatedBy = updatedBy;
@@ -365,6 +368,14 @@ public class CustomerDetailsDTO {
 		this.insertedById = insertedById;
 	}
 
+	public Boolean getIsVerified() {
+		return isVerified;
+	}
+
+	public void setIsVerified(Boolean isVerified) {
+		this.isVerified = isVerified;
+	}
+
 
 
 
@@ -381,10 +392,11 @@ public class CustomerDetailsDTO {
 				+ nameOfFirm + ", firmAddressId=" + firmAddressId
 				+ ", secondaryMobile=" + secondaryMobile
 				+ ", isSecondaryMobileVerified=" + isSecondaryMobileVerified
-				+ ", secondaryEmail=" + secondaryEmail + ", insertTime="
-				+ insertTime + ", updateTime=" + updateTime + ", updatedBy="
-				+ updatedBy + ", insertedBy=" + insertedBy + ", updatedById="
-				+ updatedById + ", insertedById=" + insertedById + "]";
+				+ ", secondaryEmail=" + secondaryEmail + ", isVerified="
+				+ isVerified + ", insertTime=" + insertTime + ", updateTime="
+				+ updateTime + ", updatedBy=" + updatedBy + ", insertedBy="
+				+ insertedBy + ", updatedById=" + updatedById
+				+ ", insertedById=" + insertedById + "]";
 	}
 
 
@@ -508,6 +520,12 @@ public class CustomerDetailsDTO {
 				return false;
 		} else if (!isEmailVerified.equals(other.isEmailVerified))
 			return false;
+		if (isVerified == null) {
+			if (other.isVerified != null)
+				return false;
+		} else if (!isVerified.equals(other.isVerified))
+			return false;
+		
 		if (isMobileVerified == null) {
 			if (other.isMobileVerified != null)
 				return false;

@@ -5,6 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.projectx.mvc.domain.completeregister.DriverSimplified;
+import com.projectx.mvc.domain.completeregister.L1DriverCompleteRegistration;
+import com.projectx.mvc.domain.completeregister.L1VehicleCompleteRegistration;
+import com.projectx.mvc.domain.completeregister.VehicleSimplified;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeEmailTypeUpdatedByDTO;
 import com.projectx.rest.domain.completeregister.CustomerIdTypeMobileTypeDTO;
@@ -39,6 +43,10 @@ public interface VendorDetailsService {
 	
 	DriverDetailsDTO initializeDriverDetails(DriverDetailsDTO driverDetailsDTO);
 	
+	DriverDetailsDTO addDriverSimplified(DriverSimplified driverSimplified);
+	
+	DriverDetailsDTO l1DriverDataEntry(L1DriverCompleteRegistration l1DriverCompleteRegistration);
+	
 	DriverDetailsDTO getDriverById(Long driverId);
 	
 	DriverDetailsDTO getDriverByLicenceNumber(String licenceNumber);
@@ -52,6 +60,10 @@ public interface VendorDetailsService {
 	Boolean vehicleClearTestData();
 	
 	VehicleDetailsDTO save(VehicleDetailsDTO vehicleDetailsDTO);
+	
+	VehicleDetailsDTO saveSimplified(VehicleSimplified vehicleSimplified);
+	
+	VehicleDetailsDTO l1VehicleDataEntry(L1VehicleCompleteRegistration l1VehicleCompleteRegistration);
 	
 	VehicleDetailsDTO getVehicleById(Long vehicleId);
 	

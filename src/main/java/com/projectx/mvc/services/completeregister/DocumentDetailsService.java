@@ -15,7 +15,7 @@ import com.projectx.rest.domain.completeregister.UpdateDocumentVerificationStatu
 
 public interface DocumentDetailsService {
 
-	DocumentDetails initializeDocumentDetails(Long customerId,Integer customerType,String documentName,MultipartFile file) throws IOException;
+	DocumentDetails initializeDocumentDetails(Long customerId,Integer customerType,String documentName,Integer documentVersion,MultipartFile file) throws IOException;
 	
 	DocumentDetails saveDocument(DocumentDetails documentDetails);
 	

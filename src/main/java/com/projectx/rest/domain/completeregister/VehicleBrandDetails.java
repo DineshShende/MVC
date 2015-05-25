@@ -101,8 +101,7 @@ public class VehicleBrandDetails {
 		if (vehicleBrandId == null) {
 			if (other.vehicleBrandId != null)
 				return false;
-		} else if (!vehicleBrandId.equals(other.vehicleBrandId))
-			return false;
+		} 
 		if (vehicleBrandName == null) {
 			if (other.vehicleBrandName != null)
 				return false;

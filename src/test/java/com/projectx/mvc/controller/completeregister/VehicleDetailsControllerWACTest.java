@@ -2,14 +2,12 @@ package com.projectx.mvc.controller.completeregister;
 
 import static com.projectx.mvc.fixtures.completeregister.VehicleDetailsDataFixtures.*;
 import static com.projectx.mvc.fixtures.completeregister.DriverDetailsDataFixtures.standardEntityIdDTO;
+import static com.projectx.mvc.fixtures.completeregister.VehicleDetailsDataFixtures.*;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Date;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,8 +22,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.projectx.mvc.config.Application;
 import com.projectx.mvc.services.completeregister.VendorDetailsService;
-import com.projectx.rest.domain.completeregister.DriverDetailsDTO;
 import com.projectx.rest.domain.completeregister.EntityIdDTO;
+
 import com.projectx.rest.domain.completeregister.VehicleDetailsDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -40,6 +38,8 @@ public class VehicleDetailsControllerWACTest {
 	
 	@Autowired
 	VendorDetailsService vendorDetailsService; 
+	
+	private String DUMMY="DUMMY";
 	
 	
 	@Before
@@ -70,6 +70,40 @@ public class VehicleDetailsControllerWACTest {
 
     
 	}
+	
+	@Test
+	public void addVehicleSimplified() throws Exception
+	{
+		this.mockMvc.perform(
+	            post("/vehicle/save/simplified")
+	                    .content((standardVehicleSimplifiedJson(standardVehicleSimplified(null))))
+	                    .contentType(MediaType.APPLICATION_JSON)
+	                    .accept(MediaType.APPLICATION_JSON))
+	            .andDo(print())
+	            .andExpect(status().isOk())
+	            .andExpect(jsonPath("$.result").value("sucess"))
+		 		.andExpect(jsonPath("$.errorMessage").value(""));
+
+	            
+	}
+	
+	@Test
+	public void L1VehicleRegistartionProcess() throws Exception
+	{
+		VehicleDetailsDTO vehicleDetails=vendorDetailsService.saveSimplified(standardVehicleSimplified(null));
+		
+		this.mockMvc.perform(
+	            post("/vehicle/save/l1dataentry")
+	                    .content((standardL1VehicleCompleteRegistrationJson(standardL1VehicleCompleteRegistration(vehicleDetails.getVehicleId()))))
+	                    .contentType(MediaType.APPLICATION_JSON)
+	                    .accept(MediaType.APPLICATION_JSON))
+	            .andDo(print())
+	            .andExpect(status().isOk())
+	            
+	            .andExpect(jsonPath("$.result").value("sucess"))
+		 		.andExpect(jsonPath("$.errorMessage").value(""));
+	}
+
 	
 	@Test
 	public void getById() throws Exception
